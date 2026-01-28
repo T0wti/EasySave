@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EasySave.Console/EasySave.Console.csproj" />
+    <Project Path="src/EasySave.Domain/EasySave.Domain.csproj" />
+    <Project Path="src/EasySave.EasyLog/EasySave.EasyLog.csproj" />
+    <Project Path="src/EasySave.Infrastructure/EasySave.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/EasySave.Domain.Tests/EasySave.Domain.Tests.csproj" />
+    <Project Path="tests/EasySave.EasyLog.Tests/EasySave.EasyLog.Tests.csproj" />
+    <Project Path="tests/EasySave.Infrastructure.Tests/EasySave.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>
