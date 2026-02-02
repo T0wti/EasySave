@@ -1,0 +1,26 @@
+namespace EasySave.Console.Resources;
+
+public class GeneralTextProvider : ITextProvider
+{
+    // Define an automatic indentation (to improve readability)
+    private const string Indent = "       ";
+    protected string Format(string text) => $"{Indent}{text}";
+
+    private readonly string _defaultString;
+
+    // Constructor
+    protected GeneralTextProvider()
+    {
+        _defaultString = "";
+    }
+
+    // Header and Footer
+    public string Header => "============== Easy Save Console ==============";
+    public string Footer => "===============================================";
+    // Blank string which will be overridden in the language wanted
+    public virtual string MainMenuTitle => _defaultString;
+    public virtual string BackupOption => _defaultString;
+    public virtual string LanguageOption => _defaultString;
+    public virtual string ExitOption => _defaultString;
+    public virtual string AskEntryFromUser => _defaultString;
+}
