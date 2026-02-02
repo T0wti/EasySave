@@ -19,8 +19,10 @@ public class GeneralTextProvider : ITextProvider
     public string Footer => "===============================================";
     // Blank string which will be overridden in the language wanted
     public virtual string MainMenuTitle => _defaultString;
-    public virtual string BackupOption => _defaultString;
+    public virtual string CreateBackup => _defaultString;
     public virtual string LanguageOption => _defaultString;
     public virtual string ExitOption => _defaultString;
     public virtual string AskEntryFromUser => _defaultString;
+    public virtual string DeleteBackup => _defaultString;
+    public virtual string EditBackup => _defaultString;
 }
