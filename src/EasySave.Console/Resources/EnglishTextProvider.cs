@@ -10,5 +10,11 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string AskEntryFromUser => "Enter the desired number: ";
     public override string EditBackup => Format("3. Edit a file backup");
     public override string DeleteBackup => Format("2. Delete a file backup");
+    public override string WrongInput => "Invalid input, please try again: ";
+    
+    // Language menu
+    public override string LanguageMenuTitle => Format("-- Change the language --");
+    public override string Language1 => Format("1. French");
+    public override string Language2 => Format("2. English");
 
 }

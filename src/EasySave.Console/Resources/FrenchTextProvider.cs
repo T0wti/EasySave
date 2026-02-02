@@ -10,4 +10,10 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string AskEntryFromUser =>"Entrez le chiffre souhaité : ";
     public override string EditBackup => Format("3. Modifier une sauvegarde de fichiers");
     public override string DeleteBackup => Format("2. Supprimer une sauvegarde de fichiers");
+    public override string WrongInput => "Entrée invalide, veuillez  réessayer : ";
+
+    // Language menu
+    public override string LanguageMenuTitle => Format("-- Changer la langue --");
+    public override string Language1 => Format("1. Français");
+    public override string Language2 => Format("2. Anglais");
 }

@@ -1,7 +1,7 @@
 using EasySave.Console.Resources;
 namespace EasySave.Console.ConsoleUI;
 
-public class BaseMenu
+public class BaseMenu : ConsoleRunner
 {
     private readonly ITextProvider _texts;
     
@@ -40,7 +40,7 @@ public class BaseMenu
         bool exit = false;
         while (!exit)
         {
-            string input = System.Console.ReadLine();
+            var input = System.Console.ReadLine()?.Trim();
 
             switch (input)
             {
@@ -61,7 +61,7 @@ public class BaseMenu
                     exit = true;
                     break;
                 default:
-                    System.Console.WriteLine("Invalid input.");
+                    System.Console.WriteLine(_texts.WrongInput);
                     break;
             }
         }
