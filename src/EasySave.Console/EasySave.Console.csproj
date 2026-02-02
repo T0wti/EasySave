@@ -1,12 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\EasySave.Domain\EasySave.Domain.csproj" />
-    <ProjectReference Include="..\EasySave.Infrastructure\EasySave.Infrastructure.csproj" />
-    <ProjectReference Include="..\EasySave.EasyLog\EasySave.EasyLog.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="ConsoleUI\" />
     <Folder Include="Resources\" />

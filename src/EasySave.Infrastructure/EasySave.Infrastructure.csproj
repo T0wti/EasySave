@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\EasySave.Domain\EasySave.Domain.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EasySave.Console\EasySave.Console.csproj" />
+    <ProjectReference Include="..\EasySave.Domain\EasySave.Domain.csproj" />
+    <ProjectReference Include="..\EasySave.EasyLog\EasySave.EasyLog.csproj" />
+  </ItemGroup>
 
 </Project>
