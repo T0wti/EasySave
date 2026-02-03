@@ -13,12 +13,11 @@ public class BaseMenu : ConsoleRunner
     internal void Display()
     {
         DisplayBaseMenu();
+        BaseMenuLoop();
     }
     private void DisplayBaseMenu()
     {
-        System.Console.Clear();
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Header);
+        Header();
         System.Console.WriteLine(_texts.MainMenuTitle);
         System.Console.WriteLine();
         System.Console.WriteLine(_texts.CreateBackup);
@@ -26,13 +25,7 @@ public class BaseMenu : ConsoleRunner
         System.Console.WriteLine(_texts.EditBackup);
         System.Console.WriteLine();
         System.Console.WriteLine(_texts.LanguageOption);
-        System.Console.WriteLine(_texts.ExitOption);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Footer);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.AskEntryFromUser);
-        
-        BaseMenuLoop();
+        Footer();
     }
 
     private void BaseMenuLoop()

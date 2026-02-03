@@ -14,26 +14,17 @@ public class ChangeLanguageMenu : ConsoleRunner
     public void Display()
     {
         DisplayChangeLanguageBaseMenu();
+        LanguageMenuLoop();
     }
     
     private void DisplayChangeLanguageBaseMenu()
     {
-        System.Console.Clear();
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Header);
+        Header();
         System.Console.WriteLine(_texts.LanguageMenuTitle);
         System.Console.WriteLine();
         System.Console.WriteLine(_texts.Language1);
         System.Console.WriteLine(_texts.Language2);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.ExitOption);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Footer);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.AskEntryFromUser);
-        
-        LanguageMenuLoop();
-
+        Footer();
     }
     private void LanguageMenuLoop()
     {

@@ -17,4 +17,20 @@ public class ConsoleRunner
         _texts = language;
         RunConsole();
     }
+
+    protected void Header()
+    {
+        System.Console.Clear();
+        System.Console.WriteLine();
+        System.Console.WriteLine(_texts.Header);
+    }
+    protected void Footer()
+    {
+        System.Console.WriteLine();
+        System.Console.WriteLine(_texts.ExitOption);
+        System.Console.WriteLine();
+        System.Console.WriteLine(_texts.Footer);
+        System.Console.WriteLine();
+        System.Console.WriteLine(_texts.AskEntryFromUser);
+    }
 }

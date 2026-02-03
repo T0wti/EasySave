@@ -18,19 +18,12 @@ public class FirstStartMenu : ConsoleRunner
 
     private void DisplayFirstStartMenu()
     {
-        System.Console.Clear();
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Header);
+        Header();
         System.Console.WriteLine(_texts.ChooseFirstLanguageMenuTitle);
         System.Console.WriteLine(_texts.ChooseFirstLanguage);
         System.Console.WriteLine(_texts.Language1);
         System.Console.WriteLine(_texts.Language2);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.ExitOption);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Footer);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.AskEntryFromUser);
+        Footer();
     }
 
     private void FirstStartLoop()
