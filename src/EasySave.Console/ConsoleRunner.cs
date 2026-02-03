@@ -1,6 +1,6 @@
 using EasySave.Console.Resources;
 
-namespace EasySave.Console.ConsoleUI;
+namespace EasySave.Console;
 
 public class ConsoleRunner
 {
@@ -8,7 +8,7 @@ public class ConsoleRunner
 
     public void RunConsole()
     {
-        var menu = new BaseMenu(_texts);
+        var menu = new ConsoleUI.BaseMenu(_texts);
         menu.Display();
     }
 

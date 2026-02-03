@@ -9,7 +9,7 @@ class Program
 {
     static void Main()
     {
-        var consoleRunner = new Console.ConsoleUI.ConsoleRunner();
+        var consoleRunner = new Console.ConsoleRunner();
         consoleRunner.RunConsole();
     }
 }
