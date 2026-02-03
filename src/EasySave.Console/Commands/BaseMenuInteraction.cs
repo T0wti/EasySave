@@ -5,11 +5,9 @@ namespace EasySave.Console.Commands;
 
 internal class BaseMenuInteraction
 {
-    private readonly ITextProvider _texts;
     private readonly ConsoleRunner _runner;
-    internal BaseMenuInteraction(ITextProvider texts)
+    internal BaseMenuInteraction()
     {
-        _texts = texts;
         _runner = new ConsoleRunner();
     }
 
@@ -23,13 +21,16 @@ internal class BaseMenuInteraction
             switch (input)
             {
                 case "1":
-                    HandleCreateBackup();
+                    exit = true;
+                    _runner.HandleCreateBackup();
                     break;
                 case "2":
-                    HandleDeleteBackup();
+                    exit = true;
+                    _runner.HandleDeleteBackup();
                     break;
                 case "3":
-                    HandleEditBackup();
+                    exit = true;
+                    _runner.HandleEditBackup();
                     break;
                 case "9":
                     exit = true;
@@ -50,23 +51,4 @@ internal class BaseMenuInteraction
             }
         }
     }
-    // Méthodes séparées pour chaque action à mettre à jour quand Argan aura cook
-    private void HandleCreateBackup()
-    {
-        System.Console.WriteLine("Create backup chosen...");
-        System.Console.ReadKey();
-    }
-
-    private void HandleDeleteBackup()
-    {
-        System.Console.WriteLine("Delete backup chosen...");
-        System.Console.ReadKey();
-    }
-
-    private void HandleEditBackup()
-    {
-        System.Console.WriteLine("Edit backup chosen...");
-        System.Console.ReadKey();
-    }
-
 }
