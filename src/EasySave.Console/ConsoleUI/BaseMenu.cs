@@ -60,6 +60,12 @@ public class BaseMenu : ConsoleRunner
                 case "0":
                     exit = true;
                     break;
+                // Case for dev, remove before flight
+                case "dev-first-start":
+                    var newMenu = new FirstStartMenu(new EnglishTextProvider());
+                    newMenu.Display();
+                    break;
+                // Default case
                 default:
                     System.Console.WriteLine(_texts.WrongInput);
                     break;
