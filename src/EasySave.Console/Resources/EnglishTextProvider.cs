@@ -16,5 +16,8 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string LanguageMenuTitle => Format("-- Change the language --");
     public override string Language1 => Format("1. French");
     public override string Language2 => Format("2. English");
-
+    
+    // Choose first language menu
+    public override string ChooseFirstLanguageMenuTitle => Format("-- Choose the default language --");
+    public override string ChooseFirstLanguage => Format("Choose the default language :");
 }

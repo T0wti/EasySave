@@ -2,27 +2,27 @@ using EasySave.Console.Resources;
 
 namespace EasySave.Console.ConsoleUI;
 
-public class ChangeLanguageMenu : ConsoleRunner
+public class FirstStartMenu : ConsoleRunner
 {
     private readonly ITextProvider _texts;
-
-    public ChangeLanguageMenu(ITextProvider texts) 
+    public FirstStartMenu(ITextProvider texts)
     {
         _texts = texts;
     }
-
-    public void Display()
-    {
-        DisplayChangeLanguageBaseMenu();
-    }
     
-    private void DisplayChangeLanguageBaseMenu()
+    internal void Display()
+    {
+        DisplayFirstStartMenu();
+        FirstStartLoop();
+    }
+
+    private void DisplayFirstStartMenu()
     {
         System.Console.Clear();
         System.Console.WriteLine();
         System.Console.WriteLine(_texts.Header);
-        System.Console.WriteLine(_texts.LanguageMenuTitle);
-        System.Console.WriteLine();
+        System.Console.WriteLine(_texts.ChooseFirstLanguageMenuTitle);
+        System.Console.WriteLine(_texts.ChooseFirstLanguage);
         System.Console.WriteLine(_texts.Language1);
         System.Console.WriteLine(_texts.Language2);
         System.Console.WriteLine();
@@ -31,17 +31,14 @@ public class ChangeLanguageMenu : ConsoleRunner
         System.Console.WriteLine(_texts.Footer);
         System.Console.WriteLine();
         System.Console.WriteLine(_texts.AskEntryFromUser);
-        
-        LanguageMenuLoop();
-
     }
-    private void LanguageMenuLoop()
+
+    private void FirstStartLoop()
     {
         bool exit = false;
         while (!exit)
         {
             var input = System.Console.ReadLine()?.Trim();
-
             switch (input)
             {
                 case "1":
@@ -54,7 +51,7 @@ public class ChangeLanguageMenu : ConsoleRunner
                     break;
                 case "0":
                     exit = true;
-                    RunConsole();
+                    System.Console.Clear();
                     break;
                 default:
                     System.Console.WriteLine(_texts.WrongInput);

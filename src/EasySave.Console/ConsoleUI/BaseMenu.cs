@@ -5,12 +5,12 @@ public class BaseMenu : ConsoleRunner
 {
     private readonly ITextProvider _texts;
     
-    public BaseMenu(ITextProvider texts)
+    internal BaseMenu(ITextProvider texts)
     {
         _texts = texts;
     }
 
-    public void Display()
+    internal void Display()
     {
         DisplayBaseMenu();
     }

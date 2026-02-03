@@ -32,4 +32,8 @@ public class GeneralTextProvider : ITextProvider
         public virtual string LanguageMenuTitle => _defaultString;
         public virtual string Language1 => _defaultString;
         public virtual string Language2 => _defaultString;
+        
+        // Choose first language menu
+        public virtual string ChooseFirstLanguageMenuTitle => _defaultString;
+        public virtual string ChooseFirstLanguage => _defaultString;
 }

@@ -20,5 +20,7 @@ public interface ITextProvider
     string Language1  { get; }
     string Language2 { get; }
     
-    
+    // Options in the first start menu
+    string ChooseFirstLanguageMenuTitle { get; }
+    string ChooseFirstLanguage { get; }
 }
