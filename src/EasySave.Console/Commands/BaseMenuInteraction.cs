@@ -21,15 +21,12 @@ internal class BaseMenuInteraction
             switch (input)
             {
                 case "1":
-                    exit = true;
                     _runner.HandleCreateBackup();
                     break;
                 case "2":
-                    exit = true;
                     _runner.HandleDeleteBackup();
                     break;
                 case "3":
-                    exit = true;
                     _runner.HandleEditBackup();
                     break;
                 case "9":
