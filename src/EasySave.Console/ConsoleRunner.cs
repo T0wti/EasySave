@@ -8,29 +8,33 @@ public class ConsoleRunner
 
     public void RunConsole()
     {
-        var menu = new ConsoleUI.BaseMenu(_texts);
-        menu.Display();
+        RunBaseMenu();
     }
 
-    protected void ChangeLanguage(ITextProvider language)
+    internal void RunBaseMenu()
+    {
+        var menu = new ConsoleUI.BaseMenu(_texts);
+        var loop = new Commands.BaseMenuInteraction(_texts);
+        menu.Display();
+        loop.RunLoop();
+    }
+
+    internal void ChangeLanguage(ITextProvider language)
     {
         _texts = language;
-        RunConsole();
+        RunBaseMenu();
     }
 
-    protected void Header()
+    internal void RunChangeLanguageMenu()
     {
-        System.Console.Clear();
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Header);
+        var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
+        var loop = new Commands.ChangeLanguageMenuInteraction();
+        menu.Display();
+        loop.RunLoop();
     }
-    protected void Footer()
+
+    internal void WrongInput()
     {
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.ExitOption);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Footer);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.AskEntryFromUser);
+        System.Console.WriteLine(_texts.WrongInput);
     }
 }
