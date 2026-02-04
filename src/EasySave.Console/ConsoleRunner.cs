@@ -11,31 +11,19 @@ public class ConsoleRunner
         RunBaseMenu();
     }
 
-    internal void RunBaseMenu()
-    {
-        var menu = new ConsoleUI.BaseMenu(_texts);
-        var loop = new Commands.BaseMenuInteraction();
-        menu.Display();
-        loop.RunLoop();
-    }
-
     internal void ChangeLanguage(ITextProvider language)
     {
-        _texts = language;
-        RunBaseMenu();
+        ChangeLanguagePrivate(language);
     }
 
     internal void RunChangeLanguageMenu()
     {
-        var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
-        var loop = new Commands.ChangeLanguageMenuInteraction();
-        menu.Display();
-        loop.RunLoop();
+        RunChangeLanguageMenuPrivate();
     }
 
     internal void WrongInput()
     {
-        System.Console.WriteLine(_texts.WrongInput);
+        WrongInputPrivate();
     }
     // Methods to call the saves in the infrastrcture
     internal void HandleCreateBackup()
@@ -55,5 +43,33 @@ public class ConsoleRunner
         // Code version to test the interface, not finished
         System.Console.WriteLine("Edit backup chosen...");
     }
+    
+    // private versions of the interface calling
+        private void RunBaseMenu()
+        {
+            var menu = new ConsoleUI.BaseMenu(_texts);
+            var loop = new Commands.BaseMenuInteraction();
+            menu.Display();
+            loop.RunLoop();
+        }
+
+        private void ChangeLanguagePrivate(ITextProvider language)
+        {
+            _texts = language;
+            RunBaseMenu();
+        }
+
+        private void RunChangeLanguageMenuPrivate()
+        {
+            var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
+            var loop = new Commands.ChangeLanguageMenuInteraction();
+            menu.Display();
+            loop.RunLoop();
+        }
+
+        private void WrongInputPrivate()
+        {
+            System.Console.WriteLine(_texts.WrongInput);
+        }
 
 }
