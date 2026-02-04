@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\EasySave.Application\EasySave.Application.csproj" />
+    <ProjectReference Include="..\..\src\EasySave.Infrastructure\EasySave.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
