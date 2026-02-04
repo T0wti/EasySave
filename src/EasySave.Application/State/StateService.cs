@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasySave.Infrastructure.Services
+namespace EasySave.Application.State
 {
-    internal class BackupService
+    internal class StateService
     {
     }
 }

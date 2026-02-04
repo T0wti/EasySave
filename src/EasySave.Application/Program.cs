@@ -3,7 +3,7 @@
 
 // Code to dev the console (exclude only available here, don't push it)
 
-namespace EasySave.Infrastructure;
+namespace EasySave.Application;
 
 class Program
 {

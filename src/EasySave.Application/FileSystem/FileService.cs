@@ -1,7 +1,7 @@
 ﻿using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 
-namespace EasySave.Infrastructure.FileSystem
+namespace EasySave.Application.FileSystem
 {
     internal class FileService : IFileService
     {
