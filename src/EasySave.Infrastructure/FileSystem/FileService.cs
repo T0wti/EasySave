@@ -5,6 +5,8 @@ namespace EasySave.Infrastructure.FileSystem
 {
     internal class FileService : IFileService
     {
+        private IFileService _fileServiceImplementation;
+
         public IEnumerable<FileDescriptor> GetFiles(string sourceDirectory)
         {
             var files = Directory.GetFiles(sourceDirectory, "*", SearchOption.AllDirectories);
@@ -18,6 +20,16 @@ namespace EasySave.Infrastructure.FileSystem
                     Size = info.Length
                 };
             }
+        }
+
+        public void CopyFile(string sourcePath, string targetPath)
+        {
+            var targetDir = Path.GetDirectoryName(targetPath);
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir!);
+            }
+            File.Copy(sourcePath,targetPath, overwrite:true);
         }
 
         public void CopyFiles(FileInfo[] files, string targetPath)
