@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasySave.Infrastructure.FileSystem
+namespace EasySave.Application.Services
 {
-    internal class DiskStorage
+    internal class BackupService
     {
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasySave.Infrastructure.State
+namespace EasySave.Application.Logging
 {
-    internal class StateService
+    internal class LogService
     {
     }
 }
