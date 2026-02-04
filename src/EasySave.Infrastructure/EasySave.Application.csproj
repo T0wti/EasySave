@@ -13,4 +13,9 @@
     <ProjectReference Include="..\EasySave.EasyLog\EasySave.EasyLog.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>
