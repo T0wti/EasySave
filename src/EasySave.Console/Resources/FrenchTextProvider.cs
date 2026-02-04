@@ -10,7 +10,7 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string AskEntryFromUser =>"Entrez le chiffre souhaité : ";
     public override string EditBackup => Format("3. Modifier une sauvegarde de fichiers");
     public override string DeleteBackup => Format("2. Supprimer une sauvegarde de fichiers");
-    public override string WrongInput => "Entrée invalide, veuillez  réessayer : ";
+    public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
 
     // Language menu
     public override string LanguageMenuTitle => Format("-- Changer la langue --");
@@ -19,5 +19,5 @@ public class FrenchTextProvider: GeneralTextProvider
     
     // Choose first language menu
     public override string ChooseFirstLanguageMenuTitle => Format("-- Choix de la langue par défaut --");
-    public override string ChooseFirstLanguage => Format("Choisisser la langue par défaut :");
+    public override string ChooseFirstLanguage => Format("Choisissez la langue par défaut :");
 }
