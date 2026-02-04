@@ -3,7 +3,7 @@
     <Project Path="src/EasySave.Console/EasySave.Console.csproj" />
     <Project Path="src/EasySave.Domain/EasySave.Domain.csproj" />
     <Project Path="src/EasySave.EasyLog/EasySave.EasyLog.csproj" />
-    <Project Path="src/EasySave.Infrastructure/EasySave.Infrastructure.csproj" />
+    <Project Path="src\EasySave.Application\EasySave.Application.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/EasySave.Domain.Tests/EasySave.Domain.Tests.csproj" />
