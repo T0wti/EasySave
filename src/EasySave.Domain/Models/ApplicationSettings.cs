@@ -10,7 +10,7 @@ namespace EasySave.Domain.Models
             public Language Language { get; set; }
             public int MaxBackupJobs { get; set; }
             public string LogDirectoryPath { get; set; }
-            //public string StateFileDirectoryPath { get; set; }
+            public string StateFileDirectoryPath { get; set; }
 
 
         public ApplicationSettings(Language language)

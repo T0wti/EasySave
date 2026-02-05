@@ -19,7 +19,7 @@ namespace EasySave.Domain.Models
         public string? CurrentSourceFile { get; internal set; }
         public string? CurrentTargetFile { get; internal set; }
 
-        private BackupProgress() { }
+        public BackupProgress() { }
 
         public static BackupProgress From(BackupJob job)
         {

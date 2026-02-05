@@ -10,7 +10,7 @@ namespace EasySave.Domain.Services
         private readonly IFileService _fileService;
         private readonly ILogService _logService;
         private readonly IStateService _stateService;
-   
+
         public BackupService(
         IFileService fileService,
         ILogService logService,
