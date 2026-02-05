@@ -1,8 +1,7 @@
-﻿
-using EasySave.Domain.Interfaces;
+﻿using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 
-namespace EasySave.Application.Services
+namespace EasySave.Domain.Services
 {
     public class FileService : IFileService
     {
