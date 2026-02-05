@@ -25,6 +25,7 @@ namespace EasySave.Domain.Models
         {
             return new BackupProgress
             {
+                BackupJobId = job.Id,
                 BackupName = job.Name,
                 State = BackupJobState.Active,
                 LastUpdate = DateTime.Now
