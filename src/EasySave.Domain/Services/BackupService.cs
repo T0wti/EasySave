@@ -1,6 +1,7 @@
 ﻿using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
+using EasySave.EasyLog.Interfaces;
 
 namespace EasySave.Domain.Services
 {
@@ -50,7 +51,7 @@ namespace EasySave.Domain.Services
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
-                    _logService.Write(new LogEntry
+                    _logService.WriteJson(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         BackupName = job.Name,
@@ -70,7 +71,7 @@ namespace EasySave.Domain.Services
                 }
                 catch
                 {
-                    _logService.Write(new LogEntry
+                    _logService.WriteJson(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         BackupName = job.Name,
