@@ -1,4 +1,4 @@
-﻿namespace EasySave.Infrastructure.Tests;
+﻿namespace EasySave.Application.Tests;
 
 public class UnitTest1
 {
