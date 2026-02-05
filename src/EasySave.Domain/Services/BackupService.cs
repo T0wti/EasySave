@@ -10,9 +10,7 @@ namespace EasySave.Domain.Services
         private readonly IFileService _fileService;
         private readonly ILogService _logService;
         private readonly IStateService _stateService;
-
-
-
+   
         public BackupService(
         IFileService fileService,
         ILogService logService,
@@ -29,7 +27,6 @@ namespace EasySave.Domain.Services
             var files = _fileService.GetFiles(job.SourcePath).ToList();
 
             var progress = BackupProgress.From(job);
-
             progress.TotalFiles = files.Count;
             progress.TotalSize = files.Sum(f => f.Size);
             progress.RemainingFiles = progress.TotalFiles;
@@ -43,9 +40,15 @@ namespace EasySave.Domain.Services
 
                 try
                 {
+                    var relativePath = Path.GetRelativePath(
+                        job.SourcePath,
+                        file.FullPath
+                    );
+
                     var targetPath = Path.Combine(
                         job.TargetPath,
-                        Path.GetFileName(file.FullPath));
+                        relativePath
+                    );
 
                     _fileService.CopyFile(file.FullPath, targetPath);
 
@@ -69,8 +72,11 @@ namespace EasySave.Domain.Services
 
                     _stateService.Update(progress);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    progress.State = BackupJobState.Failed;
+                    _stateService.Fail(job.Id);
+
                     _logService.WriteJson(new LogEntry
                     {
                         Timestamp = DateTime.Now,
@@ -81,8 +87,6 @@ namespace EasySave.Domain.Services
                         TransferTimeMs = -1
                     });
 
-                    progress.State = BackupJobState.Failed;
-                    _stateService.Fail(job.Id);
                     throw;
                 }
             }
