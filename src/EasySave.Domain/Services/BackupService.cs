@@ -24,7 +24,7 @@ namespace EasySave.Domain.Services
         public void ExecuteBackup(BackupJob job)
         {
 
-            var files = _fileService.GetFiles(job.SourcePath).ToList();
+            var files = _fileService.GetFiles(job.SourcePath);
 
             var progress = BackupProgress.From(job);
 

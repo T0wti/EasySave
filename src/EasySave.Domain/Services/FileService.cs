@@ -5,19 +5,20 @@ namespace EasySave.Domain.Services
 {
     public class FileService : IFileService
     {
-        public IEnumerable<FileDescriptor> GetFiles(string sourceDirectory)
+        public List<FileDescriptor> GetFiles(string sourceDirectory)
         {
-            var files = Directory.GetFiles(sourceDirectory, "*", SearchOption.AllDirectories);
-
-            foreach (var file in files)
-            {
-                var info = new FileInfo(file);
-                yield return new FileDescriptor
-                {
-                    FullPath = info.FullName,
-                    Size = info.Length
-                };
-            }
+            return Directory
+                    .GetFiles(sourceDirectory, "*", SearchOption.AllDirectories)
+                    .Select(f =>
+                    {
+                        var info = new FileInfo(f);
+                        return new FileDescriptor
+                        {
+                            FullPath = info.FullName,
+                            Size = info.Length
+                        };
+                    })
+                    .ToList();
         }
 
         public void CopyFile(string sourcePath, string targetPath)
@@ -32,3 +33,4 @@ namespace EasySave.Domain.Services
         }
     }
 }
+
