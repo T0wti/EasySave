@@ -13,14 +13,25 @@ namespace EasySave.Domain.Services
             _fileStateService = fileStateService;
         }
 
-        public void Initialize(BackupProgress progress)
+        public void Initialize(BackupProgress progress, List<FileDescriptor> files)
         {
+            progress.TotalFiles = files.Count;
+            progress.TotalSize = files.Sum(f => f.Size);
+            progress.RemainingFiles = progress.TotalFiles;
+            progress.RemainingSize = progress.TotalSize;
+            progress.LastUpdate = DateTime.Now;
+
             Upsert(progress);
         }
 
-        public void Update(BackupProgress progress)
+        public void Update(BackupProgress progress, FileDescriptor file, string targetPath)
         {
+            progress.RemainingFiles--;
+            progress.RemainingSize -= file.Size;
+            progress.CurrentSourceFile = file.FullPath;
+            progress.CurrentTargetFile = targetPath;
             progress.LastUpdate = DateTime.Now;
+
             Upsert(progress);
         }
 
@@ -62,5 +73,7 @@ namespace EasySave.Domain.Services
                 _fileStateService.WriteState(states);
             }
         }
+
     }
 }
+
