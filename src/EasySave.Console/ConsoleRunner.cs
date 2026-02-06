@@ -23,6 +23,7 @@ public class ConsoleRunner
         _backupService = backupService;
         _configService = configurationService;
     }
+
     public void RunConsole()
     {
         RunBaseMenu();

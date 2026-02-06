@@ -8,9 +8,9 @@ using EasySave.Domain.Models;
 
 namespace EasySave.Domain.Services
 {
-    internal class FileBackupService
+    public class FileBackupService
     {
-        private readonly string _jobsFilePath;
+        private string _jobsFilePath;
 
         public FileBackupService()
         {
@@ -38,6 +38,12 @@ namespace EasySave.Domain.Services
             var options = new JsonSerializerOptions { WriteIndented = true };
             string json = JsonSerializer.Serialize(jobs, options);
             File.WriteAllText(_jobsFilePath, json);
+        }
+
+        //For unit tests
+        public void SetFilePath(string directoryPath)
+        {
+            _jobsFilePath = Path.Combine(directoryPath, "jobs.json");
         }
     }
 }
