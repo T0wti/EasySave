@@ -22,6 +22,7 @@ public class ConsoleRunner
     internal void ChangeLanguage(ITextProvider language)
     {
         _texts = language;
+        // ajouter la fonction pour mettre à jour le fichier de config Json
         RunBaseMenu();
     }
 

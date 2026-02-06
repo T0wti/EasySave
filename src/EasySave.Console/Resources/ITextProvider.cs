@@ -14,6 +14,8 @@ public interface ITextProvider
     string CreateBackup { get; }
     string EditBackup { get; }
     string LanguageOption { get; }
+    string ListBackup { get; }
+    string ExeBackup { get; }
     
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }

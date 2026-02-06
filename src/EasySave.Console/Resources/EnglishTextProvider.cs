@@ -11,7 +11,9 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string EditBackup => Format("3. Edit a file backup");
     public override string DeleteBackup => Format("2. Delete a file backup");
     public override string WrongInput => "Invalid input, please try again: ";
-    
+    public override string ListBackup => Format("4. List all file backups");
+    public override string ExeBackup => Format("5. Execute a file backup");
+
     // Language menu
     public override string LanguageMenuTitle => Format("-- Change the language --");
     public override string Language1 => Format("1. French");

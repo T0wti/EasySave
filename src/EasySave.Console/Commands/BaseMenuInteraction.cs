@@ -29,6 +29,12 @@ internal class BaseMenuInteraction
                 case "3":
                     _runner.HandleEditBackup();
                     break;
+                case "4":
+                    // mettre fonction pour appel avec la liste des backups
+                    break;
+                case "5":
+                    // mettre fonction pour exe une save
+                    break;
                 case "9":
                     exit = true;
                     _runner.RunChangeLanguageMenu();

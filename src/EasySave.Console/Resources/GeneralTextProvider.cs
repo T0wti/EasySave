@@ -27,6 +27,8 @@ public class GeneralTextProvider : ITextProvider
         public virtual string DeleteBackup => _defaultString;
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
+        public virtual string ListBackup => _defaultString;
+        public virtual string ExeBackup => _defaultString;
 
         // Change Language Menu
         public virtual string LanguageMenuTitle => _defaultString;
