@@ -1,6 +1,7 @@
 ﻿using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
+using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -22,13 +23,11 @@ namespace EasySave.Domain.Services
 
         public BackupService(
         IFileService fileService,
-        ILogService logService,
-        IStateService stateService,
         IBackupStrategy fullStrategy,
         IBackupStrategy differentialStrategy)
         {
             _fileService = fileService;
-            _logService = logService;
+            _logService = EasyLogService.Instance;
             _stateService = new StateService(FileStateService.Instance);
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
