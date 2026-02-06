@@ -1,6 +1,7 @@
 ﻿using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
+using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -22,19 +23,27 @@ namespace EasySave.Domain.Services
 
         public BackupService(
         IFileService fileService,
-        ILogService logService,
-        IStateService stateService,
         IBackupStrategy fullStrategy,
         IBackupStrategy differentialStrategy,
         IFileBackupService fileBackupService)
         {
             _fileService = fileService;
-            _logService = logService;
-            _stateService = stateService;
+            _logService = EasyLogService.Instance;
+            _stateService = new StateService(FileStateService.Instance);
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
-            _fileBackupService = fileBackupService;
 
+            //JSON initialisation
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string easySavePath = Path.Combine(appDataPath, "EasySave");
+
+            if (!Directory.Exists(easySavePath))
+            {
+                Directory.CreateDirectory(easySavePath);
+            }
+
+            _jobsFilePath = Path.Combine(easySavePath, "jobs.json");
+            _fileBackupService = fileBackupService;
             _backupJobs = _fileBackupService.LoadJobs();
         }
 
