@@ -8,7 +8,7 @@ using EasySave.Domain.Models;
 
 namespace EasySave.Domain.Services
 {
-    public class FileBackupService
+    public class FileBackupService : IFileBackupService
     {
         private string _jobsFilePath;
 
