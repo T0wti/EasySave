@@ -12,30 +12,32 @@ namespace EasySave.Domain.Services
         private readonly IFileService _fileService;
         private readonly ILogService _logService;
         private readonly IStateService _stateService;
+        private readonly IBackupStrategy _fullStrategy;
+        private readonly IBackupStrategy _differentialStrategy;
+
 
         public BackupService(
         IFileService fileService,
         ILogService logService,
-        IStateService stateService)
+        IStateService stateService,
+        IBackupStrategy fullStrategy,
+        IBackupStrategy differentialStrategy)
         {
             _fileService = fileService;
             _logService = logService;
             _stateService = stateService;
+            _fullStrategy = fullStrategy;
+            _differentialStrategy = differentialStrategy;
         }
 
         public void ExecuteBackup(BackupJob job)
         {
 
-            List<FileDescriptor> files;
+            IBackupStrategy strategy = job.Type == BackupType.Full
+            ? _fullStrategy
+            : _differentialStrategy;
 
-            if (job.Type == BackupType.Full)
-            {
-                files = _fileService.GetFiles(job.SourcePath);
-            }
-            else
-            {
-                files = GetDifferentialFiles(job.SourcePath, job.TargetPath);
-            }
+            var files = strategy.GetFilesToCopy(job.SourcePath, job.TargetPath);
 
             var progress = BackupProgress.From(job);
 
@@ -47,15 +49,8 @@ namespace EasySave.Domain.Services
 
                 try
                 {
-                    var relativePath = Path.GetRelativePath(
-                        job.SourcePath,
-                        file.FullPath
-                    );
-
-                    var targetPath = Path.Combine(
-                        job.TargetPath,
-                        relativePath
-                    );
+                    var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
+                    var targetPath = Path.Combine(job.TargetPath, relativePath);
 
                     _fileService.CopyFile(file.FullPath, targetPath);
 
@@ -73,7 +68,7 @@ namespace EasySave.Domain.Services
 
                     _stateService.Update(progress, file, targetPath);
                 }
-                catch (Exception ex)
+                catch
                 {
                     progress.State = BackupJobState.Failed;
                     _stateService.Fail(job.Id);
@@ -106,42 +101,6 @@ namespace EasySave.Domain.Services
             }
         }
 
-        private string ComputeFileHash(string path)
-        {
-            using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(path);
-            var hashBytes = sha256.ComputeHash(stream);
-            return Convert.ToBase64String(hashBytes);
-        }
 
-        private List<FileDescriptor> GetDifferentialFiles(string sourceDir, string targetDir)
-        {
-            var sourceFiles = _fileService.GetFiles(sourceDir);
-            var targetFiles = _fileService.GetFiles(targetDir)
-                .ToDictionary(f => Path.GetRelativePath(targetDir, f.FullPath));
-
-            var files = new List<FileDescriptor>();
-
-            foreach (var file in sourceFiles)
-            {
-                var relativePath = Path.GetRelativePath(sourceDir, file.FullPath);
-
-                // Si le fichier n'existe pas dans la target = copier
-                if (!targetFiles.TryGetValue(relativePath, out var targetFile))
-                {
-                    files.Add(file);
-                    continue;
-                }
-                var sourceHash = ComputeFileHash(file.FullPath);
-                var targetHash = ComputeFileHash(targetFile.FullPath);
-
-                // Si hash différent = copier
-                if (sourceHash != targetHash)
-                {
-                    files.Add(file);
-                }
-            }
-            return files;
-        }
     }
 }
