@@ -8,7 +8,8 @@ public class ConsoleRunner
 
     public void RunConsole()
     {
-        RunBaseMenu();
+        //RunBaseMenu();
+        RunListBackupMenu();
     }
 
     internal void RunBaseMenu()
@@ -32,6 +33,12 @@ public class ConsoleRunner
         var loop = new Commands.ChangeLanguageMenuInteraction();
         menu.Display();
         loop.RunLoop();
+    }
+
+    internal void RunListBackupMenu()
+    {
+        var menu = new ConsoleUI.ListBackupMenu(_texts);
+        menu.Display();
     }
 
     internal void RunExeBackupMenu()

@@ -23,8 +23,14 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string ChooseFirstLanguageMenuTitle => Format("-- Choix de la langue par défaut --");
     public override string ChooseFirstLanguage => Format("Choisissez la langue par défaut :");
     
+    // List Backup Menu
+    public override string ListBackupMenuTitle => Format("-- Ensembles des sauvegardes paramétrées --");
+    
+    // Backup Detail Menu
+    public override string BackupName => Format("nom save"); // mettre la fonction pour sortir le nom d'une backup
+
     // Execute Backup Menu
     public override string ExeBackupMenuTitle => Format("-- Choix de la sauvegarde à exécuter --");
-    public override string BackupName => Format("nom save"); // modifier avec l'appel de fonction qui va lister le nom des sauvegardes lignes par lignes
+    public override string BackupNames => Format("nom save"); // modifier avec l'appel de fonction qui va lister le nom des sauvegardes lignes par lignes
     public override string ExeBackupInstruction => Format("Tapez id_Sauvegarde");
 }

@@ -39,8 +39,13 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ChooseFirstLanguageMenuTitle => _defaultString;
         public virtual string ChooseFirstLanguage => _defaultString;
         
+        // List Backup Menu
+        public virtual string ListBackupMenuTitle => _defaultString;
+        
+        // Backup Detail Menu
+        public virtual string BackupName => _defaultString;
         // Execute Backup Menu
         public virtual string ExeBackupMenuTitle => _defaultString;
-        public virtual string BackupName => _defaultString;
+        public virtual string BackupNames => _defaultString;
         public virtual string ExeBackupInstruction => _defaultString;
 }
