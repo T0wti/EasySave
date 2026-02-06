@@ -10,7 +10,7 @@ public class ConsoleRunner
 {
     private ITextProvider _texts = new EnglishTextProvider();
 
-    private readonly IBackupService _backupService;
+    private readonly IBackupManagerService _backupService;
     private readonly IConfigurationService _configService;
 
     public ConsoleRunner()
@@ -18,7 +18,7 @@ public class ConsoleRunner
         //to do: vérifier si surcharge nécessaire
     }
 
-    public ConsoleRunner(IBackupService backupService, IConfigurationService configurationService)
+    public ConsoleRunner(IBackupManagerService backupService, IConfigurationService configurationService)
     {
         _backupService = backupService;
         _configService = configurationService;

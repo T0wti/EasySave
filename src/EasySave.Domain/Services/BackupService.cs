@@ -42,34 +42,9 @@ namespace EasySave.Domain.Services
                 Directory.CreateDirectory(easySavePath);
             }
 
-            _jobsFilePath = Path.Combine(easySavePath, "jobs.json");
+            //_jobsFilePath = Path.Combine(easySavePath, "jobs.json");
             _fileBackupService = fileBackupService;
             _backupJobs = _fileBackupService.LoadJobs();
-        }
-
-        public List<BackupJob> GetBackupJobs()
-        {
-            return _backupJobs;
-        }
-        
-        public void CreateBackupJob(BackupJob job)
-        {
-            //Verify if job already exists
-            if (_backupJobs.Any(j => j.Name == job.Name)) { 
-                throw new Exception($"A job named '{job.Name}' already exists.");
-            }
-
-            _backupJobs.Add(job);
-            _fileBackupService.SaveJobs(_backupJobs);
-        }
-
-        public void DeleteBackupJob(string jobName)
-        {
-            var jobToDelete = _backupJobs.FirstOrDefault(j => j.Name == jobName);
-            if (jobToDelete != null) { 
-                _backupJobs.Remove(jobToDelete);
-                _fileBackupService.SaveJobs(_backupJobs);
-            }
         }
 
         public void ExecuteBackup(BackupJob job)
