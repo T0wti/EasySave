@@ -16,7 +16,7 @@ namespace EasySave.Domain.Services
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
 
-        private readonly string _jobsFilePath;
+        private readonly IFileBackupService _fileBackupService;
         private List<BackupJob> _backupJobs;
 
 
@@ -25,26 +25,17 @@ namespace EasySave.Domain.Services
         ILogService logService,
         IStateService stateService,
         IBackupStrategy fullStrategy,
-        IBackupStrategy differentialStrategy)
+        IBackupStrategy differentialStrategy,
+        IFileBackupService fileBackupService)
         {
             _fileService = fileService;
             _logService = logService;
             _stateService = stateService;
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
+            _fileBackupService = fileBackupService;
 
-            //JSON initialisation
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string easySavePath = Path.Combine(appDataPath, "EasySave");
-
-            if (!Directory.Exists(easySavePath))
-            {
-                Directory.CreateDirectory(easySavePath);
-            }
-
-            _jobsFilePath = Path.Combine(easySavePath, "jobs.json");
-
-            _backupJobs = LoadJobsFromDisk();
+            _backupJobs = _fileBackupService.LoadJobs();
         }
 
         public List<BackupJob> GetBackupJobs()
@@ -60,7 +51,7 @@ namespace EasySave.Domain.Services
             }
 
             _backupJobs.Add(job);
-            SaveJobsToDisk();
+            _fileBackupService.SaveJobs(_backupJobs);
         }
 
         public void DeleteBackupJob(string jobName)
@@ -68,7 +59,7 @@ namespace EasySave.Domain.Services
             var jobToDelete = _backupJobs.FirstOrDefault(j => j.Name == jobName);
             if (jobToDelete != null) { 
                 _backupJobs.Remove(jobToDelete);
-                SaveJobsToDisk();
+                _fileBackupService.SaveJobs(_backupJobs);
             }
         }
 
@@ -143,27 +134,5 @@ namespace EasySave.Domain.Services
             }
         }
 
-        private void SaveJobsToDisk()
-        {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(_backupJobs, options);
-            File.WriteAllText(_jobsFilePath, json);
-        }
-
-        private List<BackupJob> LoadJobsFromDisk()
-        {
-            if (!File.Exists(_jobsFilePath)) return new List<BackupJob>();
-
-            try
-            {
-                string json = File.ReadAllText(_jobsFilePath);
-                if (string.IsNullOrWhiteSpace(json)) return new List<BackupJob>();
-                return JsonSerializer.Deserialize<List<BackupJob>>(json) ?? new List<BackupJob>();
-            }
-            catch
-            {
-                return new List<BackupJob>();
-            }
-        }
     }
 }
