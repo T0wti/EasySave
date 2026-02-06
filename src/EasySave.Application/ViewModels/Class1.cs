@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasySave.Application.Services
+namespace EasySave.Application.ViewModels
 {
-    internal class BackupService
+    internal class Class1
     {
     }
 }

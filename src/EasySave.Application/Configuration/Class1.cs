@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasySave.Application.Logging
+namespace EasySave.Application.Configuration
 {
-    internal class LogService
+    internal class Class1
     {
     }
 }
