@@ -15,8 +15,8 @@ public class GeneralTextProvider : ITextProvider
     }
 
     // Header and Footer
-    public string Header => "============== Easy Save Console ==============";
-    public string Footer => "===============================================";
+    public string Header => "================ Easy Save Console ================";
+    public string Footer => "===================================================";
     // Blank string which will be overridden in the language wanted
         // Base menu
         public virtual string MainMenuTitle => _defaultString;
@@ -27,6 +27,8 @@ public class GeneralTextProvider : ITextProvider
         public virtual string DeleteBackup => _defaultString;
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
+        public virtual string ListBackup => _defaultString;
+        public virtual string ExeBackup => _defaultString;
 
         // Change Language Menu
         public virtual string LanguageMenuTitle => _defaultString;
@@ -36,4 +38,9 @@ public class GeneralTextProvider : ITextProvider
         // Choose first language menu
         public virtual string ChooseFirstLanguageMenuTitle => _defaultString;
         public virtual string ChooseFirstLanguage => _defaultString;
+        
+        // Execute Backup Menu
+        public virtual string ExeBackupMenuTitle => _defaultString;
+        public virtual string BackupName => _defaultString;
+        public virtual string ExeBackupInstruction => _defaultString;
 }

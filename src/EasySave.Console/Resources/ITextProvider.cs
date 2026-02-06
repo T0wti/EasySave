@@ -14,6 +14,8 @@ public interface ITextProvider
     string CreateBackup { get; }
     string EditBackup { get; }
     string LanguageOption { get; }
+    string ListBackup { get; }
+    string ExeBackup { get; }
     
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }
@@ -23,6 +25,11 @@ public interface ITextProvider
     // Options in the first start menu | Loup
     string ChooseFirstLanguageMenuTitle { get; }
     string ChooseFirstLanguage { get; }
+    
+    // Execute Backup Menu
+    string ExeBackupMenuTitle { get; }
+    string BackupName { get; }
+    string ExeBackupInstruction { get; }
 }
 
 

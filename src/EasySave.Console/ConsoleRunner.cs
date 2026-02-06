@@ -22,6 +22,7 @@ public class ConsoleRunner
     internal void ChangeLanguage(ITextProvider language)
     {
         _texts = language;
+        // ajouter la fonction pour mettre à jour le fichier de config Json
         RunBaseMenu();
     }
 
@@ -29,6 +30,14 @@ public class ConsoleRunner
     {
         var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
         var loop = new Commands.ChangeLanguageMenuInteraction();
+        menu.Display();
+        loop.RunLoop();
+    }
+
+    internal void RunExeBackupMenu()
+    {
+        var menu = new ConsoleUI.ExecuteBackupMenu(_texts);
+        var loop = new Commands.ExecuteBackupMenuInteraction();
         menu.Display();
         loop.RunLoop();
     }
