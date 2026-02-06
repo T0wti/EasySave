@@ -7,13 +7,12 @@ public class FrenchTextProvider: GeneralTextProvider
     public override  string CreateBackup => Format( "1. Créer une sauvegarde de fichiers");
     public override  string LanguageOption => Format("9. Changer la langue de la console");
     public override  string ExitOption => Format("0. Quitter");
-    public override string AskEntryFromUser =>"Entrez le chiffre souhaité : ";
+    public override string AskEntryFromUser =>"Entrez le chiffre ou la commande souhaité : ";
     public override string EditBackup => Format("3. Modifier une sauvegarde de fichiers");
     public override string DeleteBackup => Format("2. Supprimer une sauvegarde de fichiers");
     public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
     public override string ListBackup => Format("4. Lister les sauvegardes de fichiers");
     public override string ExeBackup => Format("5. Exécuter une sauvegarde de fichiers");
-
 
     // Language menu
     public override string LanguageMenuTitle => Format("-- Changer la langue --");
@@ -23,4 +22,9 @@ public class FrenchTextProvider: GeneralTextProvider
     // Choose first language menu
     public override string ChooseFirstLanguageMenuTitle => Format("-- Choix de la langue par défaut --");
     public override string ChooseFirstLanguage => Format("Choisissez la langue par défaut :");
+    
+    // Execute Backup Menu
+    public override string ExeBackupMenuTitle => Format("-- Choix de la sauvegarde à exécuter --");
+    public override string BackupName => Format("nom save"); // modifier avec l'appel de fonction qui va lister le nom des sauvegardes lignes par lignes
+    public override string ExeBackupInstruction => Format("Tapez id_Sauvegarde");
 }

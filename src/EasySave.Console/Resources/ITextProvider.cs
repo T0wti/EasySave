@@ -25,6 +25,11 @@ public interface ITextProvider
     // Options in the first start menu | Loup
     string ChooseFirstLanguageMenuTitle { get; }
     string ChooseFirstLanguage { get; }
+    
+    // Execute Backup Menu
+    string ExeBackupMenuTitle { get; }
+    string BackupName { get; }
+    string ExeBackupInstruction { get; }
 }
 
 

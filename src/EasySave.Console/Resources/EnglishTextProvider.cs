@@ -7,7 +7,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string CreateBackup => Format("1. Create a file backup");
     public override string LanguageOption => Format("9. Change console language");
     public override string ExitOption => Format("0. Exit");
-    public override string AskEntryFromUser => "Enter the desired number: ";
+    public override string AskEntryFromUser => "Enter the desired number or command: ";
     public override string EditBackup => Format("3. Edit a file backup");
     public override string DeleteBackup => Format("2. Delete a file backup");
     public override string WrongInput => "Invalid input, please try again: ";
@@ -22,4 +22,9 @@ public class EnglishTextProvider : GeneralTextProvider
     // Choose first language menu
     public override string ChooseFirstLanguageMenuTitle => Format("-- Choose the default language --");
     public override string ChooseFirstLanguage => Format("Choose the default language :");
+    
+    // Execute Backup Menu
+    public override string ExeBackupMenuTitle => Format("-- Choose the file backup to execute --");
+    public override string BackupName => Format("nom save"); // modifier avec l'appel de fonction qui va lister le nom des sauvegardes lignes par lignes
+    public override string ExeBackupInstruction => Format("Command exemple : id_Backup");
 }
