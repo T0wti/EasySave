@@ -4,6 +4,7 @@ using EasySave.Domain.Models;
 using EasySave.EasyLog.Interfaces;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace EasySave.Domain.Services
 {
@@ -15,19 +16,51 @@ namespace EasySave.Domain.Services
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
 
+        private readonly IFileBackupService _fileBackupService;
+        private List<BackupJob> _backupJobs;
+
 
         public BackupService(
         IFileService fileService,
         ILogService logService,
         IStateService stateService,
         IBackupStrategy fullStrategy,
-        IBackupStrategy differentialStrategy)
+        IBackupStrategy differentialStrategy,
+        IFileBackupService fileBackupService)
         {
             _fileService = fileService;
             _logService = logService;
             _stateService = stateService;
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
+            _fileBackupService = fileBackupService;
+
+            _backupJobs = _fileBackupService.LoadJobs();
+        }
+
+        public List<BackupJob> GetBackupJobs()
+        {
+            return _backupJobs;
+        }
+        
+        public void CreateBackupJob(BackupJob job)
+        {
+            //Verify if job already exists
+            if (_backupJobs.Any(j => j.Name == job.Name)) { 
+                throw new Exception($"A job named '{job.Name}' already exists.");
+            }
+
+            _backupJobs.Add(job);
+            _fileBackupService.SaveJobs(_backupJobs);
+        }
+
+        public void DeleteBackupJob(string jobName)
+        {
+            var jobToDelete = _backupJobs.FirstOrDefault(j => j.Name == jobName);
+            if (jobToDelete != null) { 
+                _backupJobs.Remove(jobToDelete);
+                _fileBackupService.SaveJobs(_backupJobs);
+            }
         }
 
         public void ExecuteBackup(BackupJob job)
@@ -100,7 +133,6 @@ namespace EasySave.Domain.Services
                 ExecuteBackup(job);
             }
         }
-
 
     }
 }
