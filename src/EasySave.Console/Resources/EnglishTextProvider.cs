@@ -27,7 +27,8 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ListBackupMenuTitle => Format("-- All configured backups --");
     
     // Backup Detail Menu
-    public override string BackupName => Format("nom save"); // mettre la fonction pour sortir le nom d'une backup
+    public override string BackupNameMenuTitle => Format("-- Files backup details --");
+    public override string BackupName => Format("id-a-" + ". " + "nom-job"); // mettre la fonction pour sortir le nom d'une backup
 
     // Execute Backup Menu
     public override string ExeBackupMenuTitle => Format("-- Choose the file backup to execute --");

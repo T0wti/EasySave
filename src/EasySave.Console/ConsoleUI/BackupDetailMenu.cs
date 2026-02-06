@@ -16,7 +16,7 @@ internal class BackupDetailMenu : GeneralContent
     private void DisplayBackupDetail()
     {
         Header();
-        
+        System.Console.WriteLine(_texts);
         Footer();
     }
 }

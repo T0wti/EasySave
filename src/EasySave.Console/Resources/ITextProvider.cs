@@ -30,8 +30,8 @@ public interface ITextProvider
     string ListBackupMenuTitle { get; }
     
     // Backup Detail Menu
+    string BackupNameMenuTitle { get; }
     string BackupName { get; }
-    
     
     // Execute Backup Menu
     string ExeBackupMenuTitle { get; }

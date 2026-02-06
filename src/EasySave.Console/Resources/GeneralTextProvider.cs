@@ -43,7 +43,9 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ListBackupMenuTitle => _defaultString;
         
         // Backup Detail Menu
+        public virtual string BackupNameMenuTitle => _defaultString;
         public virtual string BackupName => _defaultString;
+        
         // Execute Backup Menu
         public virtual string ExeBackupMenuTitle => _defaultString;
         public virtual string BackupNames => _defaultString;
