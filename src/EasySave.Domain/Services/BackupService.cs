@@ -2,6 +2,8 @@
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 using EasySave.EasyLog.Interfaces;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace EasySave.Domain.Services
 {
@@ -10,21 +12,32 @@ namespace EasySave.Domain.Services
         private readonly IFileService _fileService;
         private readonly ILogService _logService;
         private readonly IStateService _stateService;
+        private readonly IBackupStrategy _fullStrategy;
+        private readonly IBackupStrategy _differentialStrategy;
+
 
         public BackupService(
         IFileService fileService,
         ILogService logService,
-        IStateService stateService)
+        IStateService stateService,
+        IBackupStrategy fullStrategy,
+        IBackupStrategy differentialStrategy)
         {
             _fileService = fileService;
             _logService = logService;
             _stateService = stateService;
+            _fullStrategy = fullStrategy;
+            _differentialStrategy = differentialStrategy;
         }
 
         public void ExecuteBackup(BackupJob job)
         {
 
-            var files = _fileService.GetFiles(job.SourcePath);
+            IBackupStrategy strategy = job.Type == BackupType.Full
+            ? _fullStrategy
+            : _differentialStrategy;
+
+            var files = strategy.GetFilesToCopy(job.SourcePath, job.TargetPath);
 
             var progress = BackupProgress.From(job);
 
@@ -36,15 +49,8 @@ namespace EasySave.Domain.Services
 
                 try
                 {
-                    var relativePath = Path.GetRelativePath(
-                        job.SourcePath,
-                        file.FullPath
-                    );
-
-                    var targetPath = Path.Combine(
-                        job.TargetPath,
-                        relativePath
-                    );
+                    var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
+                    var targetPath = Path.Combine(job.TargetPath, relativePath);
 
                     _fileService.CopyFile(file.FullPath, targetPath);
 
@@ -62,7 +68,7 @@ namespace EasySave.Domain.Services
 
                     _stateService.Update(progress, file, targetPath);
                 }
-                catch (Exception ex)
+                catch
                 {
                     progress.State = BackupJobState.Failed;
                     _stateService.Fail(job.Id);
@@ -94,5 +100,7 @@ namespace EasySave.Domain.Services
                 ExecuteBackup(job);
             }
         }
+
+
     }
 }
