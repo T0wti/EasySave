@@ -8,9 +8,7 @@ public class ConsoleRunner
 
     public void RunConsole()
     {
-        //RunBaseMenu();
-
-        RunExeBackupMenu();// dev
+        RunBaseMenu();
     }
 
     internal void RunBaseMenu()
