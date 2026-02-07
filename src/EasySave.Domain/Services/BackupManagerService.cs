@@ -1,4 +1,5 @@
-﻿using EasySave.Domain.Interfaces;
+﻿using EasySave.Domain.Enums;
+using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,30 @@ namespace EasySave.Domain.Services
                 _backupJobs.Remove(jobToDelete);
                 _fileBackupService.SaveJobs(_backupJobs);
             }
+        }
+
+        public void EditBackupJob(int id, string newName, string newSource, string newTarget, BackupType newType)
+        {
+            //Search job
+            var jobToEdit = _backupJobs.FirstOrDefault(j => j.Id == id);
+
+            if (jobToEdit == null)
+            {
+                throw new Exception($"A job with ID '{id}' does not exist.");
+            }
+
+            //Check if new name does not collide with already existing name
+            if (_backupJobs.Any(j => j.Name == newName))
+            {
+                throw new Exception($"A job with {newName} already exists");
+            }
+
+            jobToEdit.Name = newName;
+            jobToEdit.SourcePath = newSource;
+            jobToEdit.TargetPath = newTarget;
+            jobToEdit.Type = newType;
+
+            _fileBackupService.SaveJobs(_backupJobs);
         }
 
         public List<BackupJob> GetBackupJobs()
