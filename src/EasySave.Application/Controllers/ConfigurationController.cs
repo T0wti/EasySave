@@ -13,20 +13,26 @@ public class ConfigurationController
         _configService = configService;
     }
 
-    public ApplicationSettingsDTO Load()
+    public ApplicationSettingsDto Load()
     {
         var settings = _configService.LoadSettings();
 
-        return new ApplicationSettingsDTO
+        // Map Domain enum → int
+        int code = settings.Language == Language.French ? 0 : 1;
+
+        return new ApplicationSettingsDto
         {
-            Language = settings.Language
+            LanguageCode = code
         };
     }
 
-    public void ChangeLanguage(Language lang)
+    public void ChangeLanguage(int code)
     {
         var settings = _configService.LoadSettings();
-        settings.Language = lang;
+
+        // Map int → Domain enum
+        settings.Language = code == 0 ? Language.French : Language.English;
+
         _configService.SaveSettings(settings);
     }
 }

@@ -2,11 +2,9 @@
     using EasySave.Console.Commands;
     using EasySave.Console.ConsoleUI;
     using EasySave.Console.Resources;
-    using EasySave.Domain.Enums;
-    using EasySave.Domain.Models;
-    using System.Xml.Linq;
+    using EasySave.Application.DTOs;
 
-    namespace EasySave.Console;
+namespace EasySave.Console;
 
     public class ConsoleRunner
     {
@@ -21,10 +19,11 @@
             _configController = configController;
 
             var settings = _configController.Load();
-            _texts = settings.Language == Language.French
-                ? new FrenchTextProvider()
-                : new EnglishTextProvider();
-        }
+
+            _texts = settings.LanguageCode == 0
+            ? new FrenchTextProvider()
+            : new EnglishTextProvider();
+    }
 
         public void RunConsole()
         {
@@ -39,19 +38,18 @@
             loop.RunLoop();
         }
 
-        internal void ChangeLanguage(ITextProvider language)
-        {
-            _texts = language;
+    internal void ChangeLanguage(ITextProvider language)
+    {
+        _texts = language;
 
-            var langEnum = language is FrenchTextProvider
-                ? Language.French
-                : Language.English;
+        int code = language is FrenchTextProvider ? 0 : 1;
 
-            _configController.ChangeLanguage(langEnum);
+        _configController.ChangeLanguage(code);
 
-            RunBaseMenu();
-        }
-        internal void RunCreateBackupMenu()
+        RunBaseMenu();
+    }
+
+    internal void RunCreateBackupMenu()
         {
             var menu = new ConsoleUI.CreateBackupMenu(_texts);
             var loop = new Commands.CreateBackupMenuInteraction(this, menu);
@@ -92,18 +90,14 @@
     internal void RunListBackupMenu()
     {
         var jobs = _backupController.GetAll();
-        var menu = new ConsoleUI.ListBackupMenu(_texts, jobs);
-<<<<<<< HEAD
-        var loop = new Commands.ListBackupMenuInteraction(this);
-        menu.Display();
-=======
+        var menu = new ConsoleUI.ListBackupMenu(_texts, jobs); 
         var loop = new Commands.ListBackupMenuInteraction(this, menu);
->>>>>>> e72fa9f338810a2edfb95a66c52905d5683ac15d
+        menu.Display();
         loop.RunLoop();
     }
 
 
-    internal void RunBackupDetailMenu(BackupJob job)
+    internal void RunBackupDetailMenu(BackupJobDTO job)
     {
         var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
         menu.Display();
