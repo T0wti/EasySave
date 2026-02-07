@@ -1,39 +1,38 @@
+using EasySave.Application.Controllers;
 using EasySave.Console.Resources;
-using System.Collections.Generic;
-using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;
 using EasySave.Domain.Enums;
+using EasySave.Domain.Models;
+using System.Xml.Linq;
 
 namespace EasySave.Console;
 
 public class ConsoleRunner
 {
-    private ITextProvider _texts = new EnglishTextProvider();
+    private readonly BackupController _backupController;
+    private readonly ConfigurationController _configController;
 
-    private readonly IBackupManagerService _backupService;
-    private readonly IConfigurationService _configService;
+    private ITextProvider _texts;
 
-    public ConsoleRunner()
+    public ConsoleRunner(BackupController backupController, ConfigurationController configController)
     {
-        //to do: vérifier si surcharge nécessaire
-    }
+        _backupController = backupController;
+        _configController = configController;
 
-    public ConsoleRunner(IBackupManagerService backupService, IConfigurationService configurationService)
-    {
-        _backupService = backupService;
-        _configService = configurationService;
+        var settings = _configController.Load();
+        _texts = settings.Language == Language.French
+            ? new FrenchTextProvider()
+            : new EnglishTextProvider();
     }
 
     public void RunConsole()
     {
-        //RunBaseMenu();
-        RunListBackupMenu();
+        RunBaseMenu();
     }
 
     internal void RunBaseMenu()
     {
         var menu = new ConsoleUI.BaseMenu(_texts);
-        var loop = new Commands.BaseMenuInteraction();
+        var loop = new Commands.BaseMenuInteraction(this, _texts);
         menu.Display();
         loop.RunLoop();
     }
@@ -42,33 +41,44 @@ public class ConsoleRunner
     {
         _texts = language;
 
-        var langEnum = (language is FrenchTextProvider) ? Language.French : Language.English;
+        var langEnum = language is FrenchTextProvider
+            ? Language.French
+            : Language.English;
 
-        var settings = new ApplicationSettings(langEnum);
-
-        _configService.SaveSettings(settings);
+        _configController.ChangeLanguage(langEnum);
 
         RunBaseMenu();
+    }
+    internal void RunCreateBackupMenu()
+    {
+        var menu = new ConsoleUI.CreateBackupMenu(_texts);
+        var loop = new Commands.CreateBackupInteraction(this, menu);
+        menu.Display();
+        loop.RunLoop();
     }
 
     internal void RunChangeLanguageMenu()
     {
         var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
-        var loop = new Commands.ChangeLanguageMenuInteraction();
+        var loop = new Commands.ChangeLanguageMenuInteraction(this);
         menu.Display();
         loop.RunLoop();
     }
 
     internal void RunListBackupMenu()
     {
-        var menu = new ConsoleUI.ListBackupMenu(_texts);
+        var jobs = _backupController.GetAll();
+        var menu = new ConsoleUI.ListBackupMenu(_texts, jobs);
+        var loop = new Commands.ListBackupMenuInteraction(this);
         menu.Display();
+        loop.RunLoop();
     }
 
     internal void RunExeBackupMenu()
     {
+        var jobs = _backupController.GetAll();
         var menu = new ConsoleUI.ExecuteBackupMenu(_texts);
-        var loop = new Commands.ExecuteBackupMenuInteraction();
+        var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
         menu.Display();
         loop.RunLoop();
     }
@@ -77,72 +87,48 @@ public class ConsoleRunner
     {
         System.Console.WriteLine(_texts.WrongInput);
     }
-    // Methods to call the saves in the infrastrcture
-    internal void HandleCreateBackup()
-    {
-        System.Console.WriteLine("Create backup chosen...");
 
+    // ======================
+    // Backup handlers via controller
+    // ======================
+
+    internal void HandleCreateBackup(string name, string source, string target, int typeChoice  )
+    {
         try
         {
-            System.Console.Write("Job Name: ");
-            string name = System.Console.ReadLine();
-
-            System.Console.Write("Source Path: ");
-            string source = System.Console.ReadLine();
-
-            System.Console.Write("Target Path: ");
-            string target = System.Console.ReadLine();
-
-            System.Console.Write("Type 1 for Full or 2 for Differential: ");
-            string typeChoice = System.Console.ReadLine();
-
-            BackupType type = (typeChoice == "2") ? BackupType.Differential : BackupType.Full;
-
-            var newJob = new BackupJob(0, name, source, target, type);
-
-            _backupService.CreateBackupJob(newJob);
-
-            System.Console.WriteLine("Job created succesfully");
+            _backupController.CreateBackup(name, source, target, typeChoice);
+            System.Console.WriteLine(_texts.BackupCreated);
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
-            System.Console.WriteLine($"Error: {ex.Message}");
+            System.Console.WriteLine(ex.Message);
         }
+
+        RunBaseMenu();
     }
 
     internal void HandleDeleteBackup()
-    {
-        System.Console.WriteLine("Delete backup chosen...");
-
-        System.Console.Write("Enter the name of the job to delete: ");
-        string name = System.Console.ReadLine();
-
-        _backupService.DeleteBackupJob(name);
-
-        System.Console.WriteLine("Job deleted successfully");
+        {
+        System.Console.WriteLine(_texts.EnterBackupToDelete); 
+        if (int.TryParse(System.Console.ReadLine(), out int id))
+        {
+            _backupController.DeleteBackup(id);
+            System.Console.WriteLine(_texts.BackupDeleted);
+        }
     }
 
     internal void HandleEditBackup()
     {
-        System.Console.WriteLine("Edit backup chosen...");
-
-        var jobs = _backupService.GetBackupJobs();
-
-        //to do: be able to handle backups, not just list
-
-        if (jobs.Count > 0) { 
-            foreach(var job in jobs)
-            {
-                System.Console.WriteLine($"Name: {job.Name}");
-                System.Console.WriteLine($"Type: {job.Type}");
-                System.Console.WriteLine($"Source: {job.SourcePath}");
-                System.Console.WriteLine($"Target: {job.TargetPath}");
-            }
-        }
-        else
-        {
-            System.Console.WriteLine("No jobs found");
-        }
+        System.Console.WriteLine("Edit backup not implemented yet.");
     }
 
+    internal void HandleExecuteBackup(int id)
+    {
+        _backupController.ExecuteBackup(id);
+    }
+
+    internal void HandleExecuteMultiple(IEnumerable<int> ids)
+    {
+        _backupController.ExecuteMultiple(ids);
+    }
 }

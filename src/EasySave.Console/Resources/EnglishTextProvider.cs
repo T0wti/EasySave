@@ -14,6 +14,18 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ListBackup => Format("4. List all file backups");
     public override string ExeBackup => Format("5. Execute a file backup");
 
+    // Creation BackupMenu 
+
+    public override string EnterBackupName => "Please enter the name of your backup job: ";
+    public override string EnterSourcePath => "Please enter the source path of the folder to back up: ";
+    public override string EnterTargetPath => "Please enter the destination path for the backup: ";
+    public override string EnterBackupType => "Please enter the backup type (1 - Full | 2 - Differential): ";
+
+    //
+    public override string BackupCreated => "Backup job created successfully.";
+    public override string EnterBackupToDelete => "Enter the ID of the backup job to delete: ";
+    public override string BackupDeleted => "Backup job deleted successfully.";
+
     // Language menu
     public override string LanguageMenuTitle => Format("-- Change the language --");
     public override string Language1 => Format("1. French");

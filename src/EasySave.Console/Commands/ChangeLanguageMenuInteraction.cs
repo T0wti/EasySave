@@ -6,10 +6,12 @@ namespace EasySave.Console.Commands;
 internal class ChangeLanguageMenuInteraction
 {
     private readonly ConsoleRunner _runner;
-    public ChangeLanguageMenuInteraction()
+
+    public ChangeLanguageMenuInteraction(ConsoleRunner runner)
     {
-        _runner = new ConsoleRunner();
+        _runner = runner;
     }
+
     internal void RunLoop()
     {
         bool exit = false;
@@ -37,5 +39,4 @@ internal class ChangeLanguageMenuInteraction
             }
         }
     }
-
 }

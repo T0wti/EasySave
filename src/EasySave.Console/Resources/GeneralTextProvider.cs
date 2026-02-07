@@ -30,7 +30,19 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
 
-        // Change Language Menu
+    //Creation menu
+
+        public virtual string EnterBackupName => _defaultString;
+        public virtual string EnterSourcePath => _defaultString;
+        public virtual string EnterTargetPath => _defaultString;
+        public virtual string EnterBackupType => _defaultString;
+
+    //
+        public virtual string BackupCreated => _defaultString;
+        public virtual string EnterBackupToDelete => _defaultString;
+        public virtual string BackupDeleted => _defaultString;
+
+    // Change Language Menu
         public virtual string LanguageMenuTitle => _defaultString;
         public virtual string Language1 => _defaultString;
         public virtual string Language2 => _defaultString;

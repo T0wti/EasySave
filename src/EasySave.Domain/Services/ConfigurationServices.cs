@@ -1,54 +1,63 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
+﻿using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
-using EasySave.Domain.Enums;
+using System.Text.Json;
 
-namespace EasySave.Domain.Services
+public class ConfigurationService : IConfigurationService
 {
-    internal class ConfigurationService : IConfigurationService
+    private readonly string _configFilePath;
+    private readonly string _baseAppPath;
+
+    public ConfigurationService()
     {
-        private readonly string _configFilePath;
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        _baseAppPath = Path.Combine(appDataPath, "EasySave");
 
-        public ConfigurationService()
+        if (!Directory.Exists(_baseAppPath))
+            Directory.CreateDirectory(_baseAppPath);
+
+        _configFilePath = Path.Combine(_baseAppPath, "config.json");
+    }
+
+    private ApplicationSettings GetDefaultSettings()
+    {
+        return new ApplicationSettings
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string easySavePath = Path.Combine(appDataPath, "EasySave");
+            Language = Language.English,
+            MaxBackupJobs = 5,
+            // On centralise la création des sous-dossiers ici
+            LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
+            StateFileDirectoryPath = Path.Combine(_baseAppPath, "State")
+        };
+    }
 
-            if (!Directory.Exists(easySavePath))
-            {
-                Directory.CreateDirectory(easySavePath);
-            }
-
-            _configFilePath = Path.Combine(easySavePath, "config.json");
-        }
-
-        public ApplicationSettings LoadSettings()
+    public ApplicationSettings LoadSettings()
+    {
+        if (!File.Exists(_configFilePath))
         {
-            if (!File.Exists(_configFilePath))
-            {
-                //If no file exists return default settings
-                return new ApplicationSettings(Language.English);
-            }
-
-            try
-            {
-                string json = File.ReadAllText(_configFilePath);
-                return JsonSerializer.Deserialize<ApplicationSettings>(json) ?? new ApplicationSettings(Language.English);
-            }
-            catch
-            {
-                return new ApplicationSettings(Language.English);
-            }
+            var defaultSettings = GetDefaultSettings();
+            SaveSettings(defaultSettings); // On l'écrit sur le disque immédiatement
+            return defaultSettings;
         }
 
-        public void SaveSettings(ApplicationSettings settings) { 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(settings, options);
-            File.WriteAllText(_configFilePath, json);
+        try
+        {
+            string json = File.ReadAllText(_configFilePath);
+            var settings = JsonSerializer.Deserialize<ApplicationSettings>(json);
+
+            // Sécurité : si le JSON est corrompu ou vide, on rend le défaut
+            return settings ?? GetDefaultSettings();
         }
+        catch
+        {
+            return GetDefaultSettings();
+        }
+    }
+
+    public void SaveSettings(ApplicationSettings settings)
+    {
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(settings, options);
+        File.WriteAllText(_configFilePath, json);
     }
 }

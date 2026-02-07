@@ -16,7 +16,19 @@ public interface ITextProvider
     string LanguageOption { get; }
     string ListBackup { get; }
     string ExeBackup { get; }
-    
+    // Options for the creation 
+
+    string EnterBackupName { get; }
+    string EnterSourcePath { get; }
+    string EnterTargetPath { get; }
+    string EnterBackupType { get; }
+
+    // 
+
+    string BackupCreated { get; }
+    string EnterBackupToDelete { get; }
+    string BackupDeleted { get; }
+
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }
     string Language1  { get; }

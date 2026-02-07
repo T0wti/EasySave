@@ -14,6 +14,18 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string ListBackup => Format("4. Lister les sauvegardes de fichiers");
     public override string ExeBackup => Format("5. Exécuter une sauvegarde de fichiers");
 
+    // Creation BackupMenu 
+
+    public override string EnterBackupName => "Veuillez entrer le nom de votre travail : ";
+    public override string EnterSourcePath => "Veuillez entrer la source du dossier à sauvegarder : ";
+    public override string EnterTargetPath => "Veuillez entrer la destination où sauvegarder le dossier ";
+    public override string EnterBackupType => "Veuillez entrer le type de sauvegarder que vous voulez faire (1 - Full | 2 - Differential) : ";
+
+    //
+    public override string BackupCreated => "Le travail de sauvegarde a été créé avec succès.";
+    public override string EnterBackupToDelete => "Entrez l'ID du travail de sauvegarde à supprimer : ";
+    public override string BackupDeleted => "Le travail de sauvegarde a été supprimé avec succès.";
+
     // Language menu
     public override string LanguageMenuTitle => Format("-- Changer la langue --");
     public override string Language1 => Format("1. Français");
