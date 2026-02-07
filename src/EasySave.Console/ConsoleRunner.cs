@@ -93,9 +93,8 @@ public class ConsoleRunner
     internal void RunListBackupMenu()
     {
         var jobs = _backupController.GetAll();
-        var menu = new ListBackupMenu(_texts, jobs);
-        var loop = new ListBackupMenuInteraction(this);
-        menu.Display();
+        var menu = new ConsoleUI.ListBackupMenu(_texts, jobs);
+        var loop = new Commands.ListBackupMenuInteraction(this, menu);
         loop.RunLoop();
     }
 

@@ -20,7 +20,8 @@ internal class ExecuteBackupMenuInteraction
         {
             var input = System.Console.ReadLine()?.Trim();
 
-            if (int.TryParse(input, out int choice))
+
+            if (int.TryParse(input, out int choice) && choice != 0)
             {
                 var job = _jobs.FirstOrDefault(j => j.Id == choice);
                 if (job != null)
@@ -35,7 +36,6 @@ internal class ExecuteBackupMenuInteraction
             else if (input == "0")
             {
                 exit = true;
-                _runner.RunConsole();
             }
             else
             {
