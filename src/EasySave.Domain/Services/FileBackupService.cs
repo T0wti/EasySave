@@ -9,10 +9,14 @@ namespace EasySave.Domain.Services
 {
     public class FileBackupService : IFileBackupService
     {
+        //Singleton
+        private static readonly Lazy<FileBackupService> _instance = new(() => new FileBackupService());
+        public static FileBackupService Instance => _instance.Value;
+
         private string _jobsFilePath;
         private readonly string _baseAppPath;
 
-        public FileBackupService()
+        private FileBackupService()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             _baseAppPath = Path.Combine(appDataPath, "EasySave");

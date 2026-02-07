@@ -1,20 +1,26 @@
 ﻿using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;
+using EasySave.Domain.Models;   
+using System;
+using System.Collections.Generic;
+using System.Text;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace EasySave.Domain.Services
 {
     public class BackupManagerService : IBackupManagerService
     {
         private readonly IFileBackupService _fileBackupService;
+        private readonly IBackupService _backupService; 
+        private readonly ApplicationSettings _settings; 
         private List<BackupJob> _backupJobs;
-        private readonly ApplicationSettings _settings;
 
-        public BackupManagerService(IFileBackupService fileBackupService, ApplicationSettings settings)
+        public BackupManagerService(IFileBackupService fileBackupService, IBackupService backupService, ApplicationSettings settings)
         {
             _fileBackupService = fileBackupService ?? throw new ArgumentNullException(nameof(fileBackupService));
-            _settings = settings;
-            // Charger les jobs depuis le fichier
+            _backupService = backupService ?? throw new ArgumentNullException(nameof(backupService));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+
             _backupJobs = _fileBackupService.LoadJobs() ?? new List<BackupJob>();
         }
 
@@ -63,9 +69,50 @@ namespace EasySave.Domain.Services
                 _fileBackupService.SaveJobs(_backupJobs);
             }
         }
+        public void EditBackupJob(int id, string newName, string newSource, string newTarget, BackupType newType)
+        {
+            //Search job
+            var jobToEdit = _backupJobs.FirstOrDefault(j => j.Id == id);
+
+            if (jobToEdit == null)
+            {
+                throw new Exception($"A job with ID '{id}' does not exist.");
+            }
+
+            //Check if new name does not collide with already existing name
+            if (_backupJobs.Any(j => j.Name == newName))
+            {
+                throw new Exception($"A job with {newName} already exists");
+            }
+
+            jobToEdit.Name = newName;
+            jobToEdit.SourcePath = newSource;
+            jobToEdit.TargetPath = newTarget;
+            jobToEdit.Type = newType;
+
+            _fileBackupService.SaveJobs(_backupJobs);
+        }
+
         public List<BackupJob> GetBackupJobs()
         {
             return _backupJobs;
+        }
+
+        public void ExecuteBackupJob(int id)
+        {
+            var job = _backupJobs.FirstOrDefault(j => j.Id == id);
+            if (job == null)
+                throw new Exception("Job not found.");
+
+            _backupService.ExecuteBackup(job);
+        }
+
+        public void ExecuteBackupJobs(IEnumerable<BackupJob> jobs)
+        {
+            foreach(var job in jobs)
+            {
+                ExecuteBackupJob(job.Id);
+            }
         }
     }
 }
