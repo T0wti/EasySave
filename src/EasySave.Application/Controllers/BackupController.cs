@@ -33,6 +33,13 @@ namespace EasySave.Application.Controllers
             return _manager.GetBackupJobs();
         }
 
+        public BackupJob? GetById(int id)
+        {
+            return _manager.GetBackupJobs()
+                           .FirstOrDefault(j => j.Id == id);
+        }
+
+
         public void ExecuteBackup(int id)
         {
             var job = _manager.GetBackupJobs()

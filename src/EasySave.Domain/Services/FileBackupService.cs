@@ -4,17 +4,20 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;
 
 namespace EasySave.Domain.Services
 {
     public class FileBackupService : IFileBackupService
     {
         private string _jobsFilePath;
+        private readonly string _baseAppPath;
 
         public FileBackupService()
         {
-            _jobsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "jobs.json");
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            _baseAppPath = Path.Combine(appDataPath, "EasySave");
+
+            _jobsFilePath = Path.Combine(_baseAppPath, "jobs.json");
         }
 
         public List<BackupJob> LoadJobs()

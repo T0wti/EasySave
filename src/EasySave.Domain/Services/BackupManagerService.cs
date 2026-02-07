@@ -1,9 +1,6 @@
 ﻿using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EasySave.Domain.Services
 {
@@ -11,23 +8,44 @@ namespace EasySave.Domain.Services
     {
         private readonly IFileBackupService _fileBackupService;
         private List<BackupJob> _backupJobs;
+        private readonly ApplicationSettings _settings;
 
-        public BackupManagerService(IFileBackupService fileBackupService)
+        public BackupManagerService(IFileBackupService fileBackupService, ApplicationSettings settings)
         {
             _fileBackupService = fileBackupService ?? throw new ArgumentNullException(nameof(fileBackupService));
+            _settings = settings;
             // Charger les jobs depuis le fichier
             _backupJobs = _fileBackupService.LoadJobs() ?? new List<BackupJob>();
         }
 
         public void CreateBackupJob(string name, string source, string target, BackupType type)
         {
+
             if (_backupJobs.Any(j => j.Name == name))
             {
                 throw new Exception($"A job named '{name}' already exists.");
             }
 
-            int nextId = _backupJobs.Any() ? _backupJobs.Max(j => j.Id) + 1 : 1;
+            Console.WriteLine($"DEBUG: _backupJobs.Count = {_backupJobs.Count}, _settings.MaxBackupJobs = {_settings.MaxBackupJobs}");
 
+            if (_backupJobs.Count >= _settings.MaxBackupJobs)
+            {
+                throw new Exception($"Cannot create more than {_settings.MaxBackupJobs} backup jobs.");
+            }
+           
+            int nextId = 1;
+            var existingIds = _backupJobs.Select(j => j.Id).OrderBy(id => id).ToList();
+            foreach (var id in existingIds)
+            {
+                if (id == nextId)
+                {
+                    nextId++;
+                }
+                else
+                {
+                    break; 
+                }
+            }
             var job = new BackupJob(nextId, name, source, target, type);
 
             _backupJobs.Add(job);

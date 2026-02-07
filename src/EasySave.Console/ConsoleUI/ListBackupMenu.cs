@@ -17,10 +17,15 @@ internal class ListBackupMenu : GeneralContent
         Header();
         System.Console.WriteLine(_texts.ListBackupMenuTitle);
         System.Console.WriteLine();
+
         foreach (var job in _jobs)
         {
             System.Console.WriteLine($"{job.Id} | {job.Name} | {job.Type}");
         }
+
+        System.Console.WriteLine();
+
         Footer();
     }
+
 }
