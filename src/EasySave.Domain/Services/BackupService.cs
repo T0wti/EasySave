@@ -16,6 +16,7 @@ namespace EasySave.Domain.Services
         private readonly IStateService _stateService;
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
+        private readonly IPathService _pathService;
 
         private readonly IFileBackupService _fileBackupService;
         private List<BackupJob> _backupJobs;
@@ -25,13 +26,15 @@ namespace EasySave.Domain.Services
         IFileService fileService,
         IBackupStrategy fullStrategy,
         IBackupStrategy differentialStrategy,
-        IFileBackupService fileBackupService)
+        IFileBackupService fileBackupService,
+        IPathService pathService)
         {
             _fileService = fileService;
             _logService = EasyLogService.Instance;
             _stateService = new StateService(FileStateService.Instance);
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
+            _pathService = pathService;
 
             //JSON initialisation
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -77,8 +80,8 @@ namespace EasySave.Domain.Services
                     {
                         Timestamp = DateTime.Now,
                         BackupName = job.Name,
-                        SourcePath = file.FullPath,
-                        TargetPath = targetPath,
+                        SourcePath = _pathService.GetUncPath(file.FullPath),
+                        TargetPath = _pathService.GetUncPath(targetPath),
                         FileSize = file.Size,
                         TransferTimeMs = duration
                     });
