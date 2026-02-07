@@ -82,11 +82,9 @@ public class ConsoleRunner
     {
         var jobs = _backupController.GetAll();
         var menu = new ConsoleUI.ListBackupMenu(_texts, jobs);
-        var loop = new Commands.ListBackupMenuInteraction(this);
-        menu.Display();
+        var loop = new Commands.ListBackupMenuInteraction(this, menu);
         loop.RunLoop();
     }
-
 
     internal void RunBackupDetailMenu(BackupJob job)
     {
@@ -144,7 +142,7 @@ public class ConsoleRunner
     {
         if (id == 0)
         {
-            RunListBackupMenu(); 
+            RunListBackupMenu();
             return;
         }
 
