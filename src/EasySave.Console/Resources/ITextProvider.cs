@@ -26,8 +26,10 @@ public interface ITextProvider
     // 
 
     string BackupCreated { get; }
+    string BackupEdited { get; }
     string EnterBackupToDelete { get; }
     string BackupDeleted { get; }
+    string AskIdToEdit { get; }
 
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }

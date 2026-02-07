@@ -80,7 +80,7 @@ namespace EasySave.Domain.Services
             }
 
             //Check if new name does not collide with already existing name
-            if (_backupJobs.Any(j => j.Name == newName))
+            if (_backupJobs.Any(j => j.Name == newName && j.Id != id))
             {
                 throw new Exception($"A job with {newName} already exists");
             }

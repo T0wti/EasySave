@@ -23,6 +23,12 @@ namespace EasySave.Application.Controllers
             _manager.CreateBackupJob(name, source, target, type);
         }
 
+        public void EditBackup(int id, string newName, string newSource, string newTarget, int typeChoice)
+        {
+            var type = (typeChoice == 1) ? BackupType.Full : BackupType.Differential;
+            _manager.EditBackupJob(id, newName, newSource, newTarget, type);
+        }
+
         public void DeleteBackup(int id)
         {
             _manager.DeleteBackupJob(id);
