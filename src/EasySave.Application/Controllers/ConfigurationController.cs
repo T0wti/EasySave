@@ -1,28 +1,32 @@
-﻿using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;
+﻿using EasySave.Application.DTOs;
 using EasySave.Domain.Enums;
+using EasySave.Domain.Interfaces;
 
-namespace EasySave.Application.Controllers
+namespace EasySave.Application.Controllers;
+
+public class ConfigurationController
 {
-    public class ConfigurationController
+    private readonly IConfigurationService _configService;
+
+    public ConfigurationController(IConfigurationService configService)
     {
-        private readonly IConfigurationService _configService;
+        _configService = configService;
+    }
 
-        public ConfigurationController(IConfigurationService configService)
-        {
-            _configService = configService;
-        }
+    public ApplicationSettingsDTO Load()
+    {
+        var settings = _configService.LoadSettings();
 
-        public ApplicationSettings Load()
+        return new ApplicationSettingsDTO
         {
-            return _configService.LoadSettings();
-        }
+            Language = settings.Language
+        };
+    }
 
-        public void ChangeLanguage(Language lang)
-        {
-            var settings = _configService.LoadSettings();
-            settings.Language = lang;
-            _configService.SaveSettings(settings);
-        }
+    public void ChangeLanguage(Language lang)
+    {
+        var settings = _configService.LoadSettings();
+        settings.Language = lang;
+        _configService.SaveSettings(settings);
     }
 }

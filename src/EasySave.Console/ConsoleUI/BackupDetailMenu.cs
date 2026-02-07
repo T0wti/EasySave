@@ -1,13 +1,13 @@
 using EasySave.Console.Resources;
-using EasySave.Domain.Models;
+using EasySave.Application.DTOs;
 
 namespace EasySave.Console.ConsoleUI;
 
 internal class BackupDetailMenu : GeneralContent
 {
-    private readonly BackupJob _job;
+    private readonly BackupJobDTO _job;
 
-    internal BackupDetailMenu(ITextProvider texts, BackupJob job) : base(texts)
+    internal BackupDetailMenu(ITextProvider texts, BackupJobDTO job) : base(texts)
     {
         _job = job;
     }
