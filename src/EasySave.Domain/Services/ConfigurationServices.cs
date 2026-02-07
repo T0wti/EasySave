@@ -11,9 +11,11 @@ namespace EasySave.Domain.Services
 {
     internal class ConfigurationService : IConfigurationService
     {
+        private static ConfigurationService _instance;
         private readonly string _configFilePath;
 
-        public ConfigurationService()
+        //Singleton
+        private ConfigurationService()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string easySavePath = Path.Combine(appDataPath, "EasySave");
@@ -24,6 +26,15 @@ namespace EasySave.Domain.Services
             }
 
             _configFilePath = Path.Combine(easySavePath, "config.json");
+        }
+
+        public static ConfigurationService GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new ConfigurationService();
+            }
+            return _instance;
         }
 
         public ApplicationSettings LoadSettings()
