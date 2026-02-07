@@ -32,6 +32,9 @@ public interface ITextProvider
     // Backup Detail Menu
     string BackupNameMenuTitle { get; }
     string BackupName { get; }
+    string BackupSourcePath { get; }
+    string BackupTargetPath { get; }
+    string BackupType { get; }
     
     // Execute Backup Menu
     string ExeBackupMenuTitle { get; }

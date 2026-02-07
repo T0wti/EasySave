@@ -16,7 +16,12 @@ internal class BackupDetailMenu : GeneralContent
     private void DisplayBackupDetail()
     {
         Header();
-        System.Console.WriteLine(_texts);
+        System.Console.WriteLine(_texts.BackupNameMenuTitle);
+        System.Console.WriteLine();
+        System.Console.WriteLine(_texts.BackupName);
+        System.Console.WriteLine(_texts.BackupSourcePath);
+        System.Console.WriteLine(_texts.BackupTargetPath);
+        System.Console.WriteLine(_texts.BackupType);
         Footer();
     }
 }

@@ -29,6 +29,9 @@ public class FrenchTextProvider: GeneralTextProvider
     // Backup Detail Menu
     public override string BackupNameMenuTitle => Format("-- Détail de la sauvegarde de fichiers --");
     public override string BackupName => Format("id-a-" + ". " + "nom-job"); // mettre la fonction pour sortir le nom d'une backup
+    public override string BackupSourcePath => Format("");
+    public override string BackupTargetPath => Format("");
+    public override string BackupType => Format("");
 
     // Execute Backup Menu
     public override string ExeBackupMenuTitle => Format("-- Choix de la sauvegarde à exécuter --");
