@@ -16,11 +16,25 @@ internal class CreateBackupMenuInteraction
         _menu.AskName();
         var name = System.Console.ReadLine() ?? "";
 
-        _menu.AskSource();
-        var source = System.Console.ReadLine() ?? "";
+        string source = "";
+        while (true) //To check if source exists
+        {
+            _menu.AskSource();
+            source = System.Console.ReadLine() ?? "";
 
-        _menu.AskTarget();
-        var target = System.Console.ReadLine() ?? "";
+            if (Directory.Exists(source)) break; //Exit while
+            else _runner.WrongInput();
+        }
+
+        string target = "";
+        while (true)
+        {
+            _menu.AskTarget();
+            target = System.Console.ReadLine() ?? "";
+
+            if (Path.IsPathRooted(target)) break; //If path contains a root (\ or C:)
+            else _runner.WrongInput();
+        }
 
         _menu.AskType();
         if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
