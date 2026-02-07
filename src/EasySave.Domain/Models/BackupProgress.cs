@@ -10,8 +10,8 @@ namespace EasySave.Domain.Models
         public DateTime LastUpdate { get; internal set; }
 
 
-        public int TotalFiles { get; internal set; }
-        public long TotalSize { get; internal set; }
+        public int TotalFiles { get; set; }
+        public long TotalSize { get; set; }
 
         public int RemainingFiles { get; internal set; }
         public long RemainingSize { get; internal set; }

@@ -1,18 +1,16 @@
-using EasySave.Console.Resources;
-using EasySave.Console.ConsoleUI;
-using EasySave.Domain.Models;
+using EasySave.Application.DTOs;
 
 namespace EasySave.Console.Commands;
 
 internal class ExecuteBackupMenuInteraction
 {
     private readonly ConsoleRunner _runner;
-    private readonly List<BackupJob> _jobs;
+    private readonly List<BackupJobDTO> _jobs;
 
-    public ExecuteBackupMenuInteraction(ConsoleRunner runner, List<BackupJob> jobs)
+    public ExecuteBackupMenuInteraction(ConsoleRunner runner, IEnumerable<BackupJobDTO> jobs)
     {
         _runner = runner;
-        _jobs = jobs;
+        _jobs = jobs.ToList() ;
     }
 
     internal void RunLoop()

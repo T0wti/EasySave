@@ -1,11 +1,11 @@
 ﻿namespace EasySave.Console.Commands;
 
-internal class CreateBackupInteraction
+internal class CreateBackupMenuInteraction
 {
     private readonly ConsoleRunner _runner;
     private readonly ConsoleUI.CreateBackupMenu _menu;
 
-    internal CreateBackupInteraction(ConsoleRunner runner, ConsoleUI.CreateBackupMenu menu)
+    internal CreateBackupMenuInteraction(ConsoleRunner runner, ConsoleUI.CreateBackupMenu menu)
     {
         _runner = runner;
         _menu = menu;

@@ -1,10 +1,9 @@
 using EasySave.Application.Controllers;
+using EasySave.Application.DTOs;
 using EasySave.Console.Commands;
 using EasySave.Console.ConsoleUI;
 using EasySave.Console.Resources;
 using EasySave.Domain.Enums;
-using EasySave.Domain.Models;
-using System.Xml.Linq;
 
 namespace EasySave.Console;
 
@@ -21,7 +20,8 @@ public class ConsoleRunner
         _configController = configController;
 
         var settings = _configController.Load();
-        _texts = settings.Language == Language.French
+
+        _texts = settings.Language == EasySave.Domain.Enums.Language.French
             ? new FrenchTextProvider()
             : new EnglishTextProvider();
     }
@@ -33,8 +33,8 @@ public class ConsoleRunner
 
     internal void RunBaseMenu()
     {
-        var menu = new ConsoleUI.BaseMenu(_texts);
-        var loop = new Commands.BaseMenuInteraction(this, _texts);
+        var menu = new BaseMenu(_texts);
+        var loop = new BaseMenuInteraction(this, _texts);
         menu.Display();
         loop.RunLoop();
     }
@@ -44,36 +44,48 @@ public class ConsoleRunner
         _texts = language;
 
         var langEnum = language is FrenchTextProvider
-            ? Language.French
-            : Language.English;
+            ? EasySave.Domain.Enums.Language.French
+            : EasySave.Domain.Enums.Language.English;
 
         _configController.ChangeLanguage(langEnum);
 
         RunBaseMenu();
     }
+
     internal void RunCreateBackupMenu()
     {
-        var menu = new ConsoleUI.CreateBackupMenu(_texts);
-        var loop = new Commands.CreateBackupInteraction(this, menu);
+        var menu = new CreateBackupMenu(_texts);
+        var loop = new CreateBackupMenuInteraction(this, menu);
         menu.Display();
+        loop.RunLoop();
+    }
+
+    internal void RunDeleteBackupMenu()
+    {
+        var jobs = _backupController.GetAll();
+        var listMenu = new ListBackupMenu(_texts, jobs);
+        listMenu.Display();
+
+        var menu = new DeleteBackupMenu(_texts);
+        var loop = new DeleteBackupMenuInteraction(this, menu);
         loop.RunLoop();
     }
 
     internal void RunEditBackupMenu()
     {
         var jobs = _backupController.GetAll();
-        var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
+        var listMenu = new ListBackupMenu(_texts, jobs);
         listMenu.Display();
-        var editMenu = new ConsoleUI.EditBackupMenu(_texts);
-        var loop = new Commands.EditBackupInteraction(this, editMenu, jobs);
 
+        var editMenu = new EditBackupMenu(_texts);
+        var loop = new EditBackupInteraction(this, editMenu, jobs);
         loop.RunLoop();
     }
 
     internal void RunChangeLanguageMenu()
     {
-        var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
-        var loop = new Commands.ChangeLanguageMenuInteraction(this);
+        var menu = new ChangeLanguageMenu(_texts);
+        var loop = new ChangeLanguageMenuInteraction(this);
         menu.Display();
         loop.RunLoop();
     }
@@ -86,9 +98,9 @@ public class ConsoleRunner
         loop.RunLoop();
     }
 
-    internal void RunBackupDetailMenu(BackupJob job)
+    internal void RunBackupDetailMenu(BackupJobDTO job)
     {
-        var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
+        var menu = new BackupDetailMenu(_texts, job);
         menu.Display();
         System.Console.ReadLine();
     }
@@ -96,8 +108,8 @@ public class ConsoleRunner
     internal void RunExeBackupMenu()
     {
         var jobs = _backupController.GetAll();
-        var menu = new ConsoleUI.ExecuteBackupMenu(_texts);
-        var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
+        var menu = new ExecuteBackupMenu(_texts);
+        var loop = new ExecuteBackupMenuInteraction(this, jobs);
         menu.Display();
         loop.RunLoop();
     }
@@ -108,34 +120,28 @@ public class ConsoleRunner
     }
 
     // ======================
-    // Backup handlers via controller
+    // Handlers
     // ======================
 
-    internal void HandleCreateBackup(string name, string source, string target, int typeChoice  )
+    internal void HandleCreateBackup(string name, string source, string target, int typeChoice)
     {
         try
         {
             _backupController.CreateBackup(name, source, target, typeChoice);
             System.Console.WriteLine(_texts.BackupCreated);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             System.Console.WriteLine(ex.Message);
         }
+
         RunBaseMenu();
     }
 
-    // Dans ConsoleRunner.cs
     public void HandleEditBackup(int id, string name, string source, string target, int typeChoice)
     {
-        var jobs = _backupController.GetAll();
-        var listMenu = new ListBackupMenu(_texts, jobs);
         _backupController.EditBackup(id, name, source, target, typeChoice);
-
-        listMenu.Display();
-
-        var interaction = new EditBackupInteraction(this, new EditBackupMenu(_texts), jobs);
-        interaction.RunLoop();
+        RunEditBackupMenu();
     }
 
     internal void HandleShowBackupDetail(int id)
@@ -154,34 +160,33 @@ public class ConsoleRunner
             return;
         }
 
-        var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
-        menu.Display();
-        System.Console.ReadLine(); 
+        RunBackupDetailMenu(job);
     }
 
-
-    internal void HandleDeleteBackup()
-        {
-        System.Console.WriteLine(_texts.EnterBackupToDelete); 
-        if (int.TryParse(System.Console.ReadLine(), out int id))
+    internal void HandleDeleteBackup(int id)
+    {
+        try
         {
             _backupController.DeleteBackup(id);
             System.Console.WriteLine(_texts.BackupDeleted);
         }
-    }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine($"Error: {ex.Message}");
+        }
 
-    internal void HandleEditBackup()
-    {
-        System.Console.WriteLine("Edit backup not implemented yet.");
+        RunBaseMenu();
     }
 
     internal void HandleExecuteBackup(int id)
     {
         _backupController.ExecuteBackup(id);
+        RunBaseMenu();
     }
 
     internal void HandleExecuteMultiple(IEnumerable<int> ids)
     {
         _backupController.ExecuteMultiple(ids);
+        RunBaseMenu();
     }
 }
