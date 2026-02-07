@@ -12,5 +12,7 @@ namespace EasySave.Domain.Interfaces
         public void DeleteBackupJob(string jobName);
         List<BackupJob> GetBackupJobs();
 
+        public void ExecuteBackupJob(int id);
+        public void ExecuteBackupJobs();
     }
 }

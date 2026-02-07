@@ -3,6 +3,7 @@ using EasySave.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace EasySave.Domain.Services
 {
@@ -10,6 +11,7 @@ namespace EasySave.Domain.Services
     {
         private readonly IFileBackupService _fileBackupService;
         private List<BackupJob> _backupJobs;
+        private IBackupService _backupService;
         public void CreateBackupJob(BackupJob job)
         {
             //Verify if job already exists
@@ -35,6 +37,23 @@ namespace EasySave.Domain.Services
         public List<BackupJob> GetBackupJobs()
         {
             return _backupJobs;
+        }
+
+        public void ExecuteBackupJob(int id)
+        {
+            var job = _backupJobs.FirstOrDefault(j => j.Id == id);
+            if (job == null)
+                throw new Exception("Job not found.");
+
+            _backupService.ExecuteBackup(job);
+        }
+
+        public void ExecuteBackupJobs(IEnumerable<BackupJob> jobs)
+        {
+            foreach(var job in jobs)
+            {
+                ExecuteBackupJob(job.Id);
+            }
         }
     }
 }
