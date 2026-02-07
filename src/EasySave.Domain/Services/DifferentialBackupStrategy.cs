@@ -17,8 +17,9 @@ namespace EasySave.Domain.Services
         public List<FileDescriptor> GetFilesToCopy(string sourceDir, string targetDir)
         {
             var sourceFiles = _fileService.GetFiles(sourceDir);
-            var targetFiles = _fileService.GetFiles(targetDir)
-            .ToDictionary(f => Path.GetRelativePath(targetDir, f.FullPath));
+            var targetFiles = Directory.Exists(targetDir)
+                    ? _fileService.GetFiles(targetDir).ToDictionary(f => Path.GetRelativePath(targetDir, f.FullPath))
+                    : new Dictionary<string, FileDescriptor>();
 
             var files = new List<FileDescriptor>();
 
