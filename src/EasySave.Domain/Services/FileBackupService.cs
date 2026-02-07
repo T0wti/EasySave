@@ -10,9 +10,13 @@ namespace EasySave.Domain.Services
 {
     public class FileBackupService : IFileBackupService
     {
+        //Singleton
+        private static readonly Lazy<FileBackupService> _instance = new(() => new FileBackupService());
+        public static FileBackupService Instance => _instance.Value;
+
         private string _jobsFilePath;
 
-        public FileBackupService()
+        private FileBackupService()
         {
             _jobsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "jobs.json");
         }

@@ -20,7 +20,7 @@ namespace EasySave.Domain.Tests
             _tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(_tempDir);
 
-            _service = new FileBackupService();
+            _service = FileBackupService.Instance;
 
             //To write in temp directory
             _service.SetFilePath(_tempDir);
