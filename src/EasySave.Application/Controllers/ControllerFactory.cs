@@ -13,9 +13,8 @@ namespace EasySave.Application.Controllers
             var settings = configService.LoadSettings();
 
             // 2. INITIALISATION DES SINGLETONS
-            // On passe les chemins récupérés depuis les settings
             FileStateService.Instance.Initialize(settings.StateFileDirectoryPath);
-            EasyLogService.Instance.Initialize(settings.LogDirectoryPath); // <-- C'est l'étape manquante !
+            EasyLogService.Instance.Initialize(settings.LogDirectoryPath); 
 
             // 3. Instanciation des services classiques
             IFileService fileService = new FileService();
@@ -23,10 +22,9 @@ namespace EasySave.Application.Controllers
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
             IFileBackupService fileBackupService = new FileBackupService();
 
-            IBackupManagerService manager = new BackupManagerService(fileBackupService);
+            IBackupManagerService manager = new BackupManagerService(fileBackupService, settings);
 
             // 4. Injection dans le BackupService
-            // Assure-toi que BackupService utilise bien les instances initialisées
             IBackupService executor = new BackupService(fileService, fullStrategy, diffStrategy, fileBackupService);
 
             return new BackupController(manager, executor);
