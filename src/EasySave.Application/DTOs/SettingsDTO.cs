@@ -1,8 +1,10 @@
-﻿using EasySave.Domain.Enums;
+﻿namespace EasySave.Application.DTOs;
 
-namespace EasySave.Application.DTOs;
 
-public class ApplicationSettingsDTO
+public class ApplicationSettingsDto
 {
-    public Language Language { get; set; }
+    /// <summary>
+    /// 0 = Français, 1 = Anglais
+    /// </summary>
+    public int LanguageCode { get; set; } = 1; // 1 = Anglais par défaut
 }
