@@ -73,7 +73,7 @@ namespace EasySave.Domain.Tests
         [Fact]
         /*
          * ReadState_ReturnsObjectsWhenJsonIsValid :
-         * init a json and 
+         * init a json  
          * checks converts in BackupProgress
          * reads it
         */
