@@ -39,11 +39,14 @@ public class GeneralTextProvider : ITextProvider
 
     //
         public virtual string BackupCreated => _defaultString;
+        public virtual string BackupEdited => _defaultString;
         public virtual string EnterBackupToDelete => _defaultString;
         public virtual string BackupDeleted => _defaultString;
+        public virtual string AskIdToEdit => _defaultString;
+
 
     // Change Language Menu
-        public virtual string LanguageMenuTitle => _defaultString;
+    public virtual string LanguageMenuTitle => _defaultString;
         public virtual string Language1 => _defaultString;
         public virtual string Language2 => _defaultString;
         

@@ -23,8 +23,12 @@ public class EnglishTextProvider : GeneralTextProvider
 
     //
     public override string BackupCreated => "Backup job created successfully.";
+    public override string BackupEdited => "Backup job edited successfully.";
     public override string EnterBackupToDelete => "Enter the ID of the backup job to delete: ";
     public override string BackupDeleted => "Backup job deleted successfully.";
+
+
+    public override string AskIdToEdit => "Enter the ID of the backup job to edit:";
 
     // Language menu
     public override string LanguageMenuTitle => Format("-- Change the language --");

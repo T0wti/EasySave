@@ -23,8 +23,12 @@ public class FrenchTextProvider: GeneralTextProvider
 
     //
     public override string BackupCreated => "Le travail de sauvegarde a été créé avec succès.";
+    public override string BackupEdited => "Le travail de sauvegarde a été modifié avec succès";
     public override string EnterBackupToDelete => "Entrez l'ID du travail de sauvegarde à supprimer : ";
     public override string BackupDeleted => "Le travail de sauvegarde a été supprimé avec succès.";
+
+    public override string AskIdToEdit => "Entrez l'ID du travail de sauvegarde à modifier :";
+
 
     // Language menu
     public override string LanguageMenuTitle => Format("-- Changer la langue --");

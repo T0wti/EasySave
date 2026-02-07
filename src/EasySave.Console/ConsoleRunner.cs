@@ -1,4 +1,6 @@
 using EasySave.Application.Controllers;
+using EasySave.Console.Commands;
+using EasySave.Console.ConsoleUI;
 using EasySave.Console.Resources;
 using EasySave.Domain.Enums;
 using EasySave.Domain.Models;
@@ -57,6 +59,17 @@ public class ConsoleRunner
         loop.RunLoop();
     }
 
+    internal void RunEditBackupMenu()
+    {
+        var jobs = _backupController.GetAll();
+        var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
+        listMenu.Display();
+        var editMenu = new ConsoleUI.EditBackupMenu(_texts);
+        var loop = new Commands.EditBackupInteraction(this, editMenu, jobs);
+
+        loop.RunLoop();
+    }
+
     internal void RunChangeLanguageMenu()
     {
         var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
@@ -111,8 +124,20 @@ public class ConsoleRunner
         {
             System.Console.WriteLine(ex.Message);
         }
-
         RunBaseMenu();
+    }
+
+    // Dans ConsoleRunner.cs
+    public void HandleEditBackup(int id, string name, string source, string target, int typeChoice)
+    {
+        var jobs = _backupController.GetAll();
+        var listMenu = new ListBackupMenu(_texts, jobs);
+        _backupController.EditBackup(id, name, source, target, typeChoice);
+
+        listMenu.Display();
+
+        var interaction = new EditBackupInteraction(this, new EditBackupMenu(_texts), jobs);
+        interaction.RunLoop();
     }
 
     internal void HandleShowBackupDetail(int id)
