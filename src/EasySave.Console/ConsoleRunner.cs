@@ -74,6 +74,14 @@ public class ConsoleRunner
         loop.RunLoop();
     }
 
+
+    internal void RunBackupDetailMenu(BackupJob job)
+    {
+        var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
+        menu.Display();
+        System.Console.ReadLine();
+    }
+
     internal void RunExeBackupMenu()
     {
         var jobs = _backupController.GetAll();
@@ -106,6 +114,28 @@ public class ConsoleRunner
 
         RunBaseMenu();
     }
+
+    internal void HandleShowBackupDetail(int id)
+    {
+        if (id == 0)
+        {
+            RunListBackupMenu(); 
+            return;
+        }
+
+        var job = _backupController.GetById(id);
+
+        if (job == null)
+        {
+            WrongInput();
+            return;
+        }
+
+        var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
+        menu.Display();
+        System.Console.ReadLine(); 
+    }
+
 
     internal void HandleDeleteBackup()
         {

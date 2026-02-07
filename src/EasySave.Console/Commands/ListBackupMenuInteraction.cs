@@ -6,7 +6,6 @@ public class ListBackupMenuInteraction
 {
     private readonly ConsoleRunner _runner;
 
-    // On reçoit le runner existant
     public ListBackupMenuInteraction(ConsoleRunner runner)
     {
         _runner = runner;
@@ -19,15 +18,18 @@ public class ListBackupMenuInteraction
         {
             var input = System.Console.ReadLine()?.Trim();
 
-            switch (input)
+            if (input == "0" || input == "exit")
             {
-                case "0" or "exit":
-                    exit = true;
-                    _runner.RunConsole();
-                    break;
-                default:
-                    _runner.WrongInput();
-                    break;
+                exit = true;
+                _runner.RunConsole();
+            }
+            else if (int.TryParse(input, out int id))
+            {
+                _runner.HandleShowBackupDetail(id);
+            }
+            else
+            {
+                _runner.WrongInput();
             }
         }
     }

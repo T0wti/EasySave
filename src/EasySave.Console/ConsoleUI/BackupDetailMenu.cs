@@ -1,27 +1,28 @@
 using EasySave.Console.Resources;
+using EasySave.Domain.Models;
 
 namespace EasySave.Console.ConsoleUI;
 
 internal class BackupDetailMenu : GeneralContent
 {
-    internal BackupDetailMenu(ITextProvider texts) : base(texts)
+    private readonly BackupJob _job;
+
+    internal BackupDetailMenu(ITextProvider texts, BackupJob job) : base(texts)
     {
+        _job = job;
     }
 
     internal void Display()
     {
-        DisplayBackupDetail();
-    }
-
-    private void DisplayBackupDetail()
-    {
         Header();
-        System.Console.WriteLine(_texts.BackupNameMenuTitle);
+
         System.Console.WriteLine();
-        System.Console.WriteLine(_texts.BackupName);
-        System.Console.WriteLine(_texts.BackupSourcePath);
-        System.Console.WriteLine(_texts.BackupTargetPath);
-        System.Console.WriteLine(_texts.BackupType);
+
+        System.Console.WriteLine($"{_job.Name}");
+        System.Console.WriteLine($"{_job.SourcePath}");
+        System.Console.WriteLine($"{_job.TargetPath}");
+        System.Console.WriteLine($"{_job.Type}");
+
         Footer();
     }
 }
