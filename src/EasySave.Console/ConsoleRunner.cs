@@ -93,8 +93,12 @@
     {
         var jobs = _backupController.GetAll();
         var menu = new ConsoleUI.ListBackupMenu(_texts, jobs);
+<<<<<<< HEAD
         var loop = new Commands.ListBackupMenuInteraction(this);
         menu.Display();
+=======
+        var loop = new Commands.ListBackupMenuInteraction(this, menu);
+>>>>>>> e72fa9f338810a2edfb95a66c52905d5683ac15d
         loop.RunLoop();
     }
 
