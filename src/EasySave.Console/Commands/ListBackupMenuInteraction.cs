@@ -1,18 +1,23 @@
-using EasySave.Console.Resources;
-using EasySave.Console.ConsoleUI;
+using EasySave.Console;
 
 namespace EasySave.Console.Commands;
 
 public class ListBackupMenuInteraction
 {
-    private readonly ConsoleRunner _runner = new();
+    private readonly ConsoleRunner _runner;
+
+    // On reçoit le runner existant
+    public ListBackupMenuInteraction(ConsoleRunner runner)
+    {
+        _runner = runner;
+    }
 
     internal void RunLoop()
     {
         bool exit = false;
         while (!exit)
         {
-            var input=System.Console.ReadLine()?.Trim();
+            var input = System.Console.ReadLine()?.Trim();
 
             switch (input)
             {

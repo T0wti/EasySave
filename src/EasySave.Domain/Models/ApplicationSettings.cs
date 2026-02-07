@@ -13,9 +13,6 @@ namespace EasySave.Domain.Models
             public string StateFileDirectoryPath { get; set; }
 
 
-        public ApplicationSettings(Language language)
-        {
-            Language = language;
-        }
+        public ApplicationSettings() { }
     }
 }

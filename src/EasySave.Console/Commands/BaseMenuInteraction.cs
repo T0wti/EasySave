@@ -6,22 +6,27 @@ namespace EasySave.Console.Commands;
 internal class BaseMenuInteraction
 {
     private readonly ConsoleRunner _runner;
-    internal BaseMenuInteraction()
+    private readonly ITextProvider _texts;
+
+    internal BaseMenuInteraction(ConsoleRunner runner, ITextProvider texts)
     {
-        _runner = new ConsoleRunner();
+        _runner = runner;
+        _texts = texts;
     }
 
     internal void RunLoop()
     {
+        var menu = new ConsoleUI.BaseMenu(_texts);
         bool exit = false;
         while (!exit)
         {
+            menu.Display();
             var input = System.Console.ReadLine()?.Trim();
 
             switch (input)
             {
                 case "1":
-                    _runner.HandleCreateBackup();
+                    _runner.RunCreateBackupMenu();
                     break;
                 case "2":
                     _runner.HandleDeleteBackup();
@@ -30,7 +35,7 @@ internal class BaseMenuInteraction
                     _runner.HandleEditBackup();
                     break;
                 case "4":
-                    // mettre fonction pour appel avec la liste des backups
+                    _runner.RunListBackupMenu();
                     break;
                 case "5":
                     _runner.RunExeBackupMenu();
@@ -42,12 +47,6 @@ internal class BaseMenuInteraction
                 case "0":
                     exit = true;
                     break;
-                // Case for dev, remove before flight
-                case "dev-first-start":
-                    var newMenu = new FirstStartMenu(new EnglishTextProvider());
-                    newMenu.Display();
-                    break;
-                // Default case
                 default:
                     _runner.WrongInput();
                     break;

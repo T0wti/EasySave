@@ -1,19 +1,19 @@
-using EasySave.Console.ConsoleUI;
+using EasySave.Console;
 using EasySave.Console.Resources;
-
-namespace EasySave.Console.Commands;
 
 internal class FirstStartMenuInteraction
 {
     private readonly ITextProvider _texts;
     private readonly ConsoleRunner _runner;
 
-    public FirstStartMenuInteraction(ITextProvider texts)
+    // Passer le runner déjà existant au constructeur
+    public FirstStartMenuInteraction(ITextProvider texts, ConsoleRunner runner)
     {
         _texts = texts;
-        _runner = new ConsoleRunner();
+        _runner = runner;
     }
-    private void FirstStartLoop()
+
+    internal void FirstStartLoop()
     {
         bool exit = false;
         while (!exit)
@@ -40,3 +40,4 @@ internal class FirstStartMenuInteraction
         }
     }
 }
+    

@@ -1,15 +1,17 @@
-﻿// See https://aka.ms/new-console-template for more information
-//Console.WriteLine("Hello, World!");
+﻿using EasySave.Console;
+using EasySave.Application.Controllers;
 
-// Code to dev the console (exclude only available here, don't push it)
-
-namespace EasySave.Application;
-
-class Program
+internal class Program
 {
-    static void Main()
+    private static void Main()
     {
-        var consoleRunner = new Console.ConsoleRunner();
-        consoleRunner.RunConsole();
+        // Création des controllers via la factory
+        var backupController = ControllerFactory.CreateBackupController();
+        var configController = ControllerFactory.CreateConfigurationController();
+
+        // Passe les controllers au runner
+        var runner = new ConsoleRunner(backupController, configController);
+
+        runner.RunConsole();
     }
 }
