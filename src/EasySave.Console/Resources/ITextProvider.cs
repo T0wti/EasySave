@@ -26,9 +26,19 @@ public interface ITextProvider
     string ChooseFirstLanguageMenuTitle { get; }
     string ChooseFirstLanguage { get; }
     
+    // List Backup Menu
+    string ListBackupMenuTitle { get; }
+    
+    // Backup Detail Menu
+    string BackupNameMenuTitle { get; }
+    string BackupName { get; }
+    string BackupSourcePath { get; }
+    string BackupTargetPath { get; }
+    string BackupType { get; }
+    
     // Execute Backup Menu
     string ExeBackupMenuTitle { get; }
-    string BackupName { get; }
+    string BackupNames { get; }
     string ExeBackupInstruction { get; }
 }
 

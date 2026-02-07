@@ -1,7 +1,8 @@
 using EasySave.Console.Resources;
 
 namespace EasySave.Console.ConsoleUI;
-internal class GeneralContent : ConsoleRunner
+
+public class GeneralContent : ConsoleRunner
 {
     protected readonly ITextProvider _texts;
     internal GeneralContent(ITextProvider texts)

@@ -18,7 +18,7 @@ internal class ExecuteBackupMenu : GeneralContent
         Header();
         System.Console.WriteLine(_texts.ExeBackupMenuTitle);
         System.Console.WriteLine();
-        System.Console.WriteLine(_texts.BackupName);
+        System.Console.WriteLine(_texts.BackupNames);
         System.Console.WriteLine();
         System.Console.WriteLine(_texts.ExeBackupInstruction);
         Footer();
