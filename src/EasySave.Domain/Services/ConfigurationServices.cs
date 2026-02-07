@@ -2,13 +2,17 @@
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 using System.Text.Json;
+using System;
+using System.IO;
 
 public class ConfigurationService : IConfigurationService
 {
+    private static readonly Lazy<ConfigurationService> _instance = new(() => new ConfigurationService());
+    public static ConfigurationService Instance => _instance.Value;
+
     private readonly string _configFilePath;
     private readonly string _baseAppPath;
-
-    public ConfigurationService()
+    private ConfigurationService()
     {
         string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         _baseAppPath = Path.Combine(appDataPath, "EasySave");
@@ -25,7 +29,6 @@ public class ConfigurationService : IConfigurationService
         {
             Language = Language.English,
             MaxBackupJobs = 5,
-            // On centralise la création des sous-dossiers ici
             LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
             StateFileDirectoryPath = Path.Combine(_baseAppPath, "State")
         };
@@ -36,7 +39,7 @@ public class ConfigurationService : IConfigurationService
         if (!File.Exists(_configFilePath))
         {
             var defaultSettings = GetDefaultSettings();
-            SaveSettings(defaultSettings); // On l'écrit sur le disque immédiatement
+            SaveSettings(defaultSettings);
             return defaultSettings;
         }
 
@@ -44,8 +47,6 @@ public class ConfigurationService : IConfigurationService
         {
             string json = File.ReadAllText(_configFilePath);
             var settings = JsonSerializer.Deserialize<ApplicationSettings>(json);
-
-            // Sécurité : si le JSON est corrompu ou vide, on rend le défaut
             return settings ?? GetDefaultSettings();
         }
         catch
