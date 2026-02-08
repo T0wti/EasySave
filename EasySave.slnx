@@ -1,7 +1,6 @@
 <Solution>
   <Folder Name="/docs/">
     <File Path="manual-user.md" />
-    <File Path="support.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/EasySave.Console/EasySave.Console.csproj" />
