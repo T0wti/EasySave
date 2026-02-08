@@ -57,7 +57,7 @@ namespace EasySave.Application.Controllers
                 throw new Exception("Backup not found");
 
             _executor.ExecuteBackup(job);
-        }
+        }   
 
         public void ExecuteMultiple(IEnumerable<int> ids)
         {

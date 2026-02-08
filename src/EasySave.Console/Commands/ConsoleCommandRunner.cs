@@ -47,7 +47,7 @@ public static class ConsoleCommandRunner
             return arg.Split(';')
                       .Select(int.Parse)
                       .Distinct();
-        }
+        }   
 
         return new[] { int.Parse(arg) };
     }

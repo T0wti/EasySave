@@ -19,6 +19,7 @@ namespace EasySave.Domain.Services
             progress.TotalSize = files.Sum(f => f.Size);
             progress.RemainingFiles = progress.TotalFiles;
             progress.RemainingSize = progress.TotalSize;
+            progress.Progression = 0;
             progress.LastUpdate = DateTime.Now;
 
             Upsert(progress);
@@ -28,6 +29,13 @@ namespace EasySave.Domain.Services
         {
             progress.RemainingFiles--;
             progress.RemainingSize -= file.Size;
+
+            long copiedSize = progress.TotalSize - progress.RemainingSize;
+
+            progress.Progression = progress.TotalSize == 0
+                ? 100
+                : Math.Round((double)copiedSize / progress.TotalSize * 100, 2);
+
             progress.CurrentSourceFile = file.FullPath;
             progress.CurrentTargetFile = targetPath;
             progress.LastUpdate = DateTime.Now;
@@ -37,12 +45,39 @@ namespace EasySave.Domain.Services
 
         public void Complete(int backupJobId)
         {
-            UpdateStateOnly(backupJobId, BackupJobState.Completed);
+            FinalizeAndClean(backupJobId, BackupJobState.Completed);
         }
 
         public void Fail(int backupJobId)
         {
             UpdateStateOnly(backupJobId, BackupJobState.Failed);
+        }
+
+
+        private void FinalizeAndClean(int backupJobId, BackupJobState finalState)
+        {
+            var states = _fileStateService.ReadState();
+
+            var existing = states.FirstOrDefault(
+                s => s.BackupJobId == backupJobId);
+
+            if (existing != null)
+            {
+                existing.State = finalState;
+                existing.LastUpdate = DateTime.Now;
+
+                // Nettoyage des infos runtime
+                existing.TotalFiles = 0;
+                existing.TotalSize = 0;
+                existing.RemainingFiles = 0;
+                existing.RemainingSize = 0;
+                existing.Progression = 0;
+
+                existing.CurrentSourceFile = null;
+                existing.CurrentTargetFile = null;
+
+                _fileStateService.WriteState(states);
+            }
         }
 
         private void Upsert(BackupProgress progress)
