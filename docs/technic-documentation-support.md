@@ -1,5 +1,5 @@
-# EasySave version 1.0 — Technical Support Document
-**Console Version — .NET SDK 10.0 / C#**
+# EasySave version 1.0 â€” Technical Support Document
+**Console Version â€” .NET SDK 10.0 / C#**
 ## Purpose
 
 This document provides the information required by support teams to configure and maintain EasySave v1.0.
