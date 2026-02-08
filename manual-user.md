@@ -62,6 +62,15 @@ Si l'état du travail de sauvegarde est actif, on rajoute :
 		- Adresse complète du fichier source en cours de sauvegarde
 		- Adresse complète du fichier de destination
 
+## Limitations de la version 1.0
+
+La version 1.0 est une première version console de l'application EasySave, à ce sens elle comprend quelques limites d'utilisation :
+	- Application console uniquement
+	- Pas d'interface graphique (prévue en version 2.0
+	- Nombre de travaux de sauvegarde limité à 5
+	- Exécution séquentielle uniquement 
+	- Pas d’intégration avec un logiciel de cryptage externe
+
 ## Langue 
 
 L'application est multilingue, elle est disponible en français et en anglais.
