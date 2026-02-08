@@ -16,28 +16,31 @@ internal class BaseMenuInteraction
 
     internal void RunLoop()
     {
-        var menu = new ConsoleUI.BaseMenu(_texts);
         bool exit = false;
         while (!exit)
         {
-            menu.Display();
             var input = System.Console.ReadLine()?.Trim();
 
             switch (input)
             {
                 case "1":
+                    exit = true;
                     _runner.RunCreateBackupMenu();
                     break;
                 case "2":
+                    exit = true;
                     _runner.RunDeleteBackupMenu();
                     break;
-                case "3":
+                case "3":;
+                    exit = true;
                     _runner.RunEditBackupMenu();
                     break;
                 case "4":
+                    exit = true;
                     _runner.RunListBackupMenu();
                     break;
                 case "5":
+                    exit = true;
                     _runner.RunExeBackupMenu();
                     break;
                 case "9":
