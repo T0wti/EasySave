@@ -18,7 +18,7 @@ Les prérequis à remplir pour pouvoir exécuter l'application :
 
 ## Lancement du programme
 
-Depuis la racine du projet : dotnet run --project src/EasySave.Console
+EasySave.exe à lancer
 
 ## Menu principal 
 
