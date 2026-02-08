@@ -16,6 +16,7 @@ The following requirements must be met to run the application:
 - Visual Studio 2022+ or Rider
 - Git
 
+
 ## Program Launch
 
 EasySave.exe to launch
@@ -23,8 +24,6 @@ EasySave.exe to launch
 ## Main Menu
 
 When the application starts, a console interface appears and provides several options depending on the desired action.
-
-Interface:
 
 - **1. Create a file backup** → starts a backup job creation process (job name, source folder, destination folder, backup type)
 - **2. Delete a file backup** → starts a backup job deletion process (job ID required)
@@ -49,6 +48,7 @@ The daily log file is a JSON file generated in real time and contains the follow
 - Full destination file path (UNC format)
 - File size
 - File transfer time (ms)
+
 
 ## Real-Time State File
 

@@ -1,6 +1,6 @@
-﻿using EasySave.Domain.Enums;
+﻿using EasySave.Application.DTOs;
+using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;
 
 namespace EasySave.Application.Controllers
 {
@@ -15,6 +15,20 @@ namespace EasySave.Application.Controllers
         {
             _manager = manager;
             _executor = executor;
+        }
+
+        public IEnumerable<BackupJobDTO> GetAll()
+        {
+            return _manager.GetBackupJobs()
+                .Select(MapToDto);
+        }
+
+        public BackupJobDTO? GetById(int id)
+        {
+            var job = _manager.GetBackupJobs()
+                              .FirstOrDefault(j => j.Id == id);
+
+            return job == null ? null : MapToDto(job);
         }
 
         public void CreateBackup(string name, string source, string target, int typeChoice)
@@ -34,18 +48,6 @@ namespace EasySave.Application.Controllers
             _manager.DeleteBackupJob(id);
         }
 
-        public List<BackupJob> GetAll()
-        {
-            return _manager.GetBackupJobs();
-        }
-
-        public BackupJob? GetById(int id)
-        {
-            return _manager.GetBackupJobs()
-                           .FirstOrDefault(j => j.Id == id);
-        }
-
-
         public void ExecuteBackup(int id)
         {
             var job = _manager.GetBackupJobs()
@@ -55,7 +57,7 @@ namespace EasySave.Application.Controllers
                 throw new Exception("Backup not found");
 
             _executor.ExecuteBackup(job);
-        }
+        }   
 
         public void ExecuteMultiple(IEnumerable<int> ids)
         {
@@ -63,6 +65,20 @@ namespace EasySave.Application.Controllers
                                .Where(j => ids.Contains(j.Id));
 
             _executor.ExecuteBackups(jobs);
+        }
+
+
+
+        private static BackupJobDTO MapToDto(dynamic job)
+        {
+            return new BackupJobDTO
+            {
+                Id = job.Id,
+                Name = job.Name,
+                SourcePath = job.SourcePath,
+                TargetPath = job.TargetPath,
+                Type = job.Type.ToString()
+            };
         }
     }
 }

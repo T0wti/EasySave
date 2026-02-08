@@ -1,15 +1,16 @@
+using EasySave.Application.DTOs;
 using EasySave.Console.Resources;
-using EasySave.Domain.Models;
 
 namespace EasySave.Console.ConsoleUI;
 
 internal class ListBackupMenu : GeneralContent
 {
-    private readonly List<BackupJob> _jobs;
+    private readonly List<BackupJobDTO> _jobs;
 
-    internal ListBackupMenu(ITextProvider texts, List<BackupJob> jobs) : base(texts)
+    public ListBackupMenu(ITextProvider texts, IEnumerable<BackupJobDTO> jobs)
+        : base(texts)
     {
-        _jobs = jobs;
+        _jobs = jobs.ToList();
     }
 
     internal void Display()
@@ -27,5 +28,4 @@ internal class ListBackupMenu : GeneralContent
 
         Footer();
     }
-
 }

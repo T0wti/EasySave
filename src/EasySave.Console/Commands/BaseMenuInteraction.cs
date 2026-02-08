@@ -29,7 +29,7 @@ internal class BaseMenuInteraction
                     _runner.RunCreateBackupMenu();
                     break;
                 case "2":
-                    _runner.HandleDeleteBackup();
+                    _runner.RunDeleteBackupMenu();
                     break;
                 case "3":
                     _runner.RunEditBackupMenu();
