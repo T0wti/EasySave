@@ -3,15 +3,17 @@ using EasySave.Application.Controllers;
 
 internal class Program
 {
-    private static void Main()
+    private static void Main(string[] args)
     {
-        // Création des controllers via la factory
         var backupController = ControllerFactory.CreateBackupController();
         var configController = ControllerFactory.CreateConfigurationController();
 
-        // Passe les controllers au runner
-        var runner = new ConsoleRunner(backupController, configController);
+        // MODE COMMANDE
+        if (ConsoleCommandRunner.TryRun(args, backupController))
+            return;
 
+        // MODE CONSOLE INTERACTIF
+        var runner = new ConsoleRunner(backupController, configController);
         runner.RunConsole();
     }
 }
