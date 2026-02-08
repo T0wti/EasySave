@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/docs/">
+    <File Path="easylog-dll.md" />
     <File Path="manual-user.md" />
   </Folder>
   <Folder Name="/src/">

@@ -86,7 +86,17 @@ Le fichier d'état temps réel est un fichier JSON regroupant l'état d'avanceme
 	
 	- Adresse complète du fichier de destination
 
+## Limitations de la version 1.0
+
+La version 1.0 est une premi�re version console de l'application EasySave, � ce sens elle comprend quelques limites d'utilisation :
+	- Application console uniquement
+	- Pas d'interface graphique (pr�vue en version 2.0
+	- Nombre de travaux de sauvegarde limit� � 5
+	- Exécution séquentielle uniquement 
+	- Pas d'intégration avec un logiciel de cryptage externe
+
 ## Langue 
+
 
 L'application est multi-langue, elle est disponible en français et en anglais.
 Si vous souhaitez changer la langue de la console, le menu de l'application donne accès à cette possibilité en sélectionnant 9.
