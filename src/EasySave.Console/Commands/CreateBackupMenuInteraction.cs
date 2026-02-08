@@ -12,39 +12,31 @@ internal class CreateBackupMenuInteraction
     }
 
     internal void RunLoop()
+{
+    _menu.AskName();
+    var name = System.Console.ReadLine() ?? "";
+
+    _menu.AskSource();
+    var source = System.Console.ReadLine() ?? "";
+
+    _menu.AskTarget();
+    var target = System.Console.ReadLine() ?? "";
+
+    _menu.AskType();
+    if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
     {
-        _menu.AskName();
-        var name = System.Console.ReadLine() ?? "";
+        _runner.WrongInput();
+        return;
+    }
 
-        string source = "";
-        while (true) //To check if source exists
-        {
-            _menu.AskSource();
-            source = System.Console.ReadLine() ?? "";
-
-            if (Directory.Exists(source)) break; //Exit while
-            else _runner.WrongInput();
-        }
-
-        string target = "";
-        while (true)
-        {
-            _menu.AskTarget();
-            target = System.Console.ReadLine() ?? "";
-
-            if (Path.IsPathRooted(target)) break; //If path contains a root (\ or C:)
-            else _runner.WrongInput();
-        }
-
-        _menu.AskType();
-        if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
-        {
-            _runner.WrongInput();
-            _runner.RunBaseMenu();
-            return;
-        }
-
-        // On passe les types primitifs au runner
+    try
+    {
         _runner.HandleCreateBackup(name, source, target, typeChoice);
     }
+    catch (Exception)   
+    {
+        _runner.WrongInput();
+    }
+}
+
 }
