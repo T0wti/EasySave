@@ -32,8 +32,6 @@ namespace EasySave.Domain.Services
                 throw new Exception($"A job named '{name}' already exists.");
             }
 
-            Console.WriteLine($"DEBUG: _backupJobs.Count = {_backupJobs.Count}, _settings.MaxBackupJobs = {_settings.MaxBackupJobs}");
-
             if (_backupJobs.Count >= _settings.MaxBackupJobs)
             {
                 throw new Exception($"Cannot create more than {_settings.MaxBackupJobs} backup jobs.");

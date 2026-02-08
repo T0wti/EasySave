@@ -69,6 +69,9 @@ namespace EasySave.Domain.Services
                     var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
                     var targetPath = Path.Combine(job.TargetPath, relativePath);
 
+                    string uncSourcePath = PathHelper.ToUncPath(file.FullPath);
+                    string uncTargetPath = PathHelper.ToUncPath(targetPath);
+
                     _fileService.CopyFile(file.FullPath, targetPath);
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
@@ -77,8 +80,8 @@ namespace EasySave.Domain.Services
                     {
                         Timestamp = DateTime.Now,
                         BackupName = job.Name,
-                        SourcePath = file.FullPath,
-                        TargetPath = targetPath,
+                        SourcePath = uncSourcePath,
+                        TargetPath = uncTargetPath,
                         FileSize = file.Size,
                         TransferTimeMs = duration
                     });

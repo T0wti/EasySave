@@ -101,7 +101,6 @@ namespace EasySave.Console;
     {
         var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
         menu.Display();
-        System.Console.ReadLine();
     }
 
         internal void RunExeBackupMenu()
