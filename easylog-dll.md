@@ -1,50 +1,56 @@
-#  EasySave version 1.0 - EasyLog Dynamic Link Library "EasyLog.dll"
-**Version Console - .NET SDK 10.0 / C#**
+# EasySave version 1.0 — EasyLog Dynamic Link Library "EasyLog.dll"
+**Console Version — .NET SDK 10.0 / C#**
 
-## Présentation de la librairie
+## Library Overview
 
-**EasyLog.dll** est une librairie de journalisation (logging) utilisée par EasySave pour :
-	- Enregistrer toutes les opérations de sauvegarde en **JSON**.
-	- Maintenir un **fichier log par jour**.
-	- Fournir des informations pour le support et le suivi temps réel.
-	- Garantir la **compatibilité** avec EasySave v1.0.
+**EasyLog.dll** is a logging library used by EasySave to:
 
-Elle est utilisée par **BackupService** via le service singleton `EasyLogService`.
+- Record all backup operations in **JSON** format
+- Maintain a **daily log file**
+- Provide information for support and real-time monitoring
+- Ensure **compatibility** with EasySave v1.0
 
-## Emplacement dans le projet 
+It is used by **BackupService** through the singleton service `EasyLogService`.
 
-La DLL est compilée à partir du projet `EasySave.EasyLog`.
+## Project Location
 
-## Architecture interne 
+The DLL is built from the project:
+
+`EasySave.EasyLog`
+
+## Internal Architecture
 
 ### Interfaces
 
-`ILogService` : crée l'interface comprenant la méthode  `WriteJson`
+`ILogService`: defines the interface containing the `WriteJson` method.
 
 ### Writers
 
-`JSONLogWriter` : responsable de la création et de l'écriture des fichiers **JSON**
+`JsonLogWriter`: responsible for creating and writing **JSON** log files.
 
-### Singleton EasyLogService
+### EasyLogService Singleton
 
-`EasyLogService` : pattern singleton pour gérer l'accès global, il comprend les méthodes `Initialize` et `WriteJson`
-	- Nécessite d'être initialisé via la méthode `Initialize`
-	- Accessible depuis n'importe quel service EasySave
+`EasyLogService`: singleton pattern used to provide global access to logging features.  
+It provides the methods `Initialize` and `WriteJson`.
 
-## Format du fichier log
+- Must be initialized using the `Initialize` method before use
+- Accessible from any EasySave service
 
-### Nom du fichier
+## Log File Format
+
+### File Name
 
 YYYY-MM-DD.json
 
-### Informations attendues
+### Expected Information
 
-Le fichier log journalier est un fichier JSON généré en temps réel qui contient les informations suivantes :
-	- Horodatage 
-	- Nom de la sauvegarde (YYYY-MM-DD.json)
-	- Adresse complète du fichier source (format UNC)
-	- Adresse complète du fichier de destination (format UNC)
-	- Taille du fichier 
-	- Temps de transfert du fichier (ms)
+The daily log file is a real-time generated JSON file containing the following information:
 
-Compatible avec les deux type de sauvegarde `Full` et `Differential`.
+- Timestamp
+- Backup name
+- Full source file path (UNC format)
+- Full destination file path (UNC format)
+- File size
+- File transfer time (ms)
+
+Compatible with both backup types: `Full` and `Differential`.

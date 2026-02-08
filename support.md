@@ -1,75 +1,79 @@
-# EasySave version 1.0 - Support technique
-**Version Console - .NET SDK 10.0 / C#**
+# EasySave version 1.0 — Technical Support Document
+**Console Version — .NET SDK 10.0 / C#**
+## Purpose
 
-## Objectif
+This document provides the information required by support teams to configure and maintain EasySave v1.0.
 
-Ce document fournit les informations nécessaires aux équipes de support pour configurer et maintenir EasySave v1.0.
+## Prerequisites
 
-## Prérequis 
+The following requirements must be met to run the application:
 
-Les prérequis à remplir pour pouvoir exécuter l'application :
-	- Windows
-	- .NET SDK 10.0
-	- Visual Studio 2022+ ou Rider
-	- Git
+- Windows
+- .NET SDK 10.0
+- Visual Studio 2022+ or Rider
+- Git
 
 ## Configuration
 
-La langue de l'application peut être changée depuis le menu principal. 
+The application language can be changed from the main menu.
 
-## Contraintes 
+## Constraints 
 
-Lors de la création :
-	- Nom unique
-	- Limite maximale de travaux de sauvegarde = 5
+During creation :
+	- Unique backup job name required
+	- Maximum number of backup jobs = 5
 
-Lors de la suppression :
-	- ID de la sauvegarde
+During deletion :
+	- Backup job ID required
 
-Lors de la modification :
-	- ID de la sauvegarde
+During modification :
+	- Backup job ID required
 
-## Types de sauvegarde 
+## Backup Types
 
-### Sauvegarde complète
+### Full Backup
 
-La sauvegarde complète effectue une copie complète du fichier :
-	- Liste les fichiers du dossier source
-	- Les copies tous
+A full backup performs a complete copy of files:
 
-### Sauvegarde différentielle
+- Lists all files in the source directory
+- Copies them all to the target directory
 
-La sauvegarde différentielle copie uniquement les fichiers nouveaux ou modifiés depuis la dernière sauvegarde complète.
-La copie s'exécute en fonction de 3 paramètres :
-	- Si le fichier est absent des fichiers cibles
-	- Si la taille est différente
-	- Si le hash est différent 
+### Differential Backup
 
-L'algorithme de hachage utilisé : SHA-256
-Le choix s'est porté sur cet algorithme pour sa résistance aux collisions.
+A differential backup copies only files that are new or modified since the last full backup.
 
-## Emplacement des fichiers JSON 
+The copy decision is based on three checks:
 
-**Log journalier**
-Le fichier log journalier trace toutes les opérations de sauvegarde en temps réel.
+- File does not exist in the target directory
+- File size is different
+- File hash is different
 
-Les fichiers JSON générés par les logs journaliers s'enregistrent dans l'emplacement : C:\Users\Name\AppData\Roaming\EasySave\Logs
-Nom de fichier : YYYY-MM-DD.json
+Hash algorithm used: `SHA-256`
+This algorithm was chosen for its strong collision resistance.
 
-**État temps réel**
-Le fichier état temps réel permet le suivi en direct de l’exécution des sauvegardes.
+## JSON File Locations
 
-Les fichiers JSON état temps réel générés s'enregistrent dans l'emplacement : C:\Users\Name\AppData\Roaming\EasySave\State
+**Daily Log File**
+The daily log file records all backup operations in real time.
+
+Generated JSON log files are stored at : C:\Users\Name\AppData\Roaming\EasySave\Logs
+File name : YYYY-MM-DD.json
+
+**Real-Time State File**
+The real-time state file allows live tracking of backup execution.
+
+Generated JSON state files are stored at : C:\Users\Name\AppData\Roaming\EasySave\State
 
 ## Tests
 
-Pour la partie tests, l’outil open source utilisé est **xUnit**.  
-Les tests unitaires permettent de garantir la fiabilité du code et de limiter les régressions lors des évolutions futures.
+For the testing part, the open-source framework **xUnit** is used.  
+Unit tests help ensure code reliability and reduce regressions in future versions.
 
-Les tests couvrent :
-	- Validation des chemins source et cible
-	- Sélection des fichiers à copier 
-	- Logique de la sauvegarde complète 
-	- Logique de la sauvegarde différentielle
-	- Génération des fichiers JSON 
+Tests cover:
+
+- Source and target path validation
+- File selection logic
+- Full backup logic
+- Differential backup logic
+- JSON file generation
 

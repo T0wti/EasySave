@@ -1,108 +1,89 @@
-# EasySave version 1.0 - Manuel d'utilisation
-**Version Console - .NET SDK 10.0 / C#**
+﻿# EasySave version 1.0 — User Manual
+**Console Version — .NET SDK 10.0 / C#**
+
+## Application Overview
+
+EasySave is a command-line backup application that allows users to create and execute up to **5 backup jobs**.  
+The software supports both **full** and **differential** backups.  
+The application is multilingual and available in **French and English**.
+
+## Prerequisites
+
+The following requirements must be met to run the application:
+
+- Windows
+- .NET SDK 10.0
+- Visual Studio 2022+ or Rider
+- Git
 
 
-## Présentation de l'application 
+## Program Launch
 
-EasySave est un logiciel de sauvegarde en ligne de commande permettant de créer et d’exécuter jusqu’à 5 travaux de sauvegarde.
-Le logiciel supporte les sauvegardes complètes et différentielles. 
-L’application est multi-langues, utilisable en français et en anglais. 
+EasySave.exe to launch
 
-## Prérequis 
+## Main Menu
 
-Les prérequis à remplir pour pouvoir exécuter l'application :
-	- Windows
-	- .NET SDK 10.0
-	- Visual Studio 2022+ ou Rider
-	- Git
+When the application starts, a console interface appears and provides several options depending on the desired action.
 
-## Lancement du programme
+- **1. Create a file backup** → starts a backup job creation process (job name, source folder, destination folder, backup type)
+- **2. Delete a file backup** → starts a backup job deletion process (job ID required)
+- **3. Edit a file backup** → starts a backup job modification process (job ID required)
+- **4. List file backups** → displays all configured backup jobs
+- **5. Execute a file backup** → runs a backup job using its ID
+- **9. Change console language** → opens the language selection menu (French or English)
+- **0. Exit** → closes the application
 
-EasySave.exe à lancer
+## Backup Types
 
-## Menu principal 
+**Full backup:** copies all files from the source directory to the target directory.
 
-Au lancement de l'application, une interface apparaît. Elle nous offre plusieurs possibilitées en fonction de ce qu'on souhaite faire.
+**Differential backup:** copies only new or modified files since the last full backup.
+## Daily Log File
 
-Interface :
-	
-	- 1. Créer une sauvegarde de fichiers => permet de démarrer une procédure de sauvegarde (nom du fichier, source du dossier, destination, type de sauvegarde)
-	
-	- 2. Supprimer une sauvegarde de fichiers => permet de démarrer une procédure de supppresion d'un travail de sauvegarde (ID du travail)
-	
-	- 3. Modifier une sauvegarde de fichiers => permet de démarrer une procédure de modification d'un travail de sauvegarde (ID du travail)
-	
-	- 4. Lister les sauvegardes de fichiers => permet d'afficher la liste des travaux de sauvegarde
-	
-	- 5. Exécuter une sauvegarde de fichiers => permet d'exécuter une sauvegarde à partir de son ID
-	
-	- 9. Changer la langue de la console => permet d'accéder à une interafce permettant de changer la langue de la console (français ou anglais)
-	
-	- 0. Quitter => fermeture de l'application
+The daily log file is a JSON file generated in real time and contains the following information:
 
-## Types de sauvegarde 
-
-Complète : copie tous les fichiers du dossier source vers le dossier cible.
-
-Différentielle : copie uniquement les fichiers nouveaux ou modifiés depuis la dernière sauvegarde complète.
-
-## Fichier Log journalier 
-
-Le fichier log journalier est un fichier JSON générée en temps réel et contient les informations suivantes :
-
-	- Horodatage 
-	
-	- Nom de la sauvegarde (YYYY-MM-DD.json)
-	
-	- Adresse complète du fichier source (format UNC)
-	
-	- Adresse complète du fichier de destination (format UNC)
-	
-	- Taille du fichier 
-	
-	- Temps de transfert du fichier (ms)
-
-## Fichier Etat temps réel 
-
-Le fichier d'état temps réel est un fichier JSON regroupant l'état d'avancement des travaux de sauvegarde et l'action en cours avec les informations suivantes :
-
-	- Nom du travail de sauvegarde
-	
-	- Horodatage de la dernière action
-	
-	- Statut (Actif / Inactif)
-	
-	- Nombre total des fichiers à transférer
-	
-	- Taille des fichiers
-	
-	- Progression
-	
-	- Nombre de fichiers restants
-	
-	- Tailles des fichiers restants
-	
-	- Adresse complète du fichier source en cours de sauvegarde
-	
-	- Adresse complète du fichier de destination
-
-## Limitations de la version 1.0
-
-La version 1.0 est une premi�re version console de l'application EasySave, � ce sens elle comprend quelques limites d'utilisation :
-	- Application console uniquement
-	- Pas d'interface graphique (pr�vue en version 2.0
-	- Nombre de travaux de sauvegarde limit� � 5
-	- Exécution séquentielle uniquement 
-	- Pas d'intégration avec un logiciel de cryptage externe
-
-## Langue 
+- Timestamp
+- Backup name
+- Full source file path (UNC format)
+- Full destination file path (UNC format)
+- File size
+- File transfer time (ms)
 
 
-L'application est multi-langue, elle est disponible en français et en anglais.
-Si vous souhaitez changer la langue de la console, le menu de l'application donne accès à cette possibilité en sélectionnant 9.
+## Real-Time State File
 
-Interface :
+The real-time state file is a JSON file that tracks backup job progress and the current action with the following information:
 
-	- 1. Français => bascule l'interface dans sa version française
-	
-	- 2. Anglais => bascule l'interface dans sa version anglaise
+- Backup job name
+- Timestamp of last action
+- Status (Active / Inactive)
+
+If the backup job is active, additional data is recorded:
+
+- Total number of files to transfer
+- Total file size
+- Progress percentage
+- Number of remaining files
+- Full path of the current source file being processed
+- Full destination file path
+
+## Version 1.0 Limitations
+
+Version 1.0 is the first console release of EasySave and includes the following limitations:
+
+- Console-only application
+- No graphical user interface (planned for version 2.0)
+- Maximum of 5 backup jobs
+- Sequential execution only
+- No integration with external encryption software
+
+## Language
+
+The application is multilingual and available in **French and English**.
+
+To change the console language, select option **9** in the main menu.
+
+Language menu:
+
+- **1. French** → switches the interface to French
+- **2. English** → switches the interface to English
