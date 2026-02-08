@@ -175,11 +175,18 @@ This represents an "is-a" relationship between two classes.
 - Example: CreateBackupMenu ——|> GeneralContent.
 - Impact: All menus share the same Header() and Footer() logic defined in GeneralContent, reducing code duplication.
 
-## C. Association (Solid line with open arrow ——>)
+## C.1 Association (Solid line with open arrow ——>)
 This represents a structural relationship where one class "has" or "knows" another as a field/property.
 - Logic: Indicates a long-term relationship.
 - Example: ConsoleRunner ——> BackupController.
 - Impact: The ConsoleRunner holds a reference to the controller to delegate user commands. In the code, this is usually initialized via the constructor.
+
+## C.2 Association Roles (_runner, _menu, etc.)
+
+On many association lines, you will see labels at the arrowheads. These represent Property Names (Fields) in the code.
+-	_runner : ConsoleRunner: Found in the Commands package. It indicates that every Interaction class (e.g., CreateBackupMenuInteraction) holds a reference to the central engine to execute logic.
+-	_menu: Found in interactions. It indicates the specific UI class the command is currently "driving."
+-	_texts : ITextProvider: Found in GeneralContent. This ensures all UI elements have a shared reference to the translation dictionary.
 
 ## D. Dependency (Dashed line with open arrow - - - - - >)
 This represents a transient relationship.
