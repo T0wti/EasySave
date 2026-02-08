@@ -2,15 +2,15 @@
 **Version Console - .NET SDK 10.0 / C#**
 
 
-## Présentation de l'application 
+## PrÃ©sentation de l'application 
 
-EasySave est un logiciel de sauvegarde en ligne de commande permettant de créer et d’exécuter jusqu’à 5 travaux de sauvegarde.
-Le logiciel supporte les sauvegardes complètes et différentielles. 
-L’application est multilingue, utilisable en français et en anglais. 
+EasySave est un logiciel de sauvegarde en ligne de commande permettant de crÃ©er et dâ€™exÃ©cuter jusquâ€™Ã  5 travaux de sauvegarde.
+Le logiciel supporte les sauvegardes complÃ¨tes et diffÃ©rentielles. 
+Lâ€™application est multi-langues, utilisable en franÃ§ais et en anglais. 
 
-## Prérequis 
+## PrÃ©requis 
 
-Les prérequis à remplir pour pouvoir exécuter l'application :
+Les prÃ©requis Ã  remplir pour pouvoir exÃ©cuter l'application :
 	- Windows
 	- .NET SDK 10.0
 	- Visual Studio 2022+ ou Rider
@@ -18,64 +18,91 @@ Les prérequis à remplir pour pouvoir exécuter l'application :
 
 ## Lancement du programme
 
-Depuis la racine du projet : dotnet run --project src/EasySave.Console
+EasySave.exe Ã  lancer
 
 ## Menu principal 
 
-Au lancement de l'application, une interface apparaît. Elle nous offre plusieurs possibilités en fonction de ce que l'on souhaite faire.
+Au lancement de l'application, une interface apparaÃ®t. Elle nous offre plusieurs possibilitÃ©es en fonction de ce qu'on souhaite faire.
 
 Interface :
-	- 1. Créer une sauvegarde de fichiers => permet de démarrer une procédure de sauvegarde (nom du fichier, source du dossier, destination, type de sauvegarde)
-	- 2. Supprimer une sauvegarde de fichiers => permet de démarrer une procédure de supppression d'un travail de sauvegarde (ID du travail)
-	- 3. Modifier une sauvegarde de fichiers => permet de démarrer une procédure de modification d'un travail de sauvegarde (ID du travail)
+	
+	- 1. CrÃ©er une sauvegarde de fichiers => permet de dÃ©marrer une procÃ©dure de sauvegarde (nom du fichier, source du dossier, destination, type de sauvegarde)
+	
+	- 2. Supprimer une sauvegarde de fichiers => permet de dÃ©marrer une procÃ©dure de supppresion d'un travail de sauvegarde (ID du travail)
+	
+	- 3. Modifier une sauvegarde de fichiers => permet de dÃ©marrer une procÃ©dure de modification d'un travail de sauvegarde (ID du travail)
+	
 	- 4. Lister les sauvegardes de fichiers => permet d'afficher la liste des travaux de sauvegarde
-	- 5. Exécuter une sauvegarde de fichiers => permet d'exécuter une sauvegarde à partir de son ID
-	- 9. Changer la langue de la console => permet d'accéder à une interface permettant de changer la langue de la console (français ou anglais)
+	
+	- 5. ExÃ©cuter une sauvegarde de fichiers => permet d'exÃ©cuter une sauvegarde Ã  partir de son ID
+	
+	- 9. Changer la langue de la console => permet d'accÃ©der Ã  une interafce permettant de changer la langue de la console (franÃ§ais ou anglais)
+	
 	- 0. Quitter => fermeture de l'application
 
 ## Types de sauvegarde 
 
-Complète : copie tous les fichiers du dossier source vers le dossier cible.
-Différentielle : copie uniquement les fichiers nouveaux ou modifiés depuis la dernière sauvegarde complète.
+ComplÃ¨te : copie tous les fichiers du dossier source vers le dossier cible.
+
+DiffÃ©rentielle : copie uniquement les fichiers nouveaux ou modifiÃ©s depuis la derniÃ¨re sauvegarde complÃ¨te.
 
 ## Fichier Log journalier 
 
-Le fichier log journalier est un fichier JSON généré en temps réel et contient les informations suivantes :
+Le fichier log journalier est un fichier JSON gÃ©nÃ©rÃ©e en temps rÃ©el et contient les informations suivantes :
+
 	- Horodatage 
+	
 	- Nom de la sauvegarde (YYYY-MM-DD.json)
-	- Adresse complète du fichier source (format UNC)
-	- Adresse complète du fichier de destination (format UNC)
+	
+	- Adresse complÃ¨te du fichier source (format UNC)
+	
+	- Adresse complÃ¨te du fichier de destination (format UNC)
+	
 	- Taille du fichier 
+	
 	- Temps de transfert du fichier (ms)
 
-## Fichier Etat temps réel 
+## Fichier Etat temps rÃ©el 
 
-Le fichier d'état temps réel est un fichier JSON regroupant l'état d'avancement des travaux de sauvegarde et l'action en cours avec les informations suivantes :
+Le fichier d'Ã©tat temps rÃ©el est un fichier JSON regroupant l'Ã©tat d'avancement des travaux de sauvegarde et l'action en cours avec les informations suivantes :
+
 	- Nom du travail de sauvegarde
-	- Horodatage de la dernière action
+	
+	- Horodatage de la derniÃ¨re action
+	
 	- Statut (Actif / Inactif)
-Si l'état du travail de sauvegarde est actif, on rajoute :
-	- Nombre total des fichiers à transférer
-		- Taille des fichiers
-		- Progression
-		- Nombre de fichiers restants
-		- Adresse complète du fichier source en cours de sauvegarde
-		- Adresse complète du fichier de destination
+	
+	- Nombre total des fichiers Ã  transfÃ©rer
+	
+	- Taille des fichiers
+	
+	- Progression
+	
+	- Nombre de fichiers restants
+	
+	- Tailles des fichiers restants
+	
+	- Adresse complÃ¨te du fichier source en cours de sauvegarde
+	
+	- Adresse complÃ¨te du fichier de destination
 
 ## Limitations de la version 1.0
 
-La version 1.0 est une première version console de l'application EasySave, à ce sens elle comprend quelques limites d'utilisation :
+La version 1.0 est une premiï¿½re version console de l'application EasySave, ï¿½ ce sens elle comprend quelques limites d'utilisation :
 	- Application console uniquement
-	- Pas d'interface graphique (prévue en version 2.0
-	- Nombre de travaux de sauvegarde limité à 5
-	- Exécution séquentielle uniquement 
-	- Pas d’intégration avec un logiciel de cryptage externe
+	- Pas d'interface graphique (prï¿½vue en version 2.0
+	- Nombre de travaux de sauvegarde limitï¿½ ï¿½ 5
+	- ExÃ©cution sÃ©quentielle uniquement 
+	- Pas d'intÃ©gration avec un logiciel de cryptage externe
 
 ## Langue 
 
-L'application est multilingue, elle est disponible en français et en anglais.
-Si vous souhaitez changer la langue de la console, le menu de l'application donne accès à cette possibilité en sélectionnant 9.
+
+L'application est multi-langue, elle est disponible en franÃ§ais et en anglais.
+Si vous souhaitez changer la langue de la console, le menu de l'application donne accÃ¨s Ã  cette possibilitÃ© en sÃ©lectionnant 9.
 
 Interface :
-	- 1. Français => bascule l'interface dans sa version française
+
+	- 1. FranÃ§ais => bascule l'interface dans sa version franÃ§aise
+	
 	- 2. Anglais => bascule l'interface dans sa version anglaise
