@@ -27,6 +27,13 @@ namespace EasySave.Domain.Services
         public void CreateBackupJob(string name, string source, string target, BackupType type)
         {
 
+            if (!Path.IsPathRooted(source))
+                throw new Exception("Source path format is invalid.");
+
+            if (!Path.IsPathRooted(target))
+                throw new Exception("Target path format is invalid.");
+
+
             if (_backupJobs.Any(j => j.Name == name))
             {
                 throw new Exception($"A job named '{name}' already exists.");
@@ -71,6 +78,13 @@ namespace EasySave.Domain.Services
         {
             //Search job
             var jobToEdit = _backupJobs.FirstOrDefault(j => j.Id == id);
+
+            if (!Path.IsPathRooted(newSource))
+                throw new Exception("Source path format is invalid.");
+
+            if (!Path.IsPathRooted(newTarget))
+                throw new Exception("Target path format is invalid.");
+
 
             if (jobToEdit == null)
             {
