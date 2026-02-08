@@ -1,4 +1,6 @@
 using EasySave.Application.DTOs;
+using EasySave.Application.Utils;
+
 
 namespace EasySave.Console.Commands;
 
@@ -10,7 +12,7 @@ internal class ExecuteBackupMenuInteraction
     public ExecuteBackupMenuInteraction(ConsoleRunner runner, IEnumerable<BackupJobDTO> jobs)
     {
         _runner = runner;
-        _jobs = jobs.ToList() ;
+        _jobs = jobs.ToList();
     }
 
     internal void RunLoop()
@@ -20,24 +22,33 @@ internal class ExecuteBackupMenuInteraction
         {
             var input = System.Console.ReadLine()?.Trim();
 
-
-            if (int.TryParse(input, out int choice) && choice != 0)
+            if (string.IsNullOrWhiteSpace(input))
             {
-                var job = _jobs.FirstOrDefault(j => j.Id == choice);
-                if (job != null)
-                {
-                    _runner.HandleExecuteBackup(job.Id);
-                }
-                else
-                {
-                    _runner.WrongInput();
-                }
+                _runner.WrongInput();
+                continue;
             }
-            else if (input == "0")
+
+            if (input == "0")
             {
                 exit = true;
+                continue;
             }
-            else
+
+            try
+            {
+                var ids = BackupIdParser.ParseIds(input);
+
+                var validIds = _jobs.Select(j => j.Id).ToHashSet();
+
+                if (!ids.All(id => validIds.Contains(id)))
+                {
+                    _runner.WrongInput();
+                    continue;
+                }
+
+                _runner.HandleExecuteMultiple(ids);
+            }
+            catch
             {
                 _runner.WrongInput();
             }
