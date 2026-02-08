@@ -1,5 +1,5 @@
-# EasySave version 1.0 — EasyLog Dynamic Link Library "EasyLog.dll"
-**Console Version — .NET SDK 10.0 / C#**
+# EasySave version 1.0 â€” EasyLog Dynamic Link Library "EasyLog.dll"
+**Console Version â€” .NET SDK 10.0 / C#**
 
 ## Library Overview
 
