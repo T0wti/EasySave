@@ -2,6 +2,7 @@ namespace EasySave.Console.Resources;
 
 public interface ITextProvider
 {
+    // General content
     string Header { get; }
     string Footer { get; }
     string MainMenuTitle { get; }

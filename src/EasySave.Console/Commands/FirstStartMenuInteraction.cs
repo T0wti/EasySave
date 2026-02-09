@@ -6,13 +6,13 @@ internal class FirstStartMenuInteraction
     private readonly ITextProvider _texts;
     private readonly ConsoleRunner _runner;
 
-    // Passer le runner déjà existant au constructeur
     public FirstStartMenuInteraction(ITextProvider texts, ConsoleRunner runner)
     {
         _texts = texts;
         _runner = runner;
     }
 
+    // Loop to read the input in the interface for the First Start menu
     internal void FirstStartLoop()
     {
         bool exit = false;

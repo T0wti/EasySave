@@ -14,6 +14,7 @@ public class ListBackupMenuInteraction
         _menu = menu;
     }
 
+    // Loop to read the input in the interface for the List Backup menu
     internal void RunLoop()
     {
         bool exit = false;

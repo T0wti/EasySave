@@ -20,6 +20,7 @@ internal class ExecuteBackupDetail : GeneralContent
         Header();
         System.Console.WriteLine(_texts.ExeBackupMenuDetailTitle);
         System.Console.WriteLine();
+        // options to display the correct status
         if (i == 0)
         {
             System.Console.WriteLine(_texts.ExeBackupInProgress);

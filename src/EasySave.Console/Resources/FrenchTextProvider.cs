@@ -51,7 +51,7 @@ public class FrenchTextProvider: GeneralTextProvider
 
     // Execute Backup Menu
     public override string ExeBackupMenuTitle => Format("-- Choix de la sauvegarde à exécuter --");
-    public override string BackupNames => Format("nom save"); // modifier avec l'appel de fonction qui va lister le nom des sauvegardes lignes par lignes
+    //public override string BackupNames => Format("nom save"); // not used for the moment
     public override string ExeBackupInstruction => Format("Tapez id_Sauvegarde");
     
     // Execute Backup Menu Details

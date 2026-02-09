@@ -9,7 +9,7 @@ internal class BackupDetailMenu : GeneralContent
 
     internal BackupDetailMenu(ITextProvider texts, BackupJobDTO job) : base(texts)
     {
-        _job = job;
+        _job = job; // required to show the job details
     }
 
     internal void Display()

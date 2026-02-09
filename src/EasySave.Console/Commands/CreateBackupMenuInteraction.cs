@@ -11,6 +11,7 @@ internal class CreateBackupMenuInteraction
         _menu = menu;
     }
 
+    // Loop to read the input in the interface for the Create Backup menu
     internal void RunLoop() 
     { 
         _menu.AskName();

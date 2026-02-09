@@ -5,6 +5,7 @@ namespace EasySave.Console;
 
 public static class ConsoleCommandRunner
 {
+    // Function to read option when launching the app on a terminal
     public static bool TryRun(string[] args, BackupController backupController)
     {
         if (args == null || args.Length == 0)

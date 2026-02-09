@@ -17,7 +17,8 @@ namespace EasySave.Console;
         {
             _backupController = backupController;
             _configController = configController;
-            
+           
+            // Check if it's the first launch of the program
             if (!_configController.FileExists())
             {
                 _texts = new EnglishTextProvider();
@@ -31,12 +32,13 @@ namespace EasySave.Console;
             ? new FrenchTextProvider()
             : new EnglishTextProvider();
         }
-
+        // Main console execution
         public void RunConsole()
         {
             RunBaseMenu();
         }
-
+        
+        // Main menu
         internal void RunBaseMenu()
         {
             var menu = new ConsoleUI.BaseMenu(_texts);
@@ -44,37 +46,39 @@ namespace EasySave.Console;
             menu.Display();
             loop.RunLoop();
         }
+        // Menu to change the language
+        internal void ChangeLanguage(ITextProvider language)
+        {
+            _texts = language;
 
-    internal void ChangeLanguage(ITextProvider language)
-    {
-        _texts = language;
+            int code = language is FrenchTextProvider ? 0 : 1;
 
-        int code = language is FrenchTextProvider ? 0 : 1;
+            _configController.ChangeLanguage(code);
 
-        _configController.ChangeLanguage(code);
+            RunBaseMenu();
+        }
 
-        RunBaseMenu();
-    }
-
-    internal void RunCreateBackupMenu()
+        // Menu to create a backup
+        internal void RunCreateBackupMenu() 
         {
             var menu = new ConsoleUI.CreateBackupMenu(_texts);
             var loop = new Commands.CreateBackupMenuInteraction(this, menu);
             menu.Display();
             loop.RunLoop();
         }
-
-        internal void RunDeleteBackupMenu()
+            
+        // Menu to delete a backup
+        internal void RunDeleteBackupMenu() 
         {
-        var jobs = _backupController.GetAll();
-        var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
-        listMenu.Display();
-        var menu = new ConsoleUI.DeleteBackupMenu(_texts);
-        var loop = new Commands.DeleteBackupMenuInteraction(this, menu);
-        loop.RunLoop();
+            var jobs = _backupController.GetAll();
+            var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
+            listMenu.Display();
+            var menu = new ConsoleUI.DeleteBackupMenu(_texts);
+            var loop = new Commands.DeleteBackupMenuInteraction(this, menu);
+            loop.RunLoop();
+        }
 
-    }
-
+        // Menu to edit a backup
         internal void RunEditBackupMenu()
         {
             var jobs = _backupController.GetAll();
@@ -85,7 +89,8 @@ namespace EasySave.Console;
 
             loop.RunLoop();
         }
-
+        
+        // Menu to change the language
         internal void RunChangeLanguageMenu()
         {
             var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
@@ -94,22 +99,17 @@ namespace EasySave.Console;
             loop.RunLoop();
         }
 
-    internal void RunListBackupMenu()
-    {
-        var jobs = _backupController.GetAll();
-        var menu = new ConsoleUI.ListBackupMenu(_texts, jobs); 
-        var loop = new Commands.ListBackupMenuInteraction(this, menu);
-        menu.Display();
-        loop.RunLoop();
-    }
+        // Menu to list all the backups
+        internal void RunListBackupMenu()
+        {
+            var jobs = _backupController.GetAll();
+            var menu = new ConsoleUI.ListBackupMenu(_texts, jobs); 
+            var loop = new Commands.ListBackupMenuInteraction(this, menu);
+            menu.Display();
+            loop.RunLoop();
+        }
 
-
-    internal void RunBackupDetailMenu(BackupJobDTO job)
-    {
-        var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
-        menu.Display();
-    }
-
+        // Menu to execute backups
         internal void RunExeBackupMenu()
         {
             var jobs = _backupController.GetAll();
@@ -119,12 +119,14 @@ namespace EasySave.Console;
             loop.RunLoop();
         }
 
+        // Menu to display execution status
         private void RunExecuteBackupMenuDetail(int i)
         {
             var menu = new ExecuteBackupDetail(_texts);
             menu.Display(i);
         }
 
+        // Menu of the first start
         private void RunFirstStartMenu()
         {
             var menu = new FirstStartMenu(_texts);
@@ -132,16 +134,17 @@ namespace EasySave.Console;
             menu.Display();
             loop.FirstStartLoop();
         }
-
+        
+        // Function to show an error in the user input
         internal void WrongInput()
         {
             System.Console.WriteLine(_texts.WrongInput);
         }
 
         // ======================
-        // Backup handlers via controller
+        // Backup handlers via controller to link the front with the back
         // ======================
-
+        
         internal void HandleCreateBackup(string name, string source, string target, int typeChoice  )
         {
             try
@@ -212,6 +215,7 @@ namespace EasySave.Console;
             RunBaseMenu();
         }
 
+        // To execute multiple backups at once
         internal void HandleExecuteMultiple(IEnumerable<int> ids)
         {
             RunExecuteBackupMenuDetail(0);

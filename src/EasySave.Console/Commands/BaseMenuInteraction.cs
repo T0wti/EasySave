@@ -14,6 +14,7 @@ internal class BaseMenuInteraction
         _texts = texts;
     }
 
+    // Loop to read the input in the interface for the Base Menu
     internal void RunLoop()
     {
         bool exit = false;

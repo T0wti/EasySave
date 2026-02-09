@@ -11,13 +11,13 @@ internal class EditBackupInteraction
     internal EditBackupInteraction(
         ConsoleRunner runner,
         ConsoleUI.EditBackupMenu menu,
-        IEnumerable<BackupJobDTO> jobs)
+        IEnumerable<BackupJobDTO> jobs) // required to check if the job exists
     {
         _runner = runner;
         _menu = menu;
         _jobs = jobs.ToList();
     }
-
+    // Loop to read the input in the interface for the Edit Backup menu
     internal void RunLoop()
     {
         bool exit = false;
