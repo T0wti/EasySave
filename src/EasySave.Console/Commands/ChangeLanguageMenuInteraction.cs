@@ -12,6 +12,7 @@ internal class ChangeLanguageMenuInteraction
         _runner = runner;
     }
 
+    // Loop to read the input in the interface for the Change Language Menu
     internal void RunLoop()
     {
         bool exit = false;

@@ -17,6 +17,7 @@ internal class BaseMenu : GeneralContent
         Header();
         System.Console.WriteLine(_texts.MainMenuTitle);
         System.Console.WriteLine();
+        // Different menu we can go threw the interface
         System.Console.WriteLine(_texts.CreateBackup);
         System.Console.WriteLine(_texts.DeleteBackup);
         System.Console.WriteLine(_texts.EditBackup);

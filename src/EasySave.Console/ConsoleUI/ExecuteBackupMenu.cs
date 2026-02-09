@@ -22,6 +22,7 @@ internal class ExecuteBackupMenu : GeneralContent
         System.Console.WriteLine(_texts.ExeBackupMenuTitle);
         System.Console.WriteLine();
         
+        // Loop to display all jobs
         foreach (var job in _jobs)
         {
             System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");

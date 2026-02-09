@@ -15,6 +15,7 @@ internal class ExecuteBackupMenuInteraction
         _jobs = jobs.ToList();
     }
 
+    // Loop to read the input in the interface for the Execute Backup menu
     internal void RunLoop()
     {
         bool exit = false;
