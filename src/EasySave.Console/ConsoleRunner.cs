@@ -119,6 +119,12 @@ namespace EasySave.Console;
             loop.RunLoop();
         }
 
+        private void RunExecuteBackupMenuDetail(int i)
+        {
+            var menu = new ExecuteBackupDetail(_texts);
+            menu.Display(i);
+        }
+
         private void RunFirstStartMenu()
         {
             var menu = new FirstStartMenu(_texts);
@@ -208,7 +214,9 @@ namespace EasySave.Console;
 
         internal void HandleExecuteMultiple(IEnumerable<int> ids)
         {
+            RunExecuteBackupMenuDetail(0);
             _backupController.ExecuteMultiple(ids);
+            RunExecuteBackupMenuDetail(1);
             RunBaseMenu();
         }
     }
