@@ -2,48 +2,58 @@
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 
-namespace EasySave.Application.Controllers;
-
-public class ConfigurationController
+namespace EasySave.Application.Controllers
 {
-    private readonly IConfigurationService _configService;
-
-    public ConfigurationController(IConfigurationService configService)
+    public class ConfigurationController
     {
-        _configService = configService;
-    }
+        private readonly IConfigurationService _configService;
 
-    public ApplicationSettingsDto Load()
-    {
-        var settings = _configService.LoadSettings();
-
-        // Map Domain enum → int
-        int code = settings.Language == Language.French ? 0 : 1;
-
-        return new ApplicationSettingsDto
+        public ConfigurationController(IConfigurationService configService)
         {
-            LanguageCode = code
-        };
-    }
+            _configService = configService;
+        }
 
-    public void ChangeLanguage(int code)
-    {
-        var settings = _configService.LoadSettings();
+        // Load configuration and map to DTO
+        public ApplicationSettingsDto Load()
+        {
+            var settings = _configService.LoadSettings();
 
-        // Map int → Domain enum
-        settings.Language = code == 0 ? Language.French : Language.English;
+            return new ApplicationSettingsDto
+            {
+                LanguageCode = ConvertLanguageToCode(settings.Language)
+            };
+        }
 
-        _configService.SaveSettings(settings);
-    }
+        // Change language based on int code
+        public void ChangeLanguage(int code)
+        {
+            var settings = _configService.LoadSettings();
+            settings.Language = ConvertCodeToLanguage(code);
+            _configService.SaveSettings(settings);
+        }
 
-    public bool FileExists()
-    {
-        var _exist = _configService.FileExists();
-        return _exist;
-    }
+        // Check if configuration file exists
+        public bool FileExists()
+        {
+            return _configService.FileExists();
+        }
 
-    public void EnsureConfigExists()
-    {
-        _configService.EnsureConfigExists();
+        // Ensure configuration file exists
+        public void EnsureConfigExists()
+        {
+            _configService.EnsureConfigExists();
+        }
+
+        // --- Private Methods ---
+
+        private static int ConvertLanguageToCode(Language lang)
+        {
+            return lang == Language.French ? 0 : 1;
+        }
+
+        private static Language ConvertCodeToLanguage(int code)
+        {
+            return code == 0 ? Language.French : Language.English;
+        }
     }
 }
