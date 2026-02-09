@@ -151,5 +151,57 @@ namespace EasySave.Domain.Tests
             stateMock.Verify(s => s.Fail(job.Id), Times.Once);
             logMock.Verify(l => l.WriteJson(It.IsAny<LogEntry>()), Times.Once);
         }
+
+        [Fact]
+        // Tests that ExecuteBackups call ExecuteBackup
+        public void ExecuteBackups_ShouldExecuteAllJobs()
+        {
+            var job1 = new BackupJob(1, "job1", "src", "dest", BackupType.Full);
+            var job2 = new BackupJob(2, "job2", "src", "dest", BackupType.Full);
+
+            var jobs = new List<BackupJob> { job1, job2 };
+
+            var files = new List<FileDescriptor>
+            {
+                new FileDescriptor { FullPath = "src/a.txt", Size = 10 }
+            };
+
+            var fileServiceMock = new Mock<IFileService>();
+            var fullStrategyMock = new Mock<IBackupStrategy>();
+            var diffStrategyMock = new Mock<IBackupStrategy>();
+            var fileBackupMock = new Mock<IFileBackupService>();
+            var stateMock = new Mock<IStateService>();
+            var logMock = new Mock<ILogService>();
+
+            fullStrategyMock
+                .Setup(s => s.GetFilesToCopy("src", "dest"))
+                .Returns(files);
+
+            fileBackupMock
+                .Setup(f => f.LoadJobs())
+                .Returns(jobs);
+
+            var service = new BackupService(
+                fileServiceMock.Object,
+                fullStrategyMock.Object,
+                diffStrategyMock.Object,
+                fileBackupMock.Object,
+                stateMock.Object,
+                logMock.Object
+            );
+
+            service.ExecuteBackups(jobs);
+
+            fileServiceMock.Verify(
+                f => f.CopyFile(It.IsAny<string>(), It.IsAny<string>()),
+                Times.Exactly(2)
+            );
+
+            stateMock.Verify(
+                s => s.Complete(It.IsAny<int>()),
+                Times.Exactly(2)
+            );
+
+        }
     }
 }
