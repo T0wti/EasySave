@@ -54,6 +54,11 @@ public interface ITextProvider
     string ExeBackupMenuTitle { get; }
     string BackupNames { get; }
     string ExeBackupInstruction { get; }
+    
+    // Execute Backup Menu Details
+    string ExeBackupMenuDetailTitle { get; }
+    string ExeBackupInProgress { get; }
+    string ExeBackupCompleted { get; }
 }
 
 

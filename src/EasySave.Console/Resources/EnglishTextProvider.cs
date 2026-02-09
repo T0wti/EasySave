@@ -17,8 +17,8 @@ public class EnglishTextProvider : GeneralTextProvider
     // Creation BackupMenu 
 
     public override string EnterBackupName => "Please enter the name of your backup job: ";
-    public override string EnterSourcePath => "Please enter the source path of the folder to back up: ";
-    public override string EnterTargetPath => "Please enter the destination path for the backup: ";
+    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads): ";
+    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save): ";
     public override string EnterBackupType => "Please enter the backup type (1 - Full | 2 - Differential): ";
 
     //
@@ -53,4 +53,9 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ExeBackupMenuTitle => Format("-- Choose the file backup to execute --");
     public override string BackupNames => Format("nom save"); // modifier avec l'appel de fonction qui va lister le nom des sauvegardes lignes par lignes
     public override string ExeBackupInstruction => Format("Command exemple : id_Backup");
+    
+    // Execute Backup Menu Details
+    public override string ExeBackupMenuDetailTitle => Format("-- Backup Status --");
+    public override string ExeBackupInProgress => Format("Backup in progress...");
+    public override string ExeBackupCompleted => Format("Backup complete.");
 }
