@@ -17,6 +17,7 @@ internal class FirstStartMenu : GeneralContent
     {
         Header();
         System.Console.WriteLine(_texts.ChooseFirstLanguageMenuTitle);
+        System.Console.WriteLine();
         System.Console.WriteLine(_texts.ChooseFirstLanguage);
         System.Console.WriteLine(_texts.Language1);
         System.Console.WriteLine(_texts.Language2);

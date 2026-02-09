@@ -21,11 +21,9 @@ internal class ListBackupMenu : GeneralContent
 
         foreach (var job in _jobs)
         {
-            System.Console.WriteLine($"{job.Id} | {job.Name} | {job.Type}");
+            System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");
         }
-
-        System.Console.WriteLine();
-
+        
         Footer();
     }
 }

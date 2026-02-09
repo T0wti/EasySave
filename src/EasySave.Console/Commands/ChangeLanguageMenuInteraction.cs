@@ -33,6 +33,10 @@ internal class ChangeLanguageMenuInteraction
                     exit = true;
                     _runner.RunConsole();
                     break;
+                case "exit":
+                    exit = true;
+                    _runner.RunConsole();
+                    break;
                 default:
                     _runner.WrongInput();
                     break;

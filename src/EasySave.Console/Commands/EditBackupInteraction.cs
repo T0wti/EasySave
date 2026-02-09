@@ -20,10 +20,19 @@ internal class EditBackupInteraction
 
     internal void RunLoop()
     {
-        _menu.AskIdToEdit();
-        if (!int.TryParse(System.Console.ReadLine(), out int id))
+        //_menu.AskIdToEdit(); --> useless since the footer provide a more usefull help to use
+        var input = System.Console.ReadLine();
+
+        if (input == "0" || input?.Equals("exit", StringComparison.OrdinalIgnoreCase) == true)
+        {
+            _runner.RunConsole();
+            return;
+        }
+
+        if (!int.TryParse(input, out int id))
         {
             _runner.WrongInput();
+            RunLoop();
             return;
         }
 

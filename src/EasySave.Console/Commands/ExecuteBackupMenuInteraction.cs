@@ -28,9 +28,10 @@ internal class ExecuteBackupMenuInteraction
                 continue;
             }
 
-            if (input == "0")
+            if (input == "0" || input == "exit")
             {
                 exit = true;
+                _runner.RunConsole();
                 continue;
             }
 

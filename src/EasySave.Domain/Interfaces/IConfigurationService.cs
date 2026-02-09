@@ -10,5 +10,8 @@ namespace EasySave.Domain.Interfaces
         ApplicationSettings LoadSettings();
 
         void SaveSettings(ApplicationSettings settings);
+
+        bool FileExists();
+        void EnsureConfigExists();
     }
 }

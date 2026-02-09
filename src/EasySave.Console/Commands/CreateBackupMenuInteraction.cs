@@ -11,32 +11,51 @@ internal class CreateBackupMenuInteraction
         _menu = menu;
     }
 
-    internal void RunLoop()
-{
-    _menu.AskName();
-    var name = System.Console.ReadLine() ?? "";
+    internal void RunLoop() 
+    { 
+        _menu.AskName();
+        var name = System.Console.ReadLine() ?? "";
+        if (name == "0" || name == "exit")
+        {
+            Case0();
+            return;
+        }
 
-    _menu.AskSource();
-    var source = System.Console.ReadLine() ?? "";
+        _menu.AskSource();
+        var source = System.Console.ReadLine() ?? "";
+        if (source == "0" || source == "exit")
+        {
+            Case0();
+            return;
+        }
 
-    _menu.AskTarget();
-    var target = System.Console.ReadLine() ?? "";
+        _menu.AskTarget();
+        var target = System.Console.ReadLine() ?? "";
+        if (target == "0" || source == "exit")
+        {
+            Case0();
+            return;
+        }
 
-    _menu.AskType();
-    if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
-    {
-        _runner.WrongInput();
-        return;
+        _menu.AskType();
+        if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
+        {
+            _runner.WrongInput();
+            return;
+        }
+
+        try
+        {
+            _runner.HandleCreateBackup(name, source, target, typeChoice);
+        }
+        catch (Exception)   
+        {
+            _runner.WrongInput(); 
+        } 
     }
 
-    try
+    private void Case0()
     {
-        _runner.HandleCreateBackup(name, source, target, typeChoice);
+        _runner.RunConsole();
     }
-    catch (Exception)   
-    {
-        _runner.WrongInput();
-    }
-}
-
 }

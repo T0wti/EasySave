@@ -1,11 +1,14 @@
+using EasySave.Application.DTOs;
 using EasySave.Console.Resources;
 
 namespace EasySave.Console.ConsoleUI;
 
 internal class ExecuteBackupMenu : GeneralContent
 {
-    internal ExecuteBackupMenu(ITextProvider texts) : base(texts)
+    private readonly List<BackupJobDTO> _jobs;
+    internal ExecuteBackupMenu(ITextProvider texts,IEnumerable<BackupJobDTO> jobs) : base(texts)
     {
+        _jobs = jobs.ToList();
     }
 
     internal void Display()
@@ -18,9 +21,15 @@ internal class ExecuteBackupMenu : GeneralContent
         Header();
         System.Console.WriteLine(_texts.ExeBackupMenuTitle);
         System.Console.WriteLine();
-        System.Console.WriteLine(_texts.BackupNames);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.ExeBackupInstruction);
+        
+        foreach (var job in _jobs)
+        {
+            System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");
+        }
+        
+        // Useless with the actuel display information of a backup
+        //System.Console.WriteLine();
+        //System.Console.WriteLine(_texts.ExeBackupInstruction);
         Footer();
     }
 }

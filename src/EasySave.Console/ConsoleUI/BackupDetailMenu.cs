@@ -18,10 +18,10 @@ internal class BackupDetailMenu : GeneralContent
 
         System.Console.WriteLine();
 
-        System.Console.WriteLine($"{_job.Name}");
-        System.Console.WriteLine($"{_job.SourcePath}");
-        System.Console.WriteLine($"{_job.TargetPath}");
-        System.Console.WriteLine($"{_job.Type}");
+        System.Console.WriteLine($"       {_job.Name}");
+        System.Console.WriteLine($"       {_job.SourcePath}");
+        System.Console.WriteLine($"       {_job.TargetPath}");
+        System.Console.WriteLine($"       {_job.Type}");
 
         Footer();
     }

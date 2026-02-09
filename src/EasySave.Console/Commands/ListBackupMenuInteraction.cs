@@ -26,6 +26,7 @@ public class ListBackupMenuInteraction
             if (input == "0" || input == "exit")
             {
                 exit = true;
+                _runner.RunConsole();
             }
             else if (int.TryParse(input, out int id))
             {
