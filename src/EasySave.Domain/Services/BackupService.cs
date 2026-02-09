@@ -9,6 +9,7 @@ using System.Text.Json;
 
 namespace EasySave.Domain.Services
 {
+    // Service responsible for executing backup jobs
     public class BackupService : IBackupService
     {
         private readonly IFileService _fileService;
@@ -16,11 +17,11 @@ namespace EasySave.Domain.Services
         private readonly IStateService _stateService;
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
-
         private readonly IFileBackupService _fileBackupService;
+
         private List<BackupJob> _backupJobs;
 
-
+        // Constructor injects required services and initializes backup jobs list
         public BackupService(
         IFileService fileService,
         IBackupStrategy fullStrategy,
@@ -33,23 +34,15 @@ namespace EasySave.Domain.Services
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
 
-            //JSON initialisation
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string easySavePath = Path.Combine(appDataPath, "EasySave");
-
-            if (!Directory.Exists(easySavePath))
-            {
-                Directory.CreateDirectory(easySavePath);
-            }
-
             //_jobsFilePath = Path.Combine(easySavePath, "jobs.json");
             _fileBackupService = fileBackupService;
             _backupJobs = _fileBackupService.LoadJobs();
         }
 
+        // Executes a single backup job
         public void ExecuteBackup(BackupJob job)
         {
-
+            // Select backup strategy based on job type
             IBackupStrategy strategy = job.Type == BackupType.Full
             ? _fullStrategy
             : _differentialStrategy;
@@ -60,15 +53,18 @@ namespace EasySave.Domain.Services
 
             _stateService.Initialize(progress, files);
 
+            // Copy files one by one
             foreach (var file in files)
             {
                 var start = DateTime.Now;
 
                 try
                 {
+                    // Preserve relative paths inside the target folder
                     var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
                     var targetPath = Path.Combine(job.TargetPath, relativePath);
 
+                    // Convert paths to UNC format for logging/network paths
                     string uncSourcePath = PathHelper.ToUncPath(file.FullPath);
                     string uncTargetPath = PathHelper.ToUncPath(targetPath);
 
@@ -90,6 +86,7 @@ namespace EasySave.Domain.Services
                 }
                 catch
                 {
+                    // Handle copy failure: mark job as failed and log
                     progress.State = BackupJobState.Failed;
                     _stateService.Fail(job.Id);
 
@@ -107,12 +104,14 @@ namespace EasySave.Domain.Services
                 }
             }
 
+            // Mark backup as completed
             progress.State = BackupJobState.Completed;
             progress.LastUpdate = DateTime.Now;
 
             _stateService.Complete(job.Id);
         }
 
+        // Executes multiple backup jobs sequentially
         public void ExecuteBackups(IEnumerable<BackupJob> jobs)
         {
             foreach (var job in jobs)

@@ -4,15 +4,18 @@ using EasySave.Domain.Models;
 
 namespace EasySave.Domain.Services
 {
+    // Service responsible for managing the state of backup jobs
     public class StateService : IStateService
     {
         private readonly IFileStateService _fileStateService;
 
+        // Constructor injection of a service that handles file state persistence
         public StateService(IFileStateService fileStateService)
         {
             _fileStateService = fileStateService;
         }
 
+        // Initializes a BackupProgress object with total files, size, and default runtime values
         public void Initialize(BackupProgress progress, List<FileDescriptor> files)
         {
             progress.TotalFiles = files.Count;
@@ -25,6 +28,7 @@ namespace EasySave.Domain.Services
             Upsert(progress);
         }
 
+        // Updates the progress after processing a single file
         public void Update(BackupProgress progress, FileDescriptor file, string targetPath)
         {
             progress.RemainingFiles--;
@@ -43,17 +47,19 @@ namespace EasySave.Domain.Services
             Upsert(progress);
         }
 
+        // Marks a backup job as completed and resets runtime information
         public void Complete(int backupJobId)
         {
             FinalizeAndClean(backupJobId, BackupJobState.Completed);
         }
 
+        // Marks a backup job as failed
         public void Fail(int backupJobId)
         {
             UpdateStateOnly(backupJobId, BackupJobState.Failed);
         }
 
-
+        // Private helper to finalize a job and clean runtime-specific fields
         private void FinalizeAndClean(int backupJobId, BackupJobState finalState)
         {
             var states = _fileStateService.ReadState();
@@ -80,6 +86,7 @@ namespace EasySave.Domain.Services
             }
         }
 
+        // Inserts or updates a BackupProgress in the persisted state
         private void Upsert(BackupProgress progress)
         {
             var states = _fileStateService.ReadState();
@@ -94,6 +101,7 @@ namespace EasySave.Domain.Services
             _fileStateService.WriteState(states);
         }
 
+        // Updates only the state and timestamp of a backup job (without changing runtime info)
         private void UpdateStateOnly(int backupJobId, BackupJobState state)
         {
             var states = _fileStateService.ReadState();
