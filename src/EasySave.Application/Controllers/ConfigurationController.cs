@@ -32,6 +32,8 @@ namespace EasySave.Application.Controllers
             _configService.SaveSettings(settings);
         }
 
+        //Change log format future implementation here
+
         // Check if configuration file exists
         public bool FileExists()
         {

@@ -70,7 +70,7 @@ namespace EasySave.Domain.Services
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
-                    _logService.WriteJson(new LogEntry
+                    _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         BackupName = job.Name,
@@ -88,7 +88,7 @@ namespace EasySave.Domain.Services
                     progress.State = BackupJobState.Failed;
                     _stateService.Fail(job.Id);
 
-                    _logService.WriteJson(new LogEntry
+                    _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         BackupName = job.Name,
