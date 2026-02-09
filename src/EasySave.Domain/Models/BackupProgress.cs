@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace EasySave.Domain.Models
 {
+    // Represents the runtime progress of a backup job
     public class BackupProgress
     {
         public string BackupName { get; set; }
@@ -34,6 +35,7 @@ namespace EasySave.Domain.Models
 
         public BackupProgress() { }
 
+        // Factory method to create a BackupProgress instance from a BackupJob
         public static BackupProgress From(BackupJob job)
         {
             return new BackupProgress

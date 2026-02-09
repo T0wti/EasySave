@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasySave.Domain.Enums
+﻿namespace EasySave.Domain.Enums
 {
-     public enum Language
+    // Enum representing the supported application languages
+    public enum Language
     {
         French,
         English

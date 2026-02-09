@@ -2,7 +2,8 @@
 
     namespace EasySave.Domain.Interfaces
     {
-        public interface IBackupService
+    // Interface for executing backup jobs
+    public interface IBackupService
         {
             
             void ExecuteBackup(BackupJob job);
