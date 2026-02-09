@@ -20,82 +20,91 @@ internal class EditBackupInteraction
 
     internal void RunLoop()
     {
-        //_menu.AskIdToEdit(); --> useless since the footer provide a more usefull help to use
-        var input = System.Console.ReadLine();
-
-        if (input == "0" || input?.Equals("exit", StringComparison.OrdinalIgnoreCase) == true)
+        bool exit = false;
+        while (!exit)
         {
-            _runner.RunConsole();
-            return;
-        }
+            //_menu.AskIdToEdit(); --> useless since the footer provide a more usefull help to use
+            var input = System.Console.ReadLine();
 
-        if (!int.TryParse(input, out int id))
-        {
-            _runner.WrongInput();
-            RunLoop();
-            return;
-        }
+            if (input == "0" || input?.Equals("exit", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                _runner.RunConsole();
+                exit = true;
+                return;
+            }
 
-        var job = _jobs.FirstOrDefault(j => j.Id == id);
-        if (job == null)
-        {
-            _runner.WrongInput();
-            return;
-        }
+            if (!int.TryParse(input, out int id))
+            {
+                _runner.WrongInput();
+                RunLoop();
+                return;
+            }
 
-        // --- NAME ---
-        _menu.ShowCurrentValue(job.Name);
-        _menu.AskName();
-        var nameInput = System.Console.ReadLine()?.Trim();
-        string finalName = string.IsNullOrEmpty(nameInput)
-            ? job.Name
-            : nameInput;
+            var job = _jobs.FirstOrDefault(j => j.Id == id);
+            if (job == null)
+            {
+                _runner.WrongInput();
+                RunLoop();
+                return;
+            }
 
-        // --- SOURCE ---
-        _menu.ShowCurrentValue(job.SourcePath);
-        _menu.AskSource();
-        var sourceInput = System.Console.ReadLine()?.Trim();
-        string finalSource = string.IsNullOrEmpty(sourceInput)
-            ? job.SourcePath
-            : sourceInput;
+            // --- NAME ---
+            _menu.ShowCurrentValue(job.Name);
+            _menu.AskName();
+            var nameInput = System.Console.ReadLine()?.Trim();
+            string finalName = string.IsNullOrEmpty(nameInput)
+                ? job.Name
+                : nameInput;
 
-        // --- TARGET ---
-        _menu.ShowCurrentValue(job.TargetPath);
-        _menu.AskTarget();
-        var targetInput = System.Console.ReadLine()?.Trim();
-        string finalTarget = string.IsNullOrEmpty(targetInput)
-            ? job.TargetPath
-            : targetInput;
+            // --- SOURCE ---
+            _menu.ShowCurrentValue(job.SourcePath);
+            _menu.AskSource();
+            var sourceInput = System.Console.ReadLine()?.Trim();
+            string finalSource = string.IsNullOrEmpty(sourceInput)
+                ? job.SourcePath
+                : sourceInput;
 
-        // --- TYPE ---
-        _menu.ShowCurrentValue(job.Type.ToString());
-        _menu.AskType();
-        var typeInput = System.Console.ReadLine()?.Trim();
+            // --- TARGET ---
+            _menu.ShowCurrentValue(job.TargetPath);
+            _menu.AskTarget();
+            var targetInput = System.Console.ReadLine()?.Trim();
+            string finalTarget = string.IsNullOrEmpty(targetInput)
+                ? job.TargetPath
+                : targetInput;
 
-        int finalTypeChoice;
-        if (string.IsNullOrEmpty(typeInput))
-        {
-            finalTypeChoice = job.Type == "Full" ? 1 : 2;
-        }
-        else if (!int.TryParse(typeInput, out finalTypeChoice))
-        {
-            _runner.WrongInput();
-            return;
-        }
+            // --- TYPE ---
+            _menu.ShowCurrentValue(job.Type.ToString());
+            _menu.AskType();
+            var typeInput = System.Console.ReadLine()?.Trim();
 
-        try
-        {
-            _runner.HandleEditBackup(
-                id,
-                finalName,
-                finalSource,
-                finalTarget,
-                finalTypeChoice
-            );
-        }
-        catch (Exception)
-        {
-            _runner.WrongInput();
+            int finalTypeChoice;
+            if (string.IsNullOrEmpty(typeInput))
+            {
+                finalTypeChoice = job.Type == "Full" ? 1 : 2;
+            }
+            else if (!int.TryParse(typeInput, out finalTypeChoice))
+            {
+                _runner.WrongInput();
+                RunLoop();
+                return;
+            }
+
+            try
+            {
+                _runner.HandleEditBackup(
+                    id,
+                    finalName,
+                    finalSource,
+                    finalTarget,
+                    finalTypeChoice
+                );
+                exit = true;
+            }
+            catch (Exception)
+            {
+                _runner.WrongInput();
+                RunLoop();
+            }
         }
     }
 }
