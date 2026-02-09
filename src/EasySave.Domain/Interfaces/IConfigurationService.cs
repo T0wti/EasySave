@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EasySave.Domain.Models;
+﻿using EasySave.Domain.Models;
 
 namespace EasySave.Domain.Interfaces
 {
+    // Interface for managing application configuration settings
     public interface IConfigurationService
     {
         ApplicationSettings LoadSettings();

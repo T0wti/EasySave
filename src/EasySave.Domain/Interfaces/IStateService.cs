@@ -2,6 +2,7 @@
 
 namespace EasySave.Domain.Interfaces
 {
+    // Interface for managing and tracking the state of backup jobs
     public interface IStateService
     {
         void Initialize(BackupProgress progress, List<FileDescriptor> files);

@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EasySave.Domain.Models
 {
+    // Represents configurable application settings for EasySave
     public class ApplicationSettings
     {
             public Language Language { get; set; }
@@ -12,7 +13,7 @@ namespace EasySave.Domain.Models
             public string LogDirectoryPath { get; set; }
             public string StateFileDirectoryPath { get; set; }
 
-
+        // Default constructor
         public ApplicationSettings() { }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace EasySave.Domain.Models
 {
+    // Represents a backup job configuration
     public class BackupJob
     {
         public int Id { get; }
@@ -10,6 +11,7 @@ namespace EasySave.Domain.Models
         public string TargetPath { get; internal set; }
         public BackupType Type { get; internal set; }
 
+        // Constructor to initialize a backup job with required information
         public BackupJob(
             int id,
             string name,
