@@ -106,7 +106,7 @@ namespace EasySave.Console;
         internal void RunExeBackupMenu()
         {
             var jobs = _backupController.GetAll();
-            var menu = new ConsoleUI.ExecuteBackupMenu(_texts);
+            var menu = new ConsoleUI.ExecuteBackupMenu(_texts,jobs);
             var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
             menu.Display();
             loop.RunLoop();

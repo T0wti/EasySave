@@ -31,6 +31,7 @@ internal class ExecuteBackupMenuInteraction
             if (input == "0")
             {
                 exit = true;
+                _runner.RunConsole();
                 continue;
             }
 
