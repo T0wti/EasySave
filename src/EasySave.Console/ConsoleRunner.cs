@@ -209,5 +209,6 @@ namespace EasySave.Console;
         internal void HandleExecuteMultiple(IEnumerable<int> ids)
         {
             _backupController.ExecuteMultiple(ids);
+            RunBaseMenu();
         }
     }
