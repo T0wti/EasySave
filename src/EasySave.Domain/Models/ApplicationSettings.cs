@@ -12,6 +12,7 @@ namespace EasySave.Domain.Models
             public int MaxBackupJobs { get; set; }
             public string LogDirectoryPath { get; set; }
             public string StateFileDirectoryPath { get; set; }
+            public int LogFormat { get; set; }
 
         // Default constructor
         public ApplicationSettings() { }

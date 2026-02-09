@@ -1,28 +1,53 @@
-﻿using EasySave.EasyLog.Interfaces;
+﻿using System;
+using EasySave.EasyLog.Interfaces;
 using EasySave.EasyLog.Writers;
 
 namespace EasySave.EasyLog
 {
+    // Singleton service for logging entries in JSON or XML format.
+    // Format codes: 0 = JSON, 1 = XML
     public class EasyLogService : ILogService
     {
         private static readonly Lazy<EasyLogService> _instance = new(() => new EasyLogService());
         public static EasyLogService Instance => _instance.Value;
-        
-        private JsonLogWriter? _writer;
-        
+
+        private ILogWriter? _writer;
+        private bool _isInitialized;
+
         private EasyLogService() { }
 
-        public void Initialize(string logDirectoryPath)
+        public void Initialize(string logDirectoryPath, int formatCode)
         {
-            if (_writer != null) return;
-            _writer = new JsonLogWriter(logDirectoryPath);
+            if (_isInitialized)
+                return; 
+
+            if (string.IsNullOrWhiteSpace(logDirectoryPath))
+                throw new ArgumentException("Log directory path cannot be null or empty.", nameof(logDirectoryPath));
+
+            _writer = formatCode switch
+            {
+                0 => new JsonLogWriter(logDirectoryPath),
+                // Future XML implementation
+                _ => throw new ArgumentException($"Unsupported log format code: {formatCode}")
+            };
+
+            _isInitialized = true;
         }
 
-        public void WriteJson(object entry)
+        // Writes a log entry using the configured writer.
+        public void Write(object entry)
         {
-            if (_writer == null)
+            if (!_isInitialized || _writer == null)
                 throw new InvalidOperationException("EasyLogService must be initialized via Initialize() before use.");
-            _writer.WriteJson(entry);
+
+            _writer.Write(entry);
+        }
+
+        // Resets the service state. Useful for changing configuration. (So, to run other format the controller must reset the configuration and initialize another with the good logformat)
+        internal void Reset()
+        {
+            _writer = null;
+            _isInitialized = false;
         }
     }
 }
