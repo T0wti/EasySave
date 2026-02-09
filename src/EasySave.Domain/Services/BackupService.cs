@@ -3,9 +3,6 @@ using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text.Json;
 
 namespace EasySave.Domain.Services
 {
@@ -23,19 +20,20 @@ namespace EasySave.Domain.Services
 
         // Constructor injects required services and initializes backup jobs list
         public BackupService(
-        IFileService fileService,
-        IBackupStrategy fullStrategy,
-        IBackupStrategy differentialStrategy,
-        IFileBackupService fileBackupService)
+            IFileService fileService,
+            IBackupStrategy fullStrategy,
+            IBackupStrategy differentialStrategy,
+            IFileBackupService fileBackupService,
+            IStateService stateService,     
+            ILogService logService)
         {
             _fileService = fileService;
-            _logService = EasyLogService.Instance;
-            _stateService = new StateService(FileStateService.Instance);
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
-
-            //_jobsFilePath = Path.Combine(easySavePath, "jobs.json");
             _fileBackupService = fileBackupService;
+            _stateService = stateService;
+            _logService = logService;
+
             _backupJobs = _fileBackupService.LoadJobs();
         }
 

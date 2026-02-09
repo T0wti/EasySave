@@ -1,6 +1,7 @@
 ﻿using EasySave.Domain.Interfaces;
 using EasySave.Domain.Services;
 using EasySave.EasyLog;
+using EasySave.EasyLog.Interfaces;
 
 namespace EasySave.Application.Controllers
 {
@@ -8,37 +9,49 @@ namespace EasySave.Application.Controllers
     {
         public static BackupController CreateBackupController()
         {
-            // Utilisation du Singleton pour la configuration
+            // 1. Load configuration via singleton
             IConfigurationService configService = ConfigurationService.Instance;
             var settings = configService.LoadSettings();
 
-            // INITIALISATION DES SINGLETONS
+            // 2. Initialize global singletons
             FileStateService.Instance.Initialize(settings.StateFileDirectoryPath);
             EasyLogService.Instance.Initialize(settings.LogDirectoryPath);
+
+            // 3. Singletons for persistent services
             IFileBackupService fileBackupService = FileBackupService.Instance;
+            ILogService logService = EasyLogService.Instance;
+            IStateService stateService = new StateService(FileStateService.Instance); // Could also be singleton if desired
 
-
-            // Instanciation des services classiques et Singletons
+            // 4. Instantiate regular services
             IFileService fileService = new FileService();
             IBackupStrategy fullStrategy = new FullBackupStrategy(fileService);
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
 
-            // Correction : Utilisation du Singleton pour FileBackupService
+            // 5. Create BackupService with **all dependencies injected**
+            IBackupService executor = new BackupService(
+                fileService,
+                fullStrategy,
+                diffStrategy,
+                fileBackupService,
+                stateService,   
+                logService     
+            );
 
-            // 4. Création de l'exécuteur (BackupService)
-            IBackupService executor = new BackupService(fileService, fullStrategy, diffStrategy, fileBackupService);
+            // 6. Create BackupManagerService with executor injected
+            IBackupManagerService manager = new BackupManagerService(
+                fileBackupService,
+                executor,
+                settings
+            );
 
-            // 5. Injection dans le BackupManagerService 
-            IBackupManagerService manager = new BackupManagerService(fileBackupService, executor, settings);
-
+            // 7. Return controller with fully wired dependencies
             return new BackupController(manager, executor);
         }
 
         public static ConfigurationController CreateConfigurationController()
         {
-            // Utilisation du Singleton ici aussi
             IConfigurationService configService = ConfigurationService.Instance;
             return new ConfigurationController(configService);
         }
-    }
+    } 
 }
