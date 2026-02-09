@@ -17,13 +17,20 @@ namespace EasySave.Console;
         {
             _backupController = backupController;
             _configController = configController;
-
+            
+            if (!_configController.FileExists())
+            {
+                _texts = new EnglishTextProvider();
+                _configController.EnsureConfigExists();
+                RunFirstStartMenu();
+            }
+            
             var settings = _configController.Load();
 
             _texts = settings.LanguageCode == 0
             ? new FrenchTextProvider()
             : new EnglishTextProvider();
-    }
+        }
 
         public void RunConsole()
         {
@@ -110,6 +117,14 @@ namespace EasySave.Console;
             var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
             menu.Display();
             loop.RunLoop();
+        }
+
+        private void RunFirstStartMenu()
+        {
+            var menu = new FirstStartMenu(_texts);
+            var loop = new FirstStartMenuInteraction(_texts, this);
+            menu.Display();
+            loop.FirstStartLoop();
         }
 
         internal void WrongInput()

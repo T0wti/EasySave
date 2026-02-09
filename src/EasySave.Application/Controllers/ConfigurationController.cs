@@ -35,4 +35,15 @@ public class ConfigurationController
 
         _configService.SaveSettings(settings);
     }
+
+    public bool FileExists()
+    {
+        var _exist = _configService.FileExists();
+        return _exist;
+    }
+
+    public void EnsureConfigExists()
+    {
+        _configService.EnsureConfigExists();
+    }
 }

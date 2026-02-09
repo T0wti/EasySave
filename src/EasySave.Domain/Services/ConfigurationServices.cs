@@ -38,9 +38,7 @@ public class ConfigurationService : IConfigurationService
     {
         if (!File.Exists(_configFilePath))
         {
-            var defaultSettings = GetDefaultSettings();
-            SaveSettings(defaultSettings);
-            return defaultSettings;
+            return GetDefaultSettings(); 
         }
 
         try
@@ -55,10 +53,23 @@ public class ConfigurationService : IConfigurationService
         }
     }
 
+    public void EnsureConfigExists()
+    {
+        if (!File.Exists(_configFilePath))
+        {
+            SaveSettings(GetDefaultSettings());
+        }
+    }
+
     public void SaveSettings(ApplicationSettings settings)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(settings, options);
         File.WriteAllText(_configFilePath, json);
+    }
+
+    public bool FileExists()
+    {
+        return File.Exists(_configFilePath);
     }
 }
