@@ -1,6 +1,7 @@
 ﻿using EasySave.Application.DTOs;
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
+using EasySave.EasyLog;
 
 namespace EasySave.Application.Controllers
 {
@@ -32,7 +33,20 @@ namespace EasySave.Application.Controllers
             _configService.SaveSettings(settings);
         }
 
-        //Change log format future implementation here
+        public void ChangeLogFormat(int formatCode)
+        {
+            if (formatCode != 0 && formatCode != 1)
+                throw new ArgumentException("Format code must be 0 (JSON) or 1 (XML)");
+
+            var settings = _configService.LoadSettings();
+
+            EasyLogService.Instance.Reset();
+            EasyLogService.Instance.Initialize(settings.LogDirectoryPath, formatCode);
+
+            settings.LogFormat = formatCode;
+            _configService.SaveSettings(settings);
+        }
+        
 
         // Check if configuration file exists
         public bool FileExists()
