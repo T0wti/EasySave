@@ -73,10 +73,11 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ExeBackupMenuDetailTitle => _defaultString;
         public virtual string ExeBackupInProgress => _defaultString;
         public virtual string ExeBackupCompleted => _defaultString;
-
-    public virtual string LogFormatMenuTitle => _defaultString;
-    public virtual string LogFormat1 => _defaultString;
-    public virtual string LogFormat2 => _defaultString;
-    public virtual string LogFormatChanged => _defaultString;
-    public virtual string CurrentLogFormat => _defaultString;
-}
+        
+        // Change Log Format Menu
+        public virtual string LogFormatMenuTitle => _defaultString;
+        public virtual string LogFormat1 => _defaultString;
+        public virtual string LogFormat2 => _defaultString;
+        public virtual string LogFormatChanged => _defaultString;
+        public virtual string CurrentLogFormat => _defaultString;
+    }

@@ -61,7 +61,7 @@ public interface ITextProvider
     string ExeBackupInProgress { get; }
     string ExeBackupCompleted { get; }
 
-    // New menu for the log format
+    // Change Log Format Menu
     string LogFormatMenuTitle { get; }
     string LogFormat1 { get; }
     string LogFormat2 { get; }

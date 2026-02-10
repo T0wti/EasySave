@@ -59,10 +59,10 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string ExeBackupInProgress => Format("Sauvegarde en cours...");
     public override string ExeBackupCompleted => Format("Sauvegarde terminée.");
 
-
-    public override string LogFormatMenuTitle => "=== Changer le format des logs ===";
-    public override string LogFormat1 => "1. JSON";
-    public override string LogFormat2 => "2. XML";
-    public override string LogFormatChanged => "Format de log modifié avec succès !";
-    public override string CurrentLogFormat => "Format actuel : ";
+    // Change Log Format Menu
+    public override string LogFormatMenuTitle => Format("-- Changer le format des logs --");
+    public override string LogFormat1 => Format("1. JSON");
+    public override string LogFormat2 => Format("2. XML");
+    public override string LogFormatChanged => Format("Format de log modifié avec succès !");
+    public override string CurrentLogFormat => Format("Format actuel : ");
 }

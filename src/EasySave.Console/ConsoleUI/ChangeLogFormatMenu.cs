@@ -18,7 +18,6 @@ internal class ChangeLogFormatMenu : GeneralContent
         Header();
         System.Console.WriteLine(_texts.LogFormatMenuTitle);
         System.Console.WriteLine();
-
         System.Console.WriteLine(_texts.LogFormat1);
         System.Console.WriteLine(_texts.LogFormat2);
         Footer();
