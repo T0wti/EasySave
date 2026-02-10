@@ -13,6 +13,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string WrongInput => "Invalid input, please try again: ";
     public override string ListBackup => Format("4. List all file backups");
     public override string ExeBackup => Format("5. Execute a file backup");
+    public override string LogFormat => Format("8. Change log format");
 
     // Creation BackupMenu 
 

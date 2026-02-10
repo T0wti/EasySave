@@ -29,6 +29,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string WrongInput => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
+        public virtual string LogFormat => _defaultString;
 
     //Creation menu
 

@@ -13,6 +13,7 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
     public override string ListBackup => Format("4. Lister les sauvegardes de fichiers");
     public override string ExeBackup => Format("5. Exécuter une sauvegarde de fichiers");
+    public override string LogFormat => Format("8. Changer le format des logs");
 
     // Creation BackupMenu 
 

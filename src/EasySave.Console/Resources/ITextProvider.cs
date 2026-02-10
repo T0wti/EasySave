@@ -17,6 +17,7 @@ public interface ITextProvider
     string LanguageOption { get; }
     string ListBackup { get; }
     string ExeBackup { get; }
+    string LogFormat { get; }
     // Options for the creation 
 
     string EnterBackupName { get; }

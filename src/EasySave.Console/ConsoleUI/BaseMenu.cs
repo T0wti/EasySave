@@ -24,6 +24,7 @@ internal class BaseMenu : GeneralContent
         System.Console.WriteLine(_texts.ListBackup);
         System.Console.WriteLine(_texts.ExeBackup);
         System.Console.WriteLine();
+        System.Console.WriteLine(_texts.LogFormat);
         System.Console.WriteLine(_texts.LanguageOption);
         Footer();
     }
