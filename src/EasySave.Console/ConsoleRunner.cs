@@ -134,9 +134,17 @@ namespace EasySave.Console;
             menu.Display();
             loop.FirstStartLoop();
         }
-        
-        // Function to show an error in the user input
-        internal void WrongInput()
+
+    internal void RunChangeLogFormatMenu()
+    {
+        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts);
+        var loop = new Commands.ChangeLogFormatMenuInteraction(this);
+        menu.Display();
+        loop.RunLoop();
+    }
+
+    // Function to show an error in the user input
+    internal void WrongInput()
         {
             System.Console.WriteLine(_texts.WrongInput);
         }
@@ -223,4 +231,15 @@ namespace EasySave.Console;
             RunExecuteBackupMenuDetail(1);
             RunBaseMenu();
         }
+    internal void HandleChangeLogFormat(int formatCode)
+    {
+     
+            _configController.ChangeLogFormat(formatCode);
+            System.Console.WriteLine(_texts.LogFormatChanged);
+            System.Console.WriteLine();
+            System.Console.ReadLine();
+    
+        RunBaseMenu();
     }
+
+}

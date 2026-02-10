@@ -60,6 +60,13 @@ public interface ITextProvider
     string ExeBackupMenuDetailTitle { get; }
     string ExeBackupInProgress { get; }
     string ExeBackupCompleted { get; }
+
+    // New menu for the log format
+    string LogFormatMenuTitle { get; }
+    string LogFormat1 { get; }
+    string LogFormat2 { get; }
+    string LogFormatChanged { get; }
+    string CurrentLogFormat { get; }
 }
 
 

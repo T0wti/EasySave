@@ -44,6 +44,10 @@ internal class BaseMenuInteraction
                     exit = true;
                     _runner.RunExeBackupMenu();
                     break;
+                case "8":
+                    exit = true;
+                    _runner.RunChangeLogFormatMenu(); // Re do the menu :) !
+                    break;
                 case "9":
                     exit = true;
                     _runner.RunChangeLanguageMenu();

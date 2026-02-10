@@ -58,4 +58,10 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ExeBackupMenuDetailTitle => Format("-- Backup Status --");
     public override string ExeBackupInProgress => Format("Backup in progress...");
     public override string ExeBackupCompleted => Format("Backup complete.");
+
+    public override string LogFormatMenuTitle => "=== Change Log Format ===";
+    public override string LogFormat1 => "1. JSON";
+    public override string LogFormat2 => "2. XML";
+    public override string LogFormatChanged => "Log format changed successfully!";
+    public override string CurrentLogFormat => "Current format: ";
 }

@@ -58,4 +58,11 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string ExeBackupMenuDetailTitle => Format("-- État de la sauvegarde --");
     public override string ExeBackupInProgress => Format("Sauvegarde en cours...");
     public override string ExeBackupCompleted => Format("Sauvegarde terminée.");
+
+
+    public override string LogFormatMenuTitle => "=== Changer le format des logs ===";
+    public override string LogFormat1 => "1. JSON";
+    public override string LogFormat2 => "2. XML";
+    public override string LogFormatChanged => "Format de log modifié avec succès !";
+    public override string CurrentLogFormat => "Format actuel : ";
 }
