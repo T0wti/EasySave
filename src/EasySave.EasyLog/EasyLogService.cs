@@ -16,6 +16,13 @@ namespace EasySave.EasyLog
 
         private EasyLogService() { }
 
+
+        //Surcharge pour rester compatible
+        public void Initialize(string logDirectoryPath, LogFormat format)
+        {
+            Initialize(logDirectoryPath, (int)format);
+        }
+
         public void Initialize(string logDirectoryPath, int formatCode)
         {
             if (_isInitialized)

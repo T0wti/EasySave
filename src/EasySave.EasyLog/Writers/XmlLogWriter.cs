@@ -61,10 +61,9 @@ namespace EasySave.EasyLog.Writers
                 }
                 catch (Exception ex)
                 {
-                    // ✅ AJOUT : Afficher l'erreur pour debug
                     System.Console.WriteLine($"[XmlLogWriter ERROR] {ex.Message}");
                     System.Console.WriteLine($"Stack: {ex.StackTrace}");
-                    throw; // Re-throw pour ne pas masquer l'erreur
+                    throw; 
                 }
             }
         }
@@ -88,7 +87,6 @@ namespace EasySave.EasyLog.Writers
             }
             catch (Exception ex)
             {
-                // ✅ AJOUT : Afficher l'erreur de sérialisation
                 System.Console.WriteLine($"[XML Serialization ERROR for type {typeof(T).Name}] {ex.Message}");
                 if (ex.InnerException != null)
                     System.Console.WriteLine($"Inner: {ex.InnerException.Message}");

@@ -33,20 +33,24 @@ namespace EasySave.Application.Controllers
             _configService.SaveSettings(settings);
         }
 
-        public void ChangeLogFormat(int formatCode)
+        // 
+        public void ChangeLogFormat(int code)
         {
-            if (formatCode != 0 && formatCode != 1)
-                throw new ArgumentException("Format code must be 0 (JSON) or 1 (XML)");
 
+            var format = ConvertCodeToLogFormat(code);
             var settings = _configService.LoadSettings();
 
             EasyLogService.Instance.Reset();
-            EasyLogService.Instance.Initialize(settings.LogDirectoryPath, formatCode);
+            EasyLogService.Instance.Initialize(
+                settings.LogDirectoryPath,
+                format
+            );
 
-            settings.LogFormat = formatCode;
+            settings.LogFormat = (int)format;
             _configService.SaveSettings(settings);
         }
-        
+
+
 
         // Check if configuration file exists
         public bool FileExists()
@@ -70,6 +74,11 @@ namespace EasySave.Application.Controllers
         private static Language ConvertCodeToLanguage(int code)
         {
             return code == 0 ? Language.French : Language.English;
+        }
+
+        private static LogFormat ConvertCodeToLogFormat(int code)
+        {
+            return code == 0 ? LogFormat.Json : LogFormat.Xml;
         }
     }
 }
