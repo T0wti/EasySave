@@ -50,7 +50,11 @@ namespace EasySave.Application.Controllers
             _configService.SaveSettings(settings);
         }
 
-
+        public LogFormat GetLogFormat()
+        {
+            var settings = _configService.LoadSettings();
+            return ConvertCodeToLogFormat(Convert.ToInt32(settings.LogFormat.ToString()));
+        }
 
         // Check if configuration file exists
         public bool FileExists()

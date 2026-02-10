@@ -13,6 +13,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string WrongInput => "Invalid input, please try again: ";
     public override string ListBackup => Format("4. List all file backups");
     public override string ExeBackup => Format("5. Execute a file backup");
+    public override string LogFormat => Format("8. Change log format");
 
     // Creation BackupMenu 
 
@@ -59,9 +60,10 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ExeBackupInProgress => Format("Backup in progress...");
     public override string ExeBackupCompleted => Format("Backup complete.");
 
-    public override string LogFormatMenuTitle => "=== Change Log Format ===";
-    public override string LogFormat1 => "1. JSON";
-    public override string LogFormat2 => "2. XML";
-    public override string LogFormatChanged => "Log format changed successfully!";
-    public override string CurrentLogFormat => "Current format: ";
+    // Change Log Format Menu
+    public override string LogFormatMenuTitle => Format("-- Change Log Format --");
+    public override string LogFormat1 => Format("1. JSON");
+    public override string LogFormat2 => Format("2. XML");
+    public override string LogFormatChanged => Format("Log format changed successfully!");
+    public override string CurrentLogFormat => Format("Current format: ");
 }

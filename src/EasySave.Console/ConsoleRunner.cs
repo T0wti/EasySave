@@ -137,7 +137,7 @@ namespace EasySave.Console;
 
     internal void RunChangeLogFormatMenu()
     {
-        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts);
+        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts,_configController);
         var loop = new Commands.ChangeLogFormatMenuInteraction(this);
         menu.Display();
         loop.RunLoop();
