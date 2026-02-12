@@ -1,6 +1,6 @@
 ﻿namespace EasySave.Domain.Exceptions
 {
-    // Base class for all exceptions related to backup job management (create, edit, delete, execute).
+    // Base class for all exceptions related to backup job management (create, edit, delete, execute)
     public class BackupJobException : EasySaveException
     {
         public BackupJobException(string message)
@@ -10,7 +10,7 @@
             : base(message, innerException) { }
     }
 
-    // Thrown when a backup job cannot be found by its ID.
+    // Thrown when a backup job cannot be found by its ID
     public class BackupJobNotFoundException : BackupJobException
     {
         public int JobId { get; }
@@ -22,7 +22,7 @@
         }
     }
 
-    // Thrown when trying to create or rename a job with a name that already exists.
+    // Thrown when trying to create or rename a job with a name that already exists
     public class BackupJobAlreadyExistsException : BackupJobException
     {
         public string JobName { get; }
@@ -34,7 +34,7 @@
         }
     }
 
-    // Thrown when the maximum number of allowed backup jobs has been reached.
+    // Thrown when the maximum number of allowed backup jobs has been reached
     public class BackupJobLimitReachedException : BackupJobException
     {
         public int Limit { get; }

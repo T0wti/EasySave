@@ -34,7 +34,8 @@ namespace EasySave.Domain.Services
                 MaxBackupJobs = 5,
                 LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
                 StateFileDirectoryPath = Path.Combine(_baseAppPath, "State"),
-                LogFormat = 0
+                LogFormat = 0,
+                BusinessSoftwareName = "CalculatorApp"
             };
         }
 

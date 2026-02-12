@@ -1,7 +1,6 @@
 ﻿namespace EasySave.Domain.Exceptions
 {
-    // Thrown when a backup job fails during execution (e.g. a file could not be copied).
-    // Always wraps the original exception as InnerException to preserve the full error context.
+    // Thrown when a backup job fails during execution 
     public class BackupExecutionException : EasySaveException
     {
         public string BackupName { get; }

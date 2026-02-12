@@ -13,6 +13,7 @@ namespace EasySave.Domain.Models
             public string LogDirectoryPath { get; set; }
             public string StateFileDirectoryPath { get; set; }
             public int LogFormat { get; set; }
+            public string? BusinessSoftwareName { get; set; }
 
         // Default constructor
         public ApplicationSettings() { }

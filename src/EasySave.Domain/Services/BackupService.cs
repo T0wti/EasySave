@@ -15,6 +15,7 @@ namespace EasySave.Domain.Services
         private readonly IStateService _stateService;
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
+        private readonly IBusinessSoftwareService _businessSoftwareService;
 
 
         // Constructor injects required services and initializes backup jobs list
@@ -23,19 +24,25 @@ namespace EasySave.Domain.Services
             IBackupStrategy fullStrategy,
             IBackupStrategy differentialStrategy,
             IStateService stateService,     
-            ILogService logService)
+            ILogService logService,
+            IBusinessSoftwareService businessSoftwareService)
         {
             _fileService = fileService;
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
             _stateService = stateService;
             _logService = logService;
+            _businessSoftwareService = businessSoftwareService;
 
         }
 
         // Executes a single backup job
         public void ExecuteBackup(BackupJob job)
         {
+
+            if (_businessSoftwareService.IsBusinessSoftwareRunning())
+                throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
+
             // Select backup strategy based on job type
             IBackupStrategy strategy = job.Type == BackupType.Full
             ? _fullStrategy
