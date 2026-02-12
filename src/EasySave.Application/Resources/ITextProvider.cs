@@ -9,6 +9,7 @@ public interface ITextProvider
     string AskEntryFromUser { get; }
     string ExitOption { get; }
     string WrongInput { get; }
+    string Exit { get; }
     
     // Options in the base menu | Argan
     string DeleteBackup { get; }

@@ -30,6 +30,8 @@
             <!-- Settings -->
             <Button Content="{Binding Settings}" Command="{Binding NavigateToSettingsCommand}"/>
             
+            <!-- Exit -->
+            <Button Content="{Binding Exit}"></Button>
         </StackPanel>
     </Border>
 

@@ -25,6 +25,9 @@
             <Button Content="{Binding LogFormat1}" />
             <Button Content="{Binding LogFormat2}"/>
             
+            <!-- Exit -->
+            <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
+            
         </StackPanel>
     </Border>
 

@@ -15,6 +15,7 @@ public partial class BaseMenu : ViewModelBase
     public string ListBackup { get; }
     public string ExeBackup { get; }
     public string Settings { get; }
+    public string Exit { get; }
     
     public BaseMenu(MainWindowViewModel mainWindow) : base(mainWindow)
     {
@@ -25,6 +26,7 @@ public partial class BaseMenu : ViewModelBase
         ListBackup = Texts.ListBackup;
         ExeBackup = Texts.ExeBackup;
         Settings = Texts.SettingsMenu;
+        Exit = Texts.Exit;
 
         NavigateToSettingsCommand = new RelayCommand(() =>
         {
