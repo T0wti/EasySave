@@ -41,6 +41,6 @@ public abstract class ViewModelBase : ObservableObject
 
     protected void NavigateToBase()
     {
-        MainWindow.CurrentView = new BaseMenu(MainWindow);
+        MainWindow.CurrentView = new BaseMenuViewModel(MainWindow);
     }
 }

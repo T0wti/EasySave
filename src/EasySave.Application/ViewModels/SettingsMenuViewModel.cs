@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace EasySave.Application.ViewModels;
 
-public partial class SettingsMenu : ViewModelBase
+public partial class SettingsMenuViewModel : ViewModelBase
 {
     // Commands 
     public ICommand ExitCommand { get; }
@@ -16,7 +16,7 @@ public partial class SettingsMenu : ViewModelBase
     public string LogFormat2 { get; }
     public string Exit { get; }
     
-    public SettingsMenu(MainWindowViewModel mainWindow) : base(mainWindow)
+    public SettingsMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
         Title = Texts.SettingsMenuTitle;
         Language1 = Texts.Language1;

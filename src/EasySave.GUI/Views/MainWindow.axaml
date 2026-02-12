@@ -9,11 +9,13 @@
         Height="500">
 
     <Window.DataTemplates>
-        <DataTemplate DataType="{x:Type vm:BaseMenu}">
+        <DataTemplate DataType="{x:Type vm:BaseMenuViewModel}">
             <views:BaseMenu/>
         </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type vm:SettingsMenu}">
+        <DataTemplate DataType="{x:Type vm:ListBackupMenuViewModel}">
+            <views:ListBackupMenu/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsMenuViewModel}">
             <views:SettingsMenu/>
         </DataTemplate>
     </Window.DataTemplates>

@@ -14,7 +14,7 @@ public class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel()
     {
-        CurrentView = new BaseMenu(this);
+        CurrentView = new BaseMenuViewModel(this);
     }
 
 }

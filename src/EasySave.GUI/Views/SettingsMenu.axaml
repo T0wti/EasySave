@@ -5,10 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.SettingsMenu"
-             x:DataType="vm:SettingsMenu">
+             x:DataType="vm:SettingsMenuViewModel">
 
     <Design.DataContext>
-        <vm:SettingsMenu/>
+        <vm:SettingsMenuViewModel/>
     </Design.DataContext>
 
     <Border Padding="30">
