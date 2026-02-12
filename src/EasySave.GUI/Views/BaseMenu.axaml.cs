@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace EasySave.GUI.Views;
 
-public partial class MainWindow : Window
+public partial class BaseMenu : Window
 {
-    public MainWindow()
+    public BaseMenu()
     {
         InitializeComponent();
     }

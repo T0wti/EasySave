@@ -6,6 +6,7 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 using EasySave.GUI.Views;
 using EasySave.Application.ViewModels;
+using BaseMenu = EasySave.GUI.Views.BaseMenu;
 
 namespace EasySave.GUI;
 
@@ -23,9 +24,9 @@ public partial class App : Avalonia.Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
+            desktop.MainWindow = new BaseMenu
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new Application.ViewModels.BaseMenu(),
             };
         }
 
