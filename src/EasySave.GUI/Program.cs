@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace EasySave.UI;
+namespace EasySave.GUI;
 
 sealed class Program
 {

@@ -4,10 +4,10 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
-using EasySave.UI.ViewModels;
-using EasySave.UI.Views;
+using EasySave.GUI.Views;
+using EasySave.GUI.ViewModels;
 
-namespace EasySave.UI;
+namespace EasySave.GUI;
 
 public partial class App : Avalonia.Application
 {
