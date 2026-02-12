@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace EasySave.UI.Views;
+namespace EasySave.GUI.Views;
 
 public partial class MainWindow : Window
 {

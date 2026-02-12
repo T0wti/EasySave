@@ -1,4 +1,4 @@
-﻿namespace EasySave.UI.ViewModels;
+﻿namespace EasySave.Application.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
