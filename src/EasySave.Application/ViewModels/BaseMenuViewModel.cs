@@ -5,9 +5,10 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace EasySave.Application.ViewModels;
 
-public partial class BaseMenu : ViewModelBase
+public partial class BaseMenuViewModel : ViewModelBase
 {
     public ICommand NavigateToSettingsCommand { get; }
+    public ICommand NavigateToListBackupCommand { get; }
     public ICommand ExitCommand { get; }
 
     public string Title { get; }
@@ -19,7 +20,7 @@ public partial class BaseMenu : ViewModelBase
     public string Settings { get; }
     public string Exit { get; }
     
-    public BaseMenu(MainWindowViewModel mainWindow) : base(mainWindow)
+    public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
         Title = Texts.MainMenuTitle;
         CreateBackup = Texts.CreateBackup;
@@ -32,7 +33,11 @@ public partial class BaseMenu : ViewModelBase
 
         NavigateToSettingsCommand = new RelayCommand(() =>
         {
-            NavigateTo(new SettingsMenu(mainWindow));
+            NavigateTo(new SettingsMenuViewModel(mainWindow));
+        });
+        NavigateToListBackupCommand = new RelayCommand(() =>
+        {
+            NavigateTo(new ListBackupMenuViewModel(mainWindow));
         });
         ExitCommand = new RelayCommand(OnExit);
     }

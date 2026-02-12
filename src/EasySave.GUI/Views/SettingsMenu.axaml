@@ -5,10 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.SettingsMenu"
-             x:DataType="vm:SettingsMenu">
+             x:DataType="vm:SettingsMenuViewModel">
 
     <Design.DataContext>
-        <vm:SettingsMenu/>
+        <vm:SettingsMenuViewModel/>
     </Design.DataContext>
 
     <Border Padding="30">
@@ -20,10 +20,10 @@
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"/>
 
-            <Button Content="{Binding Language1}" />
-            <Button Content="{Binding Language2}" />
-            <Button Content="{Binding LogFormat1}" />
-            <Button Content="{Binding LogFormat2}"/>
+            <Button Content="{Binding Language1}" Command="{Binding Language1Command}" />
+            <Button Content="{Binding Language2}" Command="{Binding Language2Command}" />
+            <Button Content="{Binding LogFormat1}" Command="{Binding LogFormat1Command}" />
+            <Button Content="{Binding LogFormat2}" Command="{Binding LogFormat2Command}"/>
             
             <!-- Exit -->
             <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>

@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:EasySave.Application.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EasySave.GUI.Views.BackupDetailMenu"
+             x:DataType="vm:BackupDetailMenuViewModel">
+    
+    <StackPanel Spacing="20" Margin="30">
+        <!-- Title -->
+        <TextBlock Text="{Binding Title}" 
+                   FontSize="24" 
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"/>
+        
+        <!-- Job Details -->
+        <TextBlock Text="{Binding BackupName}"></TextBlock>
+        <TextBlock Text="{Binding BackupSourcePath}"></TextBlock>
+        <TextBlock Text="{Binding BackupTargetPath}"></TextBlock>
+        <TextBlock Text="{Binding BackupType}"></TextBlock>
+        
+        <!-- Exit -->
+        <Button Content="{Binding Exit}" 
+                Command="{Binding NavigateBackCommand}" 
+                HorizontalAlignment="Center"/>
+    </StackPanel>
+  
+</UserControl>
