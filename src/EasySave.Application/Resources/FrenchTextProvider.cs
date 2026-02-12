@@ -11,9 +11,11 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string EditBackup => "3. Modifier une sauvegarde de fichiers";
     public override string DeleteBackup => "2. Supprimer une sauvegarde de fichiers";
     public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
+    public override string Exit => "Quitter";
     public override string ListBackup => "4. Lister les sauvegardes de fichiers";
     public override string ExeBackup => "5. Exécuter une sauvegarde de fichiers";
     public override string LogFormat => "8. Changer le format des logs";
+    public override string SettingsMenu => "Réglages";
 
     // Creation BackupMenu 
 
@@ -66,4 +68,7 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string LogFormat2 => "2. XML";
     public override string LogFormatChanged => "Format de log modifié avec succès !";
     public override string CurrentLogFormat => "Format actuel : ";
+    
+    // Settings menu
+    public override string SettingsMenuTitle => "Paramètres d'Easy Save";
 }

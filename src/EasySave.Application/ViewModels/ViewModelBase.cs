@@ -10,9 +10,13 @@ public abstract class ViewModelBase : ObservableObject
     
     private readonly BackupController _backupController;
     private readonly ConfigurationController _configController;
+    
+    protected MainWindowViewModel MainWindow { get; private set; }
 
-    public ViewModelBase()
+    public ViewModelBase(MainWindowViewModel mainWindow)
     {
+        MainWindow = mainWindow;
+        
         _backupController = ControllerFactory.CreateBackupController();
         _configController = ControllerFactory.CreateConfigurationController();
         
@@ -28,5 +32,15 @@ public abstract class ViewModelBase : ObservableObject
         Texts = settings.LanguageCode == 0
             ? new FrenchTextProvider()
             : new EnglishTextProvider();
+    }
+
+    protected void NavigateTo(ViewModelBase viewModel)
+    {
+        MainWindow.CurrentView = viewModel;
+    }
+
+    protected void NavigateToBase()
+    {
+        MainWindow.CurrentView = new BaseMenu(MainWindow);
     }
 }

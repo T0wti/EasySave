@@ -9,6 +9,7 @@ public interface ITextProvider
     string AskEntryFromUser { get; }
     string ExitOption { get; }
     string WrongInput { get; }
+    string Exit { get; }
     
     // Options in the base menu | Argan
     string DeleteBackup { get; }
@@ -18,6 +19,7 @@ public interface ITextProvider
     string ListBackup { get; }
     string ExeBackup { get; }
     string LogFormat { get; }
+    string SettingsMenu { get; }
     // Options for the creation 
 
     string EnterBackupName { get; }
@@ -68,6 +70,9 @@ public interface ITextProvider
     string LogFormat2 { get; }
     string LogFormatChanged { get; }
     string CurrentLogFormat { get; }
+    
+    // Settings menu
+    string SettingsMenuTitle { get; }
 }
 
 

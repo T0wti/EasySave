@@ -31,9 +31,11 @@ public class GeneralTextProvider : ITextProvider
         public virtual string DeleteBackup => _defaultString;
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
+        public virtual string Exit => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
+        public virtual string SettingsMenu => _defaultString;
 
     //Creation menu
 
@@ -85,4 +87,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string LogFormat2 => _defaultString;
         public virtual string LogFormatChanged => _defaultString;
         public virtual string CurrentLogFormat => _defaultString;
+        
+        // Settings menu
+        public virtual string SettingsMenuTitle => _defaultString;
     }

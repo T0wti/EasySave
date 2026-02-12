@@ -1,17 +1,25 @@
-﻿namespace EasySave.Application.ViewModels;
+﻿using System.Windows.Input;
+using Avalonia.Controls.ApplicationLifetimes;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace EasySave.Application.ViewModels;
 
 public partial class BaseMenu : ViewModelBase
 {
+    public ICommand NavigateToSettingsCommand { get; }
+    public ICommand ExitCommand { get; }
+
     public string Title { get; }
     public string CreateBackup { get; }
     public string DeleteBackup { get; }
     public string EditBackup { get; }
     public string ListBackup { get; }
     public string ExeBackup { get; }
-    public string LogFormat { get; }
-    public string LanguageOption { get; }
+    public string Settings { get; }
+    public string Exit { get; }
     
-    public BaseMenu()
+    public BaseMenu(MainWindowViewModel mainWindow) : base(mainWindow)
     {
         Title = Texts.MainMenuTitle;
         CreateBackup = Texts.CreateBackup;
@@ -19,8 +27,22 @@ public partial class BaseMenu : ViewModelBase
         EditBackup = Texts.EditBackup;
         ListBackup = Texts.ListBackup;
         ExeBackup = Texts.ExeBackup;
-        LogFormat = Texts.LogFormat;
-        LanguageOption = Texts.LanguageOption;
+        Settings = Texts.SettingsMenu;
+        Exit = Texts.Exit;
+
+        NavigateToSettingsCommand = new RelayCommand(() =>
+        {
+            NavigateTo(new SettingsMenu(mainWindow));
+        });
+        ExitCommand = new RelayCommand(OnExit);
+    }
+
+    private void OnExit()
+    {
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Shutdown();
+        }
     }
 
 }

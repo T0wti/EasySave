@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:EasySave.Application.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="EasySave.GUI.Views.SettingsMenu"
+             x:DataType="vm:SettingsMenu">
+
+    <Design.DataContext>
+        <vm:SettingsMenu/>
+    </Design.DataContext>
+
+    <Border Padding="30">
+        <StackPanel Spacing="12">
+
+            <TextBlock Text="{Binding Title}"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+
+            <Button Content="{Binding Language1}" />
+            <Button Content="{Binding Language2}" />
+            <Button Content="{Binding LogFormat1}" />
+            <Button Content="{Binding LogFormat2}"/>
+            
+            <!-- Exit -->
+            <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
+            
+        </StackPanel>
+    </Border>
+
+</UserControl>

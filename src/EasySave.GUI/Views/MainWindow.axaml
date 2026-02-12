@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:EasySave.Application.ViewModels"
+        xmlns:views="using:EasySave.GUI.Views"
+        x:Class="EasySave.GUI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="EasySave"
+        Width="600"
+        Height="500">
+
+    <Window.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:BaseMenu}">
+            <views:BaseMenu/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vm:SettingsMenu}">
+            <views:SettingsMenu/>
+        </DataTemplate>
+    </Window.DataTemplates>
+
+    <ContentControl Content="{Binding CurrentView}"/>
+</Window>
