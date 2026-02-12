@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Application.Resources;
 
 namespace EasySave.Application.ViewModels;
 
@@ -7,6 +8,10 @@ public partial class SettingsMenuViewModel : ViewModelBase
 {
     // Commands 
     public ICommand ExitCommand { get; }
+    public ICommand Language1Command { get; }
+    public ICommand Language2Command { get; }
+    public ICommand LogFormat1Command { get; }
+    public ICommand LogFormat2Command { get; }
 
     // String to display
     public string Title { get; }
@@ -24,6 +29,26 @@ public partial class SettingsMenuViewModel : ViewModelBase
         LogFormat1 = Texts.LogFormat1;
         LogFormat2 = Texts.LogFormat2;
         Exit = Texts.Exit;
+
+        // Handle the language change
+        Language1Command = new RelayCommand(() =>
+        {
+            ChangeLanguage(new FrenchTextProvider());
+        });
+        Language2Command = new RelayCommand(() =>
+        {
+            ChangeLanguage(new EnglishTextProvider());
+        });
+        
+        // Handle the log format change
+        LogFormat1Command = new RelayCommand(() =>
+        {
+            ChangeLogFormat(0);
+        });
+        LogFormat2Command = new RelayCommand(() =>
+        {
+            ChangeLogFormat(1);
+        });
 
         ExitCommand = new RelayCommand(NavigateToBase);
     }
