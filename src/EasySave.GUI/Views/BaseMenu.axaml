@@ -15,7 +15,7 @@
                        Margin="0,0,0,20"/>
 
             <!-- Backup actions -->
-            <Button Content="{Binding CreateBackup}" />
+            <Button Content="{Binding CreateBackup}" Command="{Binding NavigateToCreateBackupCommand}" />
             <Button Content="{Binding DeleteBackup}" />
             <Button Content="{Binding EditBackup}" />
             <Button Content="{Binding ListBackup}" Command="{Binding NavigateToListBackupCommand}"/>

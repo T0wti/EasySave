@@ -9,6 +9,7 @@ public partial class BaseMenuViewModel : ViewModelBase
 {
     public ICommand NavigateToSettingsCommand { get; }
     public ICommand NavigateToListBackupCommand { get; }
+    public ICommand NavigateToCreateBackupCommand { get; }
     public ICommand ExitCommand { get; }
 
     public string Title { get; }
@@ -38,6 +39,10 @@ public partial class BaseMenuViewModel : ViewModelBase
         NavigateToListBackupCommand = new RelayCommand(() =>
         {
             NavigateTo(new ListBackupMenuViewModel(mainWindow));
+        });
+        NavigateToCreateBackupCommand = new RelayCommand(() =>
+        {
+            NavigateTo(new CreateBackupMenuViewModel(mainWindow));
         });
         ExitCommand = new RelayCommand(OnExit);
     }

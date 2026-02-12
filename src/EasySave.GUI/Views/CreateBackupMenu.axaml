@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:EasySave.Application.ViewModels"
+             x:Class="EasySave.GUI.Views.CreateBackupMenu"
+             x:DataType="vm:CreateBackupMenuViewModel">
+
+    <ScrollViewer>
+        <StackPanel Margin="30" Spacing="20">
+
+            <!-- Title -->
+            <TextBlock Text="{Binding Title}"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+
+            <!-- Name -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding AskName}"/>
+                <TextBox Text="{Binding BackupName}"
+                         Watermark="Backup name"/>
+            </StackPanel>
+
+            <!-- Source -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding AskSource}"/>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <TextBox Grid.Column="0"
+                             Text="{Binding SourcePath}"
+                             Watermark="Select source folder"/>
+                    <Button Grid.Column="1"
+                            Content="Browse"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- Target -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding AskTarget}"/>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <TextBox Grid.Column="0"
+                             Text="{Binding TargetPath}"
+                             Watermark="Select target folder"/>
+                    <Button Grid.Column="1"
+                            Content="Browse"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- Type -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding AskType}"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="30">
+
+                    <RadioButton Content="Full"
+                                 GroupName="BackupType"
+                                 Command="{Binding SetFullTypeCommand}"/>
+
+                    <RadioButton Content="Differential"
+                                 GroupName="BackupType"
+                                 Command="{Binding SetDifferentialTypeCommand}"/>
+
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Confirm -->
+            <Button Content="{Binding Confirm}"
+                    Command="{Binding CreateBackupCommand}"
+                    HorizontalAlignment="Center"
+                    Width="150"/>
+
+            <!-- Exit -->
+            <Button Content="Back"
+                    Command="{Binding ExitCommand}"
+                    HorizontalAlignment="Center"
+                    Width="150"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

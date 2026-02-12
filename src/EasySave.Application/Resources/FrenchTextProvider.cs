@@ -12,13 +12,14 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string DeleteBackup => "2. Supprimer une sauvegarde de fichiers";
     public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
     public override string Exit => "Quitter";
+    public override string Confirm => "Confirmer";
     public override string ListBackup => "4. Lister les sauvegardes de fichiers";
     public override string ExeBackup => "5. Exécuter une sauvegarde de fichiers";
     public override string LogFormat => "8. Changer le format des logs";
     public override string SettingsMenu => "Réglages";
 
     // Creation BackupMenu 
-
+    public override string CreateBackupMenuTitle => "Créer une sauvegarde de fichiers";
     public override string EnterBackupName => "Veuillez entrer le nom de votre travail : ";
     public override string EnterSourcePath => "Veuillez entrer la source du dossier à sauvegarder (C:\\\\Users\\\\Downloads : ";
     public override string EnterTargetPath => "Veuillez entrer la destination où sauvegarder le dossier (C:\\\\Users\\\\Save ";

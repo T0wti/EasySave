@@ -32,13 +32,15 @@ public class GeneralTextProvider : ITextProvider
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
         public virtual string Exit => _defaultString;
+        public virtual string Confirm => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
         public virtual string SettingsMenu => _defaultString;
 
-    //Creation menu
+        //Creation menu
 
+        public virtual string CreateBackupMenuTitle => _defaultString;
         public virtual string EnterBackupName => _defaultString;
         public virtual string EnterSourcePath => _defaultString;
         public virtual string EnterTargetPath => _defaultString;
