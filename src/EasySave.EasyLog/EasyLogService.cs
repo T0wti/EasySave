@@ -16,6 +16,13 @@ namespace EasySave.EasyLog
 
         private EasyLogService() { }
 
+
+        //Surcharge pour rester compatible
+        public void Initialize(string logDirectoryPath, LogFormat format)
+        {
+            Initialize(logDirectoryPath, (int)format);
+        }
+
         public void Initialize(string logDirectoryPath, int formatCode)
         {
             if (_isInitialized)
@@ -27,7 +34,7 @@ namespace EasySave.EasyLog
             _writer = formatCode switch
             {
                 0 => new JsonLogWriter(logDirectoryPath),
-                // Future XML implementation
+                1 => new XmlLogWriter(logDirectoryPath),
                 _ => throw new ArgumentException($"Unsupported log format code: {formatCode}")
             };
 
@@ -35,7 +42,7 @@ namespace EasySave.EasyLog
         }
 
         // Writes a log entry using the configured writer.
-        public void Write(object entry)
+        public void Write<T>(T entry)
         {
             if (!_isInitialized || _writer == null)
                 throw new InvalidOperationException("EasyLogService must be initialized via Initialize() before use.");
@@ -44,7 +51,7 @@ namespace EasySave.EasyLog
         }
 
         // Resets the service state. Useful for changing configuration. (So, to run other format the controller must reset the configuration and initialize another with the good logformat)
-        internal void Reset()
+        public void Reset()
         {
             _writer = null;
             _isInitialized = false;

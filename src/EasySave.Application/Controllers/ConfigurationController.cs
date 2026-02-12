@@ -1,6 +1,7 @@
 ﻿using EasySave.Application.DTOs;
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
+using EasySave.EasyLog;
 
 namespace EasySave.Application.Controllers
 {
@@ -32,7 +33,28 @@ namespace EasySave.Application.Controllers
             _configService.SaveSettings(settings);
         }
 
-        //Change log format future implementation here
+        // 
+        public void ChangeLogFormat(int code)
+        {
+
+            var format = ConvertCodeToLogFormat(code);
+            var settings = _configService.LoadSettings();
+
+            EasyLogService.Instance.Reset();
+            EasyLogService.Instance.Initialize(
+                settings.LogDirectoryPath,
+                format
+            );
+
+            settings.LogFormat = (int)format;
+            _configService.SaveSettings(settings);
+        }
+
+        public LogFormat GetLogFormat()
+        {
+            var settings = _configService.LoadSettings();
+            return ConvertCodeToLogFormat(Convert.ToInt32(settings.LogFormat.ToString()));
+        }
 
         // Check if configuration file exists
         public bool FileExists()
@@ -56,6 +78,11 @@ namespace EasySave.Application.Controllers
         private static Language ConvertCodeToLanguage(int code)
         {
             return code == 0 ? Language.French : Language.English;
+        }
+
+        private static LogFormat ConvertCodeToLogFormat(int code)
+        {
+            return code == 0 ? LogFormat.Json : LogFormat.Xml;
         }
     }
 }

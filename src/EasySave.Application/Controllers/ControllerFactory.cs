@@ -15,7 +15,7 @@ namespace EasySave.Application.Controllers
 
             // 2. Initialize global singletons
             FileStateService.Instance.Initialize(settings.StateFileDirectoryPath);
-            EasyLogService.Instance.Initialize(settings.LogDirectoryPath, 0);
+            EasyLogService.Instance.Initialize(settings.LogDirectoryPath, settings.LogFormat);
 
             // 3. Singletons for persistent services
             IFileBackupService fileBackupService = FileBackupService.Instance;
