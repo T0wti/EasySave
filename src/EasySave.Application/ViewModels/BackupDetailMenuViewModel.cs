@@ -17,6 +17,7 @@ public class BackupDetailMenuViewModel : ViewModelBase
     public string BackupSourcePath { get; }
     public string BackupTargetPath { get; }
     public string BackupType { get; }
+    public string Exit { get; }
 
     public BackupDetailMenuViewModel(MainWindowViewModel mainWindow, BackupJobDTO job) : base(mainWindow)
     {
@@ -25,10 +26,11 @@ public class BackupDetailMenuViewModel : ViewModelBase
         BackupSourcePath = job.SourcePath;
         BackupTargetPath = job.TargetPath;
         BackupType = job.Type;
+        Exit = Texts.Exit;
 
         NavigateBackCommand = new RelayCommand(() =>
         {
-            // faire après
+            NavigateTo(new ListBackupMenuViewModel(mainWindow));
         });
     }
 }

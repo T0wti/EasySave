@@ -9,15 +9,23 @@
         Height="500">
 
     <Window.DataTemplates>
+        
         <DataTemplate DataType="{x:Type vm:BaseMenuViewModel}">
             <views:BaseMenu/>
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vm:ListBackupMenuViewModel}">
             <views:ListBackupMenu/>
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vm:BackupDetailMenuViewModel}">
+            <views:BackupDetailMenu/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vm:SettingsMenuViewModel}">
             <views:SettingsMenu/>
         </DataTemplate>
+        
     </Window.DataTemplates>
 
     <ContentControl Content="{Binding CurrentView}"/>

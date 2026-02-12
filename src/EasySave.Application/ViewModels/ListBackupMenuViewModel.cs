@@ -8,6 +8,20 @@ namespace EasySave.Application.ViewModels;
 public partial class ListBackupMenuViewModel : ViewModelBase
 {
     // Jobs
+    public ObservableCollection<BackupJobDTO> BackupJobs { get; }
+    private BackupJobDTO _selectedJob;
+
+    public BackupJobDTO SelectedJob
+    {
+        get => _selectedJob;
+        set
+        {
+            if (SetProperty(ref _selectedJob, value) && value != null)
+            {
+                NavigateTo(new BackupDetailMenuViewModel(MainWindow,value));
+            }
+        }
+    }
     
     // Command
     public ICommand ExitCommand { get; }
@@ -20,6 +34,8 @@ public partial class ListBackupMenuViewModel : ViewModelBase
     {
         Title = Texts.ListBackupMenuTitle;
         Exit = Texts.Exit;
+
+        BackupJobs = new ObservableCollection<BackupJobDTO>(jobs);
 
         ExitCommand = new RelayCommand(NavigateToBase);
     }
