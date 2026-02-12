@@ -1,5 +1,5 @@
-using EasySave.Console.Resources;
 using EasySave.Application.DTOs;
+using EasySave.Application.Resources;
 
 namespace EasySave.Console.ConsoleUI;
 

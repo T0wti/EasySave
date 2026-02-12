@@ -1,5 +1,5 @@
+using EasySave.Application.Resources;
 using EasySave.Console;
-using EasySave.Console.Resources;
 
 internal class FirstStartMenuInteraction
 {

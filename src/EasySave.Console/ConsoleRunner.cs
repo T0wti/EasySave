@@ -1,10 +1,10 @@
     using EasySave.Application.Controllers;
     using EasySave.Console.Commands;
     using EasySave.Console.ConsoleUI;
-    using EasySave.Console.Resources;
     using EasySave.Application.DTOs;
+    using EasySave.Application.Resources;
 
-namespace EasySave.Console;
+    namespace EasySave.Console;
 
     public class ConsoleRunner
     {
@@ -29,8 +29,8 @@ namespace EasySave.Console;
             var settings = _configController.Load();
 
             _texts = settings.LanguageCode == 0
-            ? new FrenchTextProvider()
-            : new EnglishTextProvider();
+            ? new FrenchTextProviderConsole()
+            : new EnglishTextProviderConsole();
         }
         // Main console execution
         public void RunConsole()

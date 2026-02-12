@@ -1,6 +1,4 @@
-﻿using EasySave.Console.Resources;
-
-namespace EasySave.Console.Commands;
+﻿namespace EasySave.Console.Commands;
 
 internal class ChangeLogFormatMenuInteraction
 {
