@@ -25,7 +25,7 @@ namespace EasySave.EasyLog.Writers
             _logDirectory = logDirectory;
         }
 
-        // Writes a log entry into the daily JSON log file.
+        // Writes a log entry into the daily JSON log file
         public void Write<T>(T entry)
         {
             string logFile = Path.Combine(
