@@ -1,7 +1,10 @@
 ﻿using EasySave.Domain.Interfaces;
+using EasySave.Domain.Models;
 using EasySave.Domain.Services;
 using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
+using System;
+using System.IO;
 
 namespace EasySave.Application.Controllers
 {
@@ -9,49 +12,54 @@ namespace EasySave.Application.Controllers
     {
         public static BackupController CreateBackupController()
         {
-            // 1. Load configuration via singleton
-            IConfigurationService configService = ConfigurationService.Instance;
+            // 1. ConfigurationService (V1-style constructor)
+            IConfigurationService configService = new ConfigurationService();
             var settings = configService.LoadSettings();
 
-            // 2. Initialize global singletons
-            FileStateService.Instance.Initialize(settings.StateFileDirectoryPath);
+            // 2. FileStateService (V2.1 constructor paramétré)
+            IFileStateService fileStateService = new FileStateService(settings.StateFileDirectoryPath);
+
+            // 3. EasyLogService (singleton légitime)
             EasyLogService.Instance.Initialize(settings.LogDirectoryPath, settings.LogFormat);
-
-            // 3. Singletons for persistent services
-            IFileBackupService fileBackupService = FileBackupService.Instance;
             ILogService logService = EasyLogService.Instance;
-            IStateService stateService = new StateService(FileStateService.Instance); // Could also be singleton if desired
 
-            // 4. Instantiate regular services
+            // 4. FileBackupService (V2.1 constructor paramétré)
+            // On stocke les jobs dans %APPDATA%/EasySave/jobs.json
+            string jobsDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "EasySave"
+            );
+
+            IFileBackupService fileBackupService = new FileBackupService();
+
+            // 5. Services métiers
             IFileService fileService = new FileService();
             IBackupStrategy fullStrategy = new FullBackupStrategy(fileService);
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
 
-            // 5. Create BackupService with **all dependencies injected**
+            IStateService stateService = new StateService(fileStateService);
+
             IBackupService executor = new BackupService(
                 fileService,
                 fullStrategy,
                 diffStrategy,
-                fileBackupService,
-                stateService,   
-                logService     
+                stateService,
+                logService
             );
 
-            // 6. Create BackupManagerService with executor injected
             IBackupManagerService manager = new BackupManagerService(
                 fileBackupService,
                 executor,
                 settings
             );
 
-            // 7. Return controller with fully wired dependencies
             return new BackupController(manager, executor);
         }
 
         public static ConfigurationController CreateConfigurationController()
         {
-            IConfigurationService configService = ConfigurationService.Instance;
+            IConfigurationService configService = new ConfigurationService();
             return new ConfigurationController(configService);
         }
-    } 
+    }
 }

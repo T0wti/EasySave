@@ -18,6 +18,7 @@ namespace EasySave.Domain.Services
         // Initializes a BackupProgress object with total files, size, and default runtime values
         public void Initialize(BackupProgress progress, List<FileDescriptor> files)
         {
+            progress.State = BackupJobState.Active;
             progress.TotalFiles = files.Count;
             progress.TotalSize = files.Sum(f => f.Size);
             progress.RemainingFiles = progress.TotalFiles;
