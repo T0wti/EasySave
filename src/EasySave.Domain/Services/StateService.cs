@@ -60,6 +60,11 @@ namespace EasySave.Domain.Services
             UpdateStateOnly(backupJobId, BackupJobState.Failed);
         }
 
+        public void Interrupt(int backupJobId)
+        {
+            FinalizeAndClean(backupJobId, BackupJobState.Interrupted);
+        }
+
         // Private helper to finalize a job and clean runtime-specific fields
         private void FinalizeAndClean(int backupJobId, BackupJobState finalState)
         {

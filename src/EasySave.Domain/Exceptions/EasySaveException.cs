@@ -1,7 +1,6 @@
 ﻿namespace EasySave.Domain.Exceptions
 {
-    // Base class for all EasySave domain exceptions.
-    // Catching this type handles any business error from the domain layer.
+    // Base class for all EasySave domain exceptions
     public class EasySaveException : Exception
     {
         public EasySaveException(string message)

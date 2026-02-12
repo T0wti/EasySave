@@ -1,11 +1,10 @@
 ﻿namespace EasySave.Domain.Exceptions
 {
-    // Thrown when a persistence operation fails: corrupt JSON, inaccessible file, etc.
-    // Replaces the silent catch blocks that previously swallowed these errors.
-    // Always wraps the original exception as InnerException to preserve diagnostics.
+    // Thrown when a persistence operation fails: corrupt JSON, inaccessible file, etc...
+
     public class PersistenceException : EasySaveException
     {
-        // The file path that caused the failure, for diagnostic purposes.
+        // The file path that caused the failure, for diagnostic purposes
         public string? FilePath { get; }
 
         public PersistenceException(string message, string? filePath, Exception innerException)

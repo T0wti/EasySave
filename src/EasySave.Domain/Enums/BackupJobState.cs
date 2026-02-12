@@ -6,6 +6,7 @@
         Inactive,
         Active,
         Completed,
-        Failed
+        Failed,
+        Interrupted
     }
 }
