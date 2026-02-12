@@ -1,4 +1,4 @@
-namespace EasySave.Console.Resources;
+namespace EasySave.Application.Resources;
 
 public interface ITextProvider
 {

@@ -1,25 +1,25 @@
-namespace EasySave.Console.Resources;
+namespace EasySave.Application.Resources;
 
 public class EnglishTextProvider : GeneralTextProvider
 {
     // Base menu
-    public override string MainMenuTitle => Format("------- Main Menu -------");
-    public override string CreateBackup => Format("1. Create a file backup");
-    public override string LanguageOption => Format("9. Change console language");
-    public override string ExitOption => Format("0. Exit");
+    public override string MainMenuTitle => "Main Menu";
+    public override string CreateBackup => "1. Create a file backup";
+    public override string LanguageOption => "9. Change console language";
+    public override string ExitOption => "0. Exit";
     public override string AskEntryFromUser => "Enter the desired number or command: ";
-    public override string EditBackup => Format("3. Edit a file backup");
-    public override string DeleteBackup => Format("2. Delete a file backup");
+    public override string EditBackup => "3. Edit a file backup";
+    public override string DeleteBackup => "2. Delete a file backup";
     public override string WrongInput => "Invalid input, please try again: ";
-    public override string ListBackup => Format("4. List all file backups");
-    public override string ExeBackup => Format("5. Execute a file backup");
-    public override string LogFormat => Format("8. Change log format");
+    public override string ListBackup => "4. List all file backups";
+    public override string ExeBackup => "5. Execute a file backup";
+    public override string LogFormat => "8. Change log format";
 
     // Creation BackupMenu 
 
     public override string EnterBackupName => "Please enter the name of your backup job: ";
-    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads): ";
-    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save): ";
+    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads: ";
+    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save: ";
     public override string EnterBackupType => "Please enter the backup type (1 - Full | 2 - Differential): ";
 
     //
@@ -32,38 +32,38 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string AskIdToEdit => "Enter the ID of the backup job to edit:";
 
     // Language menu
-    public override string LanguageMenuTitle => Format("-- Change the language --");
-    public override string Language1 => Format(Format("1. French"));
-    public override string Language2 => Format(Format("2. English"));
+    public override string LanguageMenuTitle => "Change the language";
+    public override string Language1 => "1. French";
+    public override string Language2 => "2. English";
     
     // Choose first language menu
-    public override string ChooseFirstLanguageMenuTitle => Format("-- Choose the default language --");
-    public override string ChooseFirstLanguage => Format("Choose the default language :");
+    public override string ChooseFirstLanguageMenuTitle => "Choose the default language";
+    public override string ChooseFirstLanguage => "Choose the default language :";
     
     // List Backup Menu
-    public override string ListBackupMenuTitle => Format("-- All configured backups --");
+    public override string ListBackupMenuTitle => "All configured backups";
     
     // Backup Detail Menu
-    public override string BackupNameMenuTitle => Format("-- Files backup details --");
-    public override string BackupName => Format("id-a-" + ". " + "nom-job"); // mettre la fonction pour sortir le nom d'une backup
-    public override string BackupSourcePath => Format("");
-    public override string BackupTargetPath => Format("");
-    public override string BackupType => Format("");
+    public override string BackupNameMenuTitle => "Files backup details";
+    public override string BackupName => "id-a-" + ". " + "nom-job"; // mettre la fonction pour sortir le nom d'une backup
+    public override string BackupSourcePath => "";
+    public override string BackupTargetPath => "";
+    public override string BackupType => "";
 
     // Execute Backup Menu
-    public override string ExeBackupMenuTitle => Format("-- Choose the file backup to execute --");
+    public override string ExeBackupMenuTitle => "Choose the file backup to execute";
     //public override string BackupNames => Format("nom save"); // not used for the moment
-    public override string ExeBackupInstruction => Format("Command exemple : id_Backup");
+    public override string ExeBackupInstruction => "Command exemple : id_Backup";
     
     // Execute Backup Menu Details
-    public override string ExeBackupMenuDetailTitle => Format("-- Backup Status --");
-    public override string ExeBackupInProgress => Format("Backup in progress...");
-    public override string ExeBackupCompleted => Format("Backup complete.");
+    public override string ExeBackupMenuDetailTitle => "Backup Status";
+    public override string ExeBackupInProgress => "Backup in progress...";
+    public override string ExeBackupCompleted => "Backup complete.";
 
     // Change Log Format Menu
-    public override string LogFormatMenuTitle => Format("-- Change Log Format --");
-    public override string LogFormat1 => Format("1. JSON");
-    public override string LogFormat2 => Format("2. XML");
-    public override string LogFormatChanged => Format("Log format changed successfully!");
-    public override string CurrentLogFormat => Format("Current format: ");
+    public override string LogFormatMenuTitle => "Change Log Format";
+    public override string LogFormat1 => "1. JSON";
+    public override string LogFormat2 => "2. XML";
+    public override string LogFormatChanged => "Log format changed successfully!";
+    public override string CurrentLogFormat => "Current format: ";
 }

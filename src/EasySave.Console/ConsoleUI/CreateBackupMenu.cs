@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-using EasySave.Console.Resources;
+using EasySave.Application.Resources;
 
 namespace EasySave.Console.ConsoleUI;
 

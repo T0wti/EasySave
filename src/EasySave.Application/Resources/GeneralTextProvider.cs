@@ -1,10 +1,14 @@
-namespace EasySave.Console.Resources;
+namespace EasySave.Application.Resources;
 
 public class GeneralTextProvider : ITextProvider
 {
     // Define an automatic indentation (to improve readability)
     private const string Indent = "       ";
+    private const string BigTitle = "-----";
+    private const string Title = "--";
     protected string Format(string text) => $"{Indent}{text}";
+    protected string FormatBigTitle(string text) => $"{Indent}{BigTitle}{" "}{text}{" "}{BigTitle}";
+    protected string FormatTitle(string text) => $"{Indent}{Title}{" "}{text}{" "}{Title}";
 
     private readonly string _defaultString;
 
