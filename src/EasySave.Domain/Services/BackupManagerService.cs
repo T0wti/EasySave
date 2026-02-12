@@ -1,10 +1,9 @@
 ﻿using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;   
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Reflection.Metadata.BlobBuilder;
+using EasySave.Domain.Models;
+using System.Xml.Linq;
+
 
 namespace EasySave.Domain.Services
 {
@@ -31,32 +30,26 @@ namespace EasySave.Domain.Services
         {
             // Validate that the source and target paths are absolute
             if (!Path.IsPathRooted(source))
-                throw new Exception("Source path format is invalid.");
+                throw new BackupValidationException("SourcePath", "Source path must be an absolute path.");
 
             if (!Path.IsPathRooted(target))
-                throw new Exception("Target path format is invalid.");
+                throw new BackupValidationException("TargetPath", "Target path must be an absolute path.");
 
             // Ensure job name is unique
             if (_backupJobs.Any(j => j.Name == name))
-                throw new Exception($"A job named '{name}' already exists.");
+                throw new BackupJobAlreadyExistsException(name);
 
             // Ensure we do not exceed the maximum allowed backup jobs
             if (_backupJobs.Count >= _settings.MaxBackupJobs)
-                throw new Exception($"Cannot create more than {_settings.MaxBackupJobs} backup jobs.");
+                throw new BackupJobLimitReachedException(_settings.MaxBackupJobs);
 
             // Generate the next available ID
             int nextId = 1;
             var existingIds = _backupJobs.Select(j => j.Id).OrderBy(id => id).ToList();
             foreach (var id in existingIds)
             {
-                if (id == nextId)
-                {
-                    nextId++;
-                }
-                else
-                {
-                    break; 
-                }
+                if (id == nextId) nextId++;
+                else break;
             }
 
             // Create new backup job and add to the list
@@ -82,38 +75,27 @@ namespace EasySave.Domain.Services
         // Edits an existing backup job
         public void EditBackupJob(int id, string newName, string newSource, string newTarget, BackupType newType)
         {
-            // Find job by ID
-            var jobToEdit = _backupJobs.FirstOrDefault(j => j.Id == id);
-
-            // Validate paths
             if (!Path.IsPathRooted(newSource))
-                throw new Exception("Source path format is invalid.");
+                throw new BackupValidationException("SourcePath", "Source path must be an absolute path.");
 
             if (!Path.IsPathRooted(newTarget))
-                throw new Exception("Target path format is invalid.");
+                throw new BackupValidationException("TargetPath", "Target path must be an absolute path.");
 
+            var index = _backupJobs.FindIndex(j => j.Id == id);
+            if (index == -1)
+                throw new BackupJobNotFoundException(id);
 
-            if (jobToEdit == null)
-                throw new Exception($"A job with ID '{id}' does not exist.");
-
-            // Ensure the new name does not conflict with another job
             if (_backupJobs.Any(j => j.Name == newName && j.Id != id))
-                throw new Exception($"A job with {newName} already exists");
+                throw new BackupJobAlreadyExistsException(newName);
 
-            // Update job properties
-            jobToEdit.Name = newName;
-            jobToEdit.SourcePath = newSource;
-            jobToEdit.TargetPath = newTarget;
-            jobToEdit.Type = newType;
-
-            // Persist the updated list of jobs
+            _backupJobs[index] = new BackupJob(id, newName, newSource, newTarget, newType);
             _fileBackupService.SaveJobs(_backupJobs);
         }
 
         // Returns the current list of backup jobs
-        public List<BackupJob> GetBackupJobs()
+        public IReadOnlyList<BackupJob> GetBackupJobs()
         {
-            return _backupJobs;
+            return _backupJobs.AsReadOnly();
         }
 
         // Executes a single backup job by ID
@@ -121,7 +103,7 @@ namespace EasySave.Domain.Services
         {
             var job = _backupJobs.FirstOrDefault(j => j.Id == id);
             if (job == null)
-                throw new Exception("Job not found.");
+                throw new BackupJobNotFoundException(id);
 
             _backupService.ExecuteBackup(job);
         }

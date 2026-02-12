@@ -1,4 +1,5 @@
 ﻿using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 using EasySave.EasyLog;
@@ -14,27 +15,22 @@ namespace EasySave.Domain.Services
         private readonly IStateService _stateService;
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
-        private readonly IFileBackupService _fileBackupService;
 
-        private List<BackupJob> _backupJobs;
 
         // Constructor injects required services and initializes backup jobs list
         public BackupService(
             IFileService fileService,
             IBackupStrategy fullStrategy,
             IBackupStrategy differentialStrategy,
-            IFileBackupService fileBackupService,
             IStateService stateService,     
             ILogService logService)
         {
             _fileService = fileService;
             _fullStrategy = fullStrategy;
             _differentialStrategy = differentialStrategy;
-            _fileBackupService = fileBackupService;
             _stateService = stateService;
             _logService = logService;
 
-            _backupJobs = _fileBackupService.LoadJobs();
         }
 
         // Executes a single backup job
@@ -82,7 +78,7 @@ namespace EasySave.Domain.Services
 
                     _stateService.Update(progress, file, targetPath);
                 }
-                catch
+                catch (Exception ex)
                 {
                     // Handle copy failure: mark job as failed and log
                     progress.State = BackupJobState.Failed;
@@ -98,7 +94,7 @@ namespace EasySave.Domain.Services
                         TransferTimeMs = -1
                     });
 
-                    throw;
+                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
                 }
             }
 
