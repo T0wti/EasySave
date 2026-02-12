@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -7,6 +8,7 @@ namespace EasySave.Application.ViewModels;
 public partial class BaseMenu : ViewModelBase
 {
     public ICommand NavigateToSettingsCommand { get; }
+    public ICommand ExitCommand { get; }
 
     public string Title { get; }
     public string CreateBackup { get; }
@@ -32,6 +34,15 @@ public partial class BaseMenu : ViewModelBase
         {
             NavigateTo(new SettingsMenu(mainWindow));
         });
+        ExitCommand = new RelayCommand(OnExit);
+    }
+
+    private void OnExit()
+    {
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Shutdown();
+        }
     }
 
 }

@@ -24,10 +24,7 @@ public partial class SettingsMenu : ViewModelBase
         LogFormat1 = Texts.LogFormat1;
         LogFormat2 = Texts.LogFormat2;
         Exit = Texts.Exit;
-        
-        ExitCommand = new RelayCommand(()=>
-        {
-            NavigateTo(new BaseMenu(mainWindow));
-        });
+
+        ExitCommand = new RelayCommand(NavigateToBase);
     }
 }
