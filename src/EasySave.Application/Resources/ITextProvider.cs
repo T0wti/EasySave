@@ -18,6 +18,7 @@ public interface ITextProvider
     string ListBackup { get; }
     string ExeBackup { get; }
     string LogFormat { get; }
+    string SettingsMenu { get; }
     // Options for the creation 
 
     string EnterBackupName { get; }
@@ -68,6 +69,9 @@ public interface ITextProvider
     string LogFormat2 { get; }
     string LogFormatChanged { get; }
     string CurrentLogFormat { get; }
+    
+    // Settings menu
+    string SettingsMenuTitle { get; }
 }
 
 

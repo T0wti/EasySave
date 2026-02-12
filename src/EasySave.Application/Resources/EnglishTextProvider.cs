@@ -14,6 +14,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ListBackup => "4. List all file backups";
     public override string ExeBackup => "5. Execute a file backup";
     public override string LogFormat => "8. Change log format";
+    public override string SettingsMenu => "Settings";
 
     // Creation BackupMenu 
 
@@ -66,4 +67,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string LogFormat2 => "2. XML";
     public override string LogFormatChanged => "Log format changed successfully!";
     public override string CurrentLogFormat => "Current format: ";
+    
+    // Settings menu
+    public override string SettingsMenuTitle => "Easy Save's settings";
 }
