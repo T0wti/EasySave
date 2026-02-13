@@ -1,5 +1,5 @@
-    using EasySave.Application.Controllers;
-    using EasySave.Console.Commands;
+using EasySave.Application;
+using EasySave.Console.Commands;
     using EasySave.Console.ConsoleUI;
     using EasySave.Application.DTOs;
     using EasySave.Application.Resources;
@@ -8,14 +8,14 @@
 
     public class ConsoleRunner
     {
-        private readonly BackupController _backupController;
-        private readonly ConfigurationController _configController;
+        private readonly BackupAppService _backupAppService;
+        private readonly ConfigAppService _configController;
 
         private ITextProvider _texts;
 
-        public ConsoleRunner(BackupController backupController, ConfigurationController configController)
+        public ConsoleRunner(BackupAppService backupAppService, ConfigAppService configController)
         {
-            _backupController = backupController;
+            _backupAppService = backupAppService;
             _configController = configController;
            
             // Check if it's the first launch of the program
@@ -70,7 +70,7 @@
         // Menu to delete a backup
         internal void RunDeleteBackupMenu() 
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
             listMenu.Display();
             var menu = new ConsoleUI.DeleteBackupMenu(_texts);
@@ -81,7 +81,7 @@
         // Menu to edit a backup
         internal void RunEditBackupMenu()
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
             listMenu.Display();
             var editMenu = new ConsoleUI.EditBackupMenu(_texts);
@@ -102,7 +102,7 @@
         // Menu to list all the backups
         internal void RunListBackupMenu()
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var menu = new ConsoleUI.ListBackupMenu(_texts, jobs); 
             var loop = new Commands.ListBackupMenuInteraction(this, menu);
             menu.Display();
@@ -112,7 +112,7 @@
         // Menu to execute backups
         internal void RunExeBackupMenu()
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var menu = new ConsoleUI.ExecuteBackupMenu(_texts,jobs);
             var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
             menu.Display();
@@ -157,7 +157,7 @@
         {
             try
             {
-                _backupController.CreateBackup(name, source, target, typeChoice);
+                _backupAppService.CreateBackup(name, source, target, typeChoice);
                 System.Console.WriteLine(_texts.BackupCreated);
             }
             catch (System.Exception ex)
@@ -169,9 +169,9 @@
 
         public void HandleEditBackup(int id, string name, string source, string target, int typeChoice)
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var listMenu = new ListBackupMenu(_texts, jobs);
-            _backupController.EditBackup(id, name, source, target, typeChoice);
+            _backupAppService.EditBackup(id, name, source, target, typeChoice);
 
             listMenu.Display();
 
@@ -188,7 +188,7 @@
             return;
         }
 
-            var job = _backupController.GetById(id);
+            var job = _backupAppService.GetById(id);
 
             if (job == null)
             {
@@ -206,7 +206,7 @@
             {
         try
         {
-            _backupController.DeleteBackup(id);
+            _backupAppService.DeleteBackup(id);
             System.Console.WriteLine(_texts.BackupDeleted);
         }
         catch (System.Exception ex)
@@ -219,7 +219,7 @@
 
         internal void HandleExecuteBackup(int id)
         {
-            _backupController.ExecuteBackup(id);
+            _backupAppService.ExecuteBackup(id);
             RunBaseMenu();
         }
 
@@ -227,7 +227,7 @@
         internal void HandleExecuteMultiple(IEnumerable<int> ids)
         {
             RunExecuteBackupMenuDetail(0);
-            _backupController.ExecuteMultiple(ids);
+            _backupAppService.ExecuteMultiple(ids);
             RunExecuteBackupMenuDetail(1);
             RunBaseMenu();
         }

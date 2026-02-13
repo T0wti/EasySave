@@ -1,9 +1,8 @@
 ﻿using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace EasySave.Application.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public partial class BaseMenuViewModel : ViewModelBase
 {

@@ -2,7 +2,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace EasySave.Application.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public partial class CreateBackupMenuViewModel : ViewModelBase
 {
@@ -57,7 +57,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
 
     private void CreateBackup()
     {
-        _backupController.CreateBackup(backupName, sourcePath, targetPath, selectedType);
+        BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
     }
     
 }

@@ -1,10 +1,8 @@
 using System.Windows.Input;
-using Avalonia.Controls.ApplicationLifetimes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
 
-namespace EasySave.Application.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public class BackupDetailMenuViewModel : ViewModelBase
 {

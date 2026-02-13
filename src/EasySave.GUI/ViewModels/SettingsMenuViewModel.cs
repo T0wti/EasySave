@@ -2,7 +2,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Resources;
 
-namespace EasySave.Application.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public partial class SettingsMenuViewModel : ViewModelBase
 {

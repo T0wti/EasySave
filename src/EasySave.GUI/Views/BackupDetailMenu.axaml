@@ -3,9 +3,10 @@
              xmlns:vm="using:EasySave.Application.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="EasySave.GUI.Views.BackupDetailMenu"
-             x:DataType="vm:BackupDetailMenuViewModel">
+             x:DataType="viewModels:BackupDetailMenuViewModel">
     
     <StackPanel Spacing="20" Margin="30">
         <!-- Title -->

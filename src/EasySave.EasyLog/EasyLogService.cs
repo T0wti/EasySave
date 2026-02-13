@@ -1,4 +1,5 @@
 ﻿using System;
+using EasySave.EasyLog.Enums;
 using EasySave.EasyLog.Interfaces;
 using EasySave.EasyLog.Writers;
 

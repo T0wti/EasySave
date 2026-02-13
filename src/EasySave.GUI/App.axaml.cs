@@ -5,7 +5,7 @@ using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
 using EasySave.GUI.Views;
-using EasySave.Application.ViewModels;
+using EasySave.GUI.ViewModels;
 using BaseMenu = EasySave.GUI.Views.BaseMenu;
 
 namespace EasySave.GUI;

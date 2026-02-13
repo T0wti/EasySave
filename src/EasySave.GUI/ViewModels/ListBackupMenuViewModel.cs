@@ -3,7 +3,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
 
-namespace EasySave.Application.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public partial class ListBackupMenuViewModel : ViewModelBase
 {

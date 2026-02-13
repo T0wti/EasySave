@@ -3,12 +3,13 @@
              xmlns:vm="using:EasySave.Application.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.SettingsMenu"
-             x:DataType="vm:SettingsMenuViewModel">
+             x:DataType="viewModels:SettingsMenuViewModel">
 
     <Design.DataContext>
-        <vm:SettingsMenuViewModel/>
+        <viewModels:SettingsMenuViewModel/>
     </Design.DataContext>
 
     <Border Padding="30">

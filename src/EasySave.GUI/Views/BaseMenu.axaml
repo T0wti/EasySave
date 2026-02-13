@@ -1,8 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:EasySave.Application.ViewModels"
+        xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
         x:Class="EasySave.GUI.Views.BaseMenu"
-        x:DataType="vm:BaseMenuViewModel">
+        x:DataType="viewModels:BaseMenuViewModel">
 
     <Border Padding="30">
         <StackPanel Spacing="12">

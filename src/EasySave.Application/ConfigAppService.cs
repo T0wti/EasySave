@@ -2,14 +2,15 @@
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.EasyLog;
+using EasySave.EasyLog.Enums;
 
-namespace EasySave.Application.Controllers
+namespace EasySave.Application
 {
-    public class ConfigurationController
+    public class ConfigAppService
     {
         private readonly IConfigurationService _configService;
 
-        public ConfigurationController(IConfigurationService configService)
+        public ConfigAppService(IConfigurationService configService)
         {
             _configService = configService;
         }

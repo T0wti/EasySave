@@ -3,14 +3,14 @@ using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 
-namespace EasySave.Application.Controllers
+namespace EasySave.Application
 {
-    public class BackupController
+    public class BackupAppService
     {
         private readonly IBackupManagerService _manager;
         private readonly IBackupService _executor;
 
-        public BackupController(
+        public BackupAppService(
             IBackupManagerService manager,
             IBackupService executor)
         {

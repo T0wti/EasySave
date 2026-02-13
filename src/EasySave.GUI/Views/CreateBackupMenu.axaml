@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:EasySave.Application.ViewModels"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              x:Class="EasySave.GUI.Views.CreateBackupMenu"
-             x:DataType="vm:CreateBackupMenuViewModel">
+             x:DataType="viewModels:CreateBackupMenuViewModel">
 
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="20">

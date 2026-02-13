@@ -1,16 +1,13 @@
 ﻿using EasySave.Domain.Interfaces;
-using EasySave.Domain.Models;
 using EasySave.Domain.Services;
 using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
-using System;
-using System.IO;
 
-namespace EasySave.Application.Controllers
+namespace EasySave.Application
 {
-    public static class ControllerFactory
+    public static class AppServiceFactory
     {
-        public static BackupController CreateBackupController()
+        public static BackupAppService CreateBackupController()
         {
             // 1. ConfigurationService (V1-style constructor)
             IConfigurationService configService = new ConfigurationService();
@@ -54,13 +51,13 @@ namespace EasySave.Application.Controllers
                 settings
             );
 
-            return new BackupController(manager, executor);
+            return new BackupAppService(manager, executor);
         }
 
-        public static ConfigurationController CreateConfigurationController()
+        public static ConfigAppService CreateConfigurationController()
         {
             IConfigurationService configService = new ConfigurationService();
-            return new ConfigurationController(configService);
+            return new ConfigAppService(configService);
         }
     }
 }

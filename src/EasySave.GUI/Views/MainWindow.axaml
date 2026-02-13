@@ -1,32 +1,32 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:EasySave.Application.ViewModels"
         xmlns:views="using:EasySave.GUI.Views"
+        xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
         x:Class="EasySave.GUI.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
+        x:DataType="viewModels:MainWindowViewModel"
         Title="EasySave"
         Width="600"
         Height="500">
 
     <Window.DataTemplates>
         
-        <DataTemplate DataType="{x:Type vm:BaseMenuViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:BaseMenuViewModel}">
             <views:BaseMenu/>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type vm:CreateBackupMenuViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:CreateBackupMenuViewModel}">
             <views:CreateBackupMenu></views:CreateBackupMenu>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type vm:ListBackupMenuViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:ListBackupMenuViewModel}">
             <views:ListBackupMenu/>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type vm:BackupDetailMenuViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:BackupDetailMenuViewModel}">
             <views:BackupDetailMenu/>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type vm:SettingsMenuViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:SettingsMenuViewModel}">
             <views:SettingsMenu/>
         </DataTemplate>
         

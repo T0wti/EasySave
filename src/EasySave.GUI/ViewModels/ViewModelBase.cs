@@ -1,16 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using EasySave.Application.Controllers;
+﻿using System.Collections.Generic;
+using CommunityToolkit.Mvvm.ComponentModel;
+using EasySave.Application;
 using EasySave.Application.DTOs;
 using EasySave.Application.Resources;
 
-namespace EasySave.Application.ViewModels;
+namespace EasySave.GUI.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {
     protected ITextProvider Texts;
     
-    protected readonly BackupController _backupController;
-    protected readonly ConfigurationController _configController;
+    protected readonly BackupAppService BackupAppService;
+    protected readonly ConfigAppService _configController;
     
     protected IEnumerable<BackupJobDTO> jobs;
     
@@ -20,8 +21,8 @@ public abstract class ViewModelBase : ObservableObject
     {
         MainWindow = mainWindow;
         
-        _backupController = ControllerFactory.CreateBackupController();
-        _configController = ControllerFactory.CreateConfigurationController();
+        BackupAppService = AppServiceFactory.CreateBackupController();
+        _configController = AppServiceFactory.CreateConfigurationController();
         
         if (!_configController.FileExists())
         {
@@ -35,7 +36,7 @@ public abstract class ViewModelBase : ObservableObject
         Texts = settings.LanguageCode == 0
             ? new FrenchTextProvider()
             : new EnglishTextProvider();
-        jobs = _backupController.GetAll();
+        jobs = BackupAppService.GetAll();
     }
 
     protected void NavigateTo(ViewModelBase viewModel)
