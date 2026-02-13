@@ -9,24 +9,24 @@ using EasySave.Console.Commands;
     public class ConsoleRunner
     {
         private readonly BackupAppService _backupAppService;
-        private readonly ConfigAppService _configController;
+        private readonly ConfigAppService _configAppService;
 
         private ITextProvider _texts;
 
-        public ConsoleRunner(BackupAppService backupAppService, ConfigAppService configController)
+        public ConsoleRunner(BackupAppService backupAppService, ConfigAppService configAppService)
         {
             _backupAppService = backupAppService;
-            _configController = configController;
+            _configAppService = configAppService;
            
             // Check if it's the first launch of the program
-            if (!_configController.FileExists())
+            if (!_configAppService.FileExists())
             {
                 _texts = new EnglishTextProvider();
-                _configController.EnsureConfigExists();
+                _configAppService.EnsureConfigExists();
                 RunFirstStartMenu();
             }
             
-            var settings = _configController.Load();
+            var settings = _configAppService.Load();
 
             _texts = settings.LanguageCode == 0
             ? new FrenchTextProviderConsole()
@@ -53,7 +53,7 @@ using EasySave.Console.Commands;
 
             int code = language is FrenchTextProvider ? 0 : 1;
 
-            _configController.ChangeLanguage(code);
+            _configAppService.ChangeLanguage(code);
 
             RunBaseMenu();
         }
@@ -137,7 +137,7 @@ using EasySave.Console.Commands;
 
     internal void RunChangeLogFormatMenu()
     {
-        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts,_configController);
+        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts,_configAppService);
         var loop = new Commands.ChangeLogFormatMenuInteraction(this);
         menu.Display();
         loop.RunLoop();
@@ -150,7 +150,7 @@ using EasySave.Console.Commands;
         }
 
         // ======================
-        // Backup handlers via controller to link the front with the back
+        // Backup handlers via App services to link the front with the back
         // ======================
         
         internal void HandleCreateBackup(string name, string source, string target, int typeChoice  )
@@ -234,7 +234,7 @@ using EasySave.Console.Commands;
     internal void HandleChangeLogFormat(int formatCode)
     {
      
-            _configController.ChangeLogFormat(formatCode);
+            _configAppService.ChangeLogFormat(formatCode);
             System.Console.WriteLine(_texts.LogFormatChanged);
             System.Console.WriteLine();
             System.Console.ReadLine();

@@ -11,7 +11,7 @@ public abstract class ViewModelBase : ObservableObject
     protected ITextProvider Texts;
     
     protected readonly BackupAppService BackupAppService;
-    protected readonly ConfigAppService _configController;
+    protected readonly ConfigAppService ConfigAppService;
     
     protected IEnumerable<BackupJobDTO> jobs;
     
@@ -22,16 +22,16 @@ public abstract class ViewModelBase : ObservableObject
         MainWindow = mainWindow;
         
         BackupAppService = AppServiceFactory.CreateBackupController();
-        _configController = AppServiceFactory.CreateConfigurationController();
+        ConfigAppService = AppServiceFactory.CreateConfigurationController();
         
-        if (!_configController.FileExists())
+        if (!ConfigAppService.FileExists())
         {
             Texts = new EnglishTextProvider();
-            _configController.EnsureConfigExists();
+            ConfigAppService.EnsureConfigExists();
             // menu premier démarrage
         }
 
-        var settings = _configController.Load();
+        var settings = ConfigAppService.Load();
 
         Texts = settings.LanguageCode == 0
             ? new FrenchTextProvider()
@@ -55,12 +55,12 @@ public abstract class ViewModelBase : ObservableObject
 
         int code = language is FrenchTextProvider ? 0 : 1;
 
-        _configController.ChangeLanguage(code);
+        ConfigAppService.ChangeLanguage(code);
         NavigateTo(new SettingsMenuViewModel(MainWindow));
     }
 
     internal void ChangeLogFormat(int formatCode)
     {
-        _configController.ChangeLogFormat(formatCode);
+        ConfigAppService.ChangeLogFormat(formatCode);
     }
 }
