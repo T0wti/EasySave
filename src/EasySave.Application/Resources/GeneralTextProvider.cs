@@ -32,17 +32,25 @@ public class GeneralTextProvider : ITextProvider
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
         public virtual string Exit => _defaultString;
+        public virtual string Confirm => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
         public virtual string SettingsMenu => _defaultString;
 
-    //Creation menu
+        //Creation menu
 
+        public virtual string CreateBackupMenuTitle => _defaultString;
         public virtual string EnterBackupName => _defaultString;
         public virtual string EnterSourcePath => _defaultString;
         public virtual string EnterTargetPath => _defaultString;
         public virtual string EnterBackupType => _defaultString;
+        public virtual string BrowseFile => _defaultString;
+        public virtual string WaterMarkBackupName => _defaultString;
+        public virtual string WaterMarkBackupSourcePath => _defaultString;
+        public virtual string WaterMarkBackupTargetPath => _defaultString;
+        public virtual string Full => _defaultString;
+        public virtual string Differential => _defaultString;
 
     //
         public virtual string BackupCreated => _defaultString;

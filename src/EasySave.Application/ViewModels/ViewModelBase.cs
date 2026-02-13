@@ -9,8 +9,8 @@ public abstract class ViewModelBase : ObservableObject
 {
     protected ITextProvider Texts;
     
-    private readonly BackupController _backupController;
-    private readonly ConfigurationController _configController;
+    protected readonly BackupController _backupController;
+    protected readonly ConfigurationController _configController;
     
     protected IEnumerable<BackupJobDTO> jobs;
     

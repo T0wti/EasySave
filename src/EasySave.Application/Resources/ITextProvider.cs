@@ -10,6 +10,7 @@ public interface ITextProvider
     string ExitOption { get; }
     string WrongInput { get; }
     string Exit { get; }
+    string Confirm { get; }
     
     // Options in the base menu | Argan
     string DeleteBackup { get; }
@@ -20,20 +21,27 @@ public interface ITextProvider
     string ExeBackup { get; }
     string LogFormat { get; }
     string SettingsMenu { get; }
+    
     // Options for the creation 
-
+    string CreateBackupMenuTitle { get; }
     string EnterBackupName { get; }
     string EnterSourcePath { get; }
     string EnterTargetPath { get; }
     string EnterBackupType { get; }
+    string WaterMarkBackupName { get; }
+    string WaterMarkBackupSourcePath { get; }
+    string WaterMarkBackupTargetPath { get; }
+    string Full { get; }
+    string Differential { get; }
 
-    // 
+    //
 
     string BackupCreated { get; }
     string BackupEdited { get; }
     string EnterBackupToDelete { get; }
     string BackupDeleted { get; }
     string AskIdToEdit { get; }
+    string BrowseFile { get; }
 
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }

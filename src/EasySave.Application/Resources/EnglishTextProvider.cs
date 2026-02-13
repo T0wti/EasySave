@@ -12,17 +12,24 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string DeleteBackup => "2. Delete a file backup";
     public override string WrongInput => "Invalid input, please try again: ";
     public override string Exit => "Exit";
+    public override string Confirm => "Confirm";
     public override string ListBackup => "4. List all file backups";
     public override string ExeBackup => "5. Execute a file backup";
     public override string LogFormat => "8. Change log format";
     public override string SettingsMenu => "Settings";
 
     // Creation BackupMenu 
-
+    public override string CreateBackupMenuTitle => "Create a new backup";
     public override string EnterBackupName => "Please enter the name of your backup job: ";
-    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads: ";
-    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save: ";
+    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads): ";
+    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save): ";
     public override string EnterBackupType => "Please enter the backup type (1 - Full | 2 - Differential): ";
+    public override string BrowseFile => "Browse";
+    public override string WaterMarkBackupName => "Backup name";
+    public override string WaterMarkBackupSourcePath => "Source folder";
+    public override string WaterMarkBackupTargetPath => "Destination folder";
+    public override string Full => "Full";
+    public override string Differential => "Differential";
 
     //
     public override string BackupCreated => "Backup job created successfully.";
