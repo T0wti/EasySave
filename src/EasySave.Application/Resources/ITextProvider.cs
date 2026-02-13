@@ -31,6 +31,8 @@ public interface ITextProvider
     string WaterMarkBackupName { get; }
     string WaterMarkBackupSourcePath { get; }
     string WaterMarkBackupTargetPath { get; }
+    string Full { get; }
+    string Differential { get; }
 
     //
 

@@ -49,6 +49,8 @@ public class GeneralTextProvider : ITextProvider
         public virtual string WaterMarkBackupName => _defaultString;
         public virtual string WaterMarkBackupSourcePath => _defaultString;
         public virtual string WaterMarkBackupTargetPath => _defaultString;
+        public virtual string Full => _defaultString;
+        public virtual string Differential => _defaultString;
 
     //
         public virtual string BackupCreated => _defaultString;

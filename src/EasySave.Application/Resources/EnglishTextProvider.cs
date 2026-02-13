@@ -28,6 +28,8 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string WaterMarkBackupName => "Backup name";
     public override string WaterMarkBackupSourcePath => "Source folder";
     public override string WaterMarkBackupTargetPath => "Destination folder";
+    public override string Full => "Full";
+    public override string Differential => "Differential";
 
     //
     public override string BackupCreated => "Backup job created successfully.";

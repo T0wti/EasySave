@@ -50,11 +50,11 @@
 
                 <StackPanel Orientation="Horizontal" Spacing="30">
 
-                    <RadioButton Content="Full"
+                    <RadioButton Content="{Binding FullType}"
                                  GroupName="BackupType"
                                  Command="{Binding SetFullTypeCommand}"/>
 
-                    <RadioButton Content="Differential"
+                    <RadioButton Content="{Binding DifferentialType}"
                                  GroupName="BackupType"
                                  Command="{Binding SetDifferentialTypeCommand}"/>
 
