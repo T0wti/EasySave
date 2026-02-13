@@ -10,7 +10,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     [ObservableProperty] private string? backupName;
     [ObservableProperty] private string? sourcePath;
     [ObservableProperty] private string? targetPath;
-    [ObservableProperty] private string? selectedType;
+    [ObservableProperty] private int selectedType;
     
     // Commands
     public ICommand ExitCommand { get; }
@@ -48,8 +48,8 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
         FullType = Texts.Full;
         DifferentialType = Texts.Differential;
 
-        SetFullTypeCommand = new RelayCommand(() => SelectedType = "caca");
-        SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = "Differential");
+        SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
+        SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
         CreateBackupCommand = new RelayCommand(CreateBackup);
 
         ExitCommand = new RelayCommand(NavigateToBase);
@@ -57,7 +57,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
 
     private void CreateBackup()
     {
-        // code
+        _backupController.CreateBackup(backupName, sourcePath, targetPath, selectedType);
     }
     
 }
