@@ -2,14 +2,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="EasySave.GUI.App"
              xmlns:local="using:EasySave.GUI"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="MainBackground">#1E1E1E</SolidColorBrush>
+        <SolidColorBrush x:Key="SidebarBackground">#252526</SolidColorBrush>
+        <SolidColorBrush x:Key="CardBackground">#2D2D30</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColor">#007ACC</SolidColorBrush>
+        <SolidColorBrush x:Key="DangerColor">#C42B1C</SolidColorBrush>
+        <SolidColorBrush x:Key="TextPrimary">#FFFFFF</SolidColorBrush>
+        <SolidColorBrush x:Key="TextSecondary">#B0B0B0</SolidColorBrush>
+    </Application.Resources>
   
     <Application.Styles>
         <FluentTheme />
+
+        <Style Selector="Button.MenuBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="15, 12"/>
+            <Setter Property="Margin" Value="0, 2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="8"/>
+        </Style>
+        <Style Selector="Button.MenuBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#3E3E42"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.ActionBtn">
+            <Setter Property="Background" Value="{StaticResource AccentColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20, 8"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        
+        <Style Selector="Button.DangerBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DangerColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+        </Style>
     </Application.Styles>
 </Application>

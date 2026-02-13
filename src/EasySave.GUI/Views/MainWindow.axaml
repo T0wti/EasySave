@@ -5,8 +5,12 @@
         x:Class="EasySave.GUI.Views.MainWindow"
         x:DataType="viewModels:MainWindowViewModel"
         Title="EasySave"
-        Width="600"
-        Height="500">
+        Width="1000"
+        Height="700"
+        Icon="/Assets/easysave-icon.ico"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource MainBackground}"
+        Foreground="{StaticResource TextPrimary}">
 
     <Window.DataTemplates>
         
@@ -36,5 +40,50 @@
         
     </Window.DataTemplates>
 
+    <Grid ColumnDefinitions="250, *">
+		
+        <Border Grid.Column="0" Background="{StaticResource SidebarBackground}">
+			<Grid RowDefinitions="Auto, *, Auto">
+				
+                <StackPanel Grid.Row="0" Margin="20,30,20,30">
+                    <Image Source="/Assets/easysave-logo.png"/>
+					<TextBlock Text="Menu" FontSize="24" FontWeight="Bold" Foreground="{StaticResource AccentColor}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Margin="10,0">
+					<!-- Backup actions -->
+					<!-- ==================== TO DO: THE BINDINGS ====================
+                    <Button Content="{Binding CreateBackup}" Command="{Binding NavigateToCreateBackupCommand}" />
+                    <Button Content="{Binding DeleteBackup}" />
+                    <Button Content="{Binding EditBackup}" />
+                    <Button Content="{Binding ListBackup}" Command="{Binding NavigateToListBackupCommand}"/>
+                    <Button Content="{Binding ExeBackup}"/>
+                    -->
+                    <Button Classes="MenuBtn" Content="1. Create Backup"/>
+                    <Button Classes="MenuBtn" Content="2. Delete Backup" />
+                    <Button Classes="MenuBtn" Content="3. Edit Backup" />
+                    <Button Classes="MenuBtn" Content="4. List Backups"/>
+                    <Button Classes="MenuBtn" Content="5. Execute Backups"/>
+
+                    <Separator Margin="0,15"/>
+
+                    <!-- Settings -->
+					<!-- ==================== TO DO: THE BINDINGS ====================
+                    <Button Content="{Binding Settings}" Command="{Binding NavigateToSettingsCommand}"/>
+                    -->
+                    <Button Classes="MenuBtn" Content="Settings"/>
+            
+                    <!-- Exit -->
+					<!-- ==================== TO DO: THE BINDINGS ====================
+                    <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
+                    -->
+                    <Button Classes="MenuBtn DangerBtn" Content="Exit"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+
+    <!--
     <ContentControl Content="{Binding CurrentView}"/>
+    -->
 </Window>

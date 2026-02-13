@@ -6,7 +6,8 @@
 
     <Border Padding="30">
         <StackPanel Spacing="12">
-
+            <!-- ===============TO DELETE=============== -->
+            <!-- ======================================= -->
             <!-- Title -->
             <TextBlock Text="{Binding Title}"
                        FontSize="26"
@@ -28,6 +29,7 @@
             
             <!-- Exit -->
             <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
+            <!-- ======================================= -->
         </StackPanel>
     </Border>
 
