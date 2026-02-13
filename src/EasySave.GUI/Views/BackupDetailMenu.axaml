@@ -10,10 +10,7 @@
     
     <StackPanel Spacing="20" Margin="30">
         <!-- Title -->
-        <TextBlock Text="{Binding Title}" 
-                   FontSize="24" 
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Title}" Classes="PageTitle"/>
         
         <!-- Job Details -->
         <TextBlock Text="{Binding BackupName}"></TextBlock>

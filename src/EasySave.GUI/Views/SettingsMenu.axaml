@@ -13,16 +13,13 @@
     </Design.DataContext>
 
     <StackPanel Spacing="30" Margin="20">
-        <TextBlock Text="{Binding Title}"
-            FontSize="24"
-            FontWeight="Bold"
-            Foreground="{StaticResource AccentColor}"/>
+        <TextBlock Text="{Binding Title}" Classes="PageTitle"/>
 
             <!-- Language -->
             <StackPanel Spacing="10">
                 <!-- TO DO: BINDINGS -->
                 <TextBlock Text="Language" FontSize="18" FontWeight="SemiBold"/>
-                <Border Background="{StaticResource SidebarBackground}" CornerRadius="8" Padding="15">
+                <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
 				    <StackPanel Spacing="10">
 
                         <!-- TO DO: BINDINGS -->
@@ -37,7 +34,7 @@
             <StackPanel Spacing="10">
                 <!-- TO DO: BINDINGS -->
                 <TextBlock Text="Log files format" FontSize="18" FontWeight="SemiBold"/>
-                <Border Background="{StaticResource SidebarBackground}" CornerRadius="8" Padding="15">
+                <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
 					<StackPanel Spacing="10">
 
                         <!-- TO DO: BINDINGS -->

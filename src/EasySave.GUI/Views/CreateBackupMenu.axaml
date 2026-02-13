@@ -8,10 +8,7 @@
         <StackPanel Margin="30" Spacing="20">
 
             <!-- Title -->
-            <TextBlock Text="{Binding Title}"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Title}" Classes="PageTitle"/>
 
             <!-- Name -->
             <StackPanel Spacing="5">
