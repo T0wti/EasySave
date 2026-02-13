@@ -1,43 +1,29 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:dto="using:EasySave.Application.DTOs"
+             xmlns:controls="using:EasySave.GUI.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.ListBackupMenu"
              x:DataType="viewModels:ListBackupMenuViewModel">
-
+    
     <StackPanel Spacing="20" Margin="30">
-
+        
         <!-- Title -->
-        <TextBlock Text="{Binding Title}" 
-                   FontSize="24" 
-                   FontWeight="Bold" 
+        <TextBlock Text="{Binding Title}"
+                   FontSize="24"
+                   FontWeight="Bold"
                    HorizontalAlignment="Center"/>
-
+        
         <!-- Jobs list -->
-        <ListBox ItemsSource="{Binding BackupJobs}" 
-                 SelectedItem="{Binding SelectedJob}"
-                 Background="Transparent">
-            <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="dto:BackupJobDTO">
-                    <Border Padding="10" 
-                            Background="#2d2d2d" 
-                            CornerRadius="5"
-                            Margin="0,2">
-                        <TextBlock Text="{Binding Name}" 
-                                   FontSize="16" 
-                                   VerticalAlignment="Center"/>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
+        <controls:BackupJobsList Jobs="{Binding BackupJobs}"
+                                 SelectedJob="{Binding SelectedJob}"/>
+        
         <!-- Exit -->
-        <Button Content="{Binding Exit}" 
-                Command="{Binding ExitCommand}" 
+        <Button Content="{Binding Exit}"
+                Command="{Binding ExitCommand}"
                 HorizontalAlignment="Center"/>
-
+    
     </StackPanel>
 </UserControl>

@@ -34,9 +34,9 @@ public partial class ListBackupMenuViewModel : ViewModelBase
     {
         Title = Texts.ListBackupMenuTitle;
         Exit = Texts.Exit;
-
+    
         BackupJobs = new ObservableCollection<BackupJobDTO>(jobs);
-
+    
         ExitCommand = new RelayCommand(NavigateToBase);
     }
 }
