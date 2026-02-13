@@ -21,8 +21,8 @@ public class FrenchTextProvider: GeneralTextProvider
     // Creation BackupMenu 
     public override string CreateBackupMenuTitle => "Créer une sauvegarde de fichiers";
     public override string EnterBackupName => "Veuillez entrer le nom de votre travail : ";
-    public override string EnterSourcePath => "Veuillez entrer la source du dossier à sauvegarder (C:\\\\Users\\\\Downloads : ";
-    public override string EnterTargetPath => "Veuillez entrer la destination où sauvegarder le dossier (C:\\\\Users\\\\Save ";
+    public override string EnterSourcePath => "Veuillez entrer la source du dossier à sauvegarder (C:\\\\Users\\\\Downloads) : ";
+    public override string EnterTargetPath => "Veuillez entrer la destination où sauvegarder le dossier (C:\\\\Users\\\\Save) :";
     public override string EnterBackupType => "Veuillez entrer le type de sauvegarder que vous voulez faire (1 - Full | 2 - Differential) : ";
 
     //

@@ -21,8 +21,8 @@ public class EnglishTextProvider : GeneralTextProvider
     // Creation BackupMenu 
     public override string CreateBackupMenuTitle => "Create a new backup";
     public override string EnterBackupName => "Please enter the name of your backup job: ";
-    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads: ";
-    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save: ";
+    public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads): ";
+    public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save): ";
     public override string EnterBackupType => "Please enter the backup type (1 - Full | 2 - Differential): ";
 
     //
