@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="EasySave.GUI.App"
              xmlns:local="using:EasySave.GUI"
-             RequestedThemeVariant="Dark">
+             RequestedThemeVariant="Light">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -10,13 +10,13 @@
     </Application.DataTemplates>
 
     <Application.Resources>
-        <SolidColorBrush x:Key="MainBackground">#1E1E1E</SolidColorBrush>
-        <SolidColorBrush x:Key="SidebarBackground">#252526</SolidColorBrush>
-        <SolidColorBrush x:Key="CardBackground">#2D2D30</SolidColorBrush>
-        <SolidColorBrush x:Key="AccentColor">#007ACC</SolidColorBrush>
+        <SolidColorBrush x:Key="MainBackground">#F8F9FA</SolidColorBrush>
+        <SolidColorBrush x:Key="SidebarBackground">#D1D5DB</SolidColorBrush>
+        <SolidColorBrush x:Key="CardBackground">#FFFFFF</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColor">#0078D4</SolidColorBrush>
         <SolidColorBrush x:Key="DangerColor">#C42B1C</SolidColorBrush>
-        <SolidColorBrush x:Key="TextPrimary">#FFFFFF</SolidColorBrush>
-        <SolidColorBrush x:Key="TextSecondary">#B0B0B0</SolidColorBrush>
+        <SolidColorBrush x:Key="TextPrimary">#111827</SolidColorBrush>
+        <SolidColorBrush x:Key="TextSecondary">#4B5563</SolidColorBrush>
     </Application.Resources>
   
     <Application.Styles>
@@ -31,31 +31,41 @@
             <Setter Property="Margin" Value="0, 2"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2" />
+                </Transitions>
+            </Setter>
         </Style>
         <Style Selector="Button.MenuBtn:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#3E3E42"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#BCBCC4"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
         </Style>
+
         <Style Selector="Button.MenuBtn.active">
 			<Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="{StaticResource AccentColor}"/>
-            <Setter Property="Background" Value="#2A2A2A"/>
+            <Setter Property="Background" Value="{StaticResource MainBackground}"/>
+            <Setter Property="BorderThickness" Value="4,0,0,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
         </Style>
 
         <Style Selector="Button.ActionBtn">
             <Setter Property="Background" Value="{StaticResource AccentColor}"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="20, 8"/>
+            <Setter Property="Padding" Value="20, 10"/>
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
         
         <Style Selector="Button.DangerBtn">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="#FFF0F0"/>
             <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
             <Setter Property="BorderBrush" Value="{StaticResource DangerColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="10, 2"/>
         </Style>
     </Application.Styles>
 </Application>
