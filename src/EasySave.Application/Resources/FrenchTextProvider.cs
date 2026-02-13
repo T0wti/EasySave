@@ -24,6 +24,10 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string EnterSourcePath => "Veuillez entrer la source du dossier à sauvegarder (C:\\\\Users\\\\Downloads) : ";
     public override string EnterTargetPath => "Veuillez entrer la destination où sauvegarder le dossier (C:\\\\Users\\\\Save) :";
     public override string EnterBackupType => "Veuillez entrer le type de sauvegarder que vous voulez faire (1 - Full | 2 - Differential) : ";
+    public override string BrowseFile => "Explorer";
+    public override string WaterMarkBackupName => "Nom de la sauvegarde";
+    public override string WaterMarkBackupSourcePath => "Dossier source";
+    public override string WaterMarkBackupTargetPath => "Dossier destination";
 
     //
     public override string BackupCreated => "Le travail de sauvegarde a été créé avec succès.";

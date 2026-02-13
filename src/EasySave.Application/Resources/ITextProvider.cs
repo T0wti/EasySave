@@ -28,6 +28,9 @@ public interface ITextProvider
     string EnterSourcePath { get; }
     string EnterTargetPath { get; }
     string EnterBackupType { get; }
+    string WaterMarkBackupName { get; }
+    string WaterMarkBackupSourcePath { get; }
+    string WaterMarkBackupTargetPath { get; }
 
     //
 
@@ -36,6 +39,7 @@ public interface ITextProvider
     string EnterBackupToDelete { get; }
     string BackupDeleted { get; }
     string AskIdToEdit { get; }
+    string BrowseFile { get; }
 
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }

@@ -26,6 +26,10 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     public string AskTarget { get; }
     public string AskType { get; }
     public string Confirm { get; }
+    public string BrowseFile { get; }
+    public string WaterMarkBackupName { get; }
+    public string WaterMarkBackupSourcePath { get; }
+    public string WaterMarkBackupTargetPath { get; }
 
     public CreateBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
@@ -35,6 +39,10 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
         AskTarget = Texts.EnterTargetPath;
         AskType = Texts.EnterBackupType;
         Confirm = Texts.Confirm;
+        BrowseFile = Texts.BrowseFile;
+        WaterMarkBackupName = Texts.WaterMarkBackupName;
+        WaterMarkBackupSourcePath = Texts.WaterMarkBackupSourcePath;
+        WaterMarkBackupTargetPath = Texts.WaterMarkBackupTargetPath;
 
         SetFullTypeCommand = new RelayCommand(() => SelectedType = "Full");
         SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = "Differential");

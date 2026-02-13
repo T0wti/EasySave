@@ -45,6 +45,10 @@ public class GeneralTextProvider : ITextProvider
         public virtual string EnterSourcePath => _defaultString;
         public virtual string EnterTargetPath => _defaultString;
         public virtual string EnterBackupType => _defaultString;
+        public virtual string BrowseFile => _defaultString;
+        public virtual string WaterMarkBackupName => _defaultString;
+        public virtual string WaterMarkBackupSourcePath => _defaultString;
+        public virtual string WaterMarkBackupTargetPath => _defaultString;
 
     //
         public virtual string BackupCreated => _defaultString;

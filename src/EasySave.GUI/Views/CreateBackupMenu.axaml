@@ -17,7 +17,7 @@
             <StackPanel Spacing="5">
                 <TextBlock Text="{Binding AskName}"/>
                 <TextBox Text="{Binding BackupName}"
-                         Watermark="Backup name"/>
+                         Watermark="{Binding WaterMarkBackupName}"/>
             </StackPanel>
 
             <!-- Source -->
@@ -26,9 +26,9 @@
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                     <TextBox Grid.Column="0"
                              Text="{Binding SourcePath}"
-                             Watermark="Select source folder"/>
+                             Watermark="{Binding WaterMarkBackupSourcePath}"/>
                     <Button Grid.Column="1"
-                            Content="Browse"/>
+                            Content="{Binding BrowseFile}"/>
                 </Grid>
             </StackPanel>
 
@@ -38,9 +38,9 @@
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                     <TextBox Grid.Column="0"
                              Text="{Binding TargetPath}"
-                             Watermark="Select target folder"/>
+                             Watermark="{Binding WaterMarkBackupTargetPath}"/>
                     <Button Grid.Column="1"
-                            Content="Browse"/>
+                            Content="{Binding BrowseFile}"/>
                 </Grid>
             </StackPanel>
 

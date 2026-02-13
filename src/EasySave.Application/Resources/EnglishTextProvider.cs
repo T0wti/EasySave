@@ -24,6 +24,10 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string EnterSourcePath => "Please enter the source path of the folder to back up (C:\\\\Users\\\\Downloads): ";
     public override string EnterTargetPath => "Please enter the destination path for the backup ((C:\\\\Users\\\\Save): ";
     public override string EnterBackupType => "Please enter the backup type (1 - Full | 2 - Differential): ";
+    public override string BrowseFile => "Browse";
+    public override string WaterMarkBackupName => "Backup name";
+    public override string WaterMarkBackupSourcePath => "Source folder";
+    public override string WaterMarkBackupTargetPath => "Destination folder";
 
     //
     public override string BackupCreated => "Backup job created successfully.";
