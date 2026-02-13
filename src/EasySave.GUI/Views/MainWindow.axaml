@@ -7,7 +7,7 @@
         Title="EasySave"
         Width="1000"
         Height="700"
-        Icon="/Assets/easysave-icon.ico"
+        Icon="/Assets/easysave-icon2.ico"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource MainBackground}"
         Foreground="{StaticResource TextPrimary}">
@@ -47,7 +47,6 @@
 				
                 <StackPanel Grid.Row="0" Margin="20,30,20,30">
                     <Image Source="/Assets/easysave-logo.png"/>
-					<TextBlock Text="Menu" FontSize="24" FontWeight="Bold" Foreground="{StaticResource AccentColor}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Margin="10,0">
@@ -59,11 +58,11 @@
                     <Button Content="{Binding ListBackup}" Command="{Binding NavigateToListBackupCommand}"/>
                     <Button Content="{Binding ExeBackup}"/>
                     -->
-                    <Button Classes="MenuBtn" Content="1. Create Backup"/>
-                    <Button Classes="MenuBtn" Content="2. Delete Backup" />
-                    <Button Classes="MenuBtn" Content="3. Edit Backup" />
-                    <Button Classes="MenuBtn" Content="4. List Backups"/>
-                    <Button Classes="MenuBtn" Content="5. Execute Backups"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsCreateActive}" Content="1. Create Backup" Command="{Binding NavigateToCreateBackupCommand}"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsDeleteActive}" Content="2. Delete Backup"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsEditActive}" Content="3. Edit Backup"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsListActive}" Content="4. List Backups" Command="{Binding NavigateToListBackupCommand}"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsExecuteActive}" Content="5. Execute Backups"/>
 
                     <Separator Margin="0,15"/>
 
@@ -71,7 +70,7 @@
 					<!-- ==================== TO DO: THE BINDINGS ====================
                     <Button Content="{Binding Settings}" Command="{Binding NavigateToSettingsCommand}"/>
                     -->
-                    <Button Classes="MenuBtn" Content="Settings"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsSettingsActive}" Content="Settings" Command="{Binding NavigateToSettingsCommand}"/>
             
                     <!-- Exit -->
 					<!-- ==================== TO DO: THE BINDINGS ====================
@@ -80,6 +79,13 @@
                     <Button Classes="MenuBtn DangerBtn" Content="Exit"/>
                 </StackPanel>
             </Grid>
+        </Border>
+        <Border Grid.Column="1" Padding="40,30">
+			<TransitioningContentControl Content="{Binding CurrentView}">
+				<TransitioningContentControl.PageTransition>
+					<CrossFade Duration="0:0:0.5"/>
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
         </Border>
     </Grid>
 

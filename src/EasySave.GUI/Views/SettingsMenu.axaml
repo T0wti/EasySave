@@ -12,24 +12,44 @@
         <viewModels:SettingsMenuViewModel/>
     </Design.DataContext>
 
-    <Border Padding="30">
-        <StackPanel Spacing="12">
+    <StackPanel Spacing="30" Margin="20">
+        <TextBlock Text="{Binding Title}"
+            FontSize="24"
+            FontWeight="Bold"
+            Foreground="{StaticResource AccentColor}"/>
 
-            <TextBlock Text="{Binding Title}"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,20"/>
+            <!-- Language -->
+            <StackPanel Spacing="10">
+                <!-- TO DO: BINDINGS -->
+                <TextBlock Text="Language" FontSize="18" FontWeight="SemiBold"/>
+                <Border Background="{StaticResource SidebarBackground}" CornerRadius="8" Padding="15">
+				    <StackPanel Spacing="10">
 
-            <Button Content="{Binding Language1}" Command="{Binding Language1Command}" />
-            <Button Content="{Binding Language2}" Command="{Binding Language2Command}" />
-            <Button Content="{Binding LogFormat1}" Command="{Binding LogFormat1Command}" />
-            <Button Content="{Binding LogFormat2}" Command="{Binding LogFormat2Command}"/>
+                        <!-- TO DO: BINDINGS -->
+                        <RadioButton Content="{Binding Language1}" Command="{Binding Language1Command}" GroupName="Language"/>
+                        <RadioButton Content="{Binding Language2}" Command="{Binding Language2Command}" GroupName="Language"/>
+
+                    </StackPanel>	
+                </Border>
+            </StackPanel>
+
+            <!-- Log format -->
+            <StackPanel Spacing="10">
+                <!-- TO DO: BINDINGS -->
+                <TextBlock Text="Log files format" FontSize="18" FontWeight="SemiBold"/>
+                <Border Background="{StaticResource SidebarBackground}" CornerRadius="8" Padding="15">
+					<StackPanel Spacing="10">
+
+                        <!-- TO DO: BINDINGS -->
+                        <RadioButton Content="{Binding LogFormat1}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
+                        <RadioButton Content="{Binding LogFormat2}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
+
+                    </StackPanel>
+                </Border>
+            </StackPanel>
             
             <!-- Exit -->
-            <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
-            
-        </StackPanel>
-    </Border>
+            <Button Classes="ActionBtn" Content="{Binding Exit}" Command="{Binding ExitCommand}" HorizontalAlignment="Right" Margin="0,20,0,0"/>
+    </StackPanel>
 
 </UserControl>
