@@ -8,11 +8,11 @@ namespace EasySave.CryptoSoft
     public class FileManager : IFileManager
     {
         private readonly string _fileName;
-        //private readonly string _filePath;
-        public FileManager(string fileName)
+        private readonly string _keyPath; 
+        public FileManager(string fileName, string keyPath) 
         {
             _fileName = fileName;
-            //_filePath = filePath;
+            _keyPath = keyPath;
         }
 
         public bool CheckFile()
@@ -33,7 +33,7 @@ namespace EasySave.CryptoSoft
 
                 var fileBytes = File.ReadAllBytes(_fileName);
                 //var keyBytes = Encoding.UTF8.GetBytes(_key);
-                byte[] keyBytes = File.ReadAllBytes(@"adresse\key.txt");
+                byte[] keyBytes = File.ReadAllBytes(_keyPath);
                 var encryptedBytes = AesEncrypt(fileBytes, keyBytes);
                 File.WriteAllBytes(_fileName, encryptedBytes);
 
@@ -44,9 +44,8 @@ namespace EasySave.CryptoSoft
 
                 return (int)stopwatch.ElapsedMilliseconds;
             }
-            catch (Exception ex)
+            catch 
             {
-                Console.WriteLine(ex.Message);
                 return -2;
             }
         }

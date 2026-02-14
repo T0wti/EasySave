@@ -2,7 +2,6 @@
 using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
-using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
 
 namespace EasySave.Domain.Services
@@ -16,16 +15,17 @@ namespace EasySave.Domain.Services
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
         private readonly IBusinessSoftwareService _businessSoftwareService;
-
+        private readonly ICryptoSoftService _cryptoSoftService;
 
         // Constructor injects required services and initializes backup jobs list
         public BackupService(
             IFileService fileService,
             IBackupStrategy fullStrategy,
             IBackupStrategy differentialStrategy,
-            IStateService stateService,     
+            IStateService stateService,
             ILogService logService,
-            IBusinessSoftwareService businessSoftwareService)
+            IBusinessSoftwareService businessSoftwareService,
+            ICryptoSoftService cryptoSoftService)
         {
             _fileService = fileService;
             _fullStrategy = fullStrategy;
@@ -33,6 +33,7 @@ namespace EasySave.Domain.Services
             _stateService = stateService;
             _logService = logService;
             _businessSoftwareService = businessSoftwareService;
+            _cryptoSoftService = cryptoSoftService;
 
         }
 
@@ -41,7 +42,10 @@ namespace EasySave.Domain.Services
         {
 
             if (_businessSoftwareService.IsBusinessSoftwareRunning())
+            {
                 throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
+                _stateService.Interrupt(job.Id);
+            }
 
             // Select backup strategy based on job type
             IBackupStrategy strategy = job.Type == BackupType.Full
@@ -73,6 +77,10 @@ namespace EasySave.Domain.Services
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
+                    long encryptionTime = 0;
+                    if (_cryptoSoftService.ShouldEncrypt(targetPath))
+                        encryptionTime = _cryptoSoftService.Encrypt(targetPath);
+
                     _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
@@ -80,7 +88,9 @@ namespace EasySave.Domain.Services
                         SourcePath = uncSourcePath,
                         TargetPath = uncTargetPath,
                         FileSize = file.Size,
-                        TransferTimeMs = duration
+                        TransferTimeMs = duration,
+                        EncryptionTimeMs = encryptionTime 
+
                     });
 
                     _stateService.Update(progress, file, targetPath);

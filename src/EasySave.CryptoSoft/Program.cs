@@ -3,26 +3,29 @@ namespace EasySave.CryptoSoft
 {
     public class Program
     {
+        // Program.cs — args[0] = fichier à chiffrer, args[1] = chemin de la clé
         static int Main(string[] args)
         {
-            if (args.Length != 1 || File.Exists(args[0]) == false)
+            if (args.Length != 2)
             {
-                Console.WriteLine("Usage: program <file>");
+                Console.Error.WriteLine("Usage: CryptoSoft <filePath> <keyPath>");
                 return -1;
             }
 
-            var fileManager = new FileManager(args[0]);
-            try
+            if (!File.Exists(args[0]))
             {
-                int elapsedTime = fileManager.TransformFile();
-                Console.WriteLine($"Temps : {elapsedTime} ms");
-                return elapsedTime;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                Console.Error.WriteLine($"File not found: {args[0]}");
                 return -1;
             }
+
+            if (!File.Exists(args[1]))
+            {
+                Console.Error.WriteLine($"Key file not found: {args[1]}");
+                return -1;
+            }
+
+            var fileManager = new FileManager(args[0], args[1]);
+            return fileManager.TransformFile();
         }
     }
 }

@@ -38,6 +38,8 @@ namespace EasySave.Application.Controllers
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
             IStateService stateService = new StateService(fileStateService);
             IBusinessSoftwareService businessSoftwareService = new BusinessSoftwareService(settings);
+            ICryptoSoftService cryptoSoftService = new CryptoSoftService(settings);
+
 
             IBackupService executor = new BackupService(
                 fileService,
@@ -45,8 +47,8 @@ namespace EasySave.Application.Controllers
                 diffStrategy,
                 stateService,
                 logService,
-                businessSoftwareService
-            );
+                businessSoftwareService,
+                cryptoSoftService);
 
             IBackupManagerService manager = new BackupManagerService(
                 fileBackupService,

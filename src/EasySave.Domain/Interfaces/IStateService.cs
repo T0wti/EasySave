@@ -9,6 +9,7 @@ namespace EasySave.Domain.Interfaces
         void Update(BackupProgress progress, FileDescriptor file, string targetPath);
         void Complete(int backupJobId);
         void Fail(int backupJobId);
+        void Interrupt(int backupJobId);
     }
 
 }

@@ -1,7 +1,6 @@
     using EasySave.Application.Controllers;
     using EasySave.Console.Commands;
     using EasySave.Console.ConsoleUI;
-    using EasySave.Application.DTOs;
     using EasySave.Application.Resources;
 
     namespace EasySave.Console;
@@ -23,6 +22,7 @@
             {
                 _texts = new EnglishTextProvider();
                 _configController.EnsureConfigExists();
+                _configController.EnsureKeyExists(); //Temporaire !
                 RunFirstStartMenu();
             }
             
