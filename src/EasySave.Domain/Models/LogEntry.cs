@@ -13,6 +13,7 @@ namespace EasySave.Domain.Models
         public string TargetPath { get; init; }
         public long FileSize { get; init; }
         public long TransferTimeMs { get; init; }
+        public long EncryptionTimeMs { get; init; }
     }
 
 }

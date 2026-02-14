@@ -31,11 +31,13 @@ namespace EasySave.Domain.Services
         {
             return new ApplicationSettings
             {
-                MaxBackupJobs = 5,
                 LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
                 StateFileDirectoryPath = Path.Combine(_baseAppPath, "State"),
                 LogFormat = 0,
-                BusinessSoftwareName = "CalculatorApp"
+                BusinessSoftwareName = "CalculatorApp",
+                CryptoSoftPath = Path.Combine(AppContext.BaseDirectory, "EasySave.CryptoSoft.exe"),
+                CryptoSoftKeyPath = Path.Combine(_baseAppPath, "key.txt"),
+                EncryptedFileExtensions = new List<string>()
             };
         }
 
@@ -72,6 +74,14 @@ namespace EasySave.Domain.Services
             {
                 SaveSettings(GetDefaultSettings());
             }
+        }
+
+        public void EnsureKeyExists()
+        {
+            string keyPath = Path.Combine(_baseAppPath, "key.txt");
+
+            if (!File.Exists(keyPath))
+                File.WriteAllText(keyPath, "cryptosoft key");
         }
 
         public void SaveSettings(ApplicationSettings settings)
