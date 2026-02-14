@@ -41,12 +41,6 @@ namespace EasySave.Domain.Services
         public void ExecuteBackup(BackupJob job)
         {
 
-            if (_businessSoftwareService.IsBusinessSoftwareRunning())
-            {
-                throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
-                _stateService.Interrupt(job.Id);
-            }
-
             // Select backup strategy based on job type
             IBackupStrategy strategy = job.Type == BackupType.Full
             ? _fullStrategy
@@ -57,6 +51,12 @@ namespace EasySave.Domain.Services
             var progress = BackupProgress.From(job);
 
             _stateService.Initialize(progress, files);
+
+            if (_businessSoftwareService.IsBusinessSoftwareRunning())
+            {
+                _stateService.Interrupt(job.Id);
+                throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
+            }
 
             // Copy files one by one
             foreach (var file in files)
