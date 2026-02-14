@@ -1,6 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:EasySave.Application.ViewModels"
         xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
         x:Class="EasySave.GUI.Views.BaseMenu"
         x:DataType="viewModels:BaseMenuViewModel">
@@ -20,7 +19,7 @@
             <Button Content="{Binding DeleteBackup}" />
             <Button Content="{Binding EditBackup}" />
             <Button Content="{Binding ListBackup}" Command="{Binding NavigateToListBackupCommand}"/>
-            <Button Content="{Binding ExeBackup}"/>
+            <Button Content="{Binding ExeBackup}" Command="{Binding NavigateToExecuteBackupCommand}"/>
 
             <Separator Margin="0,15"/>
 

@@ -1,8 +1,29 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:EasySave.GUI.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="EasySave.GUI.Views.ExecuteBackupMenu">
-    Welcome to Avalonia!
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             mc:Ignorable="d"
+             x:Class="EasySave.GUI.Views.ExecuteBackupMenu"
+             x:DataType="viewModels:ExecuteBackupMenuViewModel">
+    
+    <StackPanel Spacing="20" Margin="30">
+        
+        <!-- Title -->
+        <TextBlock Text="{Binding Title}"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"/>
+        
+        <!-- Jobs list -->
+        <controls:BackupJobsList Jobs="{Binding BackupJobs}"
+                                 SelectedJob="{Binding SelectedJob}"/>
+        
+        <!-- Exit -->
+        <Button Content="{Binding Exit}"
+                Command="{Binding ExitCommand}"
+                HorizontalAlignment="Center"/>
+    
+    </StackPanel>
 </UserControl>

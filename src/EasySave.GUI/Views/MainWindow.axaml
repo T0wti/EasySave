@@ -18,6 +18,10 @@
             <views:CreateBackupMenu></views:CreateBackupMenu>
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type viewModels:ExecuteBackupMenuViewModel}">
+            <views:ExecuteBackupMenu/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewModels:ListBackupMenuViewModel}">
             <views:ListBackupMenu/>
         </DataTemplate>
