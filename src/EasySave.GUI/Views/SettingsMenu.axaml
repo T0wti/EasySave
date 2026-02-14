@@ -23,8 +23,8 @@
 				    <StackPanel Spacing="10">
 
                         <!-- TO DO: BINDINGS -->
-                        <RadioButton Content="{Binding Language1}" Command="{Binding Language1Command}" GroupName="Language"/>
-                        <RadioButton Content="{Binding Language2}" Command="{Binding Language2Command}" GroupName="Language"/>
+                        <RadioButton Content="{Binding Language1}" IsChecked="{Binding IsLanguage1Selected}" Command="{Binding Language1Command}" GroupName="Language"/>
+                        <RadioButton Content="{Binding Language2}" IsChecked="{Binding IsLanguage2Selected}" Command="{Binding Language2Command}" GroupName="Language"/>
 
                     </StackPanel>	
                 </Border>
@@ -38,8 +38,8 @@
 					<StackPanel Spacing="10">
 
                         <!-- TO DO: BINDINGS -->
-                        <RadioButton Content="{Binding LogFormat1}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
-                        <RadioButton Content="{Binding LogFormat2}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
+                        <RadioButton Content="{Binding LogFormat1}" IsChecked="{Binding IsLogFormat1Selected}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
+                        <RadioButton Content="{Binding LogFormat2}" IsChecked="{Binding IsLogFormat2Selected}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
 
                     </StackPanel>
                 </Border>

@@ -10,20 +10,20 @@
     
     <StackPanel Spacing="20" Margin="30">
         
-        <!-- Title -->
-        <TextBlock Text="{Binding Title}"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Title}" Classes="PageTitle" HorizontalAlignment="Center"/>
         
-        <!-- Jobs list -->
         <controls:BackupJobsList Jobs="{Binding BackupJobs}"
                                  SelectedJob="{Binding SelectedJob}"/>
         
-        <!-- Exit -->
-        <Button Content="{Binding Exit}"
-                Command="{Binding ExitCommand}"
-                HorizontalAlignment="Center"/>
-    
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+            
+            <Button Content="{Binding Exit}"
+                    Command="{Binding ExitCommand}"
+                    VerticalAlignment="Center"
+                    Width="100"
+                    HorizontalContentAlignment="Center"/>
+            
+        </StackPanel>
+        
     </StackPanel>
 </UserControl>

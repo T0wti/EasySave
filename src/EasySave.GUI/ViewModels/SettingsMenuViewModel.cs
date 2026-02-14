@@ -1,11 +1,22 @@
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Resources;
+using EasySave.EasyLog.Enums;
+using System.Windows.Input;
+using Tmds.DBus.Protocol;
 
 namespace EasySave.GUI.ViewModels;
 
 public partial class SettingsMenuViewModel : ViewModelBase
 {
+    // To get states for radio buttons
+    // ObservableProperty automatically generates public property of the same name (PasclCase)
+    [ObservableProperty] private bool _isLanguage1Selected;
+    [ObservableProperty] private bool _isLanguage2Selected;
+
+    [ObservableProperty] private bool _isLogFormat1Selected;
+    [ObservableProperty] private bool _isLogFormat2Selected;
+
     // Commands 
     public ICommand ExitCommand { get; }
     public ICommand Language1Command { get; }
@@ -20,7 +31,7 @@ public partial class SettingsMenuViewModel : ViewModelBase
     public string LogFormat1 { get; }
     public string LogFormat2 { get; }
     public string Exit { get; }
-    
+
     public SettingsMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
         Title = Texts.SettingsMenuTitle;
@@ -29,6 +40,17 @@ public partial class SettingsMenuViewModel : ViewModelBase
         LogFormat1 = Texts.LogFormat1;
         LogFormat2 = Texts.LogFormat2;
         Exit = Texts.Exit;
+
+        var currentSettings = ConfigAppService.Load();
+        var currentFormat = ConfigAppService.GetLogFormat();
+
+        // Check which language is selected
+        if (currentSettings.LanguageCode == 0) IsLanguage1Selected = true;
+        else IsLanguage2Selected = true;
+
+        // Check which log format is selected
+        if (currentFormat == LogFormat.Json) IsLogFormat1Selected = true;
+        else IsLogFormat2Selected = true;
 
         // Handle the language change
         Language1Command = new RelayCommand(() =>
