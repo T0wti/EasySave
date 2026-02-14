@@ -83,13 +83,9 @@
         <Border Grid.Column="1" Padding="40,30">
 			<TransitioningContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 				<TransitioningContentControl.PageTransition>
-					<CrossFade Duration="0:0:0.5"/>
+					<CrossFade Duration="0:0:0.75"/>
                 </TransitioningContentControl.PageTransition>
             </TransitioningContentControl>
         </Border>
     </Grid>
-
-    <!--
-    <ContentControl Content="{Binding CurrentView}"/>
-    -->
 </Window>
