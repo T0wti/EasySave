@@ -62,7 +62,7 @@
                     <Button Classes="MenuBtn" Classes.active="{Binding IsDeleteActive}" Content="2. Delete Backup"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsEditActive}" Content="3. Edit Backup"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsListActive}" Content="4. List Backups" Command="{Binding NavigateToListBackupCommand}"/>
-                    <Button Classes="MenuBtn" Classes.active="{Binding IsExecuteActive}" Content="5. Execute Backups"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsExecuteActive}" Content="5. Execute Backups" Command="{Binding NavigateToExecuteBackupCommand}"/>
 
                     <Separator Margin="0,15"/>
 

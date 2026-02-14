@@ -59,8 +59,13 @@ public partial class MainWindowViewModel : ObservableObject
         IsListActive = true;
     }
 
-    //[RelayCommand]
-    //public void NavigateToExecuteBackup() => CurrentView = new ExecuteBackupMenuViewModel(this);
+    [RelayCommand]
+    public void NavigateToExecuteBackup()
+    {
+        CurrentView = new ExecuteBackupMenuViewModel(this);
+        ResetActiveStates();
+        IsExecuteActive = true;
+    }
 
     [RelayCommand]
     public void NavigateToSettings()

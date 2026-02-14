@@ -14,7 +14,7 @@
         <ListBox.ItemTemplate>
             <DataTemplate x:DataType="dto:BackupJobDTO">
                 <Border Padding="10"
-                        Background="#2d2d2d"
+                        Background="#F0F0F0"
                         CornerRadius="5"
                         Margin="0,2">
                     <TextBlock Text="{Binding Name}"
