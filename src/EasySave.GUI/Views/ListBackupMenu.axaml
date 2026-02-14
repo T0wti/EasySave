@@ -8,26 +8,33 @@
              x:Class="EasySave.GUI.Views.ListBackupMenu"
              x:DataType="viewModels:ListBackupMenuViewModel">
     
-    <StackPanel Spacing="20" Margin="30">
-        
-        <!-- Title -->
-        <TextBlock Text="{Binding Title}"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"/>
-        
-        <!-- Jobs list -->
-        <controls:BackupJobsList Jobs="{Binding BackupJobs}"
-                                 SelectedJob="{Binding SelectedJob}"/>
-        
-        <!-- Exit -->
-        <Button Content="{Binding Exit}"
-                Command="{Binding ExitCommand}"
-                HorizontalAlignment="Center"/>
-    
-    </StackPanel>
+
 
     <Grid RowDefinitions="Auto, *">
+        <StackPanel Spacing="20" Margin="30">
+        
+            <!-- Title -->
+            <TextBlock Text="{Binding Title}"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+        
+            <!-- Jobs list -->
+            <controls:BackupJobsList Jobs="{Binding BackupJobs}"
+                                     SelectedJob="{Binding SelectedJob}"/>
+        
+            <!-- Exit -->
+            <Button Content="{Binding Exit}"
+                    Command="{Binding ExitCommand}"
+                    HorizontalAlignment="Center"/>
+    
+        </StackPanel>
+
+
+
+
+
+
 	    <StackPanel Grid.Row="0" Margin="30,25,30,0" Spacing="5">
             <!-- Title -->
             <TextBlock Text="{Binding Title}" Classes="PageTitle"/>

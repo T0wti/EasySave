@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Domain.Services;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -40,10 +41,10 @@ public partial class BaseMenuViewModel : ViewModelBase
         {
             NavigateTo(new ListBackupMenuViewModel(mainWindow));
         });
-        NavigateToCreateBackupCommand = new RelayCommand(() =>
-        {
-            NavigateTo(new CreateBackupMenuViewModel(mainWindow));
-        });
+        //NavigateToCreateBackupCommand = new RelayCommand(() =>
+        //{
+        //    NavigateTo(new CreateBackupMenuViewModel(mainWindow, new DialogService()));
+        //});
         NavigateToExecuteBackupCommand = new RelayCommand(() =>
         {
             NavigateTo(new ExecuteBackupMenuViewModel(mainWindow));

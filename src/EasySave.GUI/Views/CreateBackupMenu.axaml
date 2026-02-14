@@ -10,66 +10,78 @@
             <!-- Title -->
             <TextBlock Text="{Binding Title}" Classes="PageTitle"/>
 
-            <!-- Name -->
-            <StackPanel Spacing="5">
-                <TextBlock Text="{Binding AskName}"/>
-                <TextBox Text="{Binding BackupName}"
+            <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="12" BoxShadow="0 4 12 0 #10000000">
+                <StackPanel Spacing="25">
+                    
+                    <!-- Name -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskName}"/>
+                        <TextBox Text="{Binding BackupName}"
                          Watermark="{Binding WaterMarkBackupName}"/>
-            </StackPanel>
+                    </StackPanel>
 
-            <!-- Source -->
-            <StackPanel Spacing="5">
-                <TextBlock Text="{Binding AskSource}"/>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                    <TextBox Grid.Column="0"
-                             Text="{Binding SourcePath}"
-                             Watermark="{Binding WaterMarkBackupSourcePath}"/>
-                    <Button Grid.Column="1"
-                            Content="{Binding BrowseFile}"/>
-                </Grid>
-            </StackPanel>
+                    <!-- Source -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskSource}"/>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding SourcePath}"
+                                     Watermark="{Binding WaterMarkBackupSourcePath}"/>
+                            <Button Grid.Column="1"
+                                    Content="{Binding BrowseFile}"
+                                    Command="{Binding BrowseSourceCommand}"/>
+                        </Grid>
+                    </StackPanel>
 
-            <!-- Target -->
-            <StackPanel Spacing="5">
-                <TextBlock Text="{Binding AskTarget}"/>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                    <TextBox Grid.Column="0"
-                             Text="{Binding TargetPath}"
-                             Watermark="{Binding WaterMarkBackupTargetPath}"/>
-                    <Button Grid.Column="1"
-                            Content="{Binding BrowseFile}"/>
-                </Grid>
-            </StackPanel>
+                    <!-- Target -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskTarget}"/>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding TargetPath}"
+                                     Watermark="{Binding WaterMarkBackupTargetPath}"/>
+                            <Button Grid.Column="1"
+                                    Content="{Binding BrowseFile}"
+                                    Command="{Binding BrowseTargetCommand}"/>
+                        </Grid>
+                    </StackPanel>
 
-            <!-- Type -->
-            <StackPanel Spacing="5">
-                <TextBlock Text="{Binding AskType}"/>
+                    <!-- Type -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskType}"/>
 
-                <StackPanel Orientation="Horizontal" Spacing="30">
+                        <StackPanel Orientation="Horizontal" Spacing="30">
 
-                    <RadioButton Content="{Binding FullType}"
-                                 GroupName="BackupType"
-                                 Command="{Binding SetFullTypeCommand}"/>
+                            <RadioButton Content="{Binding FullType}"
+                                         GroupName="BackupType"
+                                         Command="{Binding SetFullTypeCommand}"/>
 
-                    <RadioButton Content="{Binding DifferentialType}"
-                                 GroupName="BackupType"
-                                 Command="{Binding SetDifferentialTypeCommand}"/>
+                            <RadioButton Content="{Binding DifferentialType}"
+                                         GroupName="BackupType"
+                                         Command="{Binding SetDifferentialTypeCommand}"/>
+
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Separator Margin="0,10" Background="#F0F0F0"/>
+
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
+						<!-- Confirm -->
+                        <Button Content="{Binding Confirm}"
+                                Command="{Binding CreateBackupCommand}"
+                                HorizontalAlignment="Center"
+                                Width="150"/>
+
+                        <!-- Exit -->
+                        <Button Content="Back"
+                                Command="{Binding ExitCommand}"
+                                HorizontalAlignment="Center"
+                                Width="150"/>
+                    </StackPanel>
 
                 </StackPanel>
-            </StackPanel>
-
-            <!-- Confirm -->
-            <Button Content="{Binding Confirm}"
-                    Command="{Binding CreateBackupCommand}"
-                    HorizontalAlignment="Center"
-                    Width="150"/>
-
-            <!-- Exit -->
-            <Button Content="Back"
-                    Command="{Binding ExitCommand}"
-                    HorizontalAlignment="Center"
-                    Width="150"/>
-
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

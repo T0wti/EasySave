@@ -1,5 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Domain.Services;
+using EasySave.GUI.Services;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -24,7 +26,7 @@ public partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel()
     {
         //CurrentView = new BaseMenuViewModel(this);
-        CurrentView = new CreateBackupMenuViewModel(this);
+        CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
     }
 
     [RelayCommand]
@@ -38,7 +40,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     public void NavigateToCreateBackup()
     {
-        CurrentView = new CreateBackupMenuViewModel(this);
+        CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
         ResetActiveStates();
         IsCreateActive = true;
     }

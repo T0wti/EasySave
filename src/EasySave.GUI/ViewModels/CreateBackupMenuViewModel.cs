@@ -1,11 +1,16 @@
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Domain.Interfaces;
 
 namespace EasySave.GUI.ViewModels;
 
 public partial class CreateBackupMenuViewModel : ViewModelBase
 {
+    // File browser
+    private readonly IDialogService _dialogService;
+    
     // Inputs
     [ObservableProperty] private string? backupName;
     [ObservableProperty] private string? sourcePath;
@@ -17,6 +22,8 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     public ICommand CreateBackupCommand { get; }
     public ICommand SetFullTypeCommand { get; }
     public ICommand SetDifferentialTypeCommand { get; }
+    public ICommand BrowseSourceCommand { get; }
+    public ICommand BrowseTargetCommand { get; }
 
     
     // String to display
@@ -33,8 +40,9 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     public string FullType { get; }
     public string DifferentialType { get; }
 
-    public CreateBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
+    public CreateBackupMenuViewModel(MainWindowViewModel mainWindow, IDialogService dialogService) : base(mainWindow)
     {
+        _dialogService = dialogService;
         Title = Texts.CreateBackupMenuTitle;
         AskName = Texts.EnterBackupName;
         AskSource = Texts.EnterSourcePath;
@@ -52,6 +60,9 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
         SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
         CreateBackupCommand = new RelayCommand(CreateBackup);
 
+        BrowseSourceCommand = new AsyncRelayCommand(BrowseSourceAsync);
+        BrowseTargetCommand = new AsyncRelayCommand(BrowseTargetAsync);
+
         ExitCommand = new RelayCommand(NavigateToBase);
     }
 
@@ -59,5 +70,18 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     {
         BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
     }
-    
+
+    private async Task BrowseSourceAsync()
+    {
+        var path = await _dialogService.OpenFolderPickerAsync();
+
+        if(path!=null) SourcePath = path;
+    }
+
+    private async Task BrowseTargetAsync()
+    {
+        var path = await _dialogService.OpenFolderPickerAsync();
+
+        if (path != null) TargetPath = path;
+    }
 }
