@@ -25,17 +25,20 @@ EasyLog is a lightweight .NET logging library that writes file transfer records 
 
 ```csharp
 // Initialize once at startup — before any Write call
-EasyLogService.Initialize(@"C:\Logs\MyApp");
+EasyLogService.Instance.Initialize(@"C:\Logs\MyApp", Json);
 
 // Write a log entry
 EasyLogService.Instance.Write(entry);
+
+//Reset the current instance
+EasyLogService.Instance.Reset();
 ```
 
 > **Warning:** calling `Write` before `Initialize` throws a runtime exception.
 
 | Method | Signature | Description |
 |---|---|---|
-| `Initialize` | `(string logDirectoryPath)` | Sets the output directory. Call once at startup. Creates the directory if absent. |
+| `Initialize` | `(string logDirectoryPath, settings.LogFormat)` | Sets the output directory and the log format. Call once at startup. Creates the directory if absent. |
 | `Write` | `(LogEntry entry)` | Appends one entry to the current day's log file. Thread-safe. |
 
 ---
