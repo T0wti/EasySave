@@ -2,10 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              xmlns:controls="using:EasySave.GUI.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:CompileBindings="False"
-             x:Class="EasySave.GUI.Views.EditBackupDetailMenu">
+             x:Class="EasySave.GUI.Views.EditBackupDetailMenu"
+             x:DataType="viewModels:EditBackupDetailMenuViewModel">
+
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="20">
             <controls:PageTitleControl/>
@@ -20,14 +22,16 @@
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="Source:"/>
-                        <TextBox Text="{Binding SourcePath}"/>
+                        <TextBox Text="{Binding BackupSourcePath}"/>
                     </StackPanel>
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="Target:"/>
-                        <TextBox Text="{Binding TargetPath}"/>
+                        <TextBox Text="{Binding BackupTargetPath}"/>
                     </StackPanel>
 
+                    <!-- TO DO: BINDINGS -->
+                    <!--
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskType}"/>
                         <StackPanel Orientation="Horizontal" Spacing="30">
@@ -42,6 +46,7 @@
                         <Button Content="{Binding ConfirmText}" Classes="ActionBtn" Command="{Binding SaveCommand}"/>
                         <controls:ReturnButton DataContext="{Binding}"/>
                     </StackPanel>
+                    -->
 
                 </StackPanel>
             </Border>

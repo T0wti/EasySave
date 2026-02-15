@@ -63,13 +63,7 @@
 
                 <StackPanel Grid.Row="1" Margin="10,0">
 					<!-- Backup actions -->
-					<!-- ==================== TO DO: THE BINDINGS ====================
-                    <Button Content="{Binding CreateBackup}" Command="{Binding NavigateToCreateBackupCommand}" />
-                    <Button Content="{Binding DeleteBackup}" />
-                    <Button Content="{Binding EditBackup}" />
-                    <Button Content="{Binding ListBackup}" Command="{Binding NavigateToListBackupCommand}"/>
-                    <Button Content="{Binding ExeBackup}"/>
-                    -->
+
                     <Button Classes="MenuBtn" Classes.active="{Binding IsCreateActive}" Content="1. Create Backup" Command="{Binding NavigateToCreateBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsDeleteActive}" Content="2. Delete Backup" Command="{Binding NavigateToDeleteBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsEditActive}" Content="3. Edit Backup" Command="{Binding NavigateToEditBackupCommand}"/>
@@ -79,16 +73,13 @@
                     <Separator Margin="0,15"/>
 
                     <!-- Settings -->
-					<!-- ==================== TO DO: THE BINDINGS ====================
-                    <Button Content="{Binding Settings}" Command="{Binding NavigateToSettingsCommand}"/>
-                    -->
                     <Button Classes="MenuBtn" Classes.active="{Binding IsSettingsActive}" Content="Settings" Command="{Binding NavigateToSettingsCommand}"/>
             
                     <!-- Exit -->
 					<!-- ==================== TO DO: THE BINDINGS ====================
                     <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
                     -->
-                    <Button Classes="MenuBtn DangerBtn" Content="Exit"/>
+                    <Button Classes="MenuBtn DangerBtn" Content="Exit" Command="{Binding ExitCommand}"/>
                 </StackPanel>
             </Grid>
         </Border>

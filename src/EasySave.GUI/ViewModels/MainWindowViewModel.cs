@@ -1,7 +1,9 @@
+using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Domain.Services;
 using EasySave.GUI.Services;
+using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -14,7 +16,8 @@ public partial class MainWindowViewModel : ObservableObject
         get => _currentView;
         set => SetProperty(ref _currentView, value);
     }
-    //ObservableProperty automatically creates a public version of each private property below
+
+    // ObservableProperty automatically creates a public version of each private property below
     [ObservableProperty] private bool _isBaseActive;
     [ObservableProperty] private bool _isCreateActive;
     [ObservableProperty] private bool _isEditActive;
@@ -23,67 +26,73 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private bool _isExecuteActive;
     [ObservableProperty] private bool _isSettingsActive;
 
+    // Commands
+    public ICommand NavigateToBaseMenuCommand { get; }
+    public ICommand NavigateToCreateBackupCommand { get; }
+    public ICommand NavigateToDeleteBackupCommand { get; }
+    public ICommand NavigateToEditBackupCommand { get; }
+    public ICommand NavigateToListBackupCommand { get; }
+    public ICommand NavigateToExecuteBackupCommand { get; }
+    public ICommand NavigateToSettingsCommand { get; }
+    public ICommand ExitCommand { get; }
+
     public MainWindowViewModel()
     {
         //CurrentView = new BaseMenuViewModel(this);
         CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
-    }
 
-    [RelayCommand]
-    public void NavigateToBaseMenu()
-    {
-        //CurrentView = new BaseMenuViewModel(this);
-        CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
-        ResetActiveStates();
-        IsBaseActive = true;
-    }
-
-    [RelayCommand]
-    public void NavigateToCreateBackup()
-    {
-        CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
-        ResetActiveStates();
+        //IsBaseActive = true;
         IsCreateActive = true;
-    }
 
-    [RelayCommand]
-    public void NavigateToDeleteBackup()
-    {
-        CurrentView = new DeleteBackupMenuViewModel(this);
-        ResetActiveStates();
-        IsDeleteActive = true;
-    }
+        NavigateToBaseMenuCommand = new RelayCommand(() =>
+        {
+            CurrentView = new BaseMenuViewModel(this);
+            ResetActiveStates();
+            IsBaseActive = true;
+        });
 
-    [RelayCommand]
-    public void NavigateToEditBackup()
-    {
-        CurrentView = new EditBackupMenuViewModel(this);
-        ResetActiveStates();
-        IsEditActive = true;
-    }
+        NavigateToCreateBackupCommand = new RelayCommand(() =>
+        {
+            CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
+            ResetActiveStates();
+            IsCreateActive = true;
+        });
 
-    [RelayCommand]
-    public void NavigateToListBackup()
-    {
-        CurrentView = new ListBackupMenuViewModel(this);
-        ResetActiveStates();
-        IsListActive = true;
-    }
+        NavigateToDeleteBackupCommand = new RelayCommand(() =>
+        {
+            CurrentView = new DeleteBackupMenuViewModel(this);
+            ResetActiveStates();
+            IsDeleteActive = true;
+        });
 
-    [RelayCommand]
-    public void NavigateToExecuteBackup()
-    {
-        CurrentView = new ExecuteBackupMenuViewModel(this);
-        ResetActiveStates();
-        IsExecuteActive = true;
-    }
+        NavigateToEditBackupCommand = new RelayCommand(() =>
+        {
+            CurrentView = new EditBackupMenuViewModel(this);
+            ResetActiveStates();
+            IsEditActive = true;
+        });
 
-    [RelayCommand]
-    public void NavigateToSettings()
-    {
-        CurrentView = new SettingsMenuViewModel(this);
-        ResetActiveStates();
-        IsSettingsActive = true;
+        NavigateToListBackupCommand = new RelayCommand(() =>
+        {
+            CurrentView = new ListBackupMenuViewModel(this);
+            ResetActiveStates();
+            IsListActive = true;
+        });
+
+        NavigateToExecuteBackupCommand = new RelayCommand(() =>
+        {
+            CurrentView = new ExecuteBackupMenuViewModel(this);
+            ResetActiveStates();
+            IsExecuteActive = true;
+        });
+
+        NavigateToSettingsCommand = new RelayCommand(() =>
+        {
+            CurrentView = new SettingsMenuViewModel(this);
+            ResetActiveStates();
+            IsSettingsActive = true;
+        });
+        ExitCommand = new RelayCommand(OnExit);
     }
 
     private void ResetActiveStates()
@@ -95,5 +104,13 @@ public partial class MainWindowViewModel : ObservableObject
         IsListActive = false;
         IsExecuteActive = false;
         IsSettingsActive = false;
+    }
+
+    private void OnExit()
+    {
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Shutdown();
+        }
     }
 }

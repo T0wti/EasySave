@@ -8,7 +8,8 @@ public class BackupDetailMenuViewModel : ViewModelBase
 {
     // Command
     public ICommand NavigateBackCommand { get; }
-    
+    public ICommand ExitCommand { get; }
+
     // String
     public string Title { get; }
     public string BackupName { get; }
@@ -16,8 +17,6 @@ public class BackupDetailMenuViewModel : ViewModelBase
     public string BackupTargetPath { get; }
     public string BackupType { get; }
     public string Exit { get; }
-
-    public ICommand ExitCommand { get; }
 
     public BackupDetailMenuViewModel(MainWindowViewModel mainWindow, BackupJobDTO job) : base(mainWindow)
     {
