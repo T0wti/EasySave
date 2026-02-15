@@ -4,6 +4,7 @@
     <File Path="manual-user.md" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/EasySave.GUI\EasySave.GUI.csproj" />
     <Project Path="src/EasySave.Console/EasySave.Console.csproj" />
     <Project Path="src/EasySave.Domain/EasySave.Domain.csproj" />
     <Project Path="src/EasySave.EasyLog/EasySave.EasyLog.csproj" />

@@ -1,36 +1,36 @@
-    using EasySave.Application.Controllers;
-    using EasySave.Console.Commands;
+using EasySave.Application;
+using EasySave.Console.Commands;
     using EasySave.Console.ConsoleUI;
-    using EasySave.Console.Resources;
     using EasySave.Application.DTOs;
+    using EasySave.Application.Resources;
 
-namespace EasySave.Console;
+    namespace EasySave.Console;
 
     public class ConsoleRunner
     {
-        private readonly BackupController _backupController;
-        private readonly ConfigurationController _configController;
+        private readonly BackupAppService _backupAppService;
+        private readonly ConfigAppService _configAppService;
 
         private ITextProvider _texts;
 
-        public ConsoleRunner(BackupController backupController, ConfigurationController configController)
+        public ConsoleRunner(BackupAppService backupAppService, ConfigAppService configAppService)
         {
-            _backupController = backupController;
-            _configController = configController;
+            _backupAppService = backupAppService;
+            _configAppService = configAppService;
            
             // Check if it's the first launch of the program
-            if (!_configController.FileExists())
+            if (!_configAppService.FileExists())
             {
                 _texts = new EnglishTextProvider();
-                _configController.EnsureConfigExists();
+                _configAppService.EnsureConfigExists();
                 RunFirstStartMenu();
             }
             
-            var settings = _configController.Load();
+            var settings = _configAppService.Load();
 
             _texts = settings.LanguageCode == 0
-            ? new FrenchTextProvider()
-            : new EnglishTextProvider();
+            ? new FrenchTextProviderConsole()
+            : new EnglishTextProviderConsole();
         }
         // Main console execution
         public void RunConsole()
@@ -53,7 +53,7 @@ namespace EasySave.Console;
 
             int code = language is FrenchTextProvider ? 0 : 1;
 
-            _configController.ChangeLanguage(code);
+            _configAppService.ChangeLanguage(code);
 
             RunBaseMenu();
         }
@@ -70,7 +70,7 @@ namespace EasySave.Console;
         // Menu to delete a backup
         internal void RunDeleteBackupMenu() 
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
             listMenu.Display();
             var menu = new ConsoleUI.DeleteBackupMenu(_texts);
@@ -81,7 +81,7 @@ namespace EasySave.Console;
         // Menu to edit a backup
         internal void RunEditBackupMenu()
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
             listMenu.Display();
             var editMenu = new ConsoleUI.EditBackupMenu(_texts);
@@ -102,7 +102,7 @@ namespace EasySave.Console;
         // Menu to list all the backups
         internal void RunListBackupMenu()
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var menu = new ConsoleUI.ListBackupMenu(_texts, jobs); 
             var loop = new Commands.ListBackupMenuInteraction(this, menu);
             menu.Display();
@@ -112,7 +112,7 @@ namespace EasySave.Console;
         // Menu to execute backups
         internal void RunExeBackupMenu()
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var menu = new ConsoleUI.ExecuteBackupMenu(_texts,jobs);
             var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
             menu.Display();
@@ -137,7 +137,7 @@ namespace EasySave.Console;
 
     internal void RunChangeLogFormatMenu()
     {
-        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts,_configController);
+        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts,_configAppService);
         var loop = new Commands.ChangeLogFormatMenuInteraction(this);
         menu.Display();
         loop.RunLoop();
@@ -150,14 +150,14 @@ namespace EasySave.Console;
         }
 
         // ======================
-        // Backup handlers via controller to link the front with the back
+        // Backup handlers via App services to link the front with the back
         // ======================
         
         internal void HandleCreateBackup(string name, string source, string target, int typeChoice  )
         {
             try
             {
-                _backupController.CreateBackup(name, source, target, typeChoice);
+                _backupAppService.CreateBackup(name, source, target, typeChoice);
                 System.Console.WriteLine(_texts.BackupCreated);
             }
             catch (System.Exception ex)
@@ -169,9 +169,9 @@ namespace EasySave.Console;
 
         public void HandleEditBackup(int id, string name, string source, string target, int typeChoice)
         {
-            var jobs = _backupController.GetAll();
+            var jobs = _backupAppService.GetAll();
             var listMenu = new ListBackupMenu(_texts, jobs);
-            _backupController.EditBackup(id, name, source, target, typeChoice);
+            _backupAppService.EditBackup(id, name, source, target, typeChoice);
 
             listMenu.Display();
 
@@ -188,7 +188,7 @@ namespace EasySave.Console;
             return;
         }
 
-            var job = _backupController.GetById(id);
+            var job = _backupAppService.GetById(id);
 
             if (job == null)
             {
@@ -206,7 +206,7 @@ namespace EasySave.Console;
             {
         try
         {
-            _backupController.DeleteBackup(id);
+            _backupAppService.DeleteBackup(id);
             System.Console.WriteLine(_texts.BackupDeleted);
         }
         catch (System.Exception ex)
@@ -219,7 +219,7 @@ namespace EasySave.Console;
 
         internal void HandleExecuteBackup(int id)
         {
-            _backupController.ExecuteBackup(id);
+            _backupAppService.ExecuteBackup(id);
             RunBaseMenu();
         }
 
@@ -227,14 +227,14 @@ namespace EasySave.Console;
         internal void HandleExecuteMultiple(IEnumerable<int> ids)
         {
             RunExecuteBackupMenuDetail(0);
-            _backupController.ExecuteMultiple(ids);
+            _backupAppService.ExecuteMultiple(ids);
             RunExecuteBackupMenuDetail(1);
             RunBaseMenu();
         }
     internal void HandleChangeLogFormat(int formatCode)
     {
      
-            _configController.ChangeLogFormat(formatCode);
+            _configAppService.ChangeLogFormat(formatCode);
             System.Console.WriteLine(_texts.LogFormatChanged);
             System.Console.WriteLine();
             System.Console.ReadLine();

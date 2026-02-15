@@ -1,0 +1,68 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="Button.MenuBtn">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="12, 12"/>
+        <Setter Property="Margin" Value="0, 2"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.75" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+<Style Selector="Button.MenuBtn TextBlock">
+    <Setter Property="Margin" Value="15,0,0,0"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+</Style>
+    
+    <Style Selector="Button.MenuBtn:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#BCBCC4"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+    </Style>
+
+    <Style Selector="Button.MenuBtn.active">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentColor}"/>
+        <Setter Property="Background" Value="{StaticResource MainBackground}"/>
+        <Setter Property="BorderThickness" Value="4,0,0,0"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+    </Style>
+
+    <Style Selector="Button.ActionBtn">
+        <Setter Property="Background" Value="{StaticResource AccentColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="20, 10"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinWidth" Value="150"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+        
+    <Style Selector="Button.DangerBtn">
+        <Setter Property="Background" Value="#FFF0F0"/>
+        <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DangerColor}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Margin" Value="0, 2"/>
+    </Style>
+
+    <Style Selector="PathIcon.MenuIcon">
+        <Setter Property="Width" Value="24"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <!-- $parent[Button].Foreground gets the foreground of the Button above where it is called -->
+        <Setter Property="Foreground" Value="{Binding $parent[Button].Foreground}"/>
+    </Style>
+
+</Styles>

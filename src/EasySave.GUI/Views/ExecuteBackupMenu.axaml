@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:EasySave.GUI.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             mc:Ignorable="d"
+             x:Class="EasySave.GUI.Views.ExecuteBackupMenu"
+             x:DataType="viewModels:ExecuteBackupMenuViewModel">
+    
+    <StackPanel Spacing="20" Margin="30">
+        
+        <controls:PageTitleControl/>
+        
+        <ScrollViewer MaxHeight="350">
+			<ItemsControl ItemsSource="{Binding BackupJobs}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						
+                        <Border Background="#F0F0F0" CornerRadius="8" Padding="15" Margin="0,5">
+                            <Grid ColumnDefinitions="AUto, *, Auto">
+							    
+                                <CheckBox Grid.Column="0" Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center"
+                                           FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Type}" VerticalAlignment="Center"
+                                           Foreground="{StaticResource TextSecondary}"/>
+
+                            </Grid>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+			
+            <!-- TO DO: BINDINGS -->
+            <Button Content="Execute Selected" Classes="ActionBtn" Width="180" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+            <controls:ReturnButton/>
+
+        </StackPanel>
+        
+    </StackPanel>
+</UserControl>

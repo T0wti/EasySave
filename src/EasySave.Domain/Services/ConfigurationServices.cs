@@ -1,25 +1,22 @@
-﻿using EasySave.Domain.Enums;
+﻿using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
-using System.Text.Json;
 using System;
 using System.IO;
-
+using System.Text.Json;
 
 namespace EasySave.Domain.Services
 {
     // Service responsible for loading and saving config configurations
     public class ConfigurationService : IConfigurationService
-    {
-        // Singleton pattern: ensures only one instance exists
-        private static readonly Lazy<ConfigurationService> _instance = new(() => new ConfigurationService());
-        public static ConfigurationService Instance => _instance.Value;
-
+    {   
         private readonly string _configFilePath;
         private readonly string _baseAppPath;
+        private static readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
 
-        // Private constructor to enforce singleton pattern
-        private ConfigurationService()
+
+        // Public constructor to allow DI
+        public ConfigurationService()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             _baseAppPath = Path.Combine(appDataPath, "EasySave");
@@ -30,7 +27,6 @@ namespace EasySave.Domain.Services
             _configFilePath = Path.Combine(_baseAppPath, "config.json");
         }
 
-        // Returns the default application settings
         private ApplicationSettings GetDefaultSettings()
         {
             return new ApplicationSettings
@@ -38,17 +34,15 @@ namespace EasySave.Domain.Services
                 MaxBackupJobs = 5,
                 LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
                 StateFileDirectoryPath = Path.Combine(_baseAppPath, "State"),
-                LogFormat = 0
+                LogFormat = 0,
+                BusinessSoftwareName = "CalculatorApp"
             };
         }
 
-        // Loads settings from the configuration file
         public ApplicationSettings LoadSettings()
         {
             if (!File.Exists(_configFilePath))
-            {
                 return GetDefaultSettings();
-            }
 
             try
             {
@@ -56,13 +50,22 @@ namespace EasySave.Domain.Services
                 var settings = JsonSerializer.Deserialize<ApplicationSettings>(json);
                 return settings ?? GetDefaultSettings();
             }
-            catch
+            catch (JsonException ex)
             {
-                return GetDefaultSettings();
+                throw new PersistenceException(
+                    "Failed to load settings: the configuration file is corrupted.",
+                    _configFilePath,
+                    ex);
+            }
+            catch (IOException ex)
+            {
+                throw new PersistenceException(
+                    "Failed to load settings: unable to read the configuration file.",
+                    _configFilePath,
+                    ex);
             }
         }
 
-        // Ensures that a configuration file exists
         public void EnsureConfigExists()
         {
             if (!File.Exists(_configFilePath))
@@ -71,15 +74,12 @@ namespace EasySave.Domain.Services
             }
         }
 
-        // Saves application settings to the configuration file
         public void SaveSettings(ApplicationSettings settings)
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(settings, options);
+            string json = JsonSerializer.Serialize(settings, _jsonOptions);
             File.WriteAllText(_configFilePath, json);
-        }
+        }   
 
-        // Checks if the configuration file exists
         public bool FileExists()
         {
             return File.Exists(_configFilePath);

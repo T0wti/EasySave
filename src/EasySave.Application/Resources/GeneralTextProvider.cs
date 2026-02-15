@@ -1,10 +1,14 @@
-namespace EasySave.Console.Resources;
+namespace EasySave.Application.Resources;
 
 public class GeneralTextProvider : ITextProvider
 {
     // Define an automatic indentation (to improve readability)
     private const string Indent = "       ";
+    private const string BigTitle = "-----";
+    private const string Title = "--";
     protected string Format(string text) => $"{Indent}{text}";
+    protected string FormatBigTitle(string text) => $"{Indent}{BigTitle}{" "}{text}{" "}{BigTitle}";
+    protected string FormatTitle(string text) => $"{Indent}{Title}{" "}{text}{" "}{Title}";
 
     private readonly string _defaultString;
 
@@ -27,16 +31,26 @@ public class GeneralTextProvider : ITextProvider
         public virtual string DeleteBackup => _defaultString;
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
+        public virtual string Exit => _defaultString;
+        public virtual string Confirm => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
+        public virtual string SettingsMenu => _defaultString;
 
-    //Creation menu
+        //Creation menu
 
+        public virtual string CreateBackupMenuTitle => _defaultString;
         public virtual string EnterBackupName => _defaultString;
         public virtual string EnterSourcePath => _defaultString;
         public virtual string EnterTargetPath => _defaultString;
         public virtual string EnterBackupType => _defaultString;
+        public virtual string BrowseFile => _defaultString;
+        public virtual string WaterMarkBackupName => _defaultString;
+        public virtual string WaterMarkBackupSourcePath => _defaultString;
+        public virtual string WaterMarkBackupTargetPath => _defaultString;
+        public virtual string Full => _defaultString;
+        public virtual string Differential => _defaultString;
 
     //
         public virtual string BackupCreated => _defaultString;
@@ -81,4 +95,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string LogFormat2 => _defaultString;
         public virtual string LogFormatChanged => _defaultString;
         public virtual string CurrentLogFormat => _defaultString;
+        
+        // Settings menu
+        public virtual string SettingsMenuTitle => _defaultString;
     }

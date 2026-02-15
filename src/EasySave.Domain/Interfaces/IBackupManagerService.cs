@@ -9,7 +9,7 @@ namespace EasySave.Domain.Interfaces
         void CreateBackupJob(string name, string source, string target, BackupType type);
         void DeleteBackupJob(int id);
         void EditBackupJob(int id, string newName, string newSource, string newTarget, BackupType newType);
-        List<BackupJob> GetBackupJobs();
+        public IReadOnlyList<BackupJob> GetBackupJobs();
         void ExecuteBackupJob(int id);
         void ExecuteBackupJobs(IEnumerable<BackupJob> jobs);
     }

@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
+namespace EasySave.Domain.Helpers;
+
 public static class PathHelper
 {
     // Import the Windows API to resolve network drive connections

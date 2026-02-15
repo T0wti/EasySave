@@ -18,6 +18,7 @@ namespace EasySave.Domain.Services
         // Initializes a BackupProgress object with total files, size, and default runtime values
         public void Initialize(BackupProgress progress, List<FileDescriptor> files)
         {
+            progress.State = BackupJobState.Active;
             progress.TotalFiles = files.Count;
             progress.TotalSize = files.Sum(f => f.Size);
             progress.RemainingFiles = progress.TotalFiles;
@@ -57,6 +58,11 @@ namespace EasySave.Domain.Services
         public void Fail(int backupJobId)
         {
             UpdateStateOnly(backupJobId, BackupJobState.Failed);
+        }
+
+        public void Interrupt(int backupJobId)
+        {
+            FinalizeAndClean(backupJobId, BackupJobState.Interrupted);
         }
 
         // Private helper to finalize a job and clean runtime-specific fields

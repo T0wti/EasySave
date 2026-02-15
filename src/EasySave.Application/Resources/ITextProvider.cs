@@ -1,4 +1,4 @@
-namespace EasySave.Console.Resources;
+namespace EasySave.Application.Resources;
 
 public interface ITextProvider
 {
@@ -9,6 +9,8 @@ public interface ITextProvider
     string AskEntryFromUser { get; }
     string ExitOption { get; }
     string WrongInput { get; }
+    string Exit { get; }
+    string Confirm { get; }
     
     // Options in the base menu | Argan
     string DeleteBackup { get; }
@@ -18,20 +20,28 @@ public interface ITextProvider
     string ListBackup { get; }
     string ExeBackup { get; }
     string LogFormat { get; }
+    string SettingsMenu { get; }
+    
     // Options for the creation 
-
+    string CreateBackupMenuTitle { get; }
     string EnterBackupName { get; }
     string EnterSourcePath { get; }
     string EnterTargetPath { get; }
     string EnterBackupType { get; }
+    string WaterMarkBackupName { get; }
+    string WaterMarkBackupSourcePath { get; }
+    string WaterMarkBackupTargetPath { get; }
+    string Full { get; }
+    string Differential { get; }
 
-    // 
+    //
 
     string BackupCreated { get; }
     string BackupEdited { get; }
     string EnterBackupToDelete { get; }
     string BackupDeleted { get; }
     string AskIdToEdit { get; }
+    string BrowseFile { get; }
 
     // Options in the change language menu | Le
     string LanguageMenuTitle { get; }
@@ -68,6 +78,9 @@ public interface ITextProvider
     string LogFormat2 { get; }
     string LogFormatChanged { get; }
     string CurrentLogFormat { get; }
+    
+    // Settings menu
+    string SettingsMenuTitle { get; }
 }
 
 

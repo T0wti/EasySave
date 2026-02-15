@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             xmlns:controls="using:EasySave.GUI.Views"
+             x:Class="EasySave.GUI.Views.CreateBackupMenu"
+             x:DataType="viewModels:CreateBackupMenuViewModel">
+
+    <ScrollViewer>
+        <StackPanel Margin="30" Spacing="20">
+            <controls:PageTitleControl/>
+
+            <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="12" BoxShadow="0 4 12 0 #10000000">
+                <StackPanel Spacing="25">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskName}"/>
+                        <TextBox Text="{Binding BackupName}" Watermark="{Binding WaterMarkBackupName}"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskSource}"/>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox Grid.Column="0" Text="{Binding SourcePath}" Watermark="{Binding WaterMarkBackupSourcePath}"/>
+                            <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseSourceCommand}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskTarget}"/>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox Grid.Column="0" Text="{Binding TargetPath}" Watermark="{Binding WaterMarkBackupTargetPath}"/>
+                            <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseTargetCommand}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding AskType}"/>
+                        <StackPanel Orientation="Horizontal" Spacing="30">
+                            <RadioButton Content="{Binding FullType}" GroupName="BackupType" Command="{Binding SetFullTypeCommand}"/>
+                            <RadioButton Content="{Binding DifferentialType}" GroupName="BackupType" Command="{Binding SetDifferentialTypeCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Separator Margin="0,10" Background="#F0F0F0"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                        <Button Content="{Binding Confirm}" 
+                                Classes="ActionBtn"
+                                Command="{Binding CreateBackupCommand}"/>
+    
+                        <controls:ReturnButton/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:EasySave.Application.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             xmlns:controls="using:EasySave.GUI.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EasySave.GUI.Views.BackupDetailMenu"
+             x:DataType="viewModels:BackupDetailMenuViewModel">
+    
+    <StackPanel Spacing="30" Margin="40">
+        <!-- Title -->
+        <controls:PageTitleControl/>
+        
+        <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="30" MaxWidth="600" BoxShadow="0 4 15 0 #1A000000">
+			<Grid ColumnDefinitions="100, *" RowDefinitions="Auto, Auto, Auto, Auto">
+                <!-- Job Details -->
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Name :" Classes="DetailLabel"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding BackupName}" Classes="DetailValue" FontWeight="Bold" FontSize="16"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Source :" Classes="DetailLabel"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BackupSourcePath}" Classes="DetailValue"/>
+                
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Target :" Classes="DetailLabel"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BackupTargetPath}" Classes="DetailValue"/>
+                
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Type :" Classes="DetailLabel" Margin="0"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding BackupType}" Classes="DetailValue" Margin="0"/>
+            </Grid>
+        </Border>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+            <!-- Exit -->
+            <controls:ReturnButton HorizontalAlignment="Right"/>
+        </StackPanel>
+    </StackPanel>
+  
+</UserControl>

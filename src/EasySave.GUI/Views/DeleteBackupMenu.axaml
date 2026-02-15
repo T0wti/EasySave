@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             xmlns:controls="using:EasySave.GUI.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EasySave.GUI.Views.DeleteBackupMenu"
+             x:DataType="viewModels:DeleteBackupMenuViewModel">
+
+
+        <StackPanel Spacing="20" Margin="30">
+            <controls:PageTitleControl/>
+
+            <!-- Get the BackupJobList -->
+            <controls:BackupJobsList Jobs="{Binding BackupJobs}"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+				
+                <!-- Add to the BackupJobList: Delete button and Exit button -->
+                 <!-- TO DO: IsEnabled="{Binding IsJobSelected}" -->
+                <Button Content="{Binding Delete}" Classes="ActionBtn"/>
+
+                <controls:ReturnButton/>
+
+            </StackPanel>
+			
+        </StackPanel>
+
+</UserControl>

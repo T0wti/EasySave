@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="EasySave.GUI.Views.ReturnButton"
+             x:CompileBindings="False">
+    <Button Content="{Binding Exit, FallbackValue='Back'}"
+            Command="{Binding ExitCommand}"
+            Classes="DangerBtn"
+            Width="150"
+            Height="40"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"/>
+</UserControl>

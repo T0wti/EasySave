@@ -1,0 +1,32 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="EasySave.GUI.App"
+             xmlns:local="using:EasySave.GUI"
+             RequestedThemeVariant="Light">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="MainBackground">#F8F9FA</SolidColorBrush>
+        <SolidColorBrush x:Key="SidebarBackground">#D1D5DB</SolidColorBrush>
+        <SolidColorBrush x:Key="CardBackground">#E6E6E6</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColor">#0078D4</SolidColorBrush>
+        <SolidColorBrush x:Key="DangerColor">#C42B1C</SolidColorBrush>
+        <SolidColorBrush x:Key="TextPrimary">#111827</SolidColorBrush>
+        <SolidColorBrush x:Key="TextSecondary">#4B5563</SolidColorBrush>
+    </Application.Resources>
+  
+    <Application.Styles>
+        <FluentTheme />
+
+        <!-- Text styles -->
+        <StyleInclude Source="avares://EasySave.GUI/Styles/TextStyles.axaml"/>
+
+        <!-- Button styles -->
+        <StyleInclude Source="avares://EasySave.GUI/Styles/ButtonStyles.axaml"/>
+
+    </Application.Styles>
+</Application>
