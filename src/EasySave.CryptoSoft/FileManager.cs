@@ -15,41 +15,75 @@ namespace EasySave.CryptoSoft
             _keyPath = keyPath;
         }
 
+        // CheckFile() returns true if fileName and keyPath exist
         public bool CheckFile()
         {
-            if (!File.Exists(_fileName)) return false;
-            return true;
+            return File.Exists(_fileName) && File.Exists(_keyPath);
         }
 
-        public int TransformFile()
+        /*
+         * EncryptFile() reads the file and key
+         * Encrypts the file using AesEncrypt()
+         * Writes the encrypted file
+         * Returns the encryption time in ms
+        */
+        public int EncryptFile()
         {
             if (!CheckFile()) return -1;
-
-            //var filePath = Path.GetFullPath(_fileName);
 
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
                 var fileBytes = File.ReadAllBytes(_fileName);
-                //var keyBytes = Encoding.UTF8.GetBytes(_key);
                 byte[] keyBytes = File.ReadAllBytes(_keyPath);
                 var encryptedBytes = AesEncrypt(fileBytes, keyBytes);
                 File.WriteAllBytes(_fileName, encryptedBytes);
-
-                //var output = _fileName + "";
-                //File.WriteAllBytes(output, encryptedBytes);
 
                 stopwatch.Stop();
 
                 return (int)stopwatch.ElapsedMilliseconds;
             }
-            catch 
+            catch (Exception ex)
             {
-                return -2;
+                throw new InvalidOperationException($"Encryption failed for file '{_fileName}'", ex);
             }
         }
 
+        /*
+         * DecryptFile() reads the encrypted file and key
+         * Decrypts the file using AesDecrypt()
+         * Writes the decrypted file
+         * Returns the decryption time in ms
+        */
+        public int DecryptFile()
+        {
+            if (!CheckFile()) return -1;
+
+            try
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
+                var fileBytes = File.ReadAllBytes(_fileName);
+                byte[] keyBytes = File.ReadAllBytes(_keyPath);
+                var decryptedBytes = AesDecrypt(fileBytes, keyBytes);
+                File.WriteAllBytes(_fileName, decryptedBytes);
+
+                stopwatch.Stop();
+
+                return (int)stopwatch.ElapsedMilliseconds;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Decryption failed for file '{_fileName}'", ex);
+            }
+        }
+        
+        /*
+         * AesEncrypt() encrypts a file with a key using the AES method
+         * Generates an IV so that the encrypted file is never the same
+         * MemoryStream contains IV + ciphertext encrypted with CryptoStream
+        */
         public byte[] AesEncrypt(byte[] fileBytes, byte[] keyBytes)
         {
             using (Aes aes = Aes.Create())
@@ -73,6 +107,11 @@ namespace EasySave.CryptoSoft
             }
         }
 
+        /*
+         * AesDecrypt() decrypts an encrypted file with a key using the AES method
+         * Recovers the IV which was used for encryption
+         * Creates a CryptoStream on the ciphertext only (without IV)
+        */
         public byte[] AesDecrypt(byte[] encryptedBytes, byte[] keyBytes)
         {
             using (Aes aes = Aes.Create())

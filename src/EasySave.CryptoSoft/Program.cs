@@ -3,12 +3,12 @@ namespace EasySave.CryptoSoft
 {
     public class Program
     {
-        // Program.cs — args[0] = fichier à chiffrer, args[1] = chemin de la clé
+        // Program.cs — args[0] = file to encrypt, args[1] = key path, args[2] = usage option
         static int Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length != 3)
             {
-                Console.Error.WriteLine("Usage: CryptoSoft <filePath> <keyPath>");
+                Console.Error.WriteLine("Usage: CryptoSoft <filePath> <keyPath> <encrpyt|decrypt>");
                 return -1;
             }
 
@@ -25,7 +25,17 @@ namespace EasySave.CryptoSoft
             }
 
             var fileManager = new FileManager(args[0], args[1]);
-            return fileManager.TransformFile();
+
+            if (args[2] == "encrypt")
+            {
+                return fileManager.EncryptFile();
+            } else if (args[2] == "decrypt")
+            {
+                return fileManager.DecryptFile();
+            } else {
+                Console.Error.WriteLine($"The third argument must be <encrypt> or <decrypt>: {args[2]}");
+                return -1;
+            }
         }
     }
 }
