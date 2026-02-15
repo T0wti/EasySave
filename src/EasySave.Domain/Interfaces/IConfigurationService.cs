@@ -11,5 +11,7 @@ namespace EasySave.Domain.Interfaces
 
         bool FileExists();
         void EnsureConfigExists();
+        void EnsureKeyExists();
+
     }
 }

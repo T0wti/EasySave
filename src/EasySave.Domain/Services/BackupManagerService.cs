@@ -39,10 +39,6 @@ namespace EasySave.Domain.Services
             if (_backupJobs.Any(j => j.Name == name))
                 throw new BackupJobAlreadyExistsException(name);
 
-            // Ensure we do not exceed the maximum allowed backup jobs
-            if (_backupJobs.Count >= _settings.MaxBackupJobs)
-                throw new BackupJobLimitReachedException(_settings.MaxBackupJobs);
-
             // Generate the next available ID
             int nextId = 1;
             var existingIds = _backupJobs.Select(j => j.Id).OrderBy(id => id).ToList();

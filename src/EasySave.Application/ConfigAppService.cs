@@ -66,7 +66,12 @@ namespace EasySave.Application
         // Ensure configuration file exists
         public void EnsureConfigExists()
         {
-            _configService.EnsureConfigExists();
+            _configService. EnsureConfigExists();
+        }
+
+        public void EnsureKeyExists() //Temporaire
+        {
+            _configService.EnsureKeyExists();
         }
 
         // --- Private Methods ---

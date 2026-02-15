@@ -23,6 +23,7 @@ using EasySave.Console.Commands;
             {
                 _texts = new EnglishTextProvider();
                 _configAppService.EnsureConfigExists();
+                _configAppService.EnsureKeyExists(); //Temporaire !
                 RunFirstStartMenu();
             }
             
