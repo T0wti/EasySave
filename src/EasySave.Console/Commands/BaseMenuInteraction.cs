@@ -46,7 +46,7 @@ internal class BaseMenuInteraction
                     break;
                 case "8":
                     exit = true;
-                    _runner.RunChangeLogFormatMenu(); // Re do the menu :) !
+                    _runner.RunChangeLogFormatMenu(); 
                     break;
                 case "9":
                     exit = true;

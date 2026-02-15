@@ -7,7 +7,7 @@ namespace EasySave.Domain.Models
     public class BackupProgress
     {
         public string BackupName { get; set; }
-        public int BackupJobId { get; init; }
+        public int BackupJobId { get; set; }
         public BackupJobState State { get; set; }
         public DateTime LastUpdate { get; set; }
 

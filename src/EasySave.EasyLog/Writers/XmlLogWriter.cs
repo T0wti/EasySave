@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.Collections.Concurrent;
 using System.Xml;
 using System.Xml.Serialization;
 using EasySave.EasyLog.Interfaces;
@@ -10,6 +9,8 @@ namespace EasySave.EasyLog.Writers
     {
         private readonly string _logDirectory;
         private readonly object _lock = new();
+
+        private static readonly ConcurrentDictionary<Type, XmlSerializer> _serializers = new();
 
         public XmlLogWriter(string logDirectory)
         {
@@ -22,12 +23,10 @@ namespace EasySave.EasyLog.Writers
             _logDirectory = logDirectory;
         }
 
+        // Writes a log entry into the daily XML log file
         public void Write<T>(T entry)
         {
-            string logFile = Path.Combine(
-                _logDirectory,
-                $"{DateTime.Now:yyyy-MM-dd}.xml"
-            );
+            string logFile = Path.Combine(_logDirectory, $"{DateTime.Now:yyyy-MM-dd}.xml");
 
             lock (_lock)
             {
@@ -41,57 +40,45 @@ namespace EasySave.EasyLog.Writers
                     }
                     else
                     {
-                        XmlDeclaration declaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
-                        doc.AppendChild(declaration);
-                        XmlElement root = doc.CreateElement("LogEntries");
-                        doc.AppendChild(root);
+                        doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
+                        doc.AppendChild(doc.CreateElement("LogEntries"));
                     }
 
-                    XmlElement entryElement = SerializeToXmlElement(entry, doc);
-                    doc.DocumentElement?.AppendChild(entryElement);
+                    doc.DocumentElement?.AppendChild(SerializeToXmlElement(entry, doc));
 
-                    var settings = new XmlWriterSettings
-                    {
-                        Indent = true,
-                        IndentChars = "  "
-                    };
+                    // Write to a temp file first to avoid corruption on crash
+                    string tempFile = logFile + ".tmp";
+                    var settings = new XmlWriterSettings { Indent = true, IndentChars = "  " };
 
-                    using var writer = XmlWriter.Create(logFile, settings);
-                    doc.Save(writer);
+                    using (var writer = XmlWriter.Create(tempFile, settings))
+                        doc.Save(writer);
+
+                    File.Move(tempFile, logFile, overwrite: true);
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"[XmlLogWriter ERROR] {ex.Message}");
-                    System.Console.WriteLine($"Stack: {ex.StackTrace}");
-                    throw; 
+                    Console.Error.WriteLine($"[XmlLogWriter ERROR] {ex.Message}");
+                    throw;
                 }
             }
         }
 
-        private XmlElement SerializeToXmlElement<T>(T obj, XmlDocument doc)
+        private static XmlElement SerializeToXmlElement<T>(T obj, XmlDocument doc)
         {
-            try
-            {
-                var serializer = new XmlSerializer(typeof(T));
+            var serializer = _serializers.GetOrAdd(typeof(T), t => new XmlSerializer(t));
 
-                using var memoryStream = new MemoryStream();
-                using var xmlWriter = XmlWriter.Create(memoryStream);
+            using var memoryStream = new MemoryStream();
 
+            // XMLWriter must be disposed (flushed) before reading the stream
+            using (var xmlWriter = XmlWriter.Create(memoryStream))
                 serializer.Serialize(xmlWriter, obj);
-                memoryStream.Position = 0;
 
-                var tempDoc = new XmlDocument();
-                tempDoc.Load(memoryStream);
+            memoryStream.Position = 0;
 
-                return (XmlElement)doc.ImportNode(tempDoc.DocumentElement!, true);
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine($"[XML Serialization ERROR for type {typeof(T).Name}] {ex.Message}");
-                if (ex.InnerException != null)
-                    System.Console.WriteLine($"Inner: {ex.InnerException.Message}");
-                throw;
-            }
+            var tempDoc = new XmlDocument();
+            tempDoc.Load(memoryStream);
+
+            return (XmlElement)doc.ImportNode(tempDoc.DocumentElement!, true);
         }
     }
 }
