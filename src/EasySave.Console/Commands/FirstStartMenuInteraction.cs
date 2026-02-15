@@ -1,5 +1,6 @@
 using EasySave.Application.Resources;
-using EasySave.Console;
+
+namespace EasySave.Console.Commands;
 
 internal class FirstStartMenuInteraction
 {
@@ -40,4 +41,3 @@ internal class FirstStartMenuInteraction
         }
     }
 }
-    

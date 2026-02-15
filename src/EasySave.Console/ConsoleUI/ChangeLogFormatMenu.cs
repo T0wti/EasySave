@@ -1,14 +1,14 @@
-﻿using EasySave.Application.Controllers;
+﻿using EasySave.Application;
 using EasySave.Application.Resources;
 
 namespace EasySave.Console.ConsoleUI;
 
 internal class ChangeLogFormatMenu : GeneralContent
 {
-    private readonly ConfigurationController _configurationController;
-    internal ChangeLogFormatMenu(ITextProvider texts,ConfigurationController configController) : base(texts)
+    private readonly ConfigAppService _configAppService;
+    internal ChangeLogFormatMenu(ITextProvider texts,ConfigAppService configController) : base(texts)
     {
-        _configurationController = configController;
+        _configAppService = configController;
     }
 
     internal void Display()
@@ -25,7 +25,7 @@ internal class ChangeLogFormatMenu : GeneralContent
         System.Console.WriteLine(_texts.LogFormat2);
         System.Console.WriteLine();
         System.Console.Write(_texts.CurrentLogFormat);
-        System.Console.Write(_configurationController.GetLogFormat());
+        System.Console.Write(_configAppService.GetLogFormat());
         System.Console.WriteLine();
         Footer();
     }

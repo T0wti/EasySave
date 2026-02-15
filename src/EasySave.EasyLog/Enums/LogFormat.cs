@@ -1,4 +1,4 @@
-﻿namespace EasySave.EasyLog
+﻿namespace EasySave.EasyLog.Enums
 {
     public enum LogFormat
     {

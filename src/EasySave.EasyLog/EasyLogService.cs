@@ -1,4 +1,5 @@
 ﻿using System;
+using EasySave.EasyLog.Enums;
 using EasySave.EasyLog.Interfaces;
 using EasySave.EasyLog.Writers;
 
@@ -15,9 +16,6 @@ namespace EasySave.EasyLog
         private bool _isInitialized;
 
         private EasyLogService() { }
-
-
-        //Surcharge pour rester compatible
         public void Initialize(string logDirectoryPath, LogFormat format)
         {
             Initialize(logDirectoryPath, (int)format);

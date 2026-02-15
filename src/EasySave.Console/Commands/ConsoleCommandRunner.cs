@@ -1,12 +1,12 @@
-﻿using EasySave.Application.Controllers;
+﻿using EasySave.Application;
 using EasySave.Application.Utils;
 
-namespace EasySave.Console;
+namespace EasySave.Console.Commands;
 
 public static class ConsoleCommandRunner
 {
     // Function to read option when launching the app on a terminal
-    public static bool TryRun(string[] args, BackupController backupController)
+    public static bool TryRun(string[] args, BackupAppService backupAppService)
     {
         if (args == null || args.Length == 0)
             return false;
@@ -15,7 +15,7 @@ public static class ConsoleCommandRunner
         {
             var ids = BackupIdParser.ParseIds(args[0]);
 
-            backupController.ExecuteMultiple(ids);
+            backupAppService.ExecuteMultiple(ids);
 
             System.Console.WriteLine("Backup execution finished.");
         }

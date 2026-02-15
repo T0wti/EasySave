@@ -5,7 +5,7 @@ using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
 using EasySave.GUI.Views;
-using EasySave.Application.ViewModels;
+using EasySave.GUI.ViewModels;
 using BaseMenu = EasySave.GUI.Views.BaseMenu;
 
 namespace EasySave.GUI;
@@ -25,7 +25,7 @@ public partial class App : Avalonia.Application
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             
-            var mainViewModel = new MainWindowViewModel(); 
+            var mainViewModel = new MainWindowViewModel(null); 
             desktop.MainWindow = new MainWindow
             {
                 DataContext = mainViewModel,

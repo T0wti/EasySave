@@ -1,0 +1,94 @@
+﻿using EasySave.Application.DTOs;
+using EasySave.Domain.Enums;
+using EasySave.Domain.Interfaces;
+using EasySave.EasyLog;
+using EasySave.EasyLog.Enums;
+
+namespace EasySave.Application
+{
+    public class ConfigAppService
+    {
+        private readonly IConfigurationService _configService;
+
+        public ConfigAppService(IConfigurationService configService)
+        {
+            _configService = configService;
+        }
+
+        // Load configuration and map to DTO
+        public ApplicationSettingsDto Load()
+        {
+            var settings = _configService.LoadSettings();
+
+            return new ApplicationSettingsDto
+            {
+                LanguageCode = ConvertLanguageToCode(settings.Language)
+            };
+        }
+
+        // Change language based on int code
+        public void ChangeLanguage(int code)
+        {
+            var settings = _configService.LoadSettings();
+            settings.Language = ConvertCodeToLanguage(code);
+            _configService.SaveSettings(settings);
+        }
+
+        // 
+        public void ChangeLogFormat(int code)
+        {
+
+            var format = ConvertCodeToLogFormat(code);
+            var settings = _configService.LoadSettings();
+
+            EasyLogService.Instance.Reset();
+            EasyLogService.Instance.Initialize(
+                settings.LogDirectoryPath,
+                format
+            );
+
+            settings.LogFormat = (int)format;
+            _configService.SaveSettings(settings);
+        }
+
+        public LogFormat GetLogFormat()
+        {
+            var settings = _configService.LoadSettings();
+            return ConvertCodeToLogFormat(Convert.ToInt32(settings.LogFormat.ToString()));
+        }
+
+        // Check if configuration file exists
+        public bool FileExists()
+        {
+            return _configService.FileExists();
+        }
+
+        // Ensure configuration file exists
+        public void EnsureConfigExists()
+        {
+            _configService. EnsureConfigExists();
+        }
+
+        public void EnsureKeyExists() //Temporaire
+        {
+            _configService.EnsureKeyExists();
+        }
+
+        // --- Private Methods ---
+
+        private static int ConvertLanguageToCode(Language lang)
+        {
+            return lang == Language.French ? 0 : 1;
+        }
+
+        private static Language ConvertCodeToLanguage(int code)
+        {
+            return code == 0 ? Language.French : Language.English;
+        }
+
+        private static LogFormat ConvertCodeToLogFormat(int code)
+        {
+            return code == 0 ? LogFormat.Json : LogFormat.Xml;
+        }
+    }
+}
