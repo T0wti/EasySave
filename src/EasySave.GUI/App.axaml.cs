@@ -25,7 +25,7 @@ public partial class App : Avalonia.Application
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             
-            var mainViewModel = new MainWindowViewModel(); 
+            var mainViewModel = new MainWindowViewModel(null); 
             desktop.MainWindow = new MainWindow
             {
                 DataContext = mainViewModel,

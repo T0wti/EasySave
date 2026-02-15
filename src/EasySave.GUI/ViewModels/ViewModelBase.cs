@@ -56,6 +56,7 @@ public abstract class ViewModelBase : ObservableObject
         int code = language is FrenchTextProvider ? 0 : 1;
 
         ConfigAppService.ChangeLanguage(code);
+        MainWindow.RefreshTexts(language);
         NavigateTo(new SettingsMenuViewModel(MainWindow));
     }
 

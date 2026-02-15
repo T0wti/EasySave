@@ -1,13 +1,14 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Application.Resources;
 using EasySave.Domain.Services;
 using EasySave.GUI.Services;
 using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ViewModelBase
 {
     private ViewModelBase _currentView;
 
@@ -25,6 +26,7 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private bool _isListActive;
     [ObservableProperty] private bool _isExecuteActive;
     [ObservableProperty] private bool _isSettingsActive;
+    [ObservableProperty] private bool _isPaneOpen = true; // For burger menu
 
     // Commands
     public ICommand NavigateToBaseMenuCommand { get; }
@@ -35,9 +37,22 @@ public partial class MainWindowViewModel : ObservableObject
     public ICommand NavigateToExecuteBackupCommand { get; }
     public ICommand NavigateToSettingsCommand { get; }
     public ICommand ExitCommand { get; }
+    public ICommand TogglePaneCommand { get; } // Burger menu
 
-    public MainWindowViewModel()
+    // Strings with [ObservableProperty] to update the burger menu instantly
+    [ObservableProperty] private string _title;
+    [ObservableProperty] private string _createBackup;
+    [ObservableProperty] private string _deleteBackup;
+    [ObservableProperty] private string _editBackup;
+    [ObservableProperty] private string _listBackup;
+    [ObservableProperty] private string _exeBackup;
+    [ObservableProperty] private string _settings;
+    [ObservableProperty] private string _exit;
+
+    public MainWindowViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
+        RefreshTexts(this.Texts);
+
         CurrentView = new BaseMenuViewModel(this);
         //CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
 
@@ -92,7 +107,10 @@ public partial class MainWindowViewModel : ObservableObject
             ResetActiveStates();
             IsSettingsActive = true;
         });
+
         ExitCommand = new RelayCommand(OnExit);
+
+        TogglePaneCommand = new RelayCommand(() => IsPaneOpen = !IsPaneOpen);
     }
 
     private void ResetActiveStates()
@@ -104,6 +122,20 @@ public partial class MainWindowViewModel : ObservableObject
         IsListActive = false;
         IsExecuteActive = false;
         IsSettingsActive = false;
+    }
+
+    public void RefreshTexts(ITextProvider newTexts)
+    {
+        Texts = newTexts; // To get the new language
+
+        Title = Texts.MainMenuTitle;
+        CreateBackup = Texts.CreateBackup;
+        DeleteBackup = Texts.DeleteBackup;
+        EditBackup = Texts.EditBackup;
+        ListBackup = Texts.ListBackup;
+        ExeBackup = Texts.ExeBackup;
+        Settings = Texts.SettingsMenu;
+        Exit = Texts.Exit;
     }
 
     private void OnExit()
