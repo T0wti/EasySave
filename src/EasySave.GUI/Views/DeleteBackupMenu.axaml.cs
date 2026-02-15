@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace EasySave.GUI;
+namespace EasySave.GUI.Views;
 
-public partial class DeleteBackup : UserControl
+public partial class DeleteBackupMenu : UserControl
 {
-    public DeleteBackup()
+    public DeleteBackupMenu()
     {
         InitializeComponent();
     }

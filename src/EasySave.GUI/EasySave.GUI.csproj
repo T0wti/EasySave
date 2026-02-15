@@ -28,4 +28,10 @@
     <ItemGroup>
       <ProjectReference Include="..\EasySave.Application\EasySave.Application.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\DeleteBackupMenu.axaml.cs">
+        <DependentUpon>DeleteBackupMenu.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>
