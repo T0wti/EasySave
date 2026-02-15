@@ -7,7 +7,6 @@ namespace EasySave.GUI.ViewModels;
 public class BackupDetailMenuViewModel : ViewModelBase
 {
     // Command
-    public ICommand NavigateBackCommand { get; }
     public ICommand ExitCommand { get; }
 
     // String
@@ -27,12 +26,10 @@ public class BackupDetailMenuViewModel : ViewModelBase
         BackupType = job.Type;
         Exit = Texts.Exit;
 
-        NavigateBackCommand = new RelayCommand(() =>
+        ExitCommand = new RelayCommand(() =>
         {
             NavigateTo(new ListBackupMenuViewModel(mainWindow));
         });
-
-        ExitCommand = new RelayCommand(NavigateToBase);
 
     }
 }
