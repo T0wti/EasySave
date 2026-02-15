@@ -12,7 +12,7 @@
     <Application.Resources>
         <SolidColorBrush x:Key="MainBackground">#F8F9FA</SolidColorBrush>
         <SolidColorBrush x:Key="SidebarBackground">#D1D5DB</SolidColorBrush>
-        <SolidColorBrush x:Key="CardBackground">#FFFFFF</SolidColorBrush>
+        <SolidColorBrush x:Key="CardBackground">#E6E6E6</SolidColorBrush>
         <SolidColorBrush x:Key="AccentColor">#0078D4</SolidColorBrush>
         <SolidColorBrush x:Key="DangerColor">#C42B1C</SolidColorBrush>
         <SolidColorBrush x:Key="TextPrimary">#111827</SolidColorBrush>

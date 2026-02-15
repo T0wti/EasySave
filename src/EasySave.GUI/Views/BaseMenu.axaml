@@ -4,33 +4,39 @@
         x:Class="EasySave.GUI.Views.BaseMenu"
         x:DataType="viewModels:BaseMenuViewModel">
 
-    <Border Padding="30">
-        <StackPanel Spacing="12">
-            <!-- ===============TO DELETE=============== -->
-            <!-- ======================================= -->
-            <!-- Title -->
-            <TextBlock Text="{Binding Title}"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,20"/>
+<StackPanel Spacing="20" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <Image Source="/Assets/easysave-logo.png"/>
 
-            <!-- Backup actions -->
-            <Button Content="{Binding CreateBackup}" Command="{Binding NavigateToCreateBackupCommand}" />
-            <Button Content="{Binding DeleteBackup}" />
-            <Button Content="{Binding EditBackup}" />
-            <Button Content="{Binding ListBackup}" Command="{Binding NavigateToListBackupCommand}"/>
-            <Button Content="{Binding ExeBackup}" Command="{Binding NavigateToExecuteBackupCommand}"/>
+        <TextBlock Text="Welcome" 
+                   FontSize="24" FontWeight="Bold"
+                   Foreground="{StaticResource TextSecondary}"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   MaxWidth="450"/>
 
-            <Separator Margin="0,15"/>
-
-            <!-- Settings -->
-            <Button Content="{Binding Settings}" Command="{Binding NavigateToSettingsCommand}"/>
-            
-            <!-- Exit -->
-            <Button Content="{Binding Exit}" Command="{Binding ExitCommand}"></Button>
-            <!-- ======================================= -->
-        </StackPanel>
-    </Border>
+        <Border Background="{StaticResource CardBackground}" 
+                CornerRadius="8" 
+                Padding="30" 
+                Margin="0,30,0,0"
+                BoxShadow="0 4 15 0 #10000000"
+                MinWidth="250">
+            <StackPanel Spacing="10" HorizontalAlignment="Center">
+                <TextBlock Text="Configured Backups" 
+                           FontSize="16" 
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextSecondary}" 
+                           HorizontalAlignment="Center"/>
+                
+                <TextBlock Text="1" 
+                           FontSize="48" 
+                           FontWeight="Bold" 
+                           Foreground="{StaticResource TextPrimary}" 
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        
+    </StackPanel>
 
 </UserControl>

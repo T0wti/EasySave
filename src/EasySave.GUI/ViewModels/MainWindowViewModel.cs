@@ -38,11 +38,11 @@ public partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel()
     {
-        //CurrentView = new BaseMenuViewModel(this);
-        CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
+        CurrentView = new BaseMenuViewModel(this);
+        //CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
 
-        //IsBaseActive = true;
-        IsCreateActive = true;
+        IsBaseActive = true;
+        //IsCreateActive = true;
 
         NavigateToBaseMenuCommand = new RelayCommand(() =>
         {

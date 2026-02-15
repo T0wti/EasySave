@@ -63,7 +63,7 @@
 
                 <StackPanel Grid.Row="1" Margin="10,0">
 					<!-- Backup actions -->
-
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsBaseActive}" Content="0. Home" Command="{Binding NavigateToBaseMenuCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsCreateActive}" Content="1. Create Backup" Command="{Binding NavigateToCreateBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsDeleteActive}" Content="2. Delete Backup" Command="{Binding NavigateToDeleteBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsEditActive}" Content="3. Edit Backup" Command="{Binding NavigateToEditBackupCommand}"/>
