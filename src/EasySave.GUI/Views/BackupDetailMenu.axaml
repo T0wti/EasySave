@@ -4,13 +4,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             xmlns:controls="using:EasySave.GUI.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="EasySave.GUI.Views.BackupDetailMenu"
              x:DataType="viewModels:BackupDetailMenuViewModel">
     
     <StackPanel Spacing="30" Margin="40">
         <!-- Title -->
-        <TextBlock Text="{Binding Title}" Classes="PageTitle" HorizontalAlignment="Center"/>
+        <controls:PageTitleControl/>
         
         <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="30" MaxWidth="600" BoxShadow="0 4 15 0 #1A000000">
 			<Grid ColumnDefinitions="100, *" RowDefinitions="Auto, Auto, Auto, Auto">
@@ -32,9 +33,7 @@
         
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
             <!-- Exit -->
-            <Button Content="{Binding Exit}" 
-                    Command="{Binding NavigateBackCommand}" 
-                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <controls:ReturnButton HorizontalAlignment="Right"/>
         </StackPanel>
     </StackPanel>
   

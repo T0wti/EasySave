@@ -17,6 +17,8 @@ public class BackupDetailMenuViewModel : ViewModelBase
     public string BackupType { get; }
     public string Exit { get; }
 
+    public ICommand ExitCommand { get; }
+
     public BackupDetailMenuViewModel(MainWindowViewModel mainWindow, BackupJobDTO job) : base(mainWindow)
     {
         Title = Texts.BackupNameMenuTitle;
@@ -30,5 +32,8 @@ public class BackupDetailMenuViewModel : ViewModelBase
         {
             NavigateTo(new ListBackupMenuViewModel(mainWindow));
         });
+
+        ExitCommand = new RelayCommand(NavigateToBase);
+
     }
 }

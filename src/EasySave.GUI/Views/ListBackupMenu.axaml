@@ -10,17 +10,12 @@
 
     <StackPanel Spacing="20" Margin="30">
         
-        <TextBlock Text="{Binding Title}"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"/>
+        <controls:PageTitleControl/>
         
         <controls:BackupJobsList Jobs="{Binding BackupJobs}"
                                  SelectedJob="{Binding SelectedJob}"/>
         
-        <Button Content="{Binding Exit}"
-                Command="{Binding ExitCommand}"
-                HorizontalAlignment="Center"/>
+        <controls:ReturnButton HorizontalAlignment="Right"/>
         
     </StackPanel>
 </UserControl>

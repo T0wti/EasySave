@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             xmlns:controls="using:EasySave.GUI.Views"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.SettingsMenu"
              x:DataType="viewModels:SettingsMenuViewModel">
@@ -13,7 +14,7 @@
     </Design.DataContext>
 
     <StackPanel Spacing="30" Margin="20">
-        <TextBlock Text="{Binding Title}" Classes="PageTitle"/>
+        <controls:PageTitleControl/>
 
             <!-- Language -->
             <StackPanel Spacing="10">
@@ -46,7 +47,7 @@
             </StackPanel>
             
             <!-- Exit -->
-            <Button Classes="ActionBtn" Content="{Binding Exit}" Command="{Binding ExitCommand}" HorizontalAlignment="Right" Margin="0,20,0,0"/>
+            <controls:ReturnButton HorizontalAlignment="Right"/>
     </StackPanel>
 
 </UserControl>

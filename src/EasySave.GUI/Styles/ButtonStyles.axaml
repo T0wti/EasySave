@@ -37,6 +37,10 @@
         <Setter Property="Padding" Value="20, 10"/>
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinWidth" Value="150"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
         
     <Style Selector="Button.DangerBtn">

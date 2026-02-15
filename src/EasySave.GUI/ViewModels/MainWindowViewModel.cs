@@ -32,7 +32,8 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     public void NavigateToBaseMenu()
     {
-        CurrentView = new BaseMenuViewModel(this);
+        //CurrentView = new BaseMenuViewModel(this);
+        CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
         ResetActiveStates();
         IsBaseActive = true;
     }

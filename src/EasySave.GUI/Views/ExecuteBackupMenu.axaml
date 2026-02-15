@@ -10,19 +10,37 @@
     
     <StackPanel Spacing="20" Margin="30">
         
-        <TextBlock Text="{Binding Title}" Classes="PageTitle" HorizontalAlignment="Center"/>
+        <controls:PageTitleControl/>
         
-        <controls:BackupJobsList Jobs="{Binding BackupJobs}"
-                                 SelectedJob="{Binding SelectedJob}"/>
-        
+        <ScrollViewer MaxHeight="350">
+			<ItemsControl ItemsSource="{Binding BackupJobs}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						
+                        <Border Background="#F0F0F0" CornerRadius="8" Padding="15" Margin="0,5">
+                            <Grid ColumnDefinitions="AUto, *, Auto">
+							    
+                                <CheckBox Grid.Column="0" Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center"
+                                           FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Type}" VerticalAlignment="Center"
+                                           Foreground="{StaticResource TextSecondary}"/>
+
+                            </Grid>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-            
-            <Button Content="{Binding Exit}"
-                    Command="{Binding ExitCommand}"
-                    VerticalAlignment="Center"
-                    Width="100"
-                    HorizontalContentAlignment="Center"/>
-            
+			
+            <!-- TO DO: BINDINGS -->
+            <Button Content="Execute Selected" Classes="ActionBtn" Width="180" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+            <controls:ReturnButton/>
+
         </StackPanel>
         
     </StackPanel>

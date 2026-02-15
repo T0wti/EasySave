@@ -10,7 +10,7 @@
 
 
         <StackPanel Spacing="20" Margin="30">
-            <TextBlock Text="{Binding Title}" Classes="PageTitle" HorizontalAlignment="Center"/>
+            <controls:PageTitleControl/>
 
             <!-- Get the BackupJobList -->
             <controls:BackupJobsList Jobs="{Binding BackupJobs}"/>
@@ -18,11 +18,10 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
 				
                 <!-- Add to the BackupJobList: Delete button and Exit button -->
-                <Button Content="{Binding Delete}" Classes="DangerBtn"
-                        Width="160" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                 <!-- TO DO: IsEnabled="{Binding IsJobSelected}" -->
+                <Button Content="{Binding Delete}" Classes="ActionBtn"/>
 
-                <Button Content="{Binding Exit}" Width="160"
-                        HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                <controls:ReturnButton/>
 
             </StackPanel>
 			
