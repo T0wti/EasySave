@@ -54,8 +54,13 @@ public partial class MainWindowViewModel : ObservableObject
         IsDeleteActive = true;
     }
 
-    //[RelayCommand]
-    //public void NavigateToEditBackup() => CurrentView = new EditBackupMenuViewModel(this);
+    [RelayCommand]
+    public void NavigateToEditBackup()
+    {
+        CurrentView = new EditBackupMenuViewModel(this);
+        ResetActiveStates();
+        IsEditActive = true;
+    }
 
     [RelayCommand]
     public void NavigateToListBackup()

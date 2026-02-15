@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels
 {
-    public class DeleteBackupMenuViewModel : ViewModelBase
+    public partial class DeleteBackupMenuViewModel : ViewModelBase
     {
 
         // TO DO : GET TRUE IF A JOB IS SELECTED

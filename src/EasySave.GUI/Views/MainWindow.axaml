@@ -29,6 +29,14 @@
         <DataTemplate DataType="{x:Type viewModels:DeleteBackupMenuViewModel}">
             <views:DeleteBackupMenu/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:EditBackupMenuViewModel}">
+            <views:EditBackupMenu/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:EditBackupDetailMenuViewModel}">
+            <views:EditBackupDetailMenu/>
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewModels:ListBackupMenuViewModel}">
             <views:ListBackupMenu/>
@@ -64,7 +72,7 @@
                     -->
                     <Button Classes="MenuBtn" Classes.active="{Binding IsCreateActive}" Content="1. Create Backup" Command="{Binding NavigateToCreateBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsDeleteActive}" Content="2. Delete Backup" Command="{Binding NavigateToDeleteBackupCommand}"/>
-                    <Button Classes="MenuBtn" Classes.active="{Binding IsEditActive}" Content="3. Edit Backup"/>
+                    <Button Classes="MenuBtn" Classes.active="{Binding IsEditActive}" Content="3. Edit Backup" Command="{Binding NavigateToEditBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsListActive}" Content="4. List Backups" Command="{Binding NavigateToListBackupCommand}"/>
                     <Button Classes="MenuBtn" Classes.active="{Binding IsExecuteActive}" Content="5. Execute Backups" Command="{Binding NavigateToExecuteBackupCommand}"/>
 
