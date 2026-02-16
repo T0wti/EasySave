@@ -1,4 +1,5 @@
 ﻿using EasySave.Application.DTOs;
+using EasySave.Console.Controllers;
 
 namespace EasySave.Console.Commands;
 
@@ -7,28 +8,31 @@ internal class EditBackupInteraction
     private readonly ConsoleRunner _runner;
     private readonly ConsoleUI.EditBackupMenu _menu;
     private readonly List<BackupJobDTO> _jobs;
+    private readonly BackupController _backupController;
 
     internal EditBackupInteraction(
         ConsoleRunner runner,
         ConsoleUI.EditBackupMenu menu,
-        IEnumerable<BackupJobDTO> jobs) // required to check if the job exists
+        IEnumerable<BackupJobDTO> jobs,
+        BackupController backupController)
     {
         _runner = runner;
         _menu = menu;
         _jobs = jobs.ToList();
+        _backupController = backupController;
     }
+
     // Loop to read the input in the interface for the Edit Backup menu
     internal void RunLoop()
     {
         bool exit = false;
         while (!exit)
         {
-            //_menu.AskIdToEdit(); --> useless since the footer provide a more usefull help to use
             var input = System.Console.ReadLine();
 
             if (input == "0" || input?.Equals("exit", StringComparison.OrdinalIgnoreCase) == true)
             {
-                _runner.RunConsole();
+                _runner.RunBaseMenu();
                 exit = true;
                 return;
             }
@@ -36,7 +40,7 @@ internal class EditBackupInteraction
             if (!int.TryParse(input, out int id))
             {
                 _runner.WrongInput();
-                RunLoop();
+                _runner.RunEditBackupMenu();
                 return;
             }
 
@@ -44,7 +48,7 @@ internal class EditBackupInteraction
             if (job == null)
             {
                 _runner.WrongInput();
-                RunLoop();
+                _runner.RunEditBackupMenu();
                 return;
             }
 
@@ -79,32 +83,18 @@ internal class EditBackupInteraction
 
             int finalTypeChoice;
             if (string.IsNullOrEmpty(typeInput))
-            {
+            { 
                 finalTypeChoice = job.Type == "Full" ? 1 : 2;
             }
             else if (!int.TryParse(typeInput, out finalTypeChoice))
             {
                 _runner.WrongInput();
-                RunLoop();
+                _runner.RunEditBackupMenu();
                 return;
             }
 
-            try
-            {
-                _runner.HandleEditBackup(
-                    id,
-                    finalName,
-                    finalSource,
-                    finalTarget,
-                    finalTypeChoice
-                );
-                exit = true;
-            }
-            catch (Exception)
-            {
-                _runner.WrongInput();
-                RunLoop();
-            }
+            _backupController.HandleEditBackup(id, finalName, finalSource, finalTarget, finalTypeChoice);
+            _runner.RunBaseMenu();
         }
     }
 }

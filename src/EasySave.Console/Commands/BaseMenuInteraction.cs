@@ -1,5 +1,4 @@
 using EasySave.Application.Resources;
-using EasySave.Console.ConsoleUI;
 
 namespace EasySave.Console.Commands;
 
@@ -21,7 +20,6 @@ internal class BaseMenuInteraction
         while (!exit)
         {
             var input = System.Console.ReadLine()?.Trim();
-
             switch (input)
             {
                 case "1":
@@ -32,7 +30,7 @@ internal class BaseMenuInteraction
                     exit = true;
                     _runner.RunDeleteBackupMenu();
                     break;
-                case "3":;
+                case "3":
                     exit = true;
                     _runner.RunEditBackupMenu();
                     break;
@@ -42,11 +40,11 @@ internal class BaseMenuInteraction
                     break;
                 case "5":
                     exit = true;
-                    _runner.RunExeBackupMenu();
+                    _runner.RunExecuteBackupMenu();
                     break;
                 case "8":
                     exit = true;
-                    _runner.RunChangeLogFormatMenu(); 
+                    _runner.RunChangeLogFormatMenu();
                     break;
                 case "9":
                     exit = true;

@@ -1,22 +1,18 @@
-﻿using EasySave.Application;
-using EasySave.Application.Resources;
+﻿using EasySave.Application.Resources;
+using EasySave.Console.Controllers;
 
 namespace EasySave.Console.ConsoleUI;
 
 internal class ChangeLogFormatMenu : GeneralContent
 {
-    private readonly ConfigAppService _configAppService;
-    internal ChangeLogFormatMenu(ITextProvider texts,ConfigAppService configController) : base(texts)
+    private readonly ConfigController _configController;
+
+    internal ChangeLogFormatMenu(ITextProvider texts, ConfigController configController) : base(texts)
     {
-        _configAppService = configController;
+        _configController = configController;
     }
 
     internal void Display()
-    {
-        DisplayChangeLogFormatBaseMenu();
-    }
-
-    private void DisplayChangeLogFormatBaseMenu()
     {
         Header();
         System.Console.WriteLine(_texts.LogFormatMenuTitle);
@@ -25,7 +21,7 @@ internal class ChangeLogFormatMenu : GeneralContent
         System.Console.WriteLine(_texts.LogFormat2);
         System.Console.WriteLine();
         System.Console.Write(_texts.CurrentLogFormat);
-        System.Console.Write(_configAppService.GetLogFormat());
+        System.Console.Write(_configController.GetLogFormat());
         System.Console.WriteLine();
         Footer();
     }

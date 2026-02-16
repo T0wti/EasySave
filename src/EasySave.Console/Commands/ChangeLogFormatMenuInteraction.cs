@@ -1,12 +1,16 @@
-﻿namespace EasySave.Console.Commands;
+﻿using EasySave.Console.Controllers;
+
+namespace EasySave.Console.Commands;
 
 internal class ChangeLogFormatMenuInteraction
 {
     private readonly ConsoleRunner _runner;
+    private readonly ConfigController _configController;
 
-    public ChangeLogFormatMenuInteraction(ConsoleRunner runner)
+    public ChangeLogFormatMenuInteraction(ConsoleRunner runner, ConfigController configController)
     {
         _runner = runner;
+        _configController = configController;
     }
 
     // Loop to read the input in the interface for the Change Log Format Menu
@@ -19,20 +23,19 @@ internal class ChangeLogFormatMenuInteraction
             switch (input)
             {
                 case "1":
-                    _runner.HandleChangeLogFormat(0); // JSON
                     exit = true;
+                    _configController.HandleChangeLogFormat(0); // JSON
+                    _runner.RunBaseMenu();
                     break;
                 case "2":
-                    _runner.HandleChangeLogFormat(1); // XML
                     exit = true;
+                    _configController.HandleChangeLogFormat(1); // XML
+                    _runner.RunBaseMenu();
                     break;
                 case "0":
-                    exit = true;
-                    _runner.RunConsole();
-                    break;
                 case "exit":
                     exit = true;
-                    _runner.RunConsole();
+                    _runner.RunBaseMenu();
                     break;
                 default:
                     _runner.WrongInput();

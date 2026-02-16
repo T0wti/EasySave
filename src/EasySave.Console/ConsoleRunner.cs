@@ -1,246 +1,139 @@
-using EasySave.Application;
+using EasySave.Application.Resources;
 using EasySave.Console.Commands;
-    using EasySave.Console.ConsoleUI;
-    using EasySave.Application.DTOs;
-    using EasySave.Application.Resources;
+using EasySave.Console.ConsoleUI;
+using EasySave.Console.Controllers;
 
-    namespace EasySave.Console;
-
+namespace EasySave.Console
+{
+    // Responsible for navigation only — decides which menu to show
+    // Only communicates with BackupController and ConfigController
     public class ConsoleRunner
     {
-        private readonly BackupAppService _backupAppService;
-        private readonly ConfigAppService _configAppService;
-
+        private readonly BackupController _backupController;
+        private readonly ConfigController _configController;
         private ITextProvider _texts;
 
-        public ConsoleRunner(BackupAppService backupAppService, ConfigAppService configAppService)
+        public ConsoleRunner(
+            BackupController backupController,
+            ConfigController configController,
+            ITextProvider texts)
         {
-            _backupAppService = backupAppService;
-            _configAppService = configAppService;
-           
-            // Check if it's the first launch of the program
-            if (!_configAppService.FileExists())
-            {
-                _texts = new EnglishTextProvider();
-                _configAppService.EnsureConfigExists();
-                _configAppService.EnsureKeyExists(); //Temporaire !
-                RunFirstStartMenu();
-            }
-            
-            var settings = _configAppService.Load();
-
-            _texts = settings.LanguageCode == 0
-            ? new FrenchTextProviderConsole()
-            : new EnglishTextProviderConsole();
+            _backupController = backupController;
+            _configController = configController;
+            _texts = texts;
         }
-        // Main console execution
-        public void RunConsole()
+
+        // --- Entry point ---
+
+        public void Run()
         {
+            if (!_configController.FileExists())
+            {
+                _configController.EnsureConfigExists();
+                _configController.EnsureKeyExists();
+                RunFirstStartMenu();
+                return;
+            }
+
+            _configController.EnsureKeyExists();
             RunBaseMenu();
         }
-        
-        // Main menu
+
+        // --- Navigation ---
+
         internal void RunBaseMenu()
         {
-            var menu = new ConsoleUI.BaseMenu(_texts);
-            var loop = new Commands.BaseMenuInteraction(this, _texts);
+            var menu = new BaseMenu(_texts);
             menu.Display();
-            loop.RunLoop();
-        }
-        // Menu to change the language
-        internal void ChangeLanguage(ITextProvider language)
-        {
-            _texts = language;
-
-            int code = language is FrenchTextProvider ? 0 : 1;
-
-            _configAppService.ChangeLanguage(code);
-
-            RunBaseMenu();
+            new BaseMenuInteraction(this, _texts).RunLoop();
         }
 
-        // Menu to create a backup
-        internal void RunCreateBackupMenu() 
+        internal void RunCreateBackupMenu()
         {
-            var menu = new ConsoleUI.CreateBackupMenu(_texts);
-            var loop = new Commands.CreateBackupMenuInteraction(this, menu);
+            var menu = new CreateBackupMenu(_texts);
             menu.Display();
-            loop.RunLoop();
-        }
-            
-        // Menu to delete a backup
-        internal void RunDeleteBackupMenu() 
-        {
-            var jobs = _backupAppService.GetAll();
-            var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
-            listMenu.Display();
-            var menu = new ConsoleUI.DeleteBackupMenu(_texts);
-            var loop = new Commands.DeleteBackupMenuInteraction(this, menu);
-            loop.RunLoop();
+            new CreateBackupMenuInteraction(this, menu, _backupController).RunLoop();
         }
 
-        // Menu to edit a backup
-        internal void RunEditBackupMenu()
-        {
-            var jobs = _backupAppService.GetAll();
-            var listMenu = new ConsoleUI.ListBackupMenu(_texts, jobs);
-            listMenu.Display();
-            var editMenu = new ConsoleUI.EditBackupMenu(_texts);
-            var loop = new Commands.EditBackupInteraction(this, editMenu, jobs);
-
-            loop.RunLoop();
-        }
-        
-        // Menu to change the language
-        internal void RunChangeLanguageMenu()
-        {
-            var menu = new ConsoleUI.ChangeLanguageMenu(_texts);
-            var loop = new Commands.ChangeLanguageMenuInteraction(this);
-            menu.Display();
-            loop.RunLoop();
-        }
-
-        // Menu to list all the backups
         internal void RunListBackupMenu()
         {
-            var jobs = _backupAppService.GetAll();
-            var menu = new ConsoleUI.ListBackupMenu(_texts, jobs); 
-            var loop = new Commands.ListBackupMenuInteraction(this, menu);
+            var jobs = _backupController.GetAll();
+            var menu = new ListBackupMenu(_texts, jobs);
             menu.Display();
-            loop.RunLoop();
+            new ListBackupMenuInteraction(this, menu).RunLoop();
         }
 
-        // Menu to execute backups
-        internal void RunExeBackupMenu()
+        internal void RunDeleteBackupMenu()
         {
-            var jobs = _backupAppService.GetAll();
-            var menu = new ConsoleUI.ExecuteBackupMenu(_texts,jobs);
-            var loop = new Commands.ExecuteBackupMenuInteraction(this, jobs);
+            var jobs = _backupController.GetAll();
+            new ListBackupMenu(_texts, jobs).Display();
+            var menu = new DeleteBackupMenu(_texts);
+            new DeleteBackupMenuInteraction(this, menu, _backupController).RunLoop();
+        }
+
+        internal void RunEditBackupMenu()
+        {
+            var jobs = _backupController.GetAll();
+            new ListBackupMenu(_texts, jobs).Display();
+            var menu = new EditBackupMenu(_texts);
+            new EditBackupInteraction(this, menu, jobs, _backupController).RunLoop();
+        }
+
+        internal void RunExecuteBackupMenu()
+        {
+            var jobs = _backupController.GetAll();
+            var menu = new ExecuteBackupMenu(_texts, jobs);
             menu.Display();
-            loop.RunLoop();
+            new ExecuteBackupMenuInteraction(this, jobs, _backupController).RunLoop();
         }
 
-        // Menu to display execution status
-        private void RunExecuteBackupMenuDetail(int i)
+        internal void RunChangeLanguageMenu()
         {
-            var menu = new ExecuteBackupDetail(_texts);
-            menu.Display(i);
-        }
-
-        // Menu of the first start
-        private void RunFirstStartMenu()
-        {
-            var menu = new FirstStartMenu(_texts);
-            var loop = new FirstStartMenuInteraction(_texts, this);
+            var menu = new ChangeLanguageMenu(_texts);
             menu.Display();
-            loop.FirstStartLoop();
+            new ChangeLanguageMenuInteraction(this, _configController).RunLoop();
         }
 
-    internal void RunChangeLogFormatMenu()
-    {
-        var menu = new ConsoleUI.ChangeLogFormatMenu(_texts,_configAppService);
-        var loop = new Commands.ChangeLogFormatMenuInteraction(this);
-        menu.Display();
-        loop.RunLoop();
-    }
-
-    // Function to show an error in the user input
-    internal void WrongInput()
+        internal void RunChangeLogFormatMenu()
         {
-            System.Console.WriteLine(_texts.WrongInput);
+            var menu = new ChangeLogFormatMenu(_texts, _configController);
+            menu.Display();
+            new ChangeLogFormatMenuInteraction(this, _configController).RunLoop();
         }
 
-        // ======================
-        // Backup handlers via App services to link the front with the back
-        // ======================
-        
-        internal void HandleCreateBackup(string name, string source, string target, int typeChoice  )
+        internal void RunBackupDetailMenu(int id)
         {
-            try
-            {
-                _backupAppService.CreateBackup(name, source, target, typeChoice);
-                System.Console.WriteLine(_texts.BackupCreated);
-            }
-            catch (System.Exception ex)
-            {
-                System.Console.WriteLine(ex.Message);
-            }
-            RunBaseMenu();
-        }
-
-        public void HandleEditBackup(int id, string name, string source, string target, int typeChoice)
-        {
-            var jobs = _backupAppService.GetAll();
-            var listMenu = new ListBackupMenu(_texts, jobs);
-            _backupAppService.EditBackup(id, name, source, target, typeChoice);
-
-            listMenu.Display();
-
-            var menu = new EditBackupInteraction(this, new EditBackupMenu(_texts), jobs);
-
-            menu.RunLoop();
-        }
-
-    internal void HandleShowBackupDetail(int id)
-    {
-        if (id == 0)
-        {
-            RunListBackupMenu(); 
-            return;
-        }
-
-            var job = _backupAppService.GetById(id);
-
+            var job = _backupController.GetById(id);
             if (job == null)
             {
                 WrongInput();
                 return;
             }
 
-            var menu = new ConsoleUI.BackupDetailMenu(_texts, job);
-            menu.Display();
-            System.Console.ReadLine(); 
-        }
-
-
-        internal void HandleDeleteBackup(int id)
-            {
-        try
-        {
-            _backupAppService.DeleteBackup(id);
-            System.Console.WriteLine(_texts.BackupDeleted);
-        }
-        catch (System.Exception ex)
-        {
-            System.Console.WriteLine($"Error: {ex.Message}");
-        }
-
-        RunBaseMenu();
-    }
-
-        internal void HandleExecuteBackup(int id)
-        {
-            _backupAppService.ExecuteBackup(id);
-            RunBaseMenu();
-        }
-
-        // To execute multiple backups at once
-        internal void HandleExecuteMultiple(IEnumerable<int> ids)
-        {
-            RunExecuteBackupMenuDetail(0);
-            _backupAppService.ExecuteMultiple(ids);
-            RunExecuteBackupMenuDetail(1);
-            RunBaseMenu();
-        }
-    internal void HandleChangeLogFormat(int formatCode)
-    {
-     
-            _configAppService.ChangeLogFormat(formatCode);
-            System.Console.WriteLine(_texts.LogFormatChanged);
-            System.Console.WriteLine();
+            new BackupDetailMenu(_texts, job).Display();
             System.Console.ReadLine();
-    
-        RunBaseMenu();
-    }
+            RunListBackupMenu();
+        }
 
+        internal void RunFirstStartMenu()
+        {
+            var menu = new FirstStartMenu(_texts);
+            menu.Display();
+            new FirstStartMenuInteraction(_texts, this, _configController).FirstStartLoop();
+        }
+
+        internal void ChangeLanguage(ITextProvider newTexts, int code)
+        {
+            _configController.HandleChangeLanguage(code);
+            _texts = newTexts;
+            RunBaseMenu();
+        }
+
+        // --- Helpers ---
+
+        internal void WrongInput()
+        {
+            System.Console.WriteLine(_texts.WrongInput);
+        }
+    }
 }
