@@ -16,6 +16,8 @@ public partial class SettingsMenuViewModel : ViewModelBase
 
     [ObservableProperty] private bool _isLogFormat1Selected;
     [ObservableProperty] private bool _isLogFormat2Selected;
+    
+    [ObservableProperty] private bool _isFirstStart;
 
     // Commands 
     public ICommand ExitCommand { get; }

@@ -28,7 +28,7 @@ public abstract class ViewModelBase : ObservableObject
         {
             Texts = new EnglishTextProvider();
             ConfigAppService.EnsureConfigExists();
-            // menu premier démarrage
+            NavigateTo(new SettingsMenuViewModel(MainWindow));
         }
 
         var settings = ConfigAppService.Load();
