@@ -17,6 +17,8 @@ public partial class SettingsMenuViewModel : ViewModelBase
     [ObservableProperty] private bool _isLogFormat1Selected;
     [ObservableProperty] private bool _isLogFormat2Selected;
 
+    [ObservableProperty] private bool _isFirstStart; //To show (or not) the 'return' button in settings.
+
     // Commands 
     public ICommand ExitCommand { get; }
     public ICommand Language1Command { get; }
