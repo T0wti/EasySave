@@ -14,6 +14,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string Exit => "Exit";
     public override string Home => "Home";
     public override string Confirm => "Confirm";
+    public override string Save => "Save";
     public override string ListBackup => "4. List all file backups";
     public override string ExeBackup => "5. Execute a file backup";
     public override string LogFormat => "8. Change log format";
@@ -83,4 +84,8 @@ public class EnglishTextProvider : GeneralTextProvider
     
     // Settings menu
     public override string SettingsMenuTitle => "Easy Save's settings";
+    public override string SettingsMenuBusiness => "Software suspending execution";
+    public override string SettingsMenuLanguage => "Language";
+    public override string SettingsMenuLogFormat => "Log files format";
+    public override string SettingsMenuExemple => "Example: Calculator.exe";
 }
