@@ -13,6 +13,10 @@ public interface ITextProvider
     string Confirm { get; }
     string Home { get; }
     
+    // Home Page
+    string HomeWelcome { get; }
+    string HomeConfiguredBackup { get; }
+    
     // Options in the base menu | Argan
     string DeleteBackup { get; }
     string CreateBackup { get; }

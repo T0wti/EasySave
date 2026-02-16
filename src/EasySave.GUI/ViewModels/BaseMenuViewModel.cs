@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Domain.Services;
@@ -21,6 +22,9 @@ public partial class BaseMenuViewModel : ViewModelBase
     public string ExeBackup { get; }
     public string Settings { get; }
     public string Exit { get; }
+    public string Welcome { get; }
+    public string ConfiguredBackupStr { get; }
+    public int BackupNumber { get; }
     
     public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
@@ -32,6 +36,10 @@ public partial class BaseMenuViewModel : ViewModelBase
         ExeBackup = Texts.ExeBackup;
         Settings = Texts.SettingsMenu;
         Exit = Texts.Exit;
+        Welcome = Texts.HomeWelcome;
+        ConfiguredBackupStr = Texts.HomeConfiguredBackup;
+
+        BackupNumber = jobs.Count();
 
         NavigateToSettingsCommand = new RelayCommand(() =>
         {

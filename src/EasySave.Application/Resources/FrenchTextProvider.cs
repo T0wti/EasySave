@@ -18,6 +18,10 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string ExeBackup => "5. Exécuter une sauvegarde de fichiers";
     public override string LogFormat => "8. Changer le format des logs";
     public override string SettingsMenu => "Réglages";
+    
+    // Home Page
+    public override string HomeWelcome => "Bienvenue";
+    public override string HomeConfiguredBackup => "Sauvegardes configurées";
 
     // Creation BackupMenu 
     public override string CreateBackupMenuTitle => "Créer une sauvegarde de fichiers";
