@@ -122,9 +122,6 @@ namespace EasySave.Console
             new FirstStartMenuInteraction(_texts, this, _configController).FirstStartLoop();
         }
 
-        // --- Language switch ---
-        // Recrée les controllers avec les nouveaux textes car _texts est la seule chose qui change
-
         internal void ChangeLanguage(ITextProvider newTexts, int code)
         {
             _configController.HandleChangeLanguage(code);

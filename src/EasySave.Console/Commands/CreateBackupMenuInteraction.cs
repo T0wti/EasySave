@@ -40,8 +40,14 @@ internal class CreateBackupMenuInteraction
             _runner.RunCreateBackupMenu();
             return;
         }
-
-        _backupController.HandleCreateBackup(name, source, target, typeChoice);
+        try
+        {
+            _backupController.HandleCreateBackup(name, source, target, typeChoice);
+        }
+        catch (Exception)
+        {
+            _runner.WrongInput();
+        }
         _runner.RunBaseMenu();
     }
 }
