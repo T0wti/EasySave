@@ -6,7 +6,7 @@
 
 <StackPanel Spacing="20" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
         
-        <Image Source="/Assets/easysave-logo.png" Height="350"/>
+        <Image Source="/Assets/easysave-logo.png"/>
 
         <TextBlock Text="{Binding Welcome}" 
                    FontSize="24" FontWeight="Bold"
@@ -21,7 +21,7 @@
                 Padding="30" 
                 Margin="0,30,0,0"
                 BoxShadow="0 4 15 0 #10000000"
-                MinWidth="200">
+                MinWidth="250">
             <StackPanel Spacing="10" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding ConfiguredBackupStr}" 
                            FontSize="16" 

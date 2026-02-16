@@ -61,7 +61,7 @@
             <Border Background="{StaticResource SidebarBackground}">
                 <Grid RowDefinitions="Auto, *, Auto">
                     
-                    <StackPanel Grid.Row="0" Spacing="15" Margin="10,20,10,30" Orientation="Horizontal">
+                    <StackPanel Grid.Row="0" Spacing="15" Margin="10,20,10,30">
                         <Button Command="{Binding TogglePaneCommand}" 
                                 Background="Transparent" 
                                 Width="45" Height="45" 
@@ -74,7 +74,7 @@
                                 Background="Transparent" 
                                 Padding="0" 
                                 IsVisible="{Binding IsPaneOpen}">
-                            <Image Source="/Assets/easysave-logo.png" Width="160"/>
+                            <Image Source="/Assets/easysave-logo.png" Width="180"/>
                         </Button>
                     </StackPanel>
 
