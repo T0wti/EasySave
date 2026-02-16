@@ -8,7 +8,6 @@
         
         <Image Source="/Assets/easysave-logo.png" Height="350"/>
 
-        <!--
         <TextBlock Text="Welcome" 
                    FontSize="24" FontWeight="Bold"
                    Foreground="{StaticResource TextSecondary}"
@@ -16,7 +15,6 @@
                    TextWrapping="Wrap"
                    TextAlignment="Center"
                    MaxWidth="450"/>
-        -->
 
         <Border Background="{StaticResource CardBackground}" 
                 CornerRadius="8" 

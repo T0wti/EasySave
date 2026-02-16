@@ -58,7 +58,7 @@
                 <!-- TO DO: BINDINGS -->
                 <Button Grid.Column="1" Content="Save" Classes="ActionBtn" Width="150" Height="40"/>
                 <!-- Exit -->
-                <controls:ReturnButton/>
+                <controls:ReturnButton IsVisible="{Binding !IsFirstStart}"/>
             </StackPanel>
     </StackPanel>
 
