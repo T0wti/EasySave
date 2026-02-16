@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Resources;
 using System.Windows.Input;
-using Tmds.DBus.Protocol;
 
 namespace EasySave.GUI.ViewModels;
 
