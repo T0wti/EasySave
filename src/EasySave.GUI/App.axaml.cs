@@ -4,6 +4,7 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
+using EasySave.Application;
 using EasySave.GUI.Views;
 using EasySave.GUI.ViewModels;
 using BaseMenu = EasySave.GUI.Views.BaseMenu;
@@ -25,7 +26,15 @@ public partial class App : Avalonia.Application
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             
-            var mainViewModel = new MainWindowViewModel(null); 
+            var configAppService = AppServiceFactory.CreateConfigurationController();
+            
+            var mainViewModel = new MainWindowViewModel(null);
+
+            if (!configAppService.FileExists())
+            {
+                configAppService.EnsureConfigExists();
+                mainViewModel.CurrentView = new FirstStartMenuViewModel(mainViewModel);
+            }
             desktop.MainWindow = new MainWindow
             {
                 DataContext = mainViewModel,

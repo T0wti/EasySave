@@ -4,6 +4,7 @@ using EasySave.Domain.Models;
 using System;
 using System.IO;
 using System.Text.Json;
+using EasySave.Domain.Enums;
 
 namespace EasySave.Domain.Services
 {
@@ -31,6 +32,7 @@ namespace EasySave.Domain.Services
         {
             return new ApplicationSettings
             {
+                Language = Language.English,
                 LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
                 StateFileDirectoryPath = Path.Combine(_baseAppPath, "State"),
                 LogFormat = 0,
