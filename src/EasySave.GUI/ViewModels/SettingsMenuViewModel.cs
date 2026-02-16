@@ -1,7 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Resources;
-using EasySave.EasyLog.Enums;
 using System.Windows.Input;
 using Tmds.DBus.Protocol;
 
@@ -17,8 +16,6 @@ public partial class SettingsMenuViewModel : ViewModelBase
     [ObservableProperty] private bool _isLogFormat1Selected;
     [ObservableProperty] private bool _isLogFormat2Selected;
     
-    [ObservableProperty] private bool _isFirstStart;
-
     // Commands 
     public ICommand ExitCommand { get; }
     public ICommand Language1Command { get; }
@@ -51,7 +48,7 @@ public partial class SettingsMenuViewModel : ViewModelBase
         else IsLanguage2Selected = true;
 
         // Check which log format is selected
-        if (currentFormat == LogFormat.Json) IsLogFormat1Selected = true;
+        if (currentFormat == 0) IsLogFormat1Selected = true;
         else IsLogFormat2Selected = true;
 
         // Handle the language change

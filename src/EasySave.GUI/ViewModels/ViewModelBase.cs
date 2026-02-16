@@ -23,13 +23,6 @@ public abstract class ViewModelBase : ObservableObject
         
         BackupAppService = AppServiceFactory.CreateBackupController();
         ConfigAppService = AppServiceFactory.CreateConfigurationController();
-        
-        if (!ConfigAppService.FileExists())
-        {
-            Texts = new EnglishTextProvider();
-            ConfigAppService.EnsureConfigExists();
-            NavigateTo(new SettingsMenuViewModel(MainWindow));
-        }
 
         var settings = ConfigAppService.Load();
 

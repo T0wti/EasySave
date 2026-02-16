@@ -50,6 +50,10 @@
             <views:SettingsMenu/>
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type viewModels:FirstStartMenuViewModel}">
+            <views:FirstStartMenu/>
+        </DataTemplate>
+        
     </Window.DataTemplates>
 
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"

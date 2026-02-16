@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             xmlns:controls="using:EasySave.GUI.Views"
+             mc:Ignorable="d"
+             x:Class="EasySave.GUI.Views.FirstStartMenu"
+             x:DataType="viewModels:FirstStartMenuViewModel">
+
+    <Design.DataContext>
+        <viewModels:FirstStartMenuViewModel/>
+    </Design.DataContext>
+
+    <StackPanel Spacing="30" Margin="20">
+        <controls:PageTitleControl/>
+
+            <!-- Language -->
+            <StackPanel Spacing="10">
+                <!-- TO DO: BINDINGS -->
+                <TextBlock Text="Language" FontSize="18" FontWeight="SemiBold"/>
+                <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
+				    <StackPanel Spacing="10">
+
+                        <!-- TO DO: BINDINGS -->
+                        <RadioButton Content="{Binding Language1}" IsChecked="{Binding IsLanguage1Selected}" Command="{Binding Language1Command}" GroupName="Language"/>
+                        <RadioButton Content="{Binding Language2}" IsChecked="{Binding IsLanguage2Selected}" Command="{Binding Language2Command}" GroupName="Language"/>
+
+                    </StackPanel>	
+                </Border>
+            </StackPanel>
+    </StackPanel>
+
+</UserControl>
