@@ -6,8 +6,9 @@
 
 <StackPanel Spacing="20" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
         
-        <Image Source="/Assets/easysave-logo.png"/>
+        <Image Source="/Assets/easysave-logo.png" Height="350"/>
 
+        <!--
         <TextBlock Text="Welcome" 
                    FontSize="24" FontWeight="Bold"
                    Foreground="{StaticResource TextSecondary}"
@@ -15,13 +16,14 @@
                    TextWrapping="Wrap"
                    TextAlignment="Center"
                    MaxWidth="450"/>
+        -->
 
         <Border Background="{StaticResource CardBackground}" 
                 CornerRadius="8" 
                 Padding="30" 
                 Margin="0,30,0,0"
                 BoxShadow="0 4 15 0 #10000000"
-                MinWidth="250">
+                MinWidth="200">
             <StackPanel Spacing="10" HorizontalAlignment="Center">
                 <TextBlock Text="Configured Backups" 
                            FontSize="16" 
