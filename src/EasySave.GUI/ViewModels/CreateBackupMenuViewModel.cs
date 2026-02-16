@@ -33,6 +33,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     public string AskTarget { get; }
     public string AskType { get; }
     public string Confirm { get; }
+    public string Exit { get; }
     public string BrowseFile { get; }
     public string WaterMarkBackupName { get; }
     public string WaterMarkBackupSourcePath { get; }
@@ -49,6 +50,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
         AskTarget = Texts.EnterTargetPath;
         AskType = Texts.EnterBackupType;
         Confirm = Texts.Confirm;
+        Exit = Texts.Exit;
         BrowseFile = Texts.BrowseFile;
         WaterMarkBackupName = Texts.WaterMarkBackupName;
         WaterMarkBackupSourcePath = Texts.WaterMarkBackupSourcePath;
