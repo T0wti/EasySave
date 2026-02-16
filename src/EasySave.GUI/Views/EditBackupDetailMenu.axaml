@@ -34,7 +34,7 @@
                     <StackPanel Spacing="8">
                         <TextBlock Text="Type"/>
                         <StackPanel Orientation="Horizontal" Spacing="30">
-                            <RadioButton Content="Full" IsChecked="true" GroupName="EditType"/>
+                            <RadioButton Content="Full" IsChecked="True" GroupName="EditType"/>
                             <RadioButton Content="Differential" IsChecked="false" GroupName="EditType"/>
                         </StackPanel>
                     </StackPanel>
