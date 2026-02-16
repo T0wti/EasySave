@@ -44,9 +44,22 @@
                     </StackPanel>
                 </Border>
             </StackPanel>
+        
+        <!-- File name to detect -->
+        <StackPanel Spacing="10">
+            <!-- TO DO: BINDINGS -->
+            <TextBlock Text="Business software name" FontSize="18" FontWeight="SemiBold"/>
+            <TextBox Watermark="e.g. CalculatorApp"/>
+        </StackPanel>
             
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+
+            <!-- Save -->
+            <!-- TO DO: BINDINGS -->
+            <Button Grid.Column="1" Content="Save" Classes="ActionBtn" Width="150" Height="40"/>
             <!-- Exit -->
-            <controls:ReturnButton HorizontalAlignment="Right"/>
+            <controls:ReturnButton/>
+        </StackPanel>
     </StackPanel>
 
 </UserControl>
