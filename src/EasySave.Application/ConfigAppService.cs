@@ -74,6 +74,39 @@ namespace EasySave.Application
             _configService.EnsureKeyExists();
         }
 
+        // Return the current extensions
+        public List<string> GetEncryptedExtensions()
+        {
+            var settings = _configService.LoadSettings();
+            return settings.EncryptedFileExtensions ?? new List<string>();
+        }
+
+        // Update the extensions list
+        public void SaveEncryptedExtensions(List<string> extensions)
+        {
+            var settings = _configService.LoadSettings();
+            settings.EncryptedFileExtensions = extensions
+                .Select(e => e.StartsWith(".") ? e.ToLower() : $".{e.ToLower()}")
+                .Distinct()
+                .ToList();
+            _configService.SaveSettings(settings);
+        }
+
+        // Return business software business
+        public string? GetBusinessSoftwareName()
+        {
+            var settings = _configService.LoadSettings();
+            return settings.BusinessSoftwareName;
+        }
+
+        // Update the business software
+        public void SaveBusinessSoftwareName(string? name)
+        {
+            var settings = _configService.LoadSettings();
+            settings.BusinessSoftwareName = string.IsNullOrWhiteSpace(name) ? null : name.Trim();
+            _configService.SaveSettings(settings);
+        }
+
         // --- Private Methods ---
 
         private static int ConvertLanguageToCode(Language lang)
