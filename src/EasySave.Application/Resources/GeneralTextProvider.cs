@@ -32,6 +32,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string EditBackup => _defaultString;
         public virtual string WrongInput => _defaultString;
         public virtual string Exit => _defaultString;
+        public virtual string Home => _defaultString;
         public virtual string Confirm => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
