@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -5,6 +8,7 @@ using EasySave.Application.Resources;
 using EasySave.Domain.Services;
 using EasySave.GUI.Services;
 using System.Windows.Input;
+using Avalonia.Media;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -48,6 +52,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _exeBackup;
     [ObservableProperty] private string _settings;
     [ObservableProperty] private string _exit;
+    [ObservableProperty] private double _panelWidth;
 
     public MainWindowViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
@@ -136,6 +141,7 @@ public partial class MainWindowViewModel : ViewModelBase
         ExeBackup = Texts.ExeBackup;
         Settings = Texts.SettingsMenu;
         Exit = Texts.Exit;
+        PanelWidth = CalculateOptimalPaneWidth();
     }
 
     private void OnExit()
@@ -144,5 +150,42 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             desktop.Shutdown();
         }
+    }
+    
+    private double CalculateOptimalPaneWidth()
+    {
+        var menuTexts = new List<string>
+        {
+            Home, CreateBackup, DeleteBackup, EditBackup,
+            ListBackup, ExeBackup, Settings, Exit
+        };
+
+        double maxTextWidth = 0;
+    
+        // Typeface by default on Windows
+        var typeface = new Typeface("Segoe UI");
+        double fontSize = 14; // Default Font Size
+    
+        foreach (var text in menuTexts)
+        {
+            if (string.IsNullOrEmpty(text)) continue;
+        
+            var formattedText = new FormattedText(
+                text,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                typeface,
+                fontSize,
+                Brushes.Black
+            );
+        
+            maxTextWidth = Math.Max(maxTextWidth, formattedText.Width);
+        }
+    
+        // Icon width (45px) + spacing (20px) + text + marging (40px)
+        double totalWidth = 45 + 20 + maxTextWidth + 40;
+    
+        // Limits
+        return Math.Clamp(totalWidth, 200, 1000);
     }
 }
