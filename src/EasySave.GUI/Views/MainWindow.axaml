@@ -55,7 +55,7 @@
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
                DisplayMode="CompactInline"
                CompactPaneLength="65"
-               OpenPaneLength="250">
+               OpenPaneLength="{Binding PanelWidth}">
         
         <SplitView.Pane>
             <Border Background="{StaticResource SidebarBackground}">
