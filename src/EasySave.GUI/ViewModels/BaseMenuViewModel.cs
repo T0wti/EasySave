@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.Input;
-using EasySave.Domain.Services;
 
 namespace EasySave.GUI.ViewModels;
 

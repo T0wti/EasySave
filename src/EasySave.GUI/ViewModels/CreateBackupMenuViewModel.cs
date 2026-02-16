@@ -2,14 +2,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using EasySave.Domain.Interfaces;
+using EasySave.GUI.Services;
 
 namespace EasySave.GUI.ViewModels;
 
 public partial class CreateBackupMenuViewModel : ViewModelBase
 {
     // File browser
-    private readonly IDialogService _dialogService;
+    private readonly DialogService _dialogService;
     
     // Inputs
     [ObservableProperty] private string? backupName;
@@ -43,7 +43,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     public string FullType { get; }
     public string DifferentialType { get; }
 
-    public CreateBackupMenuViewModel(MainWindowViewModel mainWindow, IDialogService dialogService) : base(mainWindow)
+    public CreateBackupMenuViewModel(MainWindowViewModel mainWindow, DialogService dialogService) : base(mainWindow)
     {
         _dialogService = dialogService;
         Title = Texts.CreateBackupMenuTitle;
