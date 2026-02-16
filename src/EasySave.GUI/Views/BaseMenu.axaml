@@ -8,7 +8,7 @@
         
         <Image Source="/Assets/easysave-logo.png"/>
 
-        <TextBlock Text="Welcome" 
+        <TextBlock Text="{Binding Welcome}" 
                    FontSize="24" FontWeight="Bold"
                    Foreground="{StaticResource TextSecondary}"
                    HorizontalAlignment="Center"
@@ -23,13 +23,13 @@
                 BoxShadow="0 4 15 0 #10000000"
                 MinWidth="250">
             <StackPanel Spacing="10" HorizontalAlignment="Center">
-                <TextBlock Text="Configured Backups" 
+                <TextBlock Text="{Binding ConfiguredBackupStr}" 
                            FontSize="16" 
                            FontWeight="SemiBold"
                            Foreground="{StaticResource TextSecondary}" 
                            HorizontalAlignment="Center"/>
                 
-                <TextBlock Text="1" 
+                <TextBlock Text="{Binding BackupNumber}" 
                            FontSize="48" 
                            FontWeight="Bold" 
                            Foreground="{StaticResource TextPrimary}" 

@@ -38,6 +38,10 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
         public virtual string SettingsMenu => _defaultString;
+        
+        //Home Page
+        public virtual string HomeWelcome => _defaultString;
+        public virtual string HomeConfiguredBackup => _defaultString;
 
         //Creation menu
 

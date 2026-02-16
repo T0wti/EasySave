@@ -18,6 +18,10 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string ExeBackup => "5. Execute a file backup";
     public override string LogFormat => "8. Change log format";
     public override string SettingsMenu => "Settings";
+    
+    // Home Page
+    public override string HomeWelcome => "Welcome";
+    public override string HomeConfiguredBackup => "Configured backup";
 
     // Creation BackupMenu 
     public override string CreateBackupMenuTitle => "Create a new backup";
