@@ -86,7 +86,7 @@
                                 <!-- Data value is to generate SVG. Code obtained from pictogrammers.com -->
                                 <PathIcon Grid.Column="0" Classes="MenuIcon"
                                           Data="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22"/>
-                                <TextBlock Grid.Column="1" Text="0. Home" IsVisible="{Binding IsPaneOpen}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Home}" IsVisible="{Binding IsPaneOpen}"/>
                             </StackPanel>
                         </Button>
 

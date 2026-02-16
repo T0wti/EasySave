@@ -12,6 +12,7 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string DeleteBackup => "2. Delete a file backup";
     public override string WrongInput => "Invalid input, please try again: ";
     public override string Exit => "Exit";
+    public override string Home => "Home";
     public override string Confirm => "Confirm";
     public override string ListBackup => "4. List all file backups";
     public override string ExeBackup => "5. Execute a file backup";

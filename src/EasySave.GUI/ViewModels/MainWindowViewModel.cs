@@ -40,7 +40,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public ICommand TogglePaneCommand { get; } // Burger menu
 
     // Strings with [ObservableProperty] to update the burger menu instantly
-    [ObservableProperty] private string _title;
+    [ObservableProperty] private string _home;
     [ObservableProperty] private string _createBackup;
     [ObservableProperty] private string _deleteBackup;
     [ObservableProperty] private string _editBackup;
@@ -128,7 +128,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Texts = newTexts; // To get the new language
 
-        Title = Texts.MainMenuTitle;
+        Home = Texts.Home;
         CreateBackup = Texts.CreateBackup;
         DeleteBackup = Texts.DeleteBackup;
         EditBackup = Texts.EditBackup;

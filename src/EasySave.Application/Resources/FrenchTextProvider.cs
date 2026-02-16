@@ -12,6 +12,7 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string DeleteBackup => "2. Supprimer une sauvegarde de fichiers";
     public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
     public override string Exit => "Quitter";
+    public override string Home => "Accueil";
     public override string Confirm => "Confirmer";
     public override string ListBackup => "4. Lister les sauvegardes de fichiers";
     public override string ExeBackup => "5. Exécuter une sauvegarde de fichiers";

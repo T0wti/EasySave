@@ -11,6 +11,7 @@ public interface ITextProvider
     string WrongInput { get; }
     string Exit { get; }
     string Confirm { get; }
+    string Home { get; }
     
     // Options in the base menu | Argan
     string DeleteBackup { get; }
