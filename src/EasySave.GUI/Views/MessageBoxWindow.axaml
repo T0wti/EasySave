@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="EasySave.GUI.Views.MessageBoxWindow"
+        Title="Information"
+        Width="350" Height="180"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{StaticResource MainBackground}"
+        ExtendClientAreaToDecorationsHint="True">
+    
+    <!-- TO DO: BINDINGS -->
+    <Border Padding="20" BorderBrush="{StaticResource AccentColor}" BorderThickness="0,4,0,0">
+        <Grid RowDefinitions="*, Auto">
+            
+            <TextBlock Grid.Row="0" Text="Job executed/Settings saved" 
+                       TextWrapping="Wrap" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource TextPrimary}"/>
+            
+            <Button Grid.Row="1" Content="Ok" Classes="ActionBtn" 
+                    HorizontalAlignment="Center" Width="100"/>
+                    <!--
+                    Click="OkButton_Click"/>
+                    -->
+        </Grid>
+    </Border>
+</Window>

@@ -16,7 +16,10 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     [ObservableProperty] private string? sourcePath;
     [ObservableProperty] private string? targetPath;
     [ObservableProperty] private int selectedType;
-    
+
+    [ObservableProperty] private bool _isEncryptionEnabled;
+    [ObservableProperty] private string _extensionsToEncrypt;
+
     // Commands
     public ICommand ExitCommand { get; }
     public ICommand CreateBackupCommand { get; }
