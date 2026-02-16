@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EasySave.GUI.Services
 {
-    public class DialogService : IDialogService
+    public class DialogService
     {
         public async Task<string?> OpenFolderPickerAsync()
         {
