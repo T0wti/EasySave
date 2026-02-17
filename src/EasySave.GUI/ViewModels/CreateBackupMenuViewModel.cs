@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,6 +20,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private int selectedType;
 
         [ObservableProperty] private bool _isEncryptionEnabled;
+        [ObservableProperty] private string? _errorMessage;
 
         // Commands
         public ICommand ExitCommand { get; }
@@ -75,8 +77,16 @@ namespace EasySave.GUI.ViewModels
 
         private void CreateBackup()
         {
-            BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
-            NavigateToBase();
+            try
+            {
+                BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
+                NavigateToBase();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ErrorMessage = e.Message;
+            }
         }
 
         private async Task BrowseSourceAsync()
