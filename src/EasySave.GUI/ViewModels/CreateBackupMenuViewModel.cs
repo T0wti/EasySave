@@ -1,8 +1,10 @@
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Domain.Enums;
 using EasySave.GUI.Services;
 
 namespace EasySave.GUI.ViewModels
@@ -82,10 +84,22 @@ namespace EasySave.GUI.ViewModels
                 BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
                 NavigateToBase();
             }
-            catch (Exception e)
+            catch (BackupValidationException e)
             {
-                Console.WriteLine(e.Message);
-                ErrorMessage = e.Message;
+                ErrorMessage = e.ErrorCode switch
+                {
+                    EasySaveErrorCode.NameEmpty => ErrorMessage = Texts.NameEmpty,
+                    EasySaveErrorCode.NameTooLong => ErrorMessage = Texts.NameTooLong,
+                    EasySaveErrorCode.SourcePathEmpty => ErrorMessage = Texts.SourcePathEmpty,
+                    EasySaveErrorCode.SourcePathNotAbsolute => ErrorMessage = Texts.SourcePathNotAbsolute,
+                    EasySaveErrorCode.SourcePathNotFound => ErrorMessage = Texts.SourcePathNotFound,
+                    EasySaveErrorCode.TargetPathEmpty => ErrorMessage = Texts.TargetPathEmpty,
+                    EasySaveErrorCode.TargetPathNotAbsolute => ErrorMessage = Texts.TargetPathNotAbsolute,
+                    EasySaveErrorCode.TargetPathNotFound => ErrorMessage = Texts.TargetPathNotFound,
+                    EasySaveErrorCode.SourceEqualsTarget => ErrorMessage = Texts.SourceEqualsTarget,
+                };
+                
+                Console.WriteLine(ErrorMessage);
             }
         }
 
