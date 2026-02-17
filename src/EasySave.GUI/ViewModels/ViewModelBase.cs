@@ -17,7 +17,7 @@ public abstract class ViewModelBase : ObservableObject
     {
         MainWindow = mainWindow;
 
-        // Récupère les services depuis MainWindow au lieu de les recréer
+        // Get the services by mainviewmodel (instead of recreate them)
         BackupAppService = mainWindow.BackupAppService;
         ConfigAppService = mainWindow.ConfigAppService;
         Texts = mainWindow.Texts;

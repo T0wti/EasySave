@@ -10,7 +10,7 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        // command mode with command runner
+        // Command mode with command runner
         var backupAppService = AppServiceFactory.CreateBackupController();
         if (CommandRunner.TryRun(args, backupAppService))
         {
@@ -18,7 +18,7 @@ sealed class Program
             return;
         }
 
-        // MODE GUI — launch the app
+        // Mode GUI — launch the app
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

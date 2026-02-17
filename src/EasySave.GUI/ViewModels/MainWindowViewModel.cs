@@ -14,7 +14,7 @@ namespace EasySave.GUI.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
-    // Services partagés avec tous les ViewModels
+    // Services share with all the viewmodels
     public BackupAppService BackupAppService { get; }
     public ConfigAppService ConfigAppService { get; }
     public ITextProvider Texts { get; private set; }

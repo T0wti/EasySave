@@ -22,27 +22,26 @@ public partial class App : Avalonia.Application
         {
             DisableAvaloniaDataAnnotationValidation();
 
-            // Créer les services une seule fois
+            // Create the services
             var backupAppService = AppServiceFactory.CreateBackupController();
             var configAppService = AppServiceFactory.CreateConfigurationController();
 
-            // Bootstrap — config et clé
-            if (!configAppService.FileExists())
-                configAppService.EnsureConfigExists();
-            configAppService.EnsureKeyExists();
 
-            // Résoudre la langue
             var settings = configAppService.Load();
             ITextProvider texts = settings.LanguageCode == 0
                 ? new FrenchTextProvider()
                 : new EnglishTextProvider();
 
-            // Créer le MainViewModel avec les services injectés
+            // Create the MainViewModel with the services
             var mainViewModel = new MainWindowViewModel(backupAppService, configAppService, texts);
 
-            // Si premier démarrage, afficher le menu de langue
-            if (settings.LanguageCode == -1) // ou une autre logique pour détecter le premier démarrage
+            if (!configAppService.FileExists())
+            {
+                configAppService.EnsureConfigExists();
                 mainViewModel.CurrentView = new FirstStartMenuViewModel(mainViewModel);
+            }
+
+            configAppService.EnsureKeyExists();
 
             desktop.MainWindow = new MainWindow
             {
