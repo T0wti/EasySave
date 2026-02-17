@@ -1,27 +1,28 @@
-namespace EasySave.Application.Resources;
-
-public class GeneralTextProvider : ITextProvider
+namespace EasySave.Application.Resources
 {
-    // Define an automatic indentation (to improve readability)
-    private const string Indent = "       ";
-    private const string BigTitle = "-----";
-    private const string Title = "--";
-    protected string Format(string text) => $"{Indent}{text}";
-    protected string FormatBigTitle(string text) => $"{Indent}{BigTitle}{" "}{text}{" "}{BigTitle}";
-    protected string FormatTitle(string text) => $"{Indent}{Title}{" "}{text}{" "}{Title}";
 
-    private readonly string _defaultString;
-
-    // Constructor
-    protected GeneralTextProvider()
+    public class GeneralTextProvider : ITextProvider
     {
-        _defaultString = "";
-    }
+        // Define an automatic indentation (to improve readability)
+        private const string Indent = "       ";
+        private const string BigTitle = "-----";
+        private const string Title = "--";
+        protected string Format(string text) => $"{Indent}{text}";
+        protected string FormatBigTitle(string text) => $"{Indent}{BigTitle}{" "}{text}{" "}{BigTitle}";
+        protected string FormatTitle(string text) => $"{Indent}{Title}{" "}{text}{" "}{Title}";
 
-    // Header and Footer
-    public string Header => "================ Easy Save Console ================";
-    public string Footer => "===================================================";
-    // Blank string which will be overridden in the language wanted
+        private readonly string _defaultString;
+
+        // Constructor
+        protected GeneralTextProvider()
+        {
+            _defaultString = "";
+        }
+
+        // Header and Footer
+        public string Header => "================ Easy Save Console ================";
+        public string Footer => "===================================================";
+        // Blank string which will be overridden in the language wanted
         // Base menu
         public virtual string MainMenuTitle => _defaultString;
         public virtual string CreateBackup => _defaultString;
@@ -39,7 +40,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
         public virtual string SettingsMenu => _defaultString;
-        
+
         //Home Page
         public virtual string HomeWelcome => _defaultString;
         public virtual string HomeConfiguredBackup => _defaultString;
@@ -60,7 +61,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string ExtensionToEncryptTitle => _defaultString;
         public virtual string Encrypt => _defaultString;
 
-    //
+        //
         public virtual string BackupCreated => _defaultString;
         public virtual string BackupEdited => _defaultString;
         public virtual string EnterBackupToDelete => _defaultString;
@@ -68,42 +69,42 @@ public class GeneralTextProvider : ITextProvider
         public virtual string AskIdToEdit => _defaultString;
 
 
-    // Change Language Menu
-    public virtual string LanguageMenuTitle => _defaultString;
+        // Change Language Menu
+        public virtual string LanguageMenuTitle => _defaultString;
         public virtual string Language1 => _defaultString;
         public virtual string Language2 => _defaultString;
-        
+
         // Choose first language menu
         public virtual string ChooseFirstLanguageMenuTitle => _defaultString;
         public virtual string ChooseFirstLanguage => _defaultString;
-        
+
         // List Backup Menu
         public virtual string ListBackupMenuTitle => _defaultString;
-        
+
         // Backup Detail Menu
         public virtual string BackupNameMenuTitle => _defaultString;
         public virtual string BackupName => _defaultString;
         public virtual string BackupSourcePath => _defaultString;
         public virtual string BackupTargetPath => _defaultString;
         public virtual string BackupType => _defaultString;
-        
+
         // Execute Backup Menu
         public virtual string ExeBackupMenuTitle => _defaultString;
         public virtual string BackupNames => _defaultString;
         public virtual string ExeBackupInstruction => _defaultString;
-        
+
         // Execute Backup Menu Details
         public virtual string ExeBackupMenuDetailTitle => _defaultString;
         public virtual string ExeBackupInProgress => _defaultString;
         public virtual string ExeBackupCompleted => _defaultString;
-        
+
         // Change Log Format Menu
         public virtual string LogFormatMenuTitle => _defaultString;
         public virtual string LogFormat1 => _defaultString;
         public virtual string LogFormat2 => _defaultString;
         public virtual string LogFormatChanged => _defaultString;
         public virtual string CurrentLogFormat => _defaultString;
-        
+
         // Settings menu
         public virtual string SettingsMenuTitle => _defaultString;
         public virtual string SettingsMenuBusiness => _defaultString;
@@ -111,3 +112,4 @@ public class GeneralTextProvider : ITextProvider
         public virtual string SettingsMenuLogFormat => _defaultString;
         public virtual string SettingsMenuExemple => _defaultString;
     }
+}

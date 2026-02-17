@@ -1,61 +1,63 @@
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.Commands;
-
-internal class BaseMenuInteraction
+namespace EasySave.Console.Commands
 {
-    private readonly ConsoleRunner _runner;
-    private readonly ITextProvider _texts;
 
-    internal BaseMenuInteraction(ConsoleRunner runner, ITextProvider texts)
+    internal class BaseMenuInteraction
     {
-        _runner = runner;
-        _texts = texts;
-    }
+        private readonly ConsoleRunner _runner;
+        private readonly ITextProvider _texts;
 
-    // Loop to read the input in the interface for the Base Menu
-    internal void RunLoop()
-    {
-        bool exit = false;
-        while (!exit)
+        internal BaseMenuInteraction(ConsoleRunner runner, ITextProvider texts)
         {
-            var input = System.Console.ReadLine()?.Trim();
-            switch (input)
+            _runner = runner;
+            _texts = texts;
+        }
+
+        // Loop to read the input in the interface for the Base Menu
+        internal void RunLoop()
+        {
+            bool exit = false;
+            while (!exit)
             {
-                case "1":
-                    exit = true;
-                    _runner.RunCreateBackupMenu();
-                    break;
-                case "2":
-                    exit = true;
-                    _runner.RunDeleteBackupMenu();
-                    break;
-                case "3":
-                    exit = true;
-                    _runner.RunEditBackupMenu();
-                    break;
-                case "4":
-                    exit = true;
-                    _runner.RunListBackupMenu();
-                    break;
-                case "5":
-                    exit = true;
-                    _runner.RunExecuteBackupMenu();
-                    break;
-                case "8":
-                    exit = true;
-                    _runner.RunChangeLogFormatMenu();
-                    break;
-                case "9":
-                    exit = true;
-                    _runner.RunChangeLanguageMenu();
-                    break;
-                case "0":
-                    exit = true;
-                    break;
-                default:
-                    _runner.WrongInput();
-                    break;
+                var input = System.Console.ReadLine()?.Trim();
+                switch (input)
+                {
+                    case "1":
+                        exit = true;
+                        _runner.RunCreateBackupMenu();
+                        break;
+                    case "2":
+                        exit = true;
+                        _runner.RunDeleteBackupMenu();
+                        break;
+                    case "3":
+                        exit = true;
+                        _runner.RunEditBackupMenu();
+                        break;
+                    case "4":
+                        exit = true;
+                        _runner.RunListBackupMenu();
+                        break;
+                    case "5":
+                        exit = true;
+                        _runner.RunExecuteBackupMenu();
+                        break;
+                    case "8":
+                        exit = true;
+                        _runner.RunChangeLogFormatMenu();
+                        break;
+                    case "9":
+                        exit = true;
+                        _runner.RunChangeLanguageMenu();
+                        break;
+                    case "0":
+                        exit = true;
+                        break;
+                    default:
+                        _runner.WrongInput();
+                        break;
+                }
             }
         }
     }

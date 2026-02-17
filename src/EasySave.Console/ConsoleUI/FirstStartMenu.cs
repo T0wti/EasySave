@@ -1,26 +1,28 @@
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.ConsoleUI;
-
-internal class FirstStartMenu : GeneralContent
+namespace EasySave.Console.ConsoleUI
 {
-    internal FirstStartMenu(ITextProvider texts) : base(texts)
-    {
-    }
-    
-    internal void Display()
-    {
-        DisplayFirstStartMenu();
-    }
 
-    private void DisplayFirstStartMenu()
+    internal class FirstStartMenu : GeneralContent
     {
-        Header();
-        System.Console.WriteLine(_texts.ChooseFirstLanguageMenuTitle);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.ChooseFirstLanguage);
-        System.Console.WriteLine(_texts.Language1);
-        System.Console.WriteLine(_texts.Language2);
-        Footer();
+        internal FirstStartMenu(ITextProvider texts) : base(texts)
+        {
+        }
+
+        internal void Display()
+        {
+            DisplayFirstStartMenu();
+        }
+
+        private void DisplayFirstStartMenu()
+        {
+            Header();
+            System.Console.WriteLine(_texts.ChooseFirstLanguageMenuTitle);
+            System.Console.WriteLine();
+            System.Console.WriteLine(_texts.ChooseFirstLanguage);
+            System.Console.WriteLine(_texts.Language1);
+            System.Console.WriteLine(_texts.Language2);
+            Footer();
+        }
     }
 }

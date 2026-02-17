@@ -1,40 +1,42 @@
 ﻿using EasySave.Console.Controllers;
 
-namespace EasySave.Console.Commands;
-
-internal class DeleteBackupMenuInteraction
+namespace EasySave.Console.Commands
 {
-    private readonly ConsoleRunner _runner;
-    private readonly ConsoleUI.DeleteBackupMenu _menu;
-    private readonly BackupController _backupController;
 
-    internal DeleteBackupMenuInteraction(
-        ConsoleRunner runner,
-        ConsoleUI.DeleteBackupMenu menu,
-        BackupController backupController)
+    internal class DeleteBackupMenuInteraction
     {
-        _runner = runner;
-        _menu = menu;
-        _backupController = backupController;
-    }
+        private readonly ConsoleRunner _runner;
+        private readonly ConsoleUI.DeleteBackupMenu _menu;
+        private readonly BackupController _backupController;
 
-    // Loop to read the input in the interface for the Delete Backup menu
-    internal void RunLoop()
-    {
-        _menu.AskIdToDelete();
-        var input = System.Console.ReadLine()?.Trim();
-
-        if (input == "0") { _runner.RunBaseMenu(); return; }
-
-        if (int.TryParse(input, out int id))
+        internal DeleteBackupMenuInteraction(
+            ConsoleRunner runner,
+            ConsoleUI.DeleteBackupMenu menu,
+            BackupController backupController)
         {
-            _backupController.HandleDeleteBackup(id);
-            _runner.RunBaseMenu();
+            _runner = runner;
+            _menu = menu;
+            _backupController = backupController;
         }
-        else
+
+        // Loop to read the input in the interface for the Delete Backup menu
+        internal void RunLoop()
         {
-            _runner.WrongInput();
-            _runner.RunDeleteBackupMenu();
+            _menu.AskIdToDelete();
+            var input = System.Console.ReadLine()?.Trim();
+
+            if (input == "0") { _runner.RunBaseMenu(); return; }
+
+            if (int.TryParse(input, out int id))
+            {
+                _backupController.HandleDeleteBackup(id);
+                _runner.RunBaseMenu();
+            }
+            else
+            {
+                _runner.WrongInput();
+                _runner.RunDeleteBackupMenu();
+            }
         }
     }
 }

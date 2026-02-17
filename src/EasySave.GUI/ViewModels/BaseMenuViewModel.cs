@@ -3,68 +3,69 @@ using System.Windows.Input;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.Input;
 
-namespace EasySave.GUI.ViewModels;
-
-public partial class BaseMenuViewModel : ViewModelBase
+namespace EasySave.GUI.ViewModels
 {
-    public ICommand NavigateToSettingsCommand { get; }
-    public ICommand NavigateToListBackupCommand { get; }
-    public ICommand NavigateToCreateBackupCommand { get; }
-    public ICommand NavigateToExecuteBackupCommand { get; }
-    public ICommand ExitCommand { get; }
 
-    public string Title { get; }
-    public string CreateBackup { get; }
-    public string DeleteBackup { get; }
-    public string EditBackup { get; }
-    public string ListBackup { get; }
-    public string ExeBackup { get; }
-    public string Settings { get; }
-    public string Exit { get; }
-    public string Welcome { get; }
-    public string ConfiguredBackupStr { get; }
-    public int BackupNumber { get; }
-    
-    public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
+    public partial class BaseMenuViewModel : ViewModelBase
     {
-        Title = Texts.MainMenuTitle;
-        CreateBackup = Texts.CreateBackup;
-        DeleteBackup = Texts.DeleteBackup;
-        EditBackup = Texts.EditBackup;
-        ListBackup = Texts.ListBackup;
-        ExeBackup = Texts.ExeBackup;
-        Settings = Texts.SettingsMenu;
-        Exit = Texts.Exit;
-        Welcome = Texts.HomeWelcome;
-        ConfiguredBackupStr = Texts.HomeConfiguredBackup;
+        public ICommand NavigateToSettingsCommand { get; }
+        public ICommand NavigateToListBackupCommand { get; }
+        public ICommand NavigateToCreateBackupCommand { get; }
+        public ICommand NavigateToExecuteBackupCommand { get; }
+        public ICommand ExitCommand { get; }
 
-        BackupNumber = jobs.Count();
+        public string Title { get; }
+        public string CreateBackup { get; }
+        public string DeleteBackup { get; }
+        public string EditBackup { get; }
+        public string ListBackup { get; }
+        public string ExeBackup { get; }
+        public string Settings { get; }
+        public string Exit { get; }
+        public string Welcome { get; }
+        public string ConfiguredBackupStr { get; }
+        public int BackupNumber { get; }
 
-        NavigateToSettingsCommand = new RelayCommand(() =>
+        public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
-            NavigateTo(new SettingsMenuViewModel(mainWindow));
-        });
-        NavigateToListBackupCommand = new RelayCommand(() =>
-        {
-            NavigateTo(new ListBackupMenuViewModel(mainWindow));
-        });
-        //NavigateToCreateBackupCommand = new RelayCommand(() =>
-        //{
-        //    NavigateTo(new CreateBackupMenuViewModel(mainWindow, new DialogService()));
-        //});
-        NavigateToExecuteBackupCommand = new RelayCommand(() =>
-        {
-            NavigateTo(new ExecuteBackupMenuViewModel(mainWindow));
-        });
-        ExitCommand = new RelayCommand(OnExit);
-    }
+            Title = Texts.MainMenuTitle;
+            CreateBackup = Texts.CreateBackup;
+            DeleteBackup = Texts.DeleteBackup;
+            EditBackup = Texts.EditBackup;
+            ListBackup = Texts.ListBackup;
+            ExeBackup = Texts.ExeBackup;
+            Settings = Texts.SettingsMenu;
+            Exit = Texts.Exit;
+            Welcome = Texts.HomeWelcome;
+            ConfiguredBackupStr = Texts.HomeConfiguredBackup;
 
-    private void OnExit()
-    {
-        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            BackupNumber = jobs.Count();
+
+            NavigateToSettingsCommand = new RelayCommand(() =>
+            {
+                NavigateTo(new SettingsMenuViewModel(mainWindow));
+            });
+            NavigateToListBackupCommand = new RelayCommand(() =>
+            {
+                NavigateTo(new ListBackupMenuViewModel(mainWindow));
+            });
+            //NavigateToCreateBackupCommand = new RelayCommand(() =>
+            //{
+            //    NavigateTo(new CreateBackupMenuViewModel(mainWindow, new DialogService()));
+            //});
+            NavigateToExecuteBackupCommand = new RelayCommand(() =>
+            {
+                NavigateTo(new ExecuteBackupMenuViewModel(mainWindow));
+            });
+            ExitCommand = new RelayCommand(OnExit);
+        }
+
+        private void OnExit()
         {
-            desktop.Shutdown();
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.Shutdown();
+            }
         }
     }
-
 }

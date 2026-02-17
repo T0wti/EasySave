@@ -1,36 +1,38 @@
 using EasySave.Application.DTOs;
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.ConsoleUI;
-
-internal class ExecuteBackupMenu : GeneralContent
+namespace EasySave.Console.ConsoleUI
 {
-    private readonly List<BackupJobDTO> _jobs;
-    internal ExecuteBackupMenu(ITextProvider texts,IEnumerable<BackupJobDTO> jobs) : base(texts)
-    {
-        _jobs = jobs.ToList();
-    }
 
-    internal void Display()
+    internal class ExecuteBackupMenu : GeneralContent
     {
-        DisplayExecuteBackupMenu();
-    }
-
-    private void DisplayExecuteBackupMenu()
-    {
-        Header();
-        System.Console.WriteLine(_texts.ExeBackupMenuTitle);
-        System.Console.WriteLine();
-        
-        // Loop to display all jobs
-        foreach (var job in _jobs)
+        private readonly List<BackupJobDTO> _jobs;
+        internal ExecuteBackupMenu(ITextProvider texts, IEnumerable<BackupJobDTO> jobs) : base(texts)
         {
-            System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");
+            _jobs = jobs.ToList();
         }
-        
-        // Useless with the actuel display information of a backup
-        //System.Console.WriteLine();
-        //System.Console.WriteLine(_texts.ExeBackupInstruction);
-        Footer();
+
+        internal void Display()
+        {
+            DisplayExecuteBackupMenu();
+        }
+
+        private void DisplayExecuteBackupMenu()
+        {
+            Header();
+            System.Console.WriteLine(_texts.ExeBackupMenuTitle);
+            System.Console.WriteLine();
+
+            // Loop to display all jobs
+            foreach (var job in _jobs)
+            {
+                System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");
+            }
+
+            // Useless with the actuel display information of a backup
+            //System.Console.WriteLine();
+            //System.Console.WriteLine(_texts.ExeBackupInstruction);
+            Footer();
+        }
     }
 }
