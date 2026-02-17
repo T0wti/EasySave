@@ -14,6 +14,7 @@ public partial class SettingsMenuViewModel : ViewModelBase
 
     [ObservableProperty] private bool _isLogFormat1Selected;
     [ObservableProperty] private bool _isLogFormat2Selected;
+    [ObservableProperty] private string? _businessSoftware;
     
     // Commands 
     public ICommand ExitCommand { get; }
@@ -21,6 +22,7 @@ public partial class SettingsMenuViewModel : ViewModelBase
     public ICommand Language2Command { get; }
     public ICommand LogFormat1Command { get; }
     public ICommand LogFormat2Command { get; }
+    public ICommand SaveCommand { get; }
 
     // String to display
     public string Title { get; }
@@ -48,6 +50,7 @@ public partial class SettingsMenuViewModel : ViewModelBase
         Exit = Texts.Exit;
         Save = Texts.Save;
         MarkdownExe = Texts.SettingsMenuExemple;
+        BusinessSoftware = ConfigAppService.GetBusinessSoftwareName();
 
         var currentSettings = ConfigAppService.Load();
         var currentFormat = ConfigAppService.GetLogFormat();
@@ -79,7 +82,15 @@ public partial class SettingsMenuViewModel : ViewModelBase
         {
             ChangeLogFormat(1);
         });
+        
+        // Save button
+        SaveCommand = new RelayCommand(SaveChange);
 
         ExitCommand = new RelayCommand(NavigateToBase);
+    }
+
+    private void SaveChange()
+    {
+        ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
     }
 }
