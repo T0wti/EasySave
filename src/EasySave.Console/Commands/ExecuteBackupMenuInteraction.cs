@@ -2,63 +2,65 @@ using EasySave.Application.DTOs;
 using EasySave.Application.Utils;
 using EasySave.Console.Controllers;
 
-namespace EasySave.Console.Commands;
-
-internal class ExecuteBackupMenuInteraction
+namespace EasySave.Console.Commands
 {
-    private readonly ConsoleRunner _runner;
-    private readonly List<BackupJobDTO> _jobs;
-    private readonly BackupController _backupController;
 
-    public ExecuteBackupMenuInteraction(
-        ConsoleRunner runner,
-        IEnumerable<BackupJobDTO> jobs,
-        BackupController backupController)
+    internal class ExecuteBackupMenuInteraction
     {
-        _runner = runner;
-        _jobs = jobs.ToList();
-        _backupController = backupController;
-    }
+        private readonly ConsoleRunner _runner;
+        private readonly List<BackupJobDTO> _jobs;
+        private readonly BackupController _backupController;
 
-    // Loop to read the input in the interface for the Execute Backup menu
-    internal void RunLoop()
-    {
-        bool exit = false;
-        while (!exit)
+        public ExecuteBackupMenuInteraction(
+            ConsoleRunner runner,
+            IEnumerable<BackupJobDTO> jobs,
+            BackupController backupController)
         {
-            var input = System.Console.ReadLine()?.Trim();
+            _runner = runner;
+            _jobs = jobs.ToList();
+            _backupController = backupController;
+        }
 
-            if (string.IsNullOrWhiteSpace(input))
+        // Loop to read the input in the interface for the Execute Backup menu
+        internal void RunLoop()
+        {
+            bool exit = false;
+            while (!exit)
             {
-                _runner.WrongInput();
-                continue;
-            }
+                var input = System.Console.ReadLine()?.Trim();
 
-            if (input == "0" || input == "exit")
-            {
-                exit = true;
-                _runner.RunBaseMenu();
-                continue;
-            }
-
-            try
-            {
-                var ids = BackupIdParser.ParseIds(input);
-                var validIds = _jobs.Select(j => j.Id).ToHashSet();
-
-                if (!ids.All(id => validIds.Contains(id)))
+                if (string.IsNullOrWhiteSpace(input))
                 {
                     _runner.WrongInput();
                     continue;
                 }
 
-                _backupController.HandleExecuteMultiple(input);
-                exit = true;
-                _runner.RunBaseMenu();
-            }
-            catch
-            {
-                _runner.WrongInput();
+                if (input == "0" || input == "exit")
+                {
+                    exit = true;
+                    _runner.RunBaseMenu();
+                    continue;
+                }
+
+                try
+                {
+                    var ids = BackupIdParser.ParseIds(input);
+                    var validIds = _jobs.Select(j => j.Id).ToHashSet();
+
+                    if (!ids.All(id => validIds.Contains(id)))
+                    {
+                        _runner.WrongInput();
+                        continue;
+                    }
+
+                    _backupController.HandleExecuteMultiple(input);
+                    exit = true;
+                    _runner.RunBaseMenu();
+                }
+                catch
+                {
+                    _runner.WrongInput();
+                }
             }
         }
     }

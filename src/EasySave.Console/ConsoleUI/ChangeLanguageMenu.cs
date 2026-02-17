@@ -1,26 +1,28 @@
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.ConsoleUI;
-
-internal class ChangeLanguageMenu : GeneralContent
+namespace EasySave.Console.ConsoleUI
 {
 
-    internal ChangeLanguageMenu(ITextProvider texts) : base(texts)
+    internal class ChangeLanguageMenu : GeneralContent
     {
-    }
 
-    internal void Display()
-    {
-        DisplayChangeLanguageBaseMenu();
-    }
-    
-    private void DisplayChangeLanguageBaseMenu()
-    {
-        Header();
-        System.Console.WriteLine(_texts.LanguageMenuTitle);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Language1);
-        System.Console.WriteLine(_texts.Language2);
-        Footer();
+        internal ChangeLanguageMenu(ITextProvider texts) : base(texts)
+        {
+        }
+
+        internal void Display()
+        {
+            DisplayChangeLanguageBaseMenu();
+        }
+
+        private void DisplayChangeLanguageBaseMenu()
+        {
+            Header();
+            System.Console.WriteLine(_texts.LanguageMenuTitle);
+            System.Console.WriteLine();
+            System.Console.WriteLine(_texts.Language1);
+            System.Console.WriteLine(_texts.Language2);
+            Footer();
+        }
     }
 }

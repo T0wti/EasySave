@@ -1,37 +1,39 @@
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.ConsoleUI;
-
-internal class ExecuteBackupDetail : GeneralContent
+namespace EasySave.Console.ConsoleUI
 {
-    private readonly ITextProvider _texts;
-    internal ExecuteBackupDetail(ITextProvider texts) : base(texts)
-    {
-        _texts = texts;
-    }
 
-    internal void Display(int i)
+    internal class ExecuteBackupDetail : GeneralContent
     {
-        DisplayExeDetails(i);
-    }
-    private void DisplayExeDetails(int i)
-    {
-        Header();
-        System.Console.WriteLine(_texts.ExeBackupMenuDetailTitle);
-        System.Console.WriteLine();
-        // options to display the correct status
-        if (i == 0)
+        private readonly ITextProvider _texts;
+        internal ExecuteBackupDetail(ITextProvider texts) : base(texts)
         {
-            System.Console.WriteLine(_texts.ExeBackupInProgress);
+            _texts = texts;
         }
-        else
+
+        internal void Display(int i)
         {
-            System.Console.WriteLine(_texts.ExeBackupCompleted);
+            DisplayExeDetails(i);
         }
-        Footer();
-        if (i == 1)
+        private void DisplayExeDetails(int i)
         {
-            Thread.Sleep(2000);
+            Header();
+            System.Console.WriteLine(_texts.ExeBackupMenuDetailTitle);
+            System.Console.WriteLine();
+            // options to display the correct status
+            if (i == 0)
+            {
+                System.Console.WriteLine(_texts.ExeBackupInProgress);
+            }
+            else
+            {
+                System.Console.WriteLine(_texts.ExeBackupCompleted);
+            }
+            Footer();
+            if (i == 1)
+            {
+                Thread.Sleep(2000);
+            }
         }
     }
 }

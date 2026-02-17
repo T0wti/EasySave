@@ -1,27 +1,29 @@
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.ConsoleUI;
-
-public class GeneralContent 
+namespace EasySave.Console.ConsoleUI
 {
-    protected readonly ITextProvider _texts;
-    internal GeneralContent(ITextProvider texts)
+
+    public class GeneralContent
     {
-        _texts = texts;
-    }
-    protected void Header()
-    {
-        System.Console.Clear();
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Header);
-    }
-    protected void Footer()
-    {
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.ExitOption);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.Footer);
-        System.Console.WriteLine();
-        System.Console.WriteLine(_texts.AskEntryFromUser);
+        protected readonly ITextProvider _texts;
+        internal GeneralContent(ITextProvider texts)
+        {
+            _texts = texts;
+        }
+        protected void Header()
+        {
+            System.Console.Clear();
+            System.Console.WriteLine();
+            System.Console.WriteLine(_texts.Header);
+        }
+        protected void Footer()
+        {
+            System.Console.WriteLine();
+            System.Console.WriteLine(_texts.ExitOption);
+            System.Console.WriteLine();
+            System.Console.WriteLine(_texts.Footer);
+            System.Console.WriteLine();
+            System.Console.WriteLine(_texts.AskEntryFromUser);
+        }
     }
 }

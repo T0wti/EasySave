@@ -1,29 +1,31 @@
 using EasySave.Application.DTOs;
 using EasySave.Application.Resources;
 
-namespace EasySave.Console.ConsoleUI;
-
-internal class ListBackupMenu : GeneralContent
+namespace EasySave.Console.ConsoleUI
 {
-    private readonly List<BackupJobDTO> _jobs;
 
-    public ListBackupMenu(ITextProvider texts, IEnumerable<BackupJobDTO> jobs)
-        : base(texts)
+    internal class ListBackupMenu : GeneralContent
     {
-        _jobs = jobs.ToList();
-    }
+        private readonly List<BackupJobDTO> _jobs;
 
-    internal void Display()
-    {
-        Header();
-        System.Console.WriteLine(_texts.ListBackupMenuTitle);
-        System.Console.WriteLine();
-
-        foreach (var job in _jobs)
+        public ListBackupMenu(ITextProvider texts, IEnumerable<BackupJobDTO> jobs)
+            : base(texts)
         {
-            System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");
+            _jobs = jobs.ToList();
         }
-        
-        Footer();
+
+        internal void Display()
+        {
+            Header();
+            System.Console.WriteLine(_texts.ListBackupMenuTitle);
+            System.Console.WriteLine();
+
+            foreach (var job in _jobs)
+            {
+                System.Console.WriteLine($"       {job.Id} | {job.Name} | {job.Type}");
+            }
+
+            Footer();
+        }
     }
 }

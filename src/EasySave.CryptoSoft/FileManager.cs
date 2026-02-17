@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Security.Cryptography;
-using System.Text;
 using EasySave.CryptoSoft.Interfaces;
 
 namespace EasySave.CryptoSoft

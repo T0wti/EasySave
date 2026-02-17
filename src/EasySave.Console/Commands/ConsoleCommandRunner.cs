@@ -1,29 +1,31 @@
 ﻿using EasySave.Application;
 using EasySave.Application.Utils;
 
-namespace EasySave.Console.Commands;
-
-public static class ConsoleCommandRunner
+namespace EasySave.Console.Commands
 {
-    // Function to read option when launching the app on a terminal
-    public static bool TryRun(string[] args, BackupAppService backupAppService)
+
+    public static class ConsoleCommandRunner
     {
-        if (args == null || args.Length == 0)
-            return false;
-
-        try
+        // Function to read option when launching the app on a terminal
+        public static bool TryRun(string[] args, BackupAppService backupAppService)
         {
-            var ids = BackupIdParser.ParseIds(args[0]);
+            if (args == null || args.Length == 0)
+                return false;
 
-            backupAppService.ExecuteMultiple(ids);
+            try
+            {
+                var ids = BackupIdParser.ParseIds(args[0]);
 
-            System.Console.WriteLine("Backup execution finished.");
+                backupAppService.ExecuteMultiple(ids);
+
+                System.Console.WriteLine("Backup execution finished.");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return true;
         }
-        catch (Exception ex)
-        {
-            System.Console.WriteLine($"Error: {ex.Message}");
-        }
-
-        return true;
     }
 }

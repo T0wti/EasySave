@@ -1,53 +1,55 @@
 ﻿using EasySave.Console.Controllers;
 
-namespace EasySave.Console.Commands;
-
-internal class CreateBackupMenuInteraction
+namespace EasySave.Console.Commands
 {
-    private readonly ConsoleRunner _runner;
-    private readonly ConsoleUI.CreateBackupMenu _menu;
-    private readonly BackupController _backupController;
 
-    internal CreateBackupMenuInteraction(
-        ConsoleRunner runner,
-        ConsoleUI.CreateBackupMenu menu,
-        BackupController backupController)
+    internal class CreateBackupMenuInteraction
     {
-        _runner = runner;
-        _menu = menu;
-        _backupController = backupController;
-    }
+        private readonly ConsoleRunner _runner;
+        private readonly ConsoleUI.CreateBackupMenu _menu;
+        private readonly BackupController _backupController;
 
-    // Loop to read the input in the interface for the Create Backup menu
-    internal void RunLoop()
-    {
-        _menu.AskName();
-        var name = System.Console.ReadLine() ?? "";
-        if (name == "0" || name == "exit") { _runner.RunBaseMenu(); return; }
-
-        _menu.AskSource();
-        var source = System.Console.ReadLine() ?? "";
-        if (source == "0" || source == "exit") { _runner.RunBaseMenu(); return; }
-
-        _menu.AskTarget();
-        var target = System.Console.ReadLine() ?? "";
-        if (target == "0" || target == "exit") { _runner.RunBaseMenu(); return; }
-
-        _menu.AskType();
-        if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
+        internal CreateBackupMenuInteraction(
+            ConsoleRunner runner,
+            ConsoleUI.CreateBackupMenu menu,
+            BackupController backupController)
         {
-            _runner.WrongInput();
-            _runner.RunCreateBackupMenu();
-            return;
+            _runner = runner;
+            _menu = menu;
+            _backupController = backupController;
         }
-        try
+
+        // Loop to read the input in the interface for the Create Backup menu
+        internal void RunLoop()
         {
-            _backupController.HandleCreateBackup(name, source, target, typeChoice);
+            _menu.AskName();
+            var name = System.Console.ReadLine() ?? "";
+            if (name == "0" || name == "exit") { _runner.RunBaseMenu(); return; }
+
+            _menu.AskSource();
+            var source = System.Console.ReadLine() ?? "";
+            if (source == "0" || source == "exit") { _runner.RunBaseMenu(); return; }
+
+            _menu.AskTarget();
+            var target = System.Console.ReadLine() ?? "";
+            if (target == "0" || target == "exit") { _runner.RunBaseMenu(); return; }
+
+            _menu.AskType();
+            if (!int.TryParse(System.Console.ReadLine(), out int typeChoice))
+            {
+                _runner.WrongInput();
+                _runner.RunCreateBackupMenu();
+                return;
+            }
+            try
+            {
+                _backupController.HandleCreateBackup(name, source, target, typeChoice);
+            }
+            catch (Exception)
+            {
+                _runner.WrongInput();
+            }
+            _runner.RunBaseMenu();
         }
-        catch (Exception)
-        {
-            _runner.WrongInput();
-        }
-        _runner.RunBaseMenu();
     }
 }

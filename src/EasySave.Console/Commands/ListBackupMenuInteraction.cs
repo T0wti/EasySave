@@ -1,39 +1,41 @@
 using EasySave.Console.ConsoleUI;
 
-namespace EasySave.Console.Commands;
-
-internal class ListBackupMenuInteraction
+namespace EasySave.Console.Commands
 {
-    private readonly ConsoleRunner _runner;
-    private readonly ListBackupMenu _menu;
 
-    internal ListBackupMenuInteraction(ConsoleRunner runner, ListBackupMenu menu)
+    internal class ListBackupMenuInteraction
     {
-        _runner = runner;
-        _menu = menu;
-    }
+        private readonly ConsoleRunner _runner;
+        private readonly ListBackupMenu _menu;
 
-    // Loop to read the input in the interface for the List Backup menu
-    internal void RunLoop()
-    {
-        bool exit = false;
-        while (!exit)
+        internal ListBackupMenuInteraction(ConsoleRunner runner, ListBackupMenu menu)
         {
-            var input = System.Console.ReadLine()?.Trim();
+            _runner = runner;
+            _menu = menu;
+        }
 
-            if (input == "0" || input == "exit")
+        // Loop to read the input in the interface for the List Backup menu
+        internal void RunLoop()
+        {
+            bool exit = false;
+            while (!exit)
             {
-                exit = true;
-                _runner.RunBaseMenu();
-            }
-            else if (int.TryParse(input, out int id))
-            {
-                exit = true;
-                _runner.RunBackupDetailMenu(id);
-            }
-            else
-            {
-                _runner.WrongInput();
+                var input = System.Console.ReadLine()?.Trim();
+
+                if (input == "0" || input == "exit")
+                {
+                    exit = true;
+                    _runner.RunBaseMenu();
+                }
+                else if (int.TryParse(input, out int id))
+                {
+                    exit = true;
+                    _runner.RunBackupDetailMenu(id);
+                }
+                else
+                {
+                    _runner.WrongInput();
+                }
             }
         }
     }
