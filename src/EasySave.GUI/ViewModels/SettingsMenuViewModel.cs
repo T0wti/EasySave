@@ -15,6 +15,7 @@ public partial class SettingsMenuViewModel : ViewModelBase
     [ObservableProperty] private bool _isLogFormat1Selected;
     [ObservableProperty] private bool _isLogFormat2Selected;
     [ObservableProperty] private string? _businessSoftware;
+    [ObservableProperty] private string? _extensionsToEncrypt;
     
     // Commands 
     public ICommand ExitCommand { get; }
@@ -36,6 +37,8 @@ public partial class SettingsMenuViewModel : ViewModelBase
     public string Exit { get; }
     public string Save { get; }
     public string MarkdownExe { get; }
+    public string ExtensionsToEncryptTitle { get; }
+
 
     public SettingsMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
@@ -51,6 +54,8 @@ public partial class SettingsMenuViewModel : ViewModelBase
         Save = Texts.Save;
         MarkdownExe = Texts.SettingsMenuExemple;
         BusinessSoftware = ConfigAppService.GetBusinessSoftwareName();
+        ExtensionsToEncrypt = ConfigAppService.GetEncryptedExtensionText();
+        ExtensionsToEncryptTitle = Texts.ExtensionToEncryptTitle;
 
         var currentSettings = ConfigAppService.Load();
         var currentFormat = ConfigAppService.GetLogFormat();
@@ -92,5 +97,6 @@ public partial class SettingsMenuViewModel : ViewModelBase
     private void SaveChange()
     {
         ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
+        ConfigAppService.SaveEncryptedExtensionText(ExtensionsToEncrypt);
     }
 }
