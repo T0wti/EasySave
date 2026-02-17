@@ -12,54 +12,60 @@
         <viewModels:SettingsMenuViewModel/>
     </Design.DataContext>
 
-    <StackPanel Spacing="30" Margin="20">
-        <controls:PageTitleControl/>
-
-            <!-- Language -->
-            <StackPanel Spacing="10">
-                <!-- TO DO: BINDINGS -->
-                <TextBlock Text="{Binding LanguageTitle}" FontSize="18" FontWeight="SemiBold"/>
-                <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
-				    <StackPanel Spacing="10">
-
-                        <!-- TO DO: BINDINGS -->
-                        <RadioButton Content="{Binding Language1}" IsChecked="{Binding IsLanguage1Selected}" Command="{Binding Language1Command}" GroupName="Language"/>
-                        <RadioButton Content="{Binding Language2}" IsChecked="{Binding IsLanguage2Selected}" Command="{Binding Language2Command}" GroupName="Language"/>
-
-                    </StackPanel>	
-                </Border>
-            </StackPanel>
-
-            <!-- Log format -->
-            <StackPanel Spacing="10">
-                <!-- TO DO: BINDINGS -->
-                <TextBlock Text="{Binding LogFormatTitle}" FontSize="18" FontWeight="SemiBold"/>
-                <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
-					<StackPanel Spacing="10">
-
-                        <!-- TO DO: BINDINGS -->
-                        <RadioButton Content="{Binding LogFormat1}" IsChecked="{Binding IsLogFormat1Selected}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
-                        <RadioButton Content="{Binding LogFormat2}" IsChecked="{Binding IsLogFormat2Selected}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
-
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         
-        <!-- File name to detect -->
-        <StackPanel Spacing="10">
-            <!-- TO DO: BINDINGS -->
-            <TextBlock Text="{Binding Business}" FontSize="18" FontWeight="SemiBold"/>
-            <TextBox Text="{Binding BusinessSoftware}" Watermark="{Binding MarkdownExe}"/>
-        </StackPanel>
-            
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+        <StackPanel Spacing="30" Margin="20">
+            <controls:PageTitleControl/>
 
-            <!-- Save -->
-            <!-- TO DO: BINDINGS -->
-            <Button Grid.Column="1" Content="{Binding Save}" Classes="ActionBtn" Width="150" Height="40" Command="{Binding SaveCommand}"/>
-            <!-- Exit -->
-            <controls:ReturnButton/>
+                <!-- Language -->
+                <StackPanel Spacing="10">
+                    <!-- TO DO: BINDINGS -->
+                    <TextBlock Text="{Binding LanguageTitle}" FontSize="18" FontWeight="SemiBold"/>
+                    <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
+				        <StackPanel Spacing="10">
+
+                            <!-- TO DO: BINDINGS -->
+                            <RadioButton Content="{Binding Language1}" IsChecked="{Binding IsLanguage1Selected}" Command="{Binding Language1Command}" GroupName="Language"/>
+                            <RadioButton Content="{Binding Language2}" IsChecked="{Binding IsLanguage2Selected}" Command="{Binding Language2Command}" GroupName="Language"/>
+
+                        </StackPanel>	
+                    </Border>
+                </StackPanel>
+
+                <!-- Log format -->
+                <StackPanel Spacing="10">
+                    <!-- TO DO: BINDINGS -->
+                    <TextBlock Text="{Binding LogFormatTitle}" FontSize="18" FontWeight="SemiBold"/>
+                    <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
+					    <StackPanel Spacing="10">
+
+                            <!-- TO DO: BINDINGS -->
+                            <RadioButton Content="{Binding LogFormat1}" IsChecked="{Binding IsLogFormat1Selected}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
+                            <RadioButton Content="{Binding LogFormat2}" IsChecked="{Binding IsLogFormat2Selected}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            
+            <!-- File name to detect -->
+            <StackPanel Spacing="10">
+                <!-- TO DO: BINDINGS -->
+                <TextBlock Text="{Binding Business}" FontSize="18" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding BusinessSoftware}" Watermark="{Binding MarkdownExe}"/>
+            </StackPanel>
+            <StackPanel Spacing="8">
+                <TextBlock Text="{Binding ExtensionsToEncryptTitle}"/>
+                <TextBox Text="{Binding ExtensionsToEncrypt}" Watermark=".txt, .docx, .pdf..."/>
+            </StackPanel>
+                
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                <!-- Save -->
+                <!-- TO DO: BINDINGS -->
+                <Button Grid.Column="1" Content="{Binding Save}" Classes="ActionBtn" Width="150" Height="40" Command="{Binding SaveCommand}"/>
+                <!-- Exit -->
+                <controls:ReturnButton/>
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 
 </UserControl>
