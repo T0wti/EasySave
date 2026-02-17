@@ -39,6 +39,16 @@ namespace EasySave.Application.Resources
         public override string Differential => "Differential";
         public override string ExtensionToEncryptTitle => "Extension to encrypt";
         public override string Encrypt => "Encrypt";
+            // errors
+            public override string NameEmpty => "Backup name can't be empty";
+            public override string NameTooLong => "Backup name is too long";
+            public override string SourcePathEmpty => "Source folder can't be empty";
+            public override string SourcePathNotAbsolute  => "Source folder must be absolute";
+            public override string SourcePathNotFound => "Source folder not found";
+            public override string TargetPathEmpty => "Target folder can't be empty";
+            public override string TargetPathNotAbsolute => "Target folder must be absolute";
+            public override string TargetPathNotFound => "Target folder not found";
+            public override string SourceEqualsTarget => "Source and target can't be the same";
 
         //
         public override string BackupCreated => "Backup job created successfully.";
