@@ -36,7 +36,7 @@ namespace EasySave.GUI.ViewModels
             Title = Texts.ListBackupMenuTitle;
             Exit = Texts.Exit;
 
-            BackupJobs = new ObservableCollection<BackupJobDTO>(jobs);
+            BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 
             ExitCommand = new RelayCommand(NavigateToBase);
         }

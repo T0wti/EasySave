@@ -39,6 +39,7 @@ namespace EasySave.GUI.ViewModels
             Welcome = Texts.HomeWelcome;
             ConfiguredBackupStr = Texts.HomeConfiguredBackup;
 
+            var jobs = BackupAppService.GetAll();
             BackupNumber = jobs.Count();
 
             NavigateToSettingsCommand = new RelayCommand(() =>
