@@ -1,5 +1,5 @@
 ﻿# EasySave version 2.0 — User Manual
-**GUI Version — Windows **
+**GUI Version : Windows **
 
 ---
 
@@ -22,8 +22,8 @@ On first launch, the application will ask you to select your preferred language 
 
 The main window is divided into two areas:
 
-- **Left sidebar** — navigation menu to access each feature
-- **Main area** — displays the active view depending on the selected option
+- **Left sidebar** : navigation menu to access each feature
+- **Main area** : displays the active view depending on the selected option
 
 The sidebar contains the following options:
 
@@ -39,11 +39,11 @@ The sidebar contains the following options:
 
 ## Managing Backup Jobs
 
-**Create** — fill in a name, source folder, target folder, and type (Full or Differential), then click Confirm.
+**Create** : fill in a name, source folder, target folder, and type (Full or Differential), then click Confirm.
 
-**Edit** — select a job, update the desired fields (leave blank to keep current value), then click Confirm.
+**Edit** : select a job, update the desired fields (leave blank to keep current value), then click Confirm.
 
-**Delete** — select a job and click Confirm.
+**Delete** : select a job and click Confirm.
 
 **Full backup:** copies all files from source to target.  
 **Differential backup:** copies only new or modified files.
@@ -66,7 +66,7 @@ EasySave can automatically encrypt files after copying them to the target direct
 
 Encryption is configured in **Settings**:
 
-- **Encrypted file extensions** — list of file extensions to encrypt (e.g. `.txt`, `.docx`, `.pdf`)
+- **Encrypted file extensions** : list of file extensions to encrypt (e.g. `.txt`, `.docx`, `.pdf`)
 - Only files whose extension matches this list will be encrypted after being copied
 
 > **Note:** CryptoSoft.exe must be present in the same folder as EasySave.exe for encryption to work.
