@@ -28,7 +28,12 @@ public partial class SettingsMenuViewModel : ViewModelBase
     public string Language2 { get; }
     public string LogFormat1 { get; }
     public string LogFormat2 { get; }
+    public string Business { get; }
+    public string LanguageTitle { get; }
+    public string LogFormatTitle { get; }
     public string Exit { get; }
+    public string Save { get; }
+    public string MarkdownExe { get; }
 
     public SettingsMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
     {
@@ -37,7 +42,12 @@ public partial class SettingsMenuViewModel : ViewModelBase
         Language2 = Texts.Language2;
         LogFormat1 = Texts.LogFormat1;
         LogFormat2 = Texts.LogFormat2;
+        LanguageTitle = Texts.SettingsMenuLanguage;
+        Business = Texts.SettingsMenuBusiness;
+        LogFormatTitle = Texts.SettingsMenuLogFormat;
         Exit = Texts.Exit;
+        Save = Texts.Save;
+        MarkdownExe = Texts.SettingsMenuExemple;
 
         var currentSettings = ConfigAppService.Load();
         var currentFormat = ConfigAppService.GetLogFormat();

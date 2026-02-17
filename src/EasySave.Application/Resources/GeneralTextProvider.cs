@@ -34,6 +34,7 @@ public class GeneralTextProvider : ITextProvider
         public virtual string Exit => _defaultString;
         public virtual string Home => _defaultString;
         public virtual string Confirm => _defaultString;
+        public virtual string Save => _defaultString;
         public virtual string ListBackup => _defaultString;
         public virtual string ExeBackup => _defaultString;
         public virtual string LogFormat => _defaultString;
@@ -103,4 +104,8 @@ public class GeneralTextProvider : ITextProvider
         
         // Settings menu
         public virtual string SettingsMenuTitle => _defaultString;
+        public virtual string SettingsMenuBusiness => _defaultString;
+        public virtual string SettingsMenuLanguage => _defaultString;
+        public virtual string SettingsMenuLogFormat => _defaultString;
+        public virtual string SettingsMenuExemple => _defaultString;
     }

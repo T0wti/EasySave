@@ -18,7 +18,7 @@
             <!-- Language -->
             <StackPanel Spacing="10">
                 <!-- TO DO: BINDINGS -->
-                <TextBlock Text="Language" FontSize="18" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding LanguageTitle}" FontSize="18" FontWeight="SemiBold"/>
                 <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
 				    <StackPanel Spacing="10">
 
@@ -33,7 +33,7 @@
             <!-- Log format -->
             <StackPanel Spacing="10">
                 <!-- TO DO: BINDINGS -->
-                <TextBlock Text="Log files format" FontSize="18" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding LogFormatTitle}" FontSize="18" FontWeight="SemiBold"/>
                 <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="20" BoxShadow="0 2 8 0 #08000000">
 					<StackPanel Spacing="10">
 
@@ -48,15 +48,15 @@
         <!-- File name to detect -->
         <StackPanel Spacing="10">
             <!-- TO DO: BINDINGS -->
-            <TextBlock Text="Business software name" FontSize="18" FontWeight="SemiBold"/>
-            <TextBox Watermark="e.g. CalculatorApp"/>
+            <TextBlock Text="{Binding Business}" FontSize="18" FontWeight="SemiBold"/>
+            <TextBox Watermark="{Binding MarkdownExe}"/>
         </StackPanel>
             
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
 
             <!-- Save -->
             <!-- TO DO: BINDINGS -->
-            <Button Grid.Column="1" Content="Save" Classes="ActionBtn" Width="150" Height="40"/>
+            <Button Grid.Column="1" Content="{Binding Save}" Classes="ActionBtn" Width="150" Height="40"/>
             <!-- Exit -->
             <controls:ReturnButton/>
         </StackPanel>

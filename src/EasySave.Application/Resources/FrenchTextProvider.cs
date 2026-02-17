@@ -14,6 +14,7 @@ public class FrenchTextProvider: GeneralTextProvider
     public override string Exit => "Quitter";
     public override string Home => "Accueil";
     public override string Confirm => "Confirmer";
+    public override string Save => "Sauvegarder";
     public override string ListBackup => "4. Lister les sauvegardes de fichiers";
     public override string ExeBackup => "5. Exécuter une sauvegarde de fichiers";
     public override string LogFormat => "8. Changer le format des logs";
@@ -83,4 +84,8 @@ public class FrenchTextProvider: GeneralTextProvider
     
     // Settings menu
     public override string SettingsMenuTitle => "Paramètres d'Easy Save";
+    public override string SettingsMenuBusiness => "Logiciel suspendant l'exécution";
+    public override string SettingsMenuLanguage => "Langue";
+    public override string SettingsMenuLogFormat => "Format des fichiers de logs";
+    public override string SettingsMenuExemple => "Exemple : Calculatrice.exe";
 }

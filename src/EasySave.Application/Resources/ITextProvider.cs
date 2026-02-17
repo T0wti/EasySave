@@ -12,6 +12,7 @@ public interface ITextProvider
     string Exit { get; }
     string Confirm { get; }
     string Home { get; }
+    string Save { get; }
     
     // Home Page
     string HomeWelcome { get; }
@@ -86,6 +87,10 @@ public interface ITextProvider
     
     // Settings menu
     string SettingsMenuTitle { get; }
+    string SettingsMenuBusiness { get; }
+    string SettingsMenuLanguage { get; }
+    string SettingsMenuLogFormat { get; }
+    string SettingsMenuExemple { get; }
 }
 
 
