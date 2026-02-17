@@ -1,6 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
         x:Class="EasySave.GUI.Views.MessageBoxWindow"
+        x:DataType="viewModels:MessageBoxViewModel"
         Title="Information"
         Width="350" Height="180"
         WindowStartupLocation="CenterOwner"
@@ -12,7 +14,7 @@
     <Border Padding="20" BorderBrush="{StaticResource AccentColor}" BorderThickness="0,4,0,0">
         <Grid RowDefinitions="*, Auto">
             
-            <TextBlock Grid.Row="0" Text="Job executed/Settings saved" 
+            <TextBlock Grid.Row="0" Text="{Binding Message}" 
                        TextWrapping="Wrap" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center"
@@ -21,10 +23,8 @@
                        Foreground="{StaticResource TextPrimary}"/>
             
             <Button Grid.Row="1" Content="Ok" Classes="ActionBtn" 
-                    HorizontalAlignment="Center" Width="100"/>
-            <!--
-                    Click="OkButton_Click"/>
-                    -->
+                    HorizontalAlignment="Center" Width="100"
+                    Command="{Binding OkButton_Click}" CommandParameter="{Binding $parent[Window]}"/>
         </Grid>
     </Border>
 </Window>

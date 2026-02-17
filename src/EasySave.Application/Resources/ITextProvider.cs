@@ -94,5 +94,10 @@ namespace EasySave.Application.Resources
         string SettingsMenuLanguage { get; }
         string SettingsMenuLogFormat { get; }
         string SettingsMenuExemple { get; }
+
+        // Message Box
+        string MessageBoxInfoTitle { get; }
+        string MessageBoxJobDeleted { get; }
+        string MessageBoxOk { get; }
     }
 }
