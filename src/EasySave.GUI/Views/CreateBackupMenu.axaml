@@ -4,7 +4,19 @@
              xmlns:controls="using:EasySave.GUI.Views"
              x:Class="EasySave.GUI.Views.CreateBackupMenu"
              x:DataType="viewModels:CreateBackupMenuViewModel">
+    <!-- à modifier dans un style -->
+    <UserControl.Styles>
 
+        <Style Selector="TextBox.error /template/ Border#PART_BorderElement">
+
+            <Setter Property="BorderBrush" Value="Red"/>
+
+            <Setter Property="BorderThickness" Value="1.5"/>
+
+        </Style>
+
+    </UserControl.Styles>  
+    
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="20">
             <controls:PageTitleControl/>
@@ -13,13 +25,13 @@
                 <StackPanel Spacing="25">
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskName}" TextWrapping="Wrap"/>
-                        <TextBox Text="{Binding BackupName}" Watermark="{Binding WaterMarkBackupName}"/>
+                        <TextBox Text="{Binding BackupName}" Watermark="{Binding WaterMarkBackupName}" Classes.error="{Binding NameHasError}"/>
                     </StackPanel>
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskSource}" TextWrapping="Wrap"/>
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <TextBox Grid.Column="0" Text="{Binding SourcePath}" Watermark="{Binding WaterMarkBackupSourcePath}"/>
+                            <TextBox Grid.Column="0" Text="{Binding SourcePath}" Watermark="{Binding WaterMarkBackupSourcePath}" Classes.error="{Binding SourceHasError}"/>
                             <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseSourceCommand}"/>
                         </Grid>
                     </StackPanel>
@@ -27,7 +39,7 @@
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskTarget}" TextWrapping="Wrap"/>
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <TextBox Grid.Column="0" Text="{Binding TargetPath}" Watermark="{Binding WaterMarkBackupTargetPath}"/>
+                            <TextBox Grid.Column="0" Text="{Binding TargetPath}" Watermark="{Binding WaterMarkBackupTargetPath}" Classes.error="{Binding TargetHasError}"/>
                             <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseTargetCommand}"/>
                         </Grid>
                     </StackPanel>

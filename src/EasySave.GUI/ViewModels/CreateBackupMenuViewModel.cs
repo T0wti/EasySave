@@ -23,6 +23,10 @@ namespace EasySave.GUI.ViewModels
 
         [ObservableProperty] private bool _isEncryptionEnabled;
         [ObservableProperty] private string? _errorMessage;
+        
+        [ObservableProperty] private bool _nameHasError;
+        [ObservableProperty] private bool _sourceHasError;
+        [ObservableProperty] private bool _targetHasError;
 
         // Commands
         public ICommand ExitCommand { get; }
@@ -86,20 +90,54 @@ namespace EasySave.GUI.ViewModels
             }
             catch (BackupValidationException e)
             {
-                ErrorMessage = e.ErrorCode switch
+                switch (e.ErrorCode)
                 {
-                    EasySaveErrorCode.NameEmpty => ErrorMessage = Texts.NameEmpty,
-                    EasySaveErrorCode.NameTooLong => ErrorMessage = Texts.NameTooLong,
-                    EasySaveErrorCode.SourcePathEmpty => ErrorMessage = Texts.SourcePathEmpty,
-                    EasySaveErrorCode.SourcePathNotAbsolute => ErrorMessage = Texts.SourcePathNotAbsolute,
-                    EasySaveErrorCode.SourcePathNotFound => ErrorMessage = Texts.SourcePathNotFound,
-                    EasySaveErrorCode.TargetPathEmpty => ErrorMessage = Texts.TargetPathEmpty,
-                    EasySaveErrorCode.TargetPathNotAbsolute => ErrorMessage = Texts.TargetPathNotAbsolute,
-                    EasySaveErrorCode.TargetPathNotFound => ErrorMessage = Texts.TargetPathNotFound,
-                    EasySaveErrorCode.SourceEqualsTarget => ErrorMessage = Texts.SourceEqualsTarget,
-                };
-                
-                Console.WriteLine(ErrorMessage);
+                    case EasySaveErrorCode.NameEmpty:
+                        NameHasError = true;
+                        ErrorMessage = Texts.NameEmpty;
+                        break;
+                    case EasySaveErrorCode.NameTooLong:
+                        NameHasError = true;
+                        ErrorMessage = Texts.NameTooLong;
+                        break;
+
+                    case EasySaveErrorCode.SourcePathEmpty:
+                        SourceHasError = true;
+                        ErrorMessage = Texts.SourcePathEmpty;
+                        break;
+                    case EasySaveErrorCode.SourcePathNotAbsolute:
+                        SourceHasError = true;
+                        ErrorMessage = Texts.SourcePathNotAbsolute;
+                        break;
+                    case EasySaveErrorCode.SourcePathNotFound:
+                        SourceHasError = true;
+                        ErrorMessage = Texts.SourcePathNotFound;
+                        break;
+
+                    case EasySaveErrorCode.TargetPathEmpty:
+                        TargetHasError = true;
+                        ErrorMessage = Texts.TargetPathEmpty;
+                        break;
+                    case EasySaveErrorCode.TargetPathNotAbsolute:
+                        TargetHasError = true;
+                        ErrorMessage = Texts.TargetPathNotAbsolute;
+                        break;
+                    case EasySaveErrorCode.TargetPathNotFound:
+                        TargetHasError = true;
+                        ErrorMessage = Texts.TargetPathNotFound;
+                        break;
+
+                    case EasySaveErrorCode.SourceEqualsTarget:
+                        SourceHasError = true;
+                        TargetHasError = true;
+                        ErrorMessage = Texts.SourceEqualsTarget;
+                        break;
+
+                    default:
+                        ErrorMessage = "";
+                        break;
+                }
+                Console.WriteLine(ErrorMessage); // à changer par l'affichage dans la pop-up
             }
         }
 
