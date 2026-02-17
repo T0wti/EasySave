@@ -17,36 +17,36 @@
                     
                     <StackPanel Spacing="8">
                         <TextBlock Text="Name:"/>
-                        <TextBox Text="{Binding BackupName}"/>
+                        <TextBox Text="{Binding BackupName, Mode=TwoWay}"/>
                     </StackPanel>
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="Source:"/>
-                        <TextBox Text="{Binding BackupSourcePath}"/>
+                        <TextBox Text="{Binding BackupSourcePath, Mode=TwoWay}"/>
                     </StackPanel>
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="Target:"/>
-                        <TextBox Text="{Binding BackupTargetPath}"/>
+                        <TextBox Text="{Binding BackupTargetPath, Mode=TwoWay}"/>
                     </StackPanel>
 
-                    <!-- TO DO: BINDINGS -->
-                    <!--
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding AskType}"/>
+                        <TextBlock Text="{Binding AskType}" TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal" Spacing="30">
-                            <RadioButton Content="{Binding FullType}" IsChecked="{Binding IsFullTypeSelected}" GroupName="EditType"/>
-                            <RadioButton Content="{Binding DifferentialType}" IsChecked="{Binding IsDiffTypeSelected}" GroupName="EditType"/>
+                            <RadioButton Content="{Binding FullType}" GroupName="BackupType" Command="{Binding SetFullTypeCommand}"/>
+                            <RadioButton Content="{Binding DifferentialType}" GroupName="BackupType" Command="{Binding SetDifferentialTypeCommand}"/>
                         </StackPanel>
                     </StackPanel>
 
                     <Separator Margin="0,10" Background="#F0F0F0"/>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-                        <Button Content="{Binding ConfirmText}" Classes="ActionBtn" Command="{Binding SaveCommand}"/>
-                        <controls:ReturnButton DataContext="{Binding}"/>
+                        <Button Content="{Binding Confirm}" 
+                                Classes="ActionBtn" 
+                                Command="{Binding EditBackupCommand}"/>
+                        
+                        <controls:ReturnButton/>
                     </StackPanel>
-                    -->
 
                 </StackPanel>
             </Border>

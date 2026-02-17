@@ -124,6 +124,7 @@ namespace EasySave.Application.Resources
         // Message Box
         public virtual string MessageBoxInfoTitle => _defaultString;
         public virtual string MessageBoxJobDeleted => _defaultString;
+        public virtual string MessageBoxJobEdited => _defaultString;
         public virtual string MessageBoxOk => _defaultString;
     }
 }
