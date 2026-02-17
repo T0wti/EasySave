@@ -158,5 +158,23 @@ namespace EasySave.GUI.ViewModels
 
             if (path != null) TargetPath = path;
         }
+
+        partial void OnBackupNameChanged(string value) {
+            NameHasError = false;
+            ResetErrorStates();
+        }
+        partial void OnSourcePathChanged(string value) {
+            SourceHasError = false;
+            ResetErrorStates();
+        }
+        partial void OnTargetPathChanged(string value) {
+            TargetHasError = false;
+            ResetErrorStates();
+        }
+
+        private void ResetErrorStates()
+        {
+            IsThereError = false;
+        }
     }
 }

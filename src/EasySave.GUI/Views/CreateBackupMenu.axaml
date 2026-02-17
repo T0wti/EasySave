@@ -25,11 +25,11 @@
                 <StackPanel Spacing="25">
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskName}" TextWrapping="Wrap"/>
-                        <TextBox Text="{Binding BackupName}" Watermark="{Binding WaterMarkBackupName}" Classes.error="{Binding NameHasError}"/>
+                        <TextBox Text="{Binding BackupName, UpdateSourceTrigger=PropertyChanged}" Watermark="{Binding WaterMarkBackupName}" Classes.error="{Binding NameHasError}"/>
                     </StackPanel>
 
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding AskSource}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding AskSource, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                             <TextBox Grid.Column="0" Text="{Binding SourcePath}" Watermark="{Binding WaterMarkBackupSourcePath}" Classes.error="{Binding SourceHasError}"/>
                             <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseSourceCommand}"/>
@@ -37,7 +37,7 @@
                     </StackPanel>
 
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding AskTarget}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding AskTarget, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                             <TextBox Grid.Column="0" Text="{Binding TargetPath}" Watermark="{Binding WaterMarkBackupTargetPath}" Classes.error="{Binding TargetHasError}"/>
                             <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseTargetCommand}"/>
