@@ -4,57 +4,59 @@ using EasySave.Application;
 using EasySave.Application.DTOs;
 using EasySave.Application.Resources;
 
-namespace EasySave.GUI.ViewModels;
-
-public abstract class ViewModelBase : ObservableObject
+namespace EasySave.GUI.ViewModels
 {
-    protected ITextProvider Texts;
-    
-    protected readonly BackupAppService BackupAppService;
-    protected readonly ConfigAppService ConfigAppService;
-    
-    protected IEnumerable<BackupJobDTO> jobs;
-    
-    protected MainWindowViewModel MainWindow { get; private set; }
 
-    public ViewModelBase(MainWindowViewModel mainWindow)
+    public abstract class ViewModelBase : ObservableObject
     {
-        MainWindow = mainWindow;
-        
-        BackupAppService = AppServiceFactory.CreateBackupController();
-        ConfigAppService = AppServiceFactory.CreateConfigurationController();
+        protected ITextProvider Texts;
 
-        var settings = ConfigAppService.Load();
+        protected readonly BackupAppService BackupAppService;
+        protected readonly ConfigAppService ConfigAppService;
 
-        Texts = settings.LanguageCode == 0
-            ? new FrenchTextProvider()
-            : new EnglishTextProvider();
-        jobs = BackupAppService.GetAll();
-    }
+        protected IEnumerable<BackupJobDTO> jobs;
 
-    protected void NavigateTo(ViewModelBase viewModel)
-    {
-        MainWindow.CurrentView = viewModel;
-    }
+        protected MainWindowViewModel MainWindow { get; private set; }
 
-    protected void NavigateToBase()
-    {
-        MainWindow.CurrentView = new BaseMenuViewModel(MainWindow);
-    }
+        public ViewModelBase(MainWindowViewModel mainWindow)
+        {
+            MainWindow = mainWindow;
 
-    internal void ChangeLanguage(ITextProvider language)
-    {
-        Texts = language;
+            BackupAppService = AppServiceFactory.CreateBackupController();
+            ConfigAppService = AppServiceFactory.CreateConfigurationController();
 
-        int code = language is FrenchTextProvider ? 0 : 1;
+            var settings = ConfigAppService.Load();
 
-        ConfigAppService.ChangeLanguage(code);
-        MainWindow.RefreshTexts(language);
-        NavigateTo(new SettingsMenuViewModel(MainWindow));
-    }
+            Texts = settings.LanguageCode == 0
+                ? new FrenchTextProvider()
+                : new EnglishTextProvider();
+            jobs = BackupAppService.GetAll();
+        }
 
-    internal void ChangeLogFormat(int formatCode)
-    {
-        ConfigAppService.ChangeLogFormat(formatCode);
+        protected void NavigateTo(ViewModelBase viewModel)
+        {
+            MainWindow.CurrentView = viewModel;
+        }
+
+        protected void NavigateToBase()
+        {
+            MainWindow.CurrentView = new BaseMenuViewModel(MainWindow);
+        }
+
+        internal void ChangeLanguage(ITextProvider language)
+        {
+            Texts = language;
+
+            int code = language is FrenchTextProvider ? 0 : 1;
+
+            ConfigAppService.ChangeLanguage(code);
+            MainWindow.RefreshTexts(language);
+            NavigateTo(new SettingsMenuViewModel(MainWindow));
+        }
+
+        internal void ChangeLogFormat(int formatCode)
+        {
+            ConfigAppService.ChangeLogFormat(formatCode);
+        }
     }
 }
