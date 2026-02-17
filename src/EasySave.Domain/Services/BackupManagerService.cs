@@ -28,16 +28,28 @@ namespace EasySave.Domain.Services
         // Creates a new backup job with validation
         public void CreateBackupJob(string name, string source, string target, BackupType type)
         {
-            // Validate that the source and target paths are absolute
-            if (!Path.IsPathRooted(source))
-                throw new BackupValidationException("SourcePath", EasySaveErrorCode.SourcePathNotAbsolute);
 
-            if (!Path.IsPathRooted(target))
-                throw new BackupValidationException("TargetPath", EasySaveErrorCode.TargetPathNotAbsolute);
+            if (string.IsNullOrWhiteSpace(name))
+                throw new BackupValidationException("Name", EasySaveErrorCode.NameEmpty);
 
             // Ensure job name is unique
             if (_backupJobs.Any(j => j.Name == name))
                 throw new BackupJobAlreadyExistsException(name);
+
+            // Validate that the source and target paths are absolute
+            if (string.IsNullOrWhiteSpace(source))
+                throw new BackupValidationException("SourcePath", EasySaveErrorCode.SourcePathEmpty);
+
+            if (!Path.IsPathRooted(source))
+                throw new BackupValidationException("SourcePath", EasySaveErrorCode.SourcePathNotAbsolute);
+
+            if (string.IsNullOrWhiteSpace(target))
+                throw new BackupValidationException("TargetPath", EasySaveErrorCode.TargetPathEmpty);
+            if (!Path.IsPathRooted(target))
+                throw new BackupValidationException("TargetPath", EasySaveErrorCode.TargetPathNotAbsolute);
+
+            if (source.Trim().Equals(target.Trim(), StringComparison.OrdinalIgnoreCase))
+                throw new BackupValidationException("SourcePath", EasySaveErrorCode.SourceEqualsTarget);
 
             // Generate the next available ID
             int nextId = 1;
