@@ -1,5 +1,5 @@
-# EasySave version 2.0 — Technical Support Document
-**GUI Version — .NET SDK 10.0 / C#**
+# EasySave version 2.0 : Technical Support Document
+**GUI Version : .NET SDK 10.0 / C#**
 
 ## Purpose
 
