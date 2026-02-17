@@ -1,15 +1,12 @@
-﻿namespace EasySave.Domain.Exceptions
-{
-    // Thrown when user-provided input fails validation before a job can be created or edited
-    public class BackupValidationException : EasySaveException
-    {
-        // The name of the field that failed validation, for display purposes
-        public string FieldName { get; }
+﻿using EasySave.Domain.Enums;
 
-        public BackupValidationException(string fieldName, string message)
-            : base(message)
-        {
-            FieldName = fieldName;
-        }
+public class BackupValidationException : EasySaveException
+{
+    public string FieldName { get; }
+
+    public BackupValidationException(string fieldName, EasySaveErrorCode errorCode)
+        : base(errorCode)
+    {
+        FieldName = fieldName;
     }
 }

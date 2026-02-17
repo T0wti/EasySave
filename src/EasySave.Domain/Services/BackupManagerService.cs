@@ -30,10 +30,10 @@ namespace EasySave.Domain.Services
         {
             // Validate that the source and target paths are absolute
             if (!Path.IsPathRooted(source))
-                throw new BackupValidationException("SourcePath", "Source path must be an absolute path.");
+                throw new BackupValidationException("SourcePath", EasySaveErrorCode.SourcePathNotAbsolute);
 
             if (!Path.IsPathRooted(target))
-                throw new BackupValidationException("TargetPath", "Target path must be an absolute path.");
+                throw new BackupValidationException("TargetPath", EasySaveErrorCode.TargetPathNotAbsolute);
 
             // Ensure job name is unique
             if (_backupJobs.Any(j => j.Name == name))
@@ -72,10 +72,10 @@ namespace EasySave.Domain.Services
         public void EditBackupJob(int id, string newName, string newSource, string newTarget, BackupType newType)
         {
             if (!Path.IsPathRooted(newSource))
-                throw new BackupValidationException("SourcePath", "Source path must be an absolute path.");
+                throw new BackupValidationException("SourcePath", EasySaveErrorCode.SourcePathNotAbsolute);
 
             if (!Path.IsPathRooted(newTarget))
-                throw new BackupValidationException("TargetPath", "Target path must be an absolute path.");
+                throw new BackupValidationException("TargetPath", EasySaveErrorCode.TargetPathNotAbsolute);
 
             var index = _backupJobs.FindIndex(j => j.Id == id);
             if (index == -1)
