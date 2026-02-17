@@ -21,6 +21,7 @@
 
     <Style Selector="TextBlock.ErrorMessage">
 		<Setter Property="Foreground" Value="#FF0000"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
 </Styles>
