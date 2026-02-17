@@ -76,6 +76,7 @@ namespace EasySave.GUI.ViewModels
         private void CreateBackup()
         {
             BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
+            NavigateToBase();
         }
 
         private async Task BrowseSourceAsync()
