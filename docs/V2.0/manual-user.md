@@ -1,4 +1,4 @@
-﻿# EasySave version 2.0 — User Manual
+﻿# EasySave version 2.0 : User Manual
 **GUI Version : Windows **
 
 ---
