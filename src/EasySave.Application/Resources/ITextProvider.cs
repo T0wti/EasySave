@@ -51,6 +51,16 @@ namespace EasySave.Application.Resources
         string BackupDeleted { get; }
         string AskIdToEdit { get; }
         string BrowseFile { get; }
+            // errors
+            string NameEmpty { get; }
+            string NameTooLong { get; }
+            string SourcePathEmpty { get; }
+            string SourcePathNotAbsolute { get; }
+            string SourcePathNotFound { get; }
+            string TargetPathEmpty { get; }
+            string TargetPathNotAbsolute { get; }
+            string TargetPathNotFound { get; }
+            string SourceEqualsTarget { get; }
 
         // Options in the change language menu | Le
         string LanguageMenuTitle { get; }

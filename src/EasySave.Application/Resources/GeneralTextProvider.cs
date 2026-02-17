@@ -67,7 +67,16 @@ namespace EasySave.Application.Resources
         public virtual string EnterBackupToDelete => _defaultString;
         public virtual string BackupDeleted => _defaultString;
         public virtual string AskIdToEdit => _defaultString;
-
+            // errors
+            public virtual string NameEmpty => _defaultString;
+            public virtual string NameTooLong => _defaultString;
+            public virtual string SourcePathEmpty => _defaultString;
+            public virtual string SourcePathNotAbsolute => _defaultString;
+            public virtual string SourcePathNotFound => _defaultString;
+            public virtual string TargetPathEmpty => _defaultString;
+            public virtual string TargetPathNotAbsolute => _defaultString;
+            public virtual string TargetPathNotFound => _defaultString;
+            public virtual string SourceEqualsTarget => _defaultString;
 
         // Change Language Menu
         public virtual string LanguageMenuTitle => _defaultString;

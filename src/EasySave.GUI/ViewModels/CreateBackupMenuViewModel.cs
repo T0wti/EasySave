@@ -1,7 +1,10 @@
+using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Domain.Enums;
 using EasySave.GUI.Services;
 
 namespace EasySave.GUI.ViewModels
@@ -19,6 +22,11 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private int selectedType;
 
         [ObservableProperty] private bool _isEncryptionEnabled;
+        [ObservableProperty] private string? _errorMessage;
+        
+        [ObservableProperty] private bool _nameHasError;
+        [ObservableProperty] private bool _sourceHasError;
+        [ObservableProperty] private bool _targetHasError;
 
         // Commands
         public ICommand ExitCommand { get; }
@@ -75,7 +83,62 @@ namespace EasySave.GUI.ViewModels
 
         private void CreateBackup()
         {
-            BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
+            try
+            {
+                BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
+                NavigateToBase();
+            }
+            catch (BackupValidationException e)
+            {
+                switch (e.ErrorCode)
+                {
+                    case EasySaveErrorCode.NameEmpty:
+                        NameHasError = true;
+                        ErrorMessage = Texts.NameEmpty;
+                        break;
+                    case EasySaveErrorCode.NameTooLong:
+                        NameHasError = true;
+                        ErrorMessage = Texts.NameTooLong;
+                        break;
+
+                    case EasySaveErrorCode.SourcePathEmpty:
+                        SourceHasError = true;
+                        ErrorMessage = Texts.SourcePathEmpty;
+                        break;
+                    case EasySaveErrorCode.SourcePathNotAbsolute:
+                        SourceHasError = true;
+                        ErrorMessage = Texts.SourcePathNotAbsolute;
+                        break;
+                    case EasySaveErrorCode.SourcePathNotFound:
+                        SourceHasError = true;
+                        ErrorMessage = Texts.SourcePathNotFound;
+                        break;
+
+                    case EasySaveErrorCode.TargetPathEmpty:
+                        TargetHasError = true;
+                        ErrorMessage = Texts.TargetPathEmpty;
+                        break;
+                    case EasySaveErrorCode.TargetPathNotAbsolute:
+                        TargetHasError = true;
+                        ErrorMessage = Texts.TargetPathNotAbsolute;
+                        break;
+                    case EasySaveErrorCode.TargetPathNotFound:
+                        TargetHasError = true;
+                        ErrorMessage = Texts.TargetPathNotFound;
+                        break;
+
+                    case EasySaveErrorCode.SourceEqualsTarget:
+                        SourceHasError = true;
+                        TargetHasError = true;
+                        ErrorMessage = Texts.SourceEqualsTarget;
+                        break;
+
+                    default:
+                        ErrorMessage = "";
+                        break;
+                }
+                Console.WriteLine(ErrorMessage); // à changer par l'affichage dans la pop-up
+            }
         }
 
         private async Task BrowseSourceAsync()

@@ -39,6 +39,16 @@ namespace EasySave.Application.Resources
         public override string Differential => "Différentielle";
         public override string ExtensionToEncryptTitle => "Extension à chiffrer";
         public override string Encrypt => "Chiffrer";
+            // errors
+            public override string NameEmpty => "Le nom de la sauvegarde ne peut pas être vide";
+            public override string NameTooLong => "Le nom de la sauvegarde est trop long";
+            public override string SourcePathEmpty => "Le dossier source ne peut pas être vide";
+            public override string SourcePathNotAbsolute  => "Le chemin source doit être un chemin absolu";
+            public override string SourcePathNotFound => "Le dossier source est introuvable";
+            public override string TargetPathEmpty => "Le dossier cible ne peut pas être vide";
+            public override string TargetPathNotAbsolute => "Le chemin cible doit être un chemin absolu";
+            public override string TargetPathNotFound => "Le dossier cible est introuvable";
+            public override string SourceEqualsTarget => "La source et la cible ne peuvent pas être identiques";
 
         //
         public override string BackupCreated => "Le travail de sauvegarde a été créé avec succès.";

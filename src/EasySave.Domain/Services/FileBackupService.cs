@@ -1,4 +1,5 @@
-﻿using EasySave.Domain.Exceptions;
+﻿using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 using System.Text.Json;
@@ -37,15 +38,14 @@ namespace EasySave.Domain.Services
             catch (JsonException ex)
             {
                 throw new PersistenceException(
-                    "Failed to load backup jobs: the jobs file is corrupted.",
+                    EasySaveErrorCode.JobsFileCorrupted,
                     _jobsFilePath,
                     ex);
-
             }
             catch (IOException ex)
             {
                 throw new PersistenceException(
-                    "Failed to load backup jobs: unable to read the jobs file.",
+                    EasySaveErrorCode.JobsFileUnreadable,
                     _jobsFilePath,
                     ex);
             }

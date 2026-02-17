@@ -1,12 +1,12 @@
-﻿namespace EasySave.Domain.Exceptions
-{
-    // Base class for all EasySave domain exceptions
-    public class EasySaveException : Exception
-    {
-        public EasySaveException(string message)
-            : base(message) { }
+﻿using EasySave.Domain.Enums;
 
-        public EasySaveException(string message, Exception innerException)
-            : base(message, innerException) { }
+public abstract class EasySaveException : Exception
+{
+    public EasySaveErrorCode ErrorCode { get; }
+
+    protected EasySaveException(EasySaveErrorCode errorCode, Exception? innerException = null)
+        : base(errorCode.ToString(), innerException)
+    {
+        ErrorCode = errorCode;
     }
 }

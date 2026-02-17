@@ -21,7 +21,6 @@ namespace EasySave.Domain.Services
             Converters = { new JsonStringEnumConverter() }
         };
 
-        // V2.1 : le chemin est fourni directement par DI
         public FileStateService(string stateDirectoryPath)
         {
             if (string.IsNullOrWhiteSpace(stateDirectoryPath))

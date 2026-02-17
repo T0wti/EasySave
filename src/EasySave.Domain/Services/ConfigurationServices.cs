@@ -57,14 +57,14 @@ namespace EasySave.Domain.Services
             catch (JsonException ex)
             {
                 throw new PersistenceException(
-                    "Failed to load settings: the configuration file is corrupted.",
+                    EasySaveErrorCode.ConfigFileCorrupted,
                     _configFilePath,
                     ex);
             }
             catch (IOException ex)
             {
                 throw new PersistenceException(
-                    "Failed to load settings: unable to read the configuration file.",
+                    EasySaveErrorCode.ConfigFileUnreadable,
                     _configFilePath,
                     ex);
             }
