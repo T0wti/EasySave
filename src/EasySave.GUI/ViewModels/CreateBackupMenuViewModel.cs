@@ -22,6 +22,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private int selectedType;
 
         [ObservableProperty] private bool _isEncryptionEnabled;
+        [ObservableProperty] private bool _isThereError;
         [ObservableProperty] private string? _errorMessage;
         
         [ObservableProperty] private bool _nameHasError;
@@ -70,10 +71,11 @@ namespace EasySave.GUI.ViewModels
             FullType = Texts.Full;
             DifferentialType = Texts.Differential;
             Encrypt = Texts.Encrypt;
+            IsThereError = false;
 
             SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
             SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
-            CreateBackupCommand = new RelayCommand(CreateBackup);
+            CreateBackupCommand = new AsyncRelayCommand(CreateBackup);
 
             BrowseSourceCommand = new AsyncRelayCommand(BrowseSourceAsync);
             BrowseTargetCommand = new AsyncRelayCommand(BrowseTargetAsync);
@@ -81,7 +83,7 @@ namespace EasySave.GUI.ViewModels
             ExitCommand = new RelayCommand(NavigateToBase);
         }
 
-        private void CreateBackup()
+        private async Task CreateBackup()
         {
             try
             {
@@ -90,6 +92,7 @@ namespace EasySave.GUI.ViewModels
             }
             catch (BackupValidationException e)
             {
+                IsThereError = true;
                 switch (e.ErrorCode)
                 {
                     case EasySaveErrorCode.NameEmpty:
@@ -137,7 +140,8 @@ namespace EasySave.GUI.ViewModels
                         ErrorMessage = "";
                         break;
                 }
-                Console.WriteLine(ErrorMessage); // à changer par l'affichage dans la pop-up
+                //Console.WriteLine(ErrorMessage); // à changer par l'affichage dans la pop-up
+                //await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk);
             }
         }
 

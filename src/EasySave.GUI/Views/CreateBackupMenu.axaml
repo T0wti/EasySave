@@ -72,6 +72,10 @@
                         <controls:ReturnButton/>
                     </StackPanel>
 
+                    <StackPanel>
+						<TextBlock Text="{Binding ErrorMessage}" Classes="ErrorMessage" IsVisible="{Binding IsThereError}"/>
+                    </StackPanel>
+
                 </StackPanel>
             </Border>
         </StackPanel>
