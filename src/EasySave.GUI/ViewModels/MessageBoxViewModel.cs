@@ -1,3 +1,5 @@
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
 
@@ -11,14 +13,15 @@ namespace EasySave.GUI.ViewModels
 
         public ICommand OkCommand { get; }
 
-        public MessageBoxViewModel(string title, string message)
+        public MessageBoxViewModel(string title, string message, string ok)
         {
-            //Title = Text.Title;
-            Title = "Information";
-            //Message = Text.Message;
-            Message = "Settings saved";
-            //Ok = Texts.Ok;
-            Ok = "Ok";
+            Title = title;
+            Message = message;
+            Ok = ok;
+        }
+        public void OkButton_Click(Window window)
+        {
+            window.Close();
         }
     }
 }

@@ -111,5 +111,10 @@ namespace EasySave.Application.Resources
         public virtual string SettingsMenuLanguage => _defaultString;
         public virtual string SettingsMenuLogFormat => _defaultString;
         public virtual string SettingsMenuExemple => _defaultString;
+
+        // Message Box
+        public virtual string MessageBoxInfoTitle => _defaultString;
+        public virtual string MessageBoxJobDeleted => _defaultString;
+        public virtual string MessageBoxOk => _defaultString;
     }
 }

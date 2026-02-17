@@ -13,13 +13,12 @@
             <controls:PageTitleControl/>
 
             <!-- Get the BackupJobList -->
-            <controls:BackupJobsList Jobs="{Binding BackupJobs}"/>
+            <controls:BackupJobsList Jobs="{Binding BackupJobs}" SelectedJob="{Binding SelectedJob}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
 				
                 <!-- Add to the BackupJobList: Delete button and Exit button -->
-                 <!-- TO DO: IsEnabled="{Binding IsJobSelected}" -->
-                <Button Content="{Binding Delete}" Classes="ActionBtn"/>
+                <Button Content="{Binding Delete}" Command="{Binding DeleteBackupCommand}" Classes="ActionBtn"/>
 
                 <controls:ReturnButton/>
 

@@ -91,5 +91,10 @@ namespace EasySave.Application.Resources
         public override string SettingsMenuLanguage => "Language";
         public override string SettingsMenuLogFormat => "Log files format";
         public override string SettingsMenuExemple => "Example: Calculator.exe";
+
+        // Message Box
+        public override string MessageBoxInfoTitle => "Information";
+        public override string MessageBoxJobDeleted => "Job deleted successfully";
+        public override string MessageBoxOk => "Ok";
     }
 }
