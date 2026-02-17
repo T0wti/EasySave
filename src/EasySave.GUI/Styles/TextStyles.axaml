@@ -19,4 +19,9 @@
         <Setter Property="Margin" Value="0,0,0,15"/>
     </Style>
 
+    <Style Selector="TextBlock.ErrorMessage">
+		<Setter Property="Foreground" Value="#FF0000"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+    </Style>
+
 </Styles>
