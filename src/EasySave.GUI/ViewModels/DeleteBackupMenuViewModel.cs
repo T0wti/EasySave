@@ -25,7 +25,7 @@ namespace EasySave.GUI.ViewModels
             Delete = Texts.Confirm;
 
 
-            BackupJobs = new ObservableCollection<BackupJobDTO>(jobs);
+            BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 
             ExitCommand = new RelayCommand(NavigateToBase);
         }

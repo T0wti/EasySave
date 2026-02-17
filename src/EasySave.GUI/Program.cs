@@ -1,25 +1,30 @@
 ﻿using Avalonia;
-using System;
+using EasySave.Application;
 using EasySave.Application.Utils;
+using System;
 
-namespace EasySave.GUI
+namespace EasySave.GUI;
+
+sealed class Program
 {
-
-    sealed class Program
+    [STAThread]
+    public static void Main(string[] args)
     {
-        // Initialization code. Don't use any Avalonia, third-party APIs or any
-        // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-        // yet and stuff might break.
-        [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        // Command mode with command runner
+        var backupAppService = AppServiceFactory.CreateBackupController();
+        if (CommandRunner.TryRun(args, backupAppService))
+        {
+            Environment.Exit(0);
+            return;
+        }
 
-
-        // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .WithInterFont()
-                .LogToTrace();
+        // Mode GUI — launch the app
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
+
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace();
 }
