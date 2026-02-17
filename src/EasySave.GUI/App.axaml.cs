@@ -2,11 +2,13 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
 using EasySave.Application;
-using EasySave.GUI.Views;
+using EasySave.Application.Utils;
 using EasySave.GUI.ViewModels;
+using EasySave.GUI.Views;
+using System;
+using System.Linq;
 
 namespace EasySave.GUI
 {
@@ -20,6 +22,13 @@ namespace EasySave.GUI
 
         public override void OnFrameworkInitializationCompleted()
         {
+            var backupAppService = AppServiceFactory.CreateBackupController();
+            if (CommandRunner.TryRun(Environment.GetCommandLineArgs().Skip(1).ToArray(), backupAppService))
+            {
+                Environment.Exit(0);
+                return;
+            }
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 

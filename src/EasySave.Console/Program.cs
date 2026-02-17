@@ -1,7 +1,7 @@
 ﻿using EasySave.Application;
+using EasySave.Application.Utils;
 using EasySave.Application.Resources;
 using EasySave.Console;
-using EasySave.Console.Commands;
 using EasySave.Console.Controllers;
 
 internal class Program
@@ -22,7 +22,7 @@ internal class Program
         var backupController = new BackupController(backupAppService, texts);
         var configController = new ConfigController(configAppService, texts);
 
-        if (ConsoleCommandRunner.TryRun(args, backupAppService))
+        if (CommandRunner.TryRun(args, backupAppService))
             return;
 
         var runner = new ConsoleRunner(backupController, configController, texts);
