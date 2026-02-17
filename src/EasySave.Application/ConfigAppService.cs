@@ -75,14 +75,29 @@ namespace EasySave.Application
         }
 
         // Return the current extensions
-        public List<string> GetEncryptedExtensions()
+        private List<string> GetEncryptedExtensions()
         {
             var settings = _configService.LoadSettings();
             return settings.EncryptedFileExtensions ?? new List<string>();
         }
 
+        public string GetEncryptedExtensionText()
+        {
+            var extensions = GetEncryptedExtensions();
+            var str = string.Join(", ", extensions);
+            str = str.Replace(".", "");
+            if (str==".")
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return str;
+            }
+        }
+        
         // Update the extensions list
-        public void SaveEncryptedExtensions(List<string> extensions)
+        private void SaveEncryptedExtensions(List<string> extensions)
         {
             var settings = _configService.LoadSettings();
             settings.EncryptedFileExtensions = extensions
@@ -90,6 +105,20 @@ namespace EasySave.Application
                 .Distinct()
                 .ToList();
             _configService.SaveSettings(settings);
+        }
+
+        public void SaveEncryptedExtensionText(string? text)
+        {
+            if (text != null)
+            {
+                text = text.Replace(" ", "");
+                var extensions = text.Split(',').ToList();
+                SaveEncryptedExtensions(extensions);
+            }
+            else
+            {
+                SaveEncryptedExtensions(null);
+            }
         }
 
         // Return business software business

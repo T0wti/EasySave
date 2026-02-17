@@ -18,7 +18,6 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     [ObservableProperty] private int selectedType;
     
     [ObservableProperty] private bool _isEncryptionEnabled;
-    [ObservableProperty] private string _extensionsToEncrypt;
     
     // Commands
     public ICommand ExitCommand { get; }
@@ -43,6 +42,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
     public string WaterMarkBackupTargetPath { get; }
     public string FullType { get; }
     public string DifferentialType { get; }
+    public string Encrypt { get; }
 
     public CreateBackupMenuViewModel(MainWindowViewModel mainWindow, DialogService dialogService) : base(mainWindow)
     {
@@ -60,6 +60,7 @@ public partial class CreateBackupMenuViewModel : ViewModelBase
         WaterMarkBackupTargetPath = Texts.WaterMarkBackupTargetPath;
         FullType = Texts.Full;
         DifferentialType = Texts.Differential;
+        Encrypt = Texts.Encrypt;
 
         SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
         SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);

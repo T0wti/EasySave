@@ -39,6 +39,8 @@ public interface ITextProvider
     string WaterMarkBackupTargetPath { get; }
     string Full { get; }
     string Differential { get; }
+    string ExtensionToEncryptTitle { get; }
+    string Encrypt { get; }
 
     //
 

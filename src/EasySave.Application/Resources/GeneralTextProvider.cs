@@ -57,6 +57,8 @@ public class GeneralTextProvider : ITextProvider
         public virtual string WaterMarkBackupTargetPath => _defaultString;
         public virtual string Full => _defaultString;
         public virtual string Differential => _defaultString;
+        public virtual string ExtensionToEncryptTitle => _defaultString;
+        public virtual string Encrypt => _defaultString;
 
     //
         public virtual string BackupCreated => _defaultString;

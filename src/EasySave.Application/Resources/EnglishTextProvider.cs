@@ -36,6 +36,8 @@ public class EnglishTextProvider : GeneralTextProvider
     public override string WaterMarkBackupTargetPath => "Destination folder";
     public override string Full => "Full";
     public override string Differential => "Differential";
+    public override string ExtensionToEncryptTitle => "Extension to encrypt";
+    public override string Encrypt => "Encrypt";
 
     //
     public override string BackupCreated => "Backup job created successfully.";
