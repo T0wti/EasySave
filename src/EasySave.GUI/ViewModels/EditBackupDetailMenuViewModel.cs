@@ -30,6 +30,9 @@ namespace EasySave.GUI.ViewModels
 
         // String
         public string Title { get; }
+        public string AskName { get; }
+        public string AskSource { get; }
+        public string AskTarget { get; }
         public string AskType { get; }
         public string FullType { get; }
         public string DifferentialType { get; }
