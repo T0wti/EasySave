@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using EasySave.Domain.Enums;
+using EasySave.Application.Exceptions;
 using EasySave.GUI.Services;
 
 namespace EasySave.GUI.ViewModels
@@ -85,53 +85,53 @@ namespace EasySave.GUI.ViewModels
 
         private async Task CreateBackup()
         {
+            ResetErrorStates();
             try
             {
                 BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
                 NavigateToBase();
             }
-            //TODO: Change Domain usage by an app usage
-            catch (BackupValidationException e)
+            catch (AppException e)
             {
                 IsThereError = true;
                 switch (e.ErrorCode)
                 {
-                    case EasySaveErrorCode.NameEmpty:
+                    case AppErrorCode.NameEmpty:
                         NameHasError = true;
                         ErrorMessage = Texts.NameEmpty;
                         break;
-                    case EasySaveErrorCode.NameTooLong:
+                    case AppErrorCode.NameTooLong:
                         NameHasError = true;
                         ErrorMessage = Texts.NameTooLong;
                         break;
 
-                    case EasySaveErrorCode.SourcePathEmpty:
+                    case AppErrorCode.SourcePathEmpty:
                         SourceHasError = true;
                         ErrorMessage = Texts.SourcePathEmpty;
                         break;
-                    case EasySaveErrorCode.SourcePathNotAbsolute:
+                    case AppErrorCode.SourcePathNotAbsolute:
                         SourceHasError = true;
                         ErrorMessage = Texts.SourcePathNotAbsolute;
                         break;
-                    case EasySaveErrorCode.SourcePathNotFound:
+                    case AppErrorCode.SourcePathNotFound:
                         SourceHasError = true;
                         ErrorMessage = Texts.SourcePathNotFound;
                         break;
 
-                    case EasySaveErrorCode.TargetPathEmpty:
+                    case AppErrorCode.TargetPathEmpty:
                         TargetHasError = true;
                         ErrorMessage = Texts.TargetPathEmpty;
                         break;
-                    case EasySaveErrorCode.TargetPathNotAbsolute:
+                    case AppErrorCode.TargetPathNotAbsolute:
                         TargetHasError = true;
                         ErrorMessage = Texts.TargetPathNotAbsolute;
                         break;
-                    case EasySaveErrorCode.TargetPathNotFound:
+                    case AppErrorCode.targetPathNotFound:
                         TargetHasError = true;
                         ErrorMessage = Texts.TargetPathNotFound;
                         break;
 
-                    case EasySaveErrorCode.SourceEqualsTarget:
+                    case AppErrorCode.SourceEqualsTarget:
                         SourceHasError = true;
                         TargetHasError = true;
                         ErrorMessage = Texts.SourceEqualsTarget;

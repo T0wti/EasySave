@@ -1,4 +1,5 @@
 ﻿using EasySave.Application.DTOs;
+using EasySave.Application.Exceptions;
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
@@ -37,42 +38,60 @@ namespace EasySave.Application
         // Create a new backup job
         public void CreateBackup(string name, string source, string target, int typeChoice)
         {
-            var type = ConvertTypeChoice(typeChoice);
-            _manager.CreateBackupJob(name, source, target, type);
+            try
+            {
+                var type = ConvertTypeChoice(typeChoice);
+                _manager.CreateBackupJob(name, source, target, type);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
         // Edit an existing backup job
         public void EditBackup(int id, string newName, string newSource, string newTarget, int typeChoice)
         {
-            var type = ConvertTypeChoice(typeChoice);
-            _manager.EditBackupJob(id, newName, newSource, newTarget, type);
+            try
+            {
+                var type = ConvertTypeChoice(typeChoice);
+                _manager.EditBackupJob(id, newName, newSource, newTarget, type);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
+
         }
 
         // Delete a backup job
         public void DeleteBackup(int id)
         {
-            _manager.DeleteBackupJob(id);
+            try
+            {
+                _manager.DeleteBackupJob(id);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
         // Execute a single backup job
         public void ExecuteBackup(int id)
         {
-            var job = _manager.GetBackupJobs()
+            try
+            {
+                var job = _manager.GetBackupJobs()
                               .FirstOrDefault(j => j.Id == id);
-
-            if (job == null)
-                throw new Exception("Backup not found");
-
-            _executor.ExecuteBackup(job);
+                _executor.ExecuteBackup(job);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
         // Execute multiple backup jobs
         public void ExecuteMultiple(IEnumerable<int> ids)
         {
-            var jobs = _manager.GetBackupJobs()
-                               .Where(j => ids.Contains(j.Id));
+            try
+            {
+                var jobs = _manager.GetBackupJobs()
+                                   .Where(j => ids.Contains(j.Id));
 
-            _executor.ExecuteBackups(jobs);
+                _executor.ExecuteBackups(jobs);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
+
         }
 
         // --- Private Methods ---

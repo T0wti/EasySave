@@ -1,4 +1,5 @@
 ﻿using EasySave.Application.DTOs;
+using EasySave.Application.Exceptions;
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
 using EasySave.EasyLog;
@@ -18,37 +19,50 @@ namespace EasySave.Application
         // Load configuration and map to DTO
         public ApplicationSettingsDto Load()
         {
-            var settings = _configService.LoadSettings();
-
-            return new ApplicationSettingsDto
+            try
             {
-                LanguageCode = ConvertLanguageToCode(settings.Language)
-            };
+                var settings = _configService.LoadSettings();
+
+                return new ApplicationSettingsDto
+                {
+                    LanguageCode = ConvertLanguageToCode(settings.Language)
+                };
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
         // Change language based on int code
         public void ChangeLanguage(int code)
         {
-            var settings = _configService.LoadSettings();
-            settings.Language = ConvertCodeToLanguage(code);
-            _configService.SaveSettings(settings);
+            try
+            {
+                var settings = _configService.LoadSettings();
+                settings.Language = ConvertCodeToLanguage(code);
+                _configService.SaveSettings(settings);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
+
         }
 
         // 
         public void ChangeLogFormat(int code)
         {
+            try
+            {
+                var format = ConvertCodeToLogFormat(code);
+                var settings = _configService.LoadSettings();
 
-            var format = ConvertCodeToLogFormat(code);
-            var settings = _configService.LoadSettings();
+                EasyLogService.Instance.Reset();
+                EasyLogService.Instance.Initialize(
+                    settings.LogDirectoryPath,
+                    format
+                );
 
-            EasyLogService.Instance.Reset();
-            EasyLogService.Instance.Initialize(
-                settings.LogDirectoryPath,
-                format
-            );
+                settings.LogFormat = (int)format;
+                _configService.SaveSettings(settings);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
 
-            settings.LogFormat = (int)format;
-            _configService.SaveSettings(settings);
         }
 
         public LogFormat GetLogFormat()
