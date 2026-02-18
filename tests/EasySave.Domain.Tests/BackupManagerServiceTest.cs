@@ -5,23 +5,20 @@ using EasySave.Domain.Services;
 using Moq;
 using Xunit;
 using System.Collections.Generic;
+using System.IO;
 
 public class BackupManagerServiceTests
 {
     // This method instantiates a BackupManagerService with mocked services
     private BackupManagerService CreateService(
-        List<BackupJob> existingJobs,
-        int maxJobs = 5)
+        List<BackupJob> existingJobs)
     {
         var fileMock = new Mock<IFileBackupService>();
         fileMock.Setup(f => f.LoadJobs()).Returns(existingJobs);
 
         var backupMock = new Mock<IBackupService>();
 
-        var settings = new ApplicationSettings
-        {
-            MaxBackupJobs = maxJobs
-        };
+        var settings = new ApplicationSettings();
 
         return new BackupManagerService(
             fileMock.Object,
@@ -46,22 +43,6 @@ public class BackupManagerServiceTests
     }
 
     [Fact]
-    // Raises the max job exception
-    public void CreateBackupJob_WhenMaxReached()
-    {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full),
-            new BackupJob(2,"job2","src","dest",BackupType.Differential)
-        };
-
-        var service = CreateService(jobs, maxJobs: 2);
-
-        Assert.Throws<Exception>(() =>
-            service.CreateBackupJob("job3", "src", "dest", BackupType.Full));
-    }
-
-    [Fact]
     // Tests if SaveJobs method is called
     public void CreateBackupJob_ShouldAddJob()
     {
@@ -71,7 +52,7 @@ public class BackupManagerServiceTests
 
         var backupMock = new Mock<IBackupService>();
 
-        var settings = new ApplicationSettings { MaxBackupJobs = 5 };
+        var settings = new ApplicationSettings();
 
         var service = new BackupManagerService(
             fileMock.Object,
