@@ -10,6 +10,7 @@ namespace EasySave.Application.Resources
         public override string ExitOption => "0. Exit";
         public override string AskEntryFromUser => "Enter the desired number or command: ";
         public override string EditBackup => "3. Edit a file backup";
+        public override string EditBackupTitle => "Edit a file backup";
         public override string DeleteBackup => "2. Delete a file backup";
         public override string WrongInput => "Invalid input, please try again: ";
         public override string Exit => "Exit";

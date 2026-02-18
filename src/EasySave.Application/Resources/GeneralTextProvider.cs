@@ -31,6 +31,7 @@ namespace EasySave.Application.Resources
         public virtual string AskEntryFromUser => _defaultString;
         public virtual string DeleteBackup => _defaultString;
         public virtual string EditBackup => _defaultString;
+        public virtual string EditBackupTitle => _defaultString;
         public virtual string WrongInput => _defaultString;
         public virtual string Exit => _defaultString;
         public virtual string Home => _defaultString;

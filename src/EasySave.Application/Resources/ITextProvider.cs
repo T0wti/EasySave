@@ -23,6 +23,7 @@ namespace EasySave.Application.Resources
         string DeleteBackup { get; }
         string CreateBackup { get; }
         string EditBackup { get; }
+        string EditBackupTitle { get; }
         string LanguageOption { get; }
         string ListBackup { get; }
         string ExeBackup { get; }
