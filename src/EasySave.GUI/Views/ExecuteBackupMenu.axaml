@@ -13,18 +13,25 @@
         <controls:PageTitleControl/>
         
         <ScrollViewer MaxHeight="350">
-			<ItemsControl ItemsSource="{Binding BackupJobs}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						
+          <ItemsControl ItemsSource="{Binding BackupJobs}">
+             <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                   
                         <Border Background="#F0F0F0" CornerRadius="8" Padding="15" Margin="0,5">
-                            <Grid ColumnDefinitions="AUto, *, Auto">
-							    
-                                <CheckBox Grid.Column="0" Margin="0,0,15,0"/>
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                          
+                                <CheckBox Grid.Column="0" 
+                                          IsChecked="{Binding IsSelected}" 
+                                          Margin="0,0,15,0"/>
 
-                                <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center"
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Job.Name}" 
+                                           VerticalAlignment="Center"
                                            FontSize="16" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Type}" VerticalAlignment="Center"
+                                           
+                                <TextBlock Grid.Column="2" 
+                                           Text="{Binding Job.Type}" 
+                                           VerticalAlignment="Center"
                                            Foreground="{StaticResource TextSecondary}"/>
 
                             </Grid>
@@ -36,9 +43,14 @@
         </ScrollViewer>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-			
-            <!-- TO DO: BINDINGS -->
-            <Button Content="Execute Selected" Classes="ActionBtn" Width="180" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+          
+            <Button Content="Execute Selected" 
+                    Command="{Binding ExecuteSelectedCommand}"
+                    Classes="ActionBtn" 
+                    Width="180" 
+                    VerticalAlignment="Center" 
+                    HorizontalContentAlignment="Center"/>
+                    
             <controls:ReturnButton/>
 
         </StackPanel>
