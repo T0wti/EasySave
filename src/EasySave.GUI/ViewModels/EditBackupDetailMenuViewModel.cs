@@ -23,7 +23,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private string _backupName;
         [ObservableProperty] private string _backupSourcePath;
         [ObservableProperty] private string _backupTargetPath;
-        [ObservableProperty] private int _backupType;
+        [ObservableProperty] private int selectedType;
 
         [ObservableProperty] private bool _isFullType;
         [ObservableProperty] private bool _isDifferentialType;
@@ -34,8 +34,11 @@ namespace EasySave.GUI.ViewModels
         public string FullType { get; }
         public string DifferentialType { get; }
         public string Confirm { get; }
+        public string Type { get; }
 
         public string Exit { get; }
+        public bool IsFullTypeBase { get; }
+        public bool IsDifferentialTypeBase { get; }
 
         public EditBackupDetailMenuViewModel(MainWindowViewModel mainWindow, BackupJobDTO selectedJob) : base(mainWindow)
         {
@@ -50,12 +53,29 @@ namespace EasySave.GUI.ViewModels
             Exit = Texts.Exit;
 
             _jobId = selectedJob.Id;
+            Type = selectedJob.Type;
 
-            //SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
-            //SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
+            SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
+            SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
             EditBackupCommand = new AsyncRelayCommand(EditBackup);
 
             ExitCommand = new RelayCommand(() => NavigateTo(new EditBackupMenuViewModel(mainWindow)));
+            
+            switch (Type)
+            {
+                case "Full":
+                    IsFullTypeBase = true;
+                    IsDifferentialTypeBase = false;
+                    break;
+                case "Differential":
+                    IsFullTypeBase = false;
+                    IsDifferentialTypeBase = true;
+                    break;
+                default:
+                    IsFullTypeBase = false;
+                    IsDifferentialTypeBase = false;
+                    break;
+            }
         }
 
         private async Task EditBackup()
@@ -65,5 +85,6 @@ namespace EasySave.GUI.ViewModels
 
             await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobEdited, Texts.MessageBoxOk);
         }
+
     }
 }
