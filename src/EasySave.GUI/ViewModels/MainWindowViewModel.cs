@@ -138,12 +138,12 @@ public partial class MainWindowViewModel : ObservableObject
         Texts = newTexts;
 
         Home = Texts.Home;
-        CreateBackup = Texts.CreateBackup;
-        DeleteBackup = Texts.DeleteBackup;
-        EditBackup = Texts.EditBackup;
-        ListBackup = Texts.ListBackup;
-        ExeBackup = Texts.ExeBackup;
-        Settings = Texts.SettingsMenu;
+        CreateBackup = Texts.CreateBackupTitle;
+        DeleteBackup = Texts.DeleteBackupTitle;
+        EditBackup = Texts.EditBackupTitle;
+        ListBackup = Texts.ListBackupTitle;
+        ExeBackup = Texts.ExeBackupTitle;
+        Settings = Texts.SettingsMenuTitle;
         Exit = Texts.Exit;
         PanelWidth = CalculateOptimalPaneWidth();
     }

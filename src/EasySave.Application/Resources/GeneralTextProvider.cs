@@ -26,10 +26,12 @@ namespace EasySave.Application.Resources
         // Base menu
         public virtual string MainMenuTitle => _defaultString;
         public virtual string CreateBackup => _defaultString;
+        public virtual string CreateBackupTitle => _defaultString;
         public virtual string LanguageOption => _defaultString;
         public virtual string ExitOption => _defaultString;
         public virtual string AskEntryFromUser => _defaultString;
         public virtual string DeleteBackup => _defaultString;
+        public virtual string DeleteBackupTitle => _defaultString;
         public virtual string EditBackup => _defaultString;
         public virtual string EditBackupTitle => _defaultString;
         public virtual string WrongInput => _defaultString;
@@ -38,7 +40,9 @@ namespace EasySave.Application.Resources
         public virtual string Confirm => _defaultString;
         public virtual string Save => _defaultString;
         public virtual string ListBackup => _defaultString;
+        public virtual string ListBackupTitle => _defaultString;
         public virtual string ExeBackup => _defaultString;
+        public virtual string ExeBackupTitle => _defaultString;
         public virtual string LogFormat => _defaultString;
         public virtual string SettingsMenu => _defaultString;
 
