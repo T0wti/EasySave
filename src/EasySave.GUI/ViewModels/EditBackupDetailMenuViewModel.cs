@@ -80,8 +80,7 @@ namespace EasySave.GUI.ViewModels
 
         private async Task EditBackup()
         {
-            //TODO: modify backup type
-            BackupAppService.EditBackup(_jobId, BackupName, BackupSourcePath, BackupTargetPath, 2);
+            BackupAppService.EditBackup(_jobId, BackupName, BackupSourcePath, BackupTargetPath, SelectedType);
 
             await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobEdited, Texts.MessageBoxOk);
         }
