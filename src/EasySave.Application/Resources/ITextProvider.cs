@@ -121,6 +121,7 @@ namespace EasySave.Application.Resources
         string MessageBoxJobExecuted { get; }
         string MessageBoxJobDeleted { get; }
         string MessageBoxJobEdited { get; }
+        string MessageBoxSettingsSaved { get; }
         string MessageBoxOk { get; }
     }
 }

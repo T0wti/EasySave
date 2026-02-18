@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Resources;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels
@@ -90,15 +91,16 @@ namespace EasySave.GUI.ViewModels
             });
 
             // Save button
-            SaveCommand = new RelayCommand(SaveChange);
+            SaveCommand = new AsyncRelayCommand(SaveChange);
 
             ExitCommand = new RelayCommand(NavigateToBase);
         }
 
-        private void SaveChange()
+        private async Task SaveChange()
         {
             ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
             ConfigAppService.SaveEncryptedExtensionText(ExtensionsToEncrypt);
+            await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxSettingsSaved, Texts.MessageBoxOk);
         }
     }
 }
