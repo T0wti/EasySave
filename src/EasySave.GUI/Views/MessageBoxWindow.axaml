@@ -9,8 +9,8 @@
         CanResize="False"
         Background="{StaticResource MainBackground}"
         ExtendClientAreaToDecorationsHint="True">
+        <!-- ExtendClientAreaToDecorationsHint="True" : removes title -->
     
-    <!-- TO DO: BINDINGS -->
     <Border Padding="20" BorderBrush="{StaticResource AccentColor}" BorderThickness="0,4,0,0">
         <Grid RowDefinitions="*, Auto">
             
