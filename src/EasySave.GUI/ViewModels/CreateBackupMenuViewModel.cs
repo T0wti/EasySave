@@ -90,6 +90,7 @@ namespace EasySave.GUI.ViewModels
                 BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
                 NavigateToBase();
             }
+            //TODO: Change Domain usage by an app usage
             catch (BackupValidationException e)
             {
                 IsThereError = true;
