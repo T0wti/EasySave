@@ -19,8 +19,12 @@
         <Setter Property="Margin" Value="0,0,0,15"/>
     </Style>
 
+    <Style Selector="TextBlock.MessageText">
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+    </Style>
+
     <Style Selector="TextBlock.ErrorMessage">
-		<Setter Property="Foreground" Value="#FF0000"/>
+		<Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 

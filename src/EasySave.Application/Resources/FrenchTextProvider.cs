@@ -54,6 +54,7 @@ namespace EasySave.Application.Resources
             public override string TargetPathNotAbsolute => "Le chemin cible doit être un chemin absolu";
             public override string TargetPathNotFound => "Le dossier cible est introuvable";
             public override string SourceEqualsTarget => "La source et la cible ne peuvent pas être identiques";
+            public override string BusinessSoftwareRunning => "Logiciel métier en cours d'exécution. Aucune sauvegarde exécutée";
 
         //
         public override string BackupCreated => "Le travail de sauvegarde a été créé avec succès.";

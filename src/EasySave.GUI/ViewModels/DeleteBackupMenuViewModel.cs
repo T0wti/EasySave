@@ -44,7 +44,7 @@ namespace EasySave.GUI.ViewModels
                 BackupAppService.DeleteBackup(SelectedJob.Id);
                 BackupJobs.Remove(SelectedJob);
 
-                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobDeleted, Texts.MessageBoxOk);
+                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobDeleted, Texts.MessageBoxOk, false);
             }
         }
     }

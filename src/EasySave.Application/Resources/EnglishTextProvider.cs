@@ -54,6 +54,7 @@ namespace EasySave.Application.Resources
             public override string TargetPathNotAbsolute => "Target folder must be absolute";
             public override string TargetPathNotFound => "Target folder not found";
             public override string SourceEqualsTarget => "Source and target can't be the same";
+            public override string BusinessSoftwareRunning => "Business software running. No backup was executed";
 
         //
         public override string BackupCreated => "Backup job created successfully.";
@@ -115,7 +116,7 @@ namespace EasySave.Application.Resources
         // Message Box
         public override string MessageBoxInfoTitle => "Information";
         public override string MessageBoxJobCreated => "Job created successfully";
-        public override string MessageBoxJobExecuted => "Job excuted successfully";
+        public override string MessageBoxJobExecuted => "Job(s) excuted successfully";
         public override string MessageBoxJobDeleted => "Job deleted successfully";
         public override string MessageBoxJobEdited => "Job edited successfully";
         public override string MessageBoxSettingsSaved => "Settings saved successfully";
