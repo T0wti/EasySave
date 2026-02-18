@@ -50,12 +50,12 @@ public abstract class ViewModelBase : ObservableObject
         ConfigAppService.ChangeLogFormat(formatCode);
     }
 
-    protected async Task ShowMessageAsync(string title, string message, string ok)
+    protected async Task ShowMessageAsync(string title, string message, string ok, bool isError)
     {
         //Prepares message to display
         var messageBox = new MessageBoxWindow
         {
-            DataContext = new MessageBoxViewModel(title, message, ok)
+            DataContext = new MessageBoxViewModel(title, message, ok, isError)
         };
 
         //Opens MessageBox

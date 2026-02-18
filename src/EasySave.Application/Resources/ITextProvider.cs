@@ -66,6 +66,7 @@ namespace EasySave.Application.Resources
             string TargetPathNotAbsolute { get; }
             string TargetPathNotFound { get; }
             string SourceEqualsTarget { get; }
+            string BusinessSoftwareRunning { get; }
 
         // Options in the change language menu | Le
         string LanguageMenuTitle { get; }

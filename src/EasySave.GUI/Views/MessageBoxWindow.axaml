@@ -3,14 +3,14 @@
         xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
         x:Class="EasySave.GUI.Views.MessageBoxWindow"
         x:DataType="viewModels:MessageBoxViewModel"
-        Title="Information"
+        Title="{Binding Title}"
         Width="350" Height="180"
         WindowStartupLocation="CenterOwner"
         CanResize="False"
         Background="{StaticResource MainBackground}"
         ExtendClientAreaToDecorationsHint="True">
+        <!-- ExtendClientAreaToDecorationsHint="True" : removes title -->
     
-    <!-- TO DO: BINDINGS -->
     <Border Padding="20" BorderBrush="{StaticResource AccentColor}" BorderThickness="0,4,0,0">
         <Grid RowDefinitions="*, Auto">
             
@@ -20,7 +20,7 @@
                        HorizontalAlignment="Center"
                        FontSize="16"
                        FontWeight="SemiBold"
-                       Foreground="{StaticResource TextPrimary}"/>
+                       Classes="MessageText" Classes.ErrorMessage="{Binding IsError}"/>
             
             <Button Grid.Row="1" Content="Ok" Classes="ActionBtn" 
                     HorizontalAlignment="Center" Width="100"

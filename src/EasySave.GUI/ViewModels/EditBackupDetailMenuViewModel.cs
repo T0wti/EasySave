@@ -108,7 +108,7 @@ namespace EasySave.GUI.ViewModels
             try
             {
                 BackupAppService.EditBackup(_jobId, BackupName, BackupSourcePath, BackupTargetPath, SelectedType);
-                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobEdited, Texts.MessageBoxOk);
+                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobEdited, Texts.MessageBoxOk, false);
             }
             catch (AppException e)
             {

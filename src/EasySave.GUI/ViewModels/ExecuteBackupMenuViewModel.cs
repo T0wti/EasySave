@@ -1,5 +1,7 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using EasySave.Application.Exceptions;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +23,11 @@ namespace EasySave.GUI.ViewModels
         public string ExeSelected { get; }
         public string Exit { get; }
 
+        // Inputs
+        [ObservableProperty] private string? _errorMessage;
+
+        [ObservableProperty] private bool _businessSoftwareHasError;
+
         public ExecuteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
             Title = Texts.ExeBackupMenuTitle;
@@ -38,14 +45,31 @@ namespace EasySave.GUI.ViewModels
 
         private async Task ExecuteSelectedJobs()
         {
-            var jobsToExecute = BackupJobs.Where(x => x.IsSelected).ToList();
-
-            foreach (var selection in jobsToExecute)
+            try
             {
-                BackupAppService.ExecuteBackup(selection.Job.Id);
-            }
+                var jobsToExecute = BackupJobs.Where(x => x.IsSelected).ToList();
 
-            await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk);
+                foreach (var selection in jobsToExecute)
+                {
+                    BackupAppService.ExecuteBackup(selection.Job.Id);
+                }
+
+                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk, false);
+            }
+            catch (AppException e)
+            {
+                switch (e.ErrorCode)
+                {
+                    case AppErrorCode.BusinessSoftwareRunning:
+                        BusinessSoftwareHasError = true;
+                        ErrorMessage = Texts.BusinessSoftwareRunning;
+                        break;
+                    default:
+                        ErrorMessage = "";
+                        break;
+                }
+                await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk, true);
+            }
         }
     }
 }

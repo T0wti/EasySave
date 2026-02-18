@@ -82,6 +82,7 @@ namespace EasySave.Application.Resources
             public virtual string TargetPathNotAbsolute => _defaultString;
             public virtual string TargetPathNotFound => _defaultString;
             public virtual string SourceEqualsTarget => _defaultString;
+            public virtual string BusinessSoftwareRunning => _defaultString;
 
         // Change Language Menu
         public virtual string LanguageMenuTitle => _defaultString;
