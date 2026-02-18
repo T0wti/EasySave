@@ -72,6 +72,7 @@ namespace EasySave.GUI.ViewModels
             DifferentialType = Texts.Differential;
             Encrypt = Texts.Encrypt;
             IsThereError = false;
+            selectedType = 1;
 
             SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
             SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
