@@ -89,6 +89,7 @@ namespace EasySave.GUI.ViewModels
             try
             {
                 BackupAppService.CreateBackup(backupName, sourcePath, targetPath, selectedType);
+                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobCreated, Texts.MessageBoxOk);
                 NavigateToBase();
             }
             catch (AppException e)
