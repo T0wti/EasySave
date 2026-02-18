@@ -4,6 +4,8 @@ using EasySave.CryptoSoft.Interfaces;
 
 namespace EasySave.CryptoSoft
 {
+
+    // Class to check if the file exist and encrypt it with AES method
     public class FileManager : IFileManager
     {
         private readonly string _fileName;

@@ -94,7 +94,7 @@ namespace EasySave.Application
 
         }
 
-        // --- Private Methods ---
+        // Private Methods 
 
         // Convert user input to BackupType
         private static BackupType ConvertTypeChoice(int typeChoice)

@@ -3,7 +3,7 @@ namespace EasySave.CryptoSoft
 {
     public class Program
     {
-        // Program.cs — args[0] = fichier à chiffrer, args[1] = chemin de la clé
+        // Program.cs — args[0] = file to encrypt, args[1] = path of the key
         static int Main(string[] args)
         {
             if (args.Length != 2)

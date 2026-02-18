@@ -1,5 +1,6 @@
 ﻿namespace EasySave.Application.Exceptions
 {
+    // Enums for application for the mappinf of the exceptions errors
     public enum AppErrorCode
     {
         NameEmpty,

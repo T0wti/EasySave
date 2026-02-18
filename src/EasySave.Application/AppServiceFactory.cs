@@ -9,19 +9,18 @@ namespace EasySave.Application
     {
         public static BackupAppService CreateBackupController()
         {
-            // 1. ConfigurationService (V1-style constructor)
+            // ConfigurationService 
             IConfigurationService configService = new ConfigurationService();
             var settings = configService.LoadSettings();
 
-            // 2. FileStateService (V2.1 constructor paramétré)
+            // FileStateService
             IFileStateService fileStateService = new FileStateService(settings.StateFileDirectoryPath);
 
-            // 3. EasyLogService (singleton légitime)
+            // EasyLogService (singleton)
             EasyLogService.Instance.Initialize(settings.LogDirectoryPath, settings.LogFormat);
             ILogService logService = EasyLogService.Instance;
 
-            // 4. FileBackupService (V2.1 constructor paramétré)
-            // On stocke les jobs dans %APPDATA%/EasySave/jobs.json
+            // FileBackupService
             string jobsDirectory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "EasySave"
@@ -29,7 +28,7 @@ namespace EasySave.Application
 
             IFileBackupService fileBackupService = new FileBackupService();
 
-            // 5. Services métiers
+            // Businesses Services 
             IFileService fileService = new FileService();
             IBackupStrategy fullStrategy = new FullBackupStrategy(fileService);
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
