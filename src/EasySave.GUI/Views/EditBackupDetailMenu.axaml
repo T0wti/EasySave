@@ -25,22 +25,22 @@
                 <StackPanel Spacing="25">
                     <!--- Backup name -->
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding AskName}"/>
-                        <TextBox Text="{Binding BackupName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Classes.error="{Binding NameHasError}"/>
+                        <TextBlock Text="{Binding AskName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Text="{Binding BackupName, Mode=TwoWay}" Classes.error="{Binding NameHasError}"/>
                     </StackPanel>
 
                     <!-- Backup source -->
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding AskName}"/>
+                        <TextBlock Text="{Binding AskSource, UpdateSourceTrigger=PropertyChanged}"/>
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <TextBox Text="{Binding BackupSourcePath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Classes.error="{Binding SourceHasError}"/>
+                            <TextBox Text="{Binding BackupSourcePath, Mode=TwoWay}" Classes.error="{Binding SourceHasError}"/>
                             <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseSourceCommand}"/>
                         </Grid>
                     </StackPanel>
 
                     <!-- Backup target -->
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding AskTarget}"/>
+                        <TextBlock Text="{Binding AskTarget, UpdateSourceTrigger=PropertyChanged}"/>
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
                             <TextBox Text="{Binding BackupTargetPath,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Classes.error="{Binding TargetHasError}"/>
                             <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseTargetCommand}"/>

@@ -1,11 +1,12 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using EasySave.Domain.Enums;
+using EasySave.EasyLog.Interfaces;
+using EasySave.GUI.Services;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using EasySave.Domain.Enums;
-using EasySave.GUI.Services;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -58,8 +59,9 @@ namespace EasySave.GUI.ViewModels
         public bool IsFullTypeBase { get; }
         public bool IsDifferentialTypeBase { get; }
 
-        public EditBackupDetailMenuViewModel(MainWindowViewModel mainWindow, BackupJobDTO selectedJob) : base(mainWindow)
+        public EditBackupDetailMenuViewModel(MainWindowViewModel mainWindow, BackupJobDTO selectedJob, DialogService dialogService) : base(mainWindow)
         {
+            _dialogService = dialogService;
             Title = Texts.BackupNameMenuTitle;
             BackupName = selectedJob.Name;
             BackupSourcePath = selectedJob.SourcePath;
@@ -177,6 +179,22 @@ namespace EasySave.GUI.ViewModels
             var path = await _dialogService.OpenFolderPickerAsync();
 
             if (path != null) BackupTargetPath = path;
+        }
+
+        partial void OnBackupNameChanged(string value)
+        {
+            NameHasError = false;
+            ResetErrorStates();
+        }
+        partial void OnBackupSourcePathChanged(string value)
+        {
+            SourceHasError = false;
+            ResetErrorStates();
+        }
+        partial void OnBackupTargetPathChanged(string value)
+        {
+            TargetHasError = false;
+            ResetErrorStates();
         }
 
         private void ResetErrorStates()
