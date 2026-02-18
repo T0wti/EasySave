@@ -98,13 +98,18 @@ namespace EasySave.Application.Resources
         // Backup Detail Menu
         public virtual string BackupNameMenuTitle => _defaultString;
         public virtual string BackupName => _defaultString;
+        public virtual string BackupNameTitle => _defaultString;
         public virtual string BackupSourcePath => _defaultString;
+        public virtual string BackupSourcePathTitle => _defaultString;
         public virtual string BackupTargetPath => _defaultString;
+        public virtual string BackupTargetPathTitle => _defaultString;
         public virtual string BackupType => _defaultString;
+        public virtual string BackupTypeTitle => _defaultString;
 
         // Execute Backup Menu
         public virtual string ExeBackupMenuTitle => _defaultString;
         public virtual string BackupNames => _defaultString;
+        public virtual string ExeSelected => _defaultString;
         public virtual string ExeBackupInstruction => _defaultString;
 
         // Execute Backup Menu Details
@@ -128,6 +133,7 @@ namespace EasySave.Application.Resources
 
         // Message Box
         public virtual string MessageBoxInfoTitle => _defaultString;
+        public virtual string MessageBoxJobCreated => _defaultString;
         public virtual string MessageBoxJobDeleted => _defaultString;
         public virtual string MessageBoxJobEdited => _defaultString;
         public virtual string MessageBoxOk => _defaultString;

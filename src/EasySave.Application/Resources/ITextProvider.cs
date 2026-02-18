@@ -82,13 +82,18 @@ namespace EasySave.Application.Resources
         // Backup Detail Menu
         string BackupNameMenuTitle { get; }
         string BackupName { get; }
+        string BackupNameTitle { get; }
         string BackupSourcePath { get; }
+        string BackupSourcePathTitle {  get; }
         string BackupTargetPath { get; }
+        string BackupTargetPathTitle { get; }
         string BackupType { get; }
+        string BackupTypeTitle { get; }
 
         // Execute Backup Menu
         string ExeBackupMenuTitle { get; }
         string BackupNames { get; }
+        string ExeSelected { get; }
         string ExeBackupInstruction { get; }
 
         // Execute Backup Menu Details
@@ -112,6 +117,7 @@ namespace EasySave.Application.Resources
 
         // Message Box
         string MessageBoxInfoTitle { get; }
+        string MessageBoxJobCreated { get; }
         string MessageBoxJobDeleted { get; }
         string MessageBoxJobEdited { get; }
         string MessageBoxOk { get; }

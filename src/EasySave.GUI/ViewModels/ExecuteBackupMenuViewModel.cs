@@ -17,11 +17,13 @@ namespace EasySave.GUI.ViewModels
 
         // Strings 
         public string Title { get; }
+        public string ExeSelected { get; }
         public string Exit { get; }
 
         public ExecuteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
             Title = Texts.ExeBackupMenuTitle;
+            ExeSelected = Texts.ExeSelected;
             Exit = Texts.Exit;
             
             var jobs = BackupAppService.GetAll()
@@ -41,6 +43,8 @@ namespace EasySave.GUI.ViewModels
             {
                 BackupAppService.ExecuteBackup(selection.Job.Id);
             }
+
+            //await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk);
         }
     }
 }

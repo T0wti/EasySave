@@ -16,16 +16,16 @@
 			<Grid ColumnDefinitions="100, *" RowDefinitions="Auto, Auto, Auto, Auto">
                 <!-- Job Details -->
                 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Name :" Classes="DetailLabel"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding BackupNameTitle}" Classes="DetailLabel"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding BackupName}" Classes="DetailValue" FontWeight="Bold" FontSize="16"/>
                 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Source :" Classes="DetailLabel"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding BackupSourcePathTitle}" Classes="DetailLabel"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BackupSourcePath}" Classes="DetailValue"/>
                 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Target :" Classes="DetailLabel"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding BackupTargetPathTitle}" Classes="DetailLabel"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BackupTargetPath}" Classes="DetailValue"/>
                 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Type :" Classes="DetailLabel" Margin="0"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding BackupTypeTitle}" Classes="DetailLabel" Margin="0"/>
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding BackupType}" Classes="DetailValue" Margin="0"/>
             </Grid>
         </Border>

@@ -79,13 +79,18 @@ namespace EasySave.Application.Resources
         // Backup Detail Menu
         public override string BackupNameMenuTitle => "Files backup details";
         public override string BackupName => "id-a-" + ". " + "nom-job"; // mettre la fonction pour sortir le nom d'une backup
+        public override string BackupNameTitle => "Backup:";
         public override string BackupSourcePath => "";
+        public override string BackupSourcePathTitle => "Source:";
         public override string BackupTargetPath => "";
+        public override string BackupTargetPathTitle => "Target:";
         public override string BackupType => "";
+        public override string BackupTypeTitle => "Type:";
 
         // Execute Backup Menu
         public override string ExeBackupMenuTitle => "Choose the file backup to execute";
         //public override string BackupNames => Format("nom save"); // not used for the moment
+        public override string ExeSelected => "Execute selection";
         public override string ExeBackupInstruction => "Command exemple : id_Backup";
 
         // Execute Backup Menu Details
@@ -109,6 +114,7 @@ namespace EasySave.Application.Resources
 
         // Message Box
         public override string MessageBoxInfoTitle => "Information";
+        public override string MessageBoxJobCreated => "Job created successfully";
         public override string MessageBoxJobDeleted => "Job deleted successfully";
         public override string MessageBoxJobEdited => "Job edited successfully";
         public override string MessageBoxOk => "Ok";

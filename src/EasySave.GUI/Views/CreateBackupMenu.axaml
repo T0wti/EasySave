@@ -47,7 +47,7 @@
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskType}" TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal" Spacing="30">
-                            <RadioButton Content="{Binding FullType}" GroupName="BackupType" Command="{Binding SetFullTypeCommand}"/>
+                            <RadioButton Content="{Binding FullType}" GroupName="BackupType" Command="{Binding SetFullTypeCommand}" IsChecked="True"/>
                             <RadioButton Content="{Binding DifferentialType}" GroupName="BackupType" Command="{Binding SetDifferentialTypeCommand}"/>
                         </StackPanel>
                     </StackPanel>

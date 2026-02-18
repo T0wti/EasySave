@@ -44,7 +44,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
           
-            <Button Content="Execute Selected" 
+            <Button Content="{Binding ExeSelected}" 
                     Command="{Binding ExecuteSelectedCommand}"
                     Classes="ActionBtn" 
                     Width="180" 
