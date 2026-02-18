@@ -54,7 +54,7 @@
                 <TextBox Text="{Binding BusinessSoftware}" Watermark="{Binding MarkdownExe}"/>
             </StackPanel>
             <StackPanel Spacing="8">
-                <TextBlock Text="{Binding ExtensionsToEncryptTitle}"/>
+                <TextBlock Text="{Binding ExtensionsToEncryptTitle}" FontSize="18" FontWeight="SemiBold"/>
                 <TextBox Text="{Binding ExtensionsToEncrypt}" Watermark=".txt, .docx, .pdf..."/>
             </StackPanel>
                 
