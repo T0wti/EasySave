@@ -1,8 +1,9 @@
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -32,10 +33,10 @@ namespace EasySave.GUI.ViewModels
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(jobs);
 
             ExitCommand = new RelayCommand(NavigateToBase);
-            ExecuteSelectedCommand = new RelayCommand(ExecuteSelectedJobs);
+            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobs);
         }
 
-        private void ExecuteSelectedJobs()
+        private async Task ExecuteSelectedJobs()
         {
             var jobsToExecute = BackupJobs.Where(x => x.IsSelected).ToList();
 
@@ -44,7 +45,7 @@ namespace EasySave.GUI.ViewModels
                 BackupAppService.ExecuteBackup(selection.Job.Id);
             }
 
-            //await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk);
+            await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk);
         }
     }
 }
