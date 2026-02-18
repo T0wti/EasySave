@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using EasySave.GUI.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -18,7 +19,8 @@ namespace EasySave.GUI.ViewModels
             {
                 if (SetProperty(ref _selectedJob, value) && value != null)
                 {
-                    NavigateTo(new EditBackupDetailMenuViewModel(MainWindow, value));
+                    var dialogService = new DialogService();
+                    NavigateTo(new EditBackupDetailMenuViewModel(MainWindow, value, dialogService));
                 }
             }
         }

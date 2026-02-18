@@ -1,35 +1,53 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              xmlns:controls="using:EasySave.GUI.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="EasySave.GUI.Views.EditBackupDetailMenu"
              x:DataType="viewModels:EditBackupDetailMenuViewModel">
 
+    <UserControl.Styles>
+
+        <Style Selector="TextBox.error /template/ Border#PART_BorderElement">
+
+            <Setter Property="BorderBrush" Value="Red"/>
+
+            <Setter Property="BorderThickness" Value="1.5"/>
+
+        </Style>
+
+    </UserControl.Styles>
+    
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="20">
             <controls:PageTitleControl/>
 
             <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="12" BoxShadow="0 4 12 0 #10000000">
                 <StackPanel Spacing="25">
-                    
+                    <!--- Backup name -->
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Name:"/>
-                        <TextBox Text="{Binding BackupName, Mode=TwoWay}"/>
+                        <TextBlock Text="{Binding AskName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Text="{Binding BackupName, Mode=TwoWay}" Classes.error="{Binding NameHasError}"/>
                     </StackPanel>
 
+                    <!-- Backup source -->
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Source:"/>
-                        <TextBox Text="{Binding BackupSourcePath, Mode=TwoWay}"/>
+                        <TextBlock Text="{Binding AskSource, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox Text="{Binding BackupSourcePath, Mode=TwoWay}" Classes.error="{Binding SourceHasError}"/>
+                            <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseSourceCommand}"/>
+                        </Grid>
                     </StackPanel>
 
+                    <!-- Backup target -->
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Target:"/>
-                        <TextBox Text="{Binding BackupTargetPath, Mode=TwoWay}"/>
+                        <TextBlock Text="{Binding AskTarget, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox Text="{Binding BackupTargetPath,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Classes.error="{Binding TargetHasError}"/>
+                            <Button Grid.Column="1" Content="{Binding BrowseFile}" Command="{Binding BrowseTargetCommand}"/>
+                        </Grid>
                     </StackPanel>
 
+                    <!-- Backup Type -->
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding AskType}" TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal" Spacing="30">
@@ -46,6 +64,10 @@
                                 Command="{Binding EditBackupCommand}"/>
                         
                         <controls:ReturnButton/>
+                    </StackPanel>
+                    
+                    <StackPanel>
+                        <TextBlock Text="{Binding ErrorMessage}" Classes="ErrorMessage" IsVisible="{Binding IsThereError}"/>
                     </StackPanel>
 
                 </StackPanel>
