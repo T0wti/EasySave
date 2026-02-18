@@ -32,8 +32,7 @@ namespace EasySave.GUI.ViewModels
 
         public EditBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
-            //Title = Texts.EditBackupMenuTitle; TODO
-            Title = "Edit Backup";
+            Title = Texts.EditBackupTitle;
             Exit = Texts.Exit;
 
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());

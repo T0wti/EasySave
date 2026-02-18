@@ -5,19 +5,24 @@ namespace EasySave.Application.Resources
     {
         // Base menu
         public override string MainMenuTitle => "Main Menu";
-        public override string CreateBackup => "1. Create a file backup";
+        public override string CreateBackup => "1. " + CreateBackupTitle;
+        public override string CreateBackupTitle => "Create a file backup";
         public override string LanguageOption => "9. Change console language";
         public override string ExitOption => "0. Exit";
         public override string AskEntryFromUser => "Enter the desired number or command: ";
-        public override string EditBackup => "3. Edit a file backup";
-        public override string DeleteBackup => "2. Delete a file backup";
+        public override string EditBackup => "3. " + EditBackupTitle;
+        public override string EditBackupTitle => "Edit a file backup";
+        public override string DeleteBackup => "2. " + DeleteBackupTitle;
+        public override string DeleteBackupTitle => "Delete a file backup";
         public override string WrongInput => "Invalid input, please try again: ";
         public override string Exit => "Exit";
         public override string Home => "Home";
         public override string Confirm => "Confirm";
         public override string Save => "Save";
-        public override string ListBackup => "4. List all file backups";
-        public override string ExeBackup => "5. Execute a file backup";
+        public override string ListBackup => "4. " + ListBackupTitle;
+        public override string ListBackupTitle => "List all file backups";
+        public override string ExeBackup => "5. " + ExeBackupTitle;
+        public override string ExeBackupTitle => "Execute a file backup";
         public override string LogFormat => "8. Change log format";
         public override string SettingsMenu => "Settings";
 

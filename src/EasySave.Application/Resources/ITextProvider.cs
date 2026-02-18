@@ -21,11 +21,16 @@ namespace EasySave.Application.Resources
 
         // Options in the base menu | Argan
         string DeleteBackup { get; }
+        string DeleteBackupTitle { get; }
         string CreateBackup { get; }
+        string CreateBackupTitle { get; }
         string EditBackup { get; }
+        string EditBackupTitle { get; }
         string LanguageOption { get; }
         string ListBackup { get; }
+        string ListBackupTitle { get; }
         string ExeBackup { get; }
+        string ExeBackupTitle { get; }
         string LogFormat { get; }
         string SettingsMenu { get; }
 

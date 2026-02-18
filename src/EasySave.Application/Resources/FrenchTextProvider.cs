@@ -5,19 +5,24 @@ namespace EasySave.Application.Resources
     {
         // Base menu
         public override string MainMenuTitle => "Menu principal";
-        public override string CreateBackup => "1. Créer une sauvegarde de fichiers";
+        public override string CreateBackup => "1. " + CreateBackupTitle;
+        public override string CreateBackupTitle => "Créer une sauvegarde de fichiers";
         public override string LanguageOption => "9. Changer la langue de la console";
         public override string ExitOption => "0. Quitter";
         public override string AskEntryFromUser => "Entrez le chiffre ou la commande souhaité : ";
-        public override string EditBackup => "3. Modifier une sauvegarde de fichiers";
-        public override string DeleteBackup => "2. Supprimer une sauvegarde de fichiers";
+        public override string EditBackup => "3. " + EditBackupTitle;
+        public override string EditBackupTitle => "Modifier une sauvegarde de fichiers";
+        public override string DeleteBackup => "2. " + DeleteBackupTitle;
+        public override string DeleteBackupTitle => "Supprimer une sauvegarde de fichiers";
         public override string WrongInput => "Entrée invalide, veuillez  réessayez : ";
         public override string Exit => "Quitter";
         public override string Home => "Accueil";
         public override string Confirm => "Confirmer";
         public override string Save => "Sauvegarder";
-        public override string ListBackup => "4. Lister les sauvegardes de fichiers";
-        public override string ExeBackup => "5. Exécuter une sauvegarde de fichiers";
+        public override string ListBackup => "4. " + ListBackupTitle;
+        public override string ListBackupTitle => "Lister les sauvegarde de fichiers";
+        public override string ExeBackup => "5. " + ExeBackupTitle;
+        public override string ExeBackupTitle => "Exécuter une sauvegarde de fichiers";
         public override string LogFormat => "8. Changer le format des logs";
         public override string SettingsMenu => "Réglages";
 
