@@ -2,6 +2,7 @@
 
 namespace EasySave.Application.Exceptions
 {
+    // Mapping to translate domain exceptions into application excpetions
     public static class DomainExceptionMapper
     {
         public static AppException Map(EasySaveException ex)

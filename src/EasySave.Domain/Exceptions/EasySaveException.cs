@@ -1,5 +1,6 @@
 ﻿using EasySave.Domain.Enums;
 
+// Thrown when a daily log is not correctly created
 public abstract class EasySaveException : Exception
 {
     public EasySaveErrorCode ErrorCode { get; }

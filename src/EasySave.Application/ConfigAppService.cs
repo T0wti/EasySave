@@ -44,7 +44,7 @@ namespace EasySave.Application
 
         }
 
-        // 
+        // Change logformat based on int code
         public void ChangeLogFormat(int code)
         {
             try

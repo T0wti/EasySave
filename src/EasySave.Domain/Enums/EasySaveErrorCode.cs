@@ -1,5 +1,6 @@
 ﻿namespace EasySave.Domain.Enums
 {
+    // Enum representing the type of errors
     public enum EasySaveErrorCode
     {
         // Validation

@@ -39,7 +39,7 @@ namespace EasySave.Console
             RunBaseMenu();
         }
 
-        // --- Navigation ---
+        // Navigation 
 
         internal void RunBaseMenu()
         {
@@ -129,7 +129,7 @@ namespace EasySave.Console
             RunBaseMenu();
         }
 
-        // --- Helpers ---
+        // Helpers 
 
         internal void WrongInput()
         {
