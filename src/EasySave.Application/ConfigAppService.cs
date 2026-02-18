@@ -111,13 +111,21 @@ namespace EasySave.Application
         }
         
         // Update the extensions list
-        private void SaveEncryptedExtensions(List<string> extensions)
+        private void SaveEncryptedExtensions(List<string>? extensions)
         {
             var settings = _configService.LoadSettings();
-            settings.EncryptedFileExtensions = extensions
-                .Select(e => e.StartsWith(".") ? e.ToLower() : $".{e.ToLower()}")
-                .Distinct()
-                .ToList();
+            if (extensions.Count == 1 && extensions[0] == "")
+            {
+                settings.EncryptedFileExtensions = new List<string>();
+            }
+            else
+            {
+                settings.EncryptedFileExtensions = extensions
+                    .Select(e => e.StartsWith(".") ? e.ToLower() : $".{e.ToLower()}")
+                    .Distinct()
+                    .ToList();
+
+            }
             _configService.SaveSettings(settings);
         }
 
@@ -125,7 +133,12 @@ namespace EasySave.Application
         {
             if (text != null)
             {
-                text = text.Replace(" ", "");
+                text = text.Replace(" ", "")
+                    .Replace(";", ",")
+                    .Replace("/", ",")
+                    .Replace(".", "") // .exe become exe
+                    .Replace("|", ",");
+                
                 var extensions = text.Split(',').ToList();
                 SaveEncryptedExtensions(extensions);
             }

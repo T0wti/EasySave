@@ -11,6 +11,16 @@
              SelectedItem="{Binding #This.SelectedJob, Mode=TwoWay}"
              Background="Transparent"
              Name="JobsListBox">
+        <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Margin" Value="0,2"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                <Setter Property="Background" Value="#16416c"/>
+            </Style>
+        </ListBox.Styles>
         <ListBox.ItemTemplate>
             <DataTemplate x:DataType="dto:BackupJobDTO">
                 <Border Padding="10"

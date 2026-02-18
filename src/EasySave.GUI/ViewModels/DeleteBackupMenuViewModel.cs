@@ -25,7 +25,7 @@ namespace EasySave.GUI.ViewModels
 
         public DeleteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
-            Title = Texts.DeleteBackup;
+            Title = Texts.DeleteBackupTitle;
             Exit = Texts.Exit;
             Delete = Texts.Confirm;
 
