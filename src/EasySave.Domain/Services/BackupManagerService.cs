@@ -105,24 +105,6 @@ namespace EasySave.Domain.Services
         {
             return _backupJobs.AsReadOnly();
         }
-
-        // Executes a single backup job by ID
-        public void ExecuteBackupJob(int id)
-        {
-            var job = _backupJobs.FirstOrDefault(j => j.Id == id);
-            if (job == null)
-                throw new BackupJobNotFoundException(id);
-
-            _backupService.ExecuteBackup(job);
-        }
-
-        // Executes multiple backup jobs sequentially
-        public void ExecuteBackupJobs(IEnumerable<BackupJob> jobs)
-        {
-            foreach(var job in jobs)
-            {
-                ExecuteBackupJob(job.Id);
-            }
-        }
+        
     }
 }

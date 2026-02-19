@@ -1,13 +1,11 @@
-﻿    using EasySave.Domain.Models;
+﻿using EasySave.Domain.Models;
 
-    namespace EasySave.Domain.Interfaces
-    {
+namespace EasySave.Domain.Interfaces
+{
     // Interface for executing backup jobs
     public interface IBackupService
-        {
-            
-            void ExecuteBackup(BackupJob job);
-            void ExecuteBackups(IEnumerable<BackupJob> jobs);
-        }
-
+    {
+        Task ExecuteBackupAsync(BackupJob job);
+        Task ExecuteBackupsAsync(IEnumerable<BackupJob> jobs);
     }
+}

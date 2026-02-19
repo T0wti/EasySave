@@ -1,6 +1,7 @@
 ﻿using EasySave.Application.DTOs;
 using EasySave.Application.Exceptions;
 using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
 
@@ -55,7 +56,6 @@ namespace EasySave.Application
                 _manager.EditBackupJob(id, newName, newSource, newTarget, type);
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
-
         }
 
         // Delete a backup job
@@ -68,41 +68,48 @@ namespace EasySave.Application
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
-        // Execute a single backup job
-        public void ExecuteBackup(int id)
+        // Execute a single backup job asynchronously
+        public async Task ExecuteBackupAsync(int id)
         {
             try
             {
                 var job = _manager.GetBackupJobs()
-                              .FirstOrDefault(j => j.Id == id);
-                _executor.ExecuteBackup(job);
+                                  .FirstOrDefault(j => j.Id == id);
+                await _executor.ExecuteBackupAsync(job);
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
-        // Execute multiple backup jobs
-        public void ExecuteMultiple(IEnumerable<int> ids)
+        // Execute multiple backup jobs in parallel
+        public async Task ExecuteMultipleAsync(IEnumerable<int> ids)
         {
             try
             {
                 var jobs = _manager.GetBackupJobs()
                                    .Where(j => ids.Contains(j.Id));
 
-                _executor.ExecuteBackups(jobs);
+                await _executor.ExecuteBackupsAsync(jobs);
+            }
+            catch (AggregateException aex)
+            {
+                // Unwrap and rethrow the first domain exception found
+                var first = aex.InnerExceptions
+                    .OfType<EasySaveException>()
+                    .FirstOrDefault();
+
+                if (first != null) throw DomainExceptionMapper.Map(first);
+                throw;
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
-
         }
 
         // Private Methods 
 
-        // Convert user input to BackupType
         private static BackupType ConvertTypeChoice(int typeChoice)
         {
             return typeChoice == 1 ? BackupType.Full : BackupType.Differential;
         }
 
-        // Map domain BackupJob to DTO
         private static BackupJobDTO MapToDto(BackupJob job)
         {
             return new BackupJobDTO
