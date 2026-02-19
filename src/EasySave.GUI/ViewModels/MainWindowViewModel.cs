@@ -19,12 +19,7 @@ public partial class MainWindowViewModel : ObservableObject
     public ConfigAppService ConfigAppService { get; }
     public ITextProvider Texts { get; private set; }
 
-    private ViewModelBase _currentView;
-    public ViewModelBase CurrentView
-    {
-        get => _currentView;
-        set => SetProperty(ref _currentView, value);
-    }
+    [ObservableProperty] private ViewModelBase _currentView;
 
     [ObservableProperty] private bool _isBaseActive;
     [ObservableProperty] private bool _isCreateActive;
@@ -72,50 +67,36 @@ public partial class MainWindowViewModel : ObservableObject
         NavigateToBaseMenuCommand = new RelayCommand(() =>
         {
             CurrentView = new BaseMenuViewModel(this);
-            ResetActiveStates();
-            IsBaseActive = true;
         });
 
         NavigateToCreateBackupCommand = new RelayCommand(() =>
         {
             CurrentView = new CreateBackupMenuViewModel(this, new DialogService());
-            ResetActiveStates();
-            IsCreateActive = true;
         });
 
         NavigateToDeleteBackupCommand = new RelayCommand(() =>
         {
             CurrentView = new DeleteBackupMenuViewModel(this);
-            ResetActiveStates();
-            IsDeleteActive = true;
         });
 
         NavigateToEditBackupCommand = new RelayCommand(() =>
         {
             CurrentView = new EditBackupMenuViewModel(this);
-            ResetActiveStates();
-            IsEditActive = true;
         });
 
         NavigateToListBackupCommand = new RelayCommand(() =>
         {
             CurrentView = new ListBackupMenuViewModel(this);
-            ResetActiveStates();
-            IsListActive = true;
         });
 
         NavigateToExecuteBackupCommand = new RelayCommand(() =>
         {
             CurrentView = new ExecuteBackupMenuViewModel(this);
-            ResetActiveStates();
-            IsExecuteActive = true;
         });
 
         NavigateToSettingsCommand = new RelayCommand(() =>
         {
             CurrentView = new SettingsMenuViewModel(this);
-            ResetActiveStates();
-            IsSettingsActive = true;
         });
 
         ExitCommand = new RelayCommand(OnExit);
@@ -185,5 +166,21 @@ public partial class MainWindowViewModel : ObservableObject
 
         double totalWidth = 45 + 20 + maxTextWidth + 40;
         return Math.Clamp(totalWidth, 200, 1000);
+    }
+    partial void OnCurrentViewChanged(ViewModelBase value)
+    {
+        ResetActiveStates();
+
+        // Pattern matching pour activer le bon flag
+        switch (value)
+        {
+            case BaseMenuViewModel: IsBaseActive = true; break;
+            case CreateBackupMenuViewModel: IsCreateActive = true; break;
+            case DeleteBackupMenuViewModel: IsDeleteActive = true; break;
+            case EditBackupMenuViewModel: IsEditActive = true; break;
+            case ListBackupMenuViewModel: IsListActive = true; break;
+            case ExecuteBackupMenuViewModel: IsExecuteActive = true; break;
+            case SettingsMenuViewModel: IsSettingsActive = true; break;
+        }
     }
 }
