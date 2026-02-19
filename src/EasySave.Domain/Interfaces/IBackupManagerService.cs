@@ -10,7 +10,5 @@ namespace EasySave.Domain.Interfaces
         void DeleteBackupJob(int id);
         void EditBackupJob(int id, string newName, string newSource, string newTarget, BackupType newType);
         public IReadOnlyList<BackupJob> GetBackupJobs();
-        void ExecuteBackupJob(int id);
-        void ExecuteBackupJobs(IEnumerable<BackupJob> jobs);
     }
 }

@@ -18,43 +18,57 @@ namespace EasySave.GUI.ViewModels
         public ICommand ExitCommand { get; }
         public ICommand ExecuteSelectedCommand { get; }
 
-        // Strings 
+        // Strings
         public string Title { get; }
         public string ExeSelected { get; }
         public string Exit { get; }
 
         // Inputs
         [ObservableProperty] private string? _errorMessage;
-
         [ObservableProperty] private bool _businessSoftwareHasError;
+        [ObservableProperty] private bool _isRunning;
 
         public ExecuteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
             Title = Texts.ExeBackupMenuTitle;
             ExeSelected = Texts.ExeSelected;
             Exit = Texts.Exit;
-            
+
             var jobs = BackupAppService.GetAll()
                 .Select(dto => new BackupJobSelectionViewModel(dto));
-            
+
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(jobs);
 
             ExitCommand = new RelayCommand(NavigateToBase);
-            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobs);
+
+            // AsyncRelayCommand handles async naturally and disables the button while running
+            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobsAsync);
         }
 
-        private async Task ExecuteSelectedJobs()
+        private async Task ExecuteSelectedJobsAsync()
         {
             try
             {
-                var jobsToExecute = BackupJobs.Where(x => x.IsSelected).ToList();
+                IsRunning = true;
+                BusinessSoftwareHasError = false;
+                ErrorMessage = null;
 
-                foreach (var selection in jobsToExecute)
-                {
-                    BackupAppService.ExecuteBackup(selection.Job.Id);
-                }
+                var selectedIds = BackupJobs
+                    .Where(x => x.IsSelected)
+                    .Select(x => x.Job.Id)
+                    .ToList();
 
-                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk, false);
+                if (!selectedIds.Any())
+                    return;
+
+                // All selected jobs run in parallel
+                await BackupAppService.ExecuteMultipleAsync(selectedIds);
+
+                await ShowMessageAsync(
+                    Texts.MessageBoxInfoTitle,
+                    Texts.MessageBoxJobExecuted,
+                    Texts.MessageBoxOk,
+                    false);
             }
             catch (AppException e)
             {
@@ -65,10 +79,18 @@ namespace EasySave.GUI.ViewModels
                         ErrorMessage = Texts.BusinessSoftwareRunning;
                         break;
                     default:
-                        ErrorMessage = "";
+                        ErrorMessage = e.Message;
                         break;
                 }
-                await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk, true);
+                await ShowMessageAsync(
+                    Texts.MessageBoxInfoTitle,
+                    ErrorMessage,
+                    Texts.MessageBoxOk,
+                    true);
+            }
+            finally
+            {
+                IsRunning = false;
             }
         }
     }
