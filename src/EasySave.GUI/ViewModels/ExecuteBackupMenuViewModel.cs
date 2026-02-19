@@ -87,7 +87,9 @@ namespace EasySave.GUI.ViewModels
             try
             {
                 IsRunning = true;
-                job.IsProcessing = true;
+                job.IsProcessing = true; // TO avoid clicking on multiple buttons at the same time
+                job.IsCompleted = false; // To get a green progress bar once done
+
                 // _ is a trash variable when a function needs to
                 // return to a variable but you don't need it
                 _ = Task.Run(async () =>
@@ -106,6 +108,7 @@ namespace EasySave.GUI.ViewModels
                 IsThereError = false;
                 await BackupAppService.ExecuteBackup(jobId);
                 job.ProgressValue = 100; // When job is done
+                job.IsCompleted = true;
 
                 IsMessageToDisplay = true;
                 Message = job.Job.Name + "\n" + Texts.MessageBoxJobExecuted;

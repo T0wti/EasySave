@@ -92,7 +92,11 @@
                             </Grid>
 
                             <!-- Progress bar  -->
-                            <ProgressBar Classes="ProgressBar" Value="{Binding ProgressValue}"/>
+                            <ProgressBar Classes="ProgressBar"
+                                         Value="{Binding ProgressValue}"/>
+                                        <!-- TODO: make the progressbar turn green when job done
+                                         Classes.success="{Binding IsCompleted}"
+                                         -->
             
                         </StackPanel>
                     </Border>
