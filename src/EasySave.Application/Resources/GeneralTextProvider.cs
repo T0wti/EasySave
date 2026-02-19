@@ -112,6 +112,7 @@ namespace EasySave.Application.Resources
         public virtual string BackupNames => _defaultString;
         public virtual string ExeSelected => _defaultString;
         public virtual string ExeBackupInstruction => _defaultString;
+        public virtual string ExeBackupGeneralButtons => _defaultString;
 
         // Execute Backup Menu Details
         public virtual string ExeBackupMenuDetailTitle => _defaultString;
