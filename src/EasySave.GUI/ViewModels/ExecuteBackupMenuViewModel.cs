@@ -50,7 +50,7 @@ namespace EasySave.GUI.ViewModels
 
             ExitCommand = new RelayCommand(NavigateToBase);
             PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
-            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobs);
+            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobsAsync);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
         }
 
@@ -69,7 +69,6 @@ namespace EasySave.GUI.ViewModels
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
                 IsThereError = false;
-                IsMessageToDisplay = true;
 
 
                 var selectedIds = BackupJobs
@@ -82,12 +81,11 @@ namespace EasySave.GUI.ViewModels
 
                 // All selected jobs run in parallel
                 await BackupAppService.ExecuteMultipleAsync(selectedIds);
+                IsMessageToDisplay = true;
+                Message = Texts.MessageBoxJobExecuted;
 
-                await ShowMessageAsync(
-                    Texts.MessageBoxInfoTitle,
-                    Texts.MessageBoxJobExecuted,
-                    Texts.MessageBoxOk,
-                    false);
+
+
             }
             catch (AppException e)
             {
