@@ -14,9 +14,16 @@ namespace EasySave.GUI.ViewModels
         // Use the wrapper collection
         public ObservableCollection<BackupJobSelectionViewModel> BackupJobs { get; }
 
+        // Inputs
+        [ObservableProperty] private bool _isMessageToDisplay;
+        [ObservableProperty] private bool _isThereError;
+        [ObservableProperty] private string? _message;
+
         // Commands
         public ICommand ExitCommand { get; }
+        public ICommand PauseSelectedCommand { get; }
         public ICommand ExecuteSelectedCommand { get; }
+        public ICommand StopSelectedCommand { get; }
 
         // Strings
         public string Title { get; }
@@ -34,15 +41,25 @@ namespace EasySave.GUI.ViewModels
             ExeSelected = Texts.ExeSelected;
             Exit = Texts.Exit;
 
+            IsMessageToDisplay = false;
+            IsThereError = false;
+
             var jobs = BackupAppService.GetAll()
                 .Select(dto => new BackupJobSelectionViewModel(dto));
 
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(jobs);
 
             ExitCommand = new RelayCommand(NavigateToBase);
+            PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
+            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobs);
+            StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
+        }
 
-            // AsyncRelayCommand handles async naturally and disables the button while running
-            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobsAsync);
+        private async Task PauseSelectedJobs()
+        {
+            IsThereError = false;
+            IsMessageToDisplay = true;
+            Message = Texts.MessageBoxJobPaused;
         }
 
         private async Task ExecuteSelectedJobsAsync()
@@ -52,6 +69,9 @@ namespace EasySave.GUI.ViewModels
                 IsRunning = true;
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
+                IsThereError = false;
+                IsMessageToDisplay = true;
+
 
                 var selectedIds = BackupJobs
                     .Where(x => x.IsSelected)
@@ -92,6 +112,13 @@ namespace EasySave.GUI.ViewModels
             {
                 IsRunning = false;
             }
+        }
+
+        private async Task StopSelectedJobs()
+        {
+            IsThereError = false;
+            IsMessageToDisplay = true;
+            Message = Texts.MessageBoxJobStopped;
         }
     }
 }
