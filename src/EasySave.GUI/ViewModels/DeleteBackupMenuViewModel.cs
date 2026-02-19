@@ -20,6 +20,11 @@ namespace EasySave.GUI.ViewModels
         public string Title {  get; }
         public string Exit {  get; }
         public string Delete {  get; }
+        public string JobDeleted {  get; }
+        public string Yes {  get; }
+        public string No {  get; }
+        public string Ok {  get; }
+        public string DeleteConfirmation {  get; }
 
         public ICommand ExitCommand { get; }
 
@@ -27,8 +32,12 @@ namespace EasySave.GUI.ViewModels
         {
             Title = Texts.DeleteBackupTitle;
             Exit = Texts.Exit;
-            Delete = Texts.Confirm;
-
+            Delete = Texts.MessageBoxDelete;
+            JobDeleted = Texts.MessageBoxJobDeleted;
+            Ok = Texts.MessageBoxOk;
+            Yes = Texts.MessageBoxYes;
+            No = Texts.MessageBoxNo;
+            DeleteConfirmation = Texts.MessageBoxDeleteConfirmation;
 
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 
@@ -41,10 +50,12 @@ namespace EasySave.GUI.ViewModels
         {
             if (_selectedJob != null) //To avoid crash if no job selected
             {
-                BackupAppService.DeleteBackup(SelectedJob.Id);
-                BackupJobs.Remove(SelectedJob);
-
-                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobDeleted, Texts.MessageBoxOk, false);
+                bool userConfirmed = await ShowMessageAsync(DeleteConfirmation, Yes, No, Ok, true, true);
+                if (userConfirmed) {
+                    BackupAppService.DeleteBackup(SelectedJob.Id);
+                    BackupJobs.Remove(SelectedJob);
+                    await ShowMessageAsync(JobDeleted, "", "", Ok, false, false);
+                }
             }
         }
     }

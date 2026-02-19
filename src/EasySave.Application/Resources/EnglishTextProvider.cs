@@ -89,7 +89,7 @@ namespace EasySave.Application.Resources
         public override string BackupTypeTitle => "Type:";
 
         // Execute Backup Menu
-        public override string ExeBackupMenuTitle => "Choose the file backup to execute";
+        public override string ExeBackupMenuTitle => "Execute a file backup";
         //public override string BackupNames => Format("nom save"); // not used for the moment
         public override string ExeSelected => "Execute selection";
         public override string ExeBackupInstruction => "Command exemple : id_Backup";
@@ -116,12 +116,16 @@ namespace EasySave.Application.Resources
         // Message Box
         public override string MessageBoxInfoTitle => "Information";
         public override string MessageBoxJobCreated => "Job created successfully";
-        public override string MessageBoxJobPaused => "Job(s) paused successfully";
-        public override string MessageBoxJobExecuted => "Job(s) excuted successfully";
-        public override string MessageBoxJobStopped => "Job(s) stopped successfully";
+        public override string MessageBoxJobPaused => "Job paused successfully";
+        public override string MessageBoxJobExecuted => "Job excuted successfully";
+        public override string MessageBoxJobStopped => "Job stopped successfully";
         public override string MessageBoxJobDeleted => "Job deleted successfully";
         public override string MessageBoxJobEdited => "Job edited successfully";
         public override string MessageBoxSettingsSaved => "Settings saved successfully";
+        public override string MessageBoxNo => "Yes";
+        public override string MessageBoxYes => "No";
         public override string MessageBoxOk => "Ok";
+        public override string MessageBoxDelete => "Delete";
+        public override string MessageBoxDeleteConfirmation => "Do you really want to delete the job?";
     }
 }

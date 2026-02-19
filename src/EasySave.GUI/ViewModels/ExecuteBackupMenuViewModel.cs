@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Tmds.DBus.Protocol;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -13,11 +14,6 @@ namespace EasySave.GUI.ViewModels
     {
         // Use the wrapper collection
         public ObservableCollection<BackupJobSelectionViewModel> BackupJobs { get; }
-
-        // Inputs
-        [ObservableProperty] private bool _isMessageToDisplay;
-        [ObservableProperty] private bool _isThereError;
-        [ObservableProperty] private string? _message;
 
         // Commands
         public ICommand ExitCommand { get; }
@@ -33,6 +29,9 @@ namespace EasySave.GUI.ViewModels
         // Inputs
         [ObservableProperty] private string? _errorMessage;
         [ObservableProperty] private bool _businessSoftwareHasError;
+        [ObservableProperty] private bool _isMessageToDisplay;
+        [ObservableProperty] private bool _isThereError;
+        [ObservableProperty] private string? _message;
         [ObservableProperty] private bool _isRunning;
 
         public ExecuteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
@@ -70,7 +69,6 @@ namespace EasySave.GUI.ViewModels
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
                 IsThereError = false;
-                IsMessageToDisplay = true;
 
 
                 var selectedIds = BackupJobs
@@ -83,12 +81,11 @@ namespace EasySave.GUI.ViewModels
 
                 // All selected jobs run in parallel
                 await BackupAppService.ExecuteMultiple(selectedIds);
+                IsMessageToDisplay = true;
+                Message = Texts.MessageBoxJobExecuted;
 
-                await ShowMessageAsync(
-                    Texts.MessageBoxInfoTitle,
-                    Texts.MessageBoxJobExecuted,
-                    Texts.MessageBoxOk,
-                    false);
+
+
             }
             catch (AppException e)
             {
@@ -102,12 +99,8 @@ namespace EasySave.GUI.ViewModels
                         ErrorMessage = e.Message;
                         break;
                 }
-                await ShowMessageAsync(
-                    Texts.MessageBoxInfoTitle,
-                    ErrorMessage,
-                    Texts.MessageBoxOk,
-                    true);
-            }
+                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
+
             finally
             {
                 IsRunning = false;

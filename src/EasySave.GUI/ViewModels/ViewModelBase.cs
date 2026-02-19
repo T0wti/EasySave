@@ -50,18 +50,21 @@ public abstract class ViewModelBase : ObservableObject
         ConfigAppService.ChangeLogFormat(formatCode);
     }
 
-    protected async Task ShowMessageAsync(string title, string message, string ok, bool isError)
+    protected async Task<bool> ShowMessageAsync(string message, string yes, string no, string ok, bool isError, bool isConfirmation)
     {
         //Prepares message to display
         var messageBox = new MessageBoxWindow
         {
-            DataContext = new MessageBoxViewModel(title, message, ok, isError)
+            DataContext = new MessageBoxViewModel(message, yes, no, ok, isError, isConfirmation)
         };
 
         //Opens MessageBox
         if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            await messageBox.ShowDialog(desktop.MainWindow);
+            var result = await messageBox.ShowDialog<bool>(desktop.MainWindow);
+            return result;
         }
+
+        return false;
     }
 }
