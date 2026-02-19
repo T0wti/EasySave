@@ -80,7 +80,7 @@ namespace EasySave.GUI.ViewModels
                     return;
 
                 // All selected jobs run in parallel
-                await BackupAppService.ExecuteMultipleAsync(selectedIds);
+                await BackupAppService.ExecuteMultiple(selectedIds);
                 IsMessageToDisplay = true;
                 Message = Texts.MessageBoxJobExecuted;
 

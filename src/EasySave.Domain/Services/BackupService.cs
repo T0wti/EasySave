@@ -36,7 +36,7 @@ namespace EasySave.Domain.Services
         }
 
         // Executes a single backup job asynchronously
-        public async Task ExecuteBackupAsync(BackupJob job)
+        public async Task ExecuteBackup(BackupJob job)
         {    
 
             IBackupStrategy strategy = job.Type == BackupType.Full
@@ -113,12 +113,12 @@ namespace EasySave.Domain.Services
         }
 
         // Executes multiple backup jobs in parallel using Task.WhenAll
-        public async Task ExecuteBackupsAsync(IEnumerable<BackupJob> jobs)
+        public async Task ExecuteBackups(IEnumerable<BackupJob> jobs)
         {
             if (_businessSoftwareService.IsBusinessSoftwareRunning())
                 throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
 
-            var tasks = jobs.Select(job => ExecuteBackupAsync(job));
+            var tasks = jobs.Select(job => ExecuteBackup(job));
 
             await Task.WhenAll(tasks);
         }

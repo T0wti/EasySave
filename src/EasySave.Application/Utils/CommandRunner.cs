@@ -12,7 +12,7 @@ public static class CommandRunner
         {
             var ids = BackupIdParser.ParseIds(args[0]);
             // Block synchronously since TryRun is called from a sync Main
-            backupAppService.ExecuteMultipleAsync(ids).GetAwaiter().GetResult();
+            backupAppService.ExecuteMultiple(ids).GetAwaiter().GetResult();
             Console.WriteLine("Backup execution finished.");
         }
         catch (Exception ex)

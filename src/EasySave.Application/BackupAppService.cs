@@ -11,13 +11,16 @@ namespace EasySave.Application
     {
         private readonly IBackupManagerService _manager;
         private readonly IBackupService _executor;
+        private readonly IFileStateService _fileStateService;
 
         public BackupAppService(
             IBackupManagerService manager,
-            IBackupService executor)
+            IBackupService executor,
+            IFileStateService fileStateService)
         {
             _manager = manager;
             _executor = executor;
+            _fileStateService = fileStateService;
         }
 
         // Get all backup jobs as DTOs
@@ -69,26 +72,26 @@ namespace EasySave.Application
         }
 
         // Execute a single backup job asynchronously
-        public async Task ExecuteBackupAsync(int id)
+        public async Task ExecuteBackup(int id)
         {
             try
             {
                 var job = _manager.GetBackupJobs()
                                   .FirstOrDefault(j => j.Id == id);
-                await _executor.ExecuteBackupAsync(job);
+                await _executor.ExecuteBackup(job);
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
         // Execute multiple backup jobs in parallel
-        public async Task ExecuteMultipleAsync(IEnumerable<int> ids)
+        public async Task ExecuteMultiple(IEnumerable<int> ids)
         {
             try
             {
                 var jobs = _manager.GetBackupJobs()
                                    .Where(j => ids.Contains(j.Id));
 
-                await _executor.ExecuteBackupsAsync(jobs);
+                await _executor.ExecuteBackups(jobs);
             }
             catch (AggregateException aex)
             {
@@ -102,6 +105,22 @@ namespace EasySave.Application
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
+
+        // Get all jobs progression (dont know if its util)
+        public IEnumerable<BackupProgressDTO> GetAllProgress()
+        {
+            return _fileStateService.ReadState().Select(MapToProgressDto);
+        }
+
+        // Get the progression of one job
+        public BackupProgressDTO? GetProgress(int jobId)
+        {
+            var state = _fileStateService.ReadState()
+                .FirstOrDefault(s => s.BackupJobId == jobId);
+
+            return state != null ? MapToProgressDto(state) : null;
+        }
+
 
         // Private Methods 
 
@@ -121,5 +140,20 @@ namespace EasySave.Application
                 Type = job.Type.ToString()
             };
         }
+
+        private static BackupProgressDTO MapToProgressDto(BackupProgress progress) => new()
+        {
+            BackupJobId = progress.BackupJobId,
+            BackupName = progress.BackupName,
+            State = progress.State.ToString(),
+            Progression = progress.Progression,
+            TotalFiles = progress.TotalFiles,
+            RemainingFiles = progress.RemainingFiles,
+            TotalSize = progress.TotalSize,
+            RemainingSize = progress.RemainingSize,
+            CurrentSourceFile = progress.CurrentSourceFile,
+            CurrentTargetFile = progress.CurrentTargetFile,
+            LastUpdate = progress.LastUpdate
+        };
     }
 }
