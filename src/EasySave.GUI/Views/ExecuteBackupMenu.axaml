@@ -77,7 +77,8 @@
 
                                         <!-- Play button -->
                                         <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteSelectedCommand}"
-                                                CommandParameter="{Binding Job.Id}">
+                                                CommandParameter="{Binding Job.Id}"
+                                                IsEnabled="{Binding !IsProcessing}">
                                             <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                                         </Button>
 
@@ -90,8 +91,12 @@
                                 </Border>
                             </Grid>
 
-                            <!-- Progress bar | TEMP VALUE -->
-                            <ProgressBar Classes="ProgressBar" Value="50"/>
+                            <!-- Progress bar  -->
+                            <ProgressBar Classes="ProgressBar"
+                                         Value="{Binding ProgressValue}"/>
+                                        <!-- TODO: make the progressbar turn green when job done
+                                         Classes.success="{Binding IsCompleted}"
+                                         -->
             
                         </StackPanel>
                     </Border>
