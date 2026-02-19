@@ -27,7 +27,7 @@
                         </Button>
 
                     <!-- Play button -->
-                    <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteSelectedCommand}">
+                    <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteAllJobsCommand}">
                         <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                     </Button>
 

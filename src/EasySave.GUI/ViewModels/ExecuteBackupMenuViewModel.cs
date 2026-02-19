@@ -17,6 +17,7 @@ namespace EasySave.GUI.ViewModels
         public ICommand ExitCommand { get; }
         public ICommand PauseSelectedCommand { get; }
         public ICommand ExecuteSelectedCommand { get; }
+        public ICommand ExecuteAllJobsCommand { get; }
         public ICommand StopSelectedCommand { get; }
 
         // Strings
@@ -51,6 +52,7 @@ namespace EasySave.GUI.ViewModels
             ExitCommand = new RelayCommand(NavigateToBase);
             PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync);
+            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobsAsync);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
         }
 
