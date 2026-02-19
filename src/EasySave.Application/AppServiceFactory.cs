@@ -52,7 +52,7 @@ namespace EasySave.Application
                 settings
             );
 
-            return new BackupAppService(manager, executor);
+            return new BackupAppService(manager, executor, fileStateService);
         }
 
         public static ConfigAppService CreateConfigurationController()

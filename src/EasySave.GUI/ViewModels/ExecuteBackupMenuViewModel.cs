@@ -51,7 +51,7 @@ namespace EasySave.GUI.ViewModels
 
             ExitCommand = new RelayCommand(NavigateToBase);
             PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
-            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobs);
+            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobsAsync);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
         }
 
@@ -82,7 +82,7 @@ namespace EasySave.GUI.ViewModels
                     return;
 
                 // All selected jobs run in parallel
-                await BackupAppService.ExecuteMultipleAsync(selectedIds);
+                await BackupAppService.ExecuteMultiple(selectedIds);
 
                 await ShowMessageAsync(
                     Texts.MessageBoxInfoTitle,
