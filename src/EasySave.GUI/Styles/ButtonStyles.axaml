@@ -57,6 +57,11 @@
         <Setter Property="Margin" Value="0, 2"/>
     </Style>
 
+    <Style Selector="Button.PlayBtn">
+        <Setter Property="Foreground" Value="{StaticResource AccentColor}"/>
+        <Setter Property="Background" Value="{StaticResource MainBackground}"/>
+    </Style>
+
     <Style Selector="PathIcon.MenuIcon">
         <Setter Property="Width" Value="24"/>
         <Setter Property="Height" Value="24"/>

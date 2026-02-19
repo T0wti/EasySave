@@ -42,16 +42,34 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-          
-            <Button Content="{Binding ExeSelected}" 
-                    Command="{Binding ExecuteSelectedCommand}"
-                    Classes="ActionBtn" 
-                    Width="180" 
-                    VerticalAlignment="Center" 
-                    HorizontalContentAlignment="Center"/>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="20">
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Border Background="{StaticResource SidebarBackground}" CornerRadius="25" Padding="20">
+                    <StackPanel Orientation="Horizontal" Spacing="40">
+                        <!-- Pause -->
+                        <Button Classes="MenuBtn PlayBtn" Command="{Binding PauseSelectedCommand}">
+                            <PathIcon Classes="MenuIcon"
+                                      Data="M14,19H18V5H14M6,19H10V5H6V19Z"/>
+                        </Button>
+
+                        <!-- Play -->
+                        <Button Classes="MenuBtn PlayBtn" Command="{Binding ExecuteSelectedCommand}">
+                            <PathIcon Classes="MenuIcon"
+                                      Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+                        </Button>
+
+                        <!-- Stop -->
+                        <Button Classes="MenuBtn PlayBtn" Command="{Binding StopSelectedCommand}">
+                            <PathIcon Classes="MenuIcon"
+                                      Data="M18,18H6V6H18V18Z"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+		    <TextBlock Text="{Binding Message}" Classes.ErrorMessage="{Binding IsThereError}" IsVisible="{Binding IsMessageToDisplay}"/>
                     
-            <controls:ReturnButton/>
+            <controls:ReturnButton HorizontalAlignment="Center"/>
 
         </StackPanel>
         

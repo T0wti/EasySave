@@ -116,7 +116,9 @@ namespace EasySave.Application.Resources
         // Message Box
         public override string MessageBoxInfoTitle => "Information";
         public override string MessageBoxJobCreated => "Job created successfully";
+        public override string MessageBoxJobPaused => "Job(s) paused successfully";
         public override string MessageBoxJobExecuted => "Job(s) excuted successfully";
+        public override string MessageBoxJobStopped => "Job(s) stopped successfully";
         public override string MessageBoxJobDeleted => "Job deleted successfully";
         public override string MessageBoxJobEdited => "Job edited successfully";
         public override string MessageBoxSettingsSaved => "Settings saved successfully";

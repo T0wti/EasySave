@@ -14,9 +14,16 @@ namespace EasySave.GUI.ViewModels
         // Use the wrapper collection
         public ObservableCollection<BackupJobSelectionViewModel> BackupJobs { get; }
 
+        // Inputs
+        [ObservableProperty] private bool _isMessageToDisplay;
+        [ObservableProperty] private bool _isThereError;
+        [ObservableProperty] private string? _message;
+
         // Commands
         public ICommand ExitCommand { get; }
+        public ICommand PauseSelectedCommand { get; }
         public ICommand ExecuteSelectedCommand { get; }
+        public ICommand StopSelectedCommand { get; }
 
         // Strings 
         public string Title { get; }
@@ -33,14 +40,26 @@ namespace EasySave.GUI.ViewModels
             Title = Texts.ExeBackupMenuTitle;
             ExeSelected = Texts.ExeSelected;
             Exit = Texts.Exit;
-            
+
+            IsMessageToDisplay = false;
+            IsThereError = false;
+
             var jobs = BackupAppService.GetAll()
                 .Select(dto => new BackupJobSelectionViewModel(dto));
             
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(jobs);
 
             ExitCommand = new RelayCommand(NavigateToBase);
+            PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
             ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobs);
+            StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
+        }
+
+        private async Task PauseSelectedJobs()
+        {
+            IsThereError = false;
+            IsMessageToDisplay = true;
+            Message = Texts.MessageBoxJobPaused;
         }
 
         private async Task ExecuteSelectedJobs()
@@ -53,8 +72,10 @@ namespace EasySave.GUI.ViewModels
                 {
                     BackupAppService.ExecuteBackup(selection.Job.Id);
                 }
-
-                await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk, false);
+                IsThereError = false;
+                IsMessageToDisplay = true;
+                Message = Texts.MessageBoxJobExecuted;
+                //await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk, false);
             }
             catch (AppException e)
             {
@@ -70,6 +91,13 @@ namespace EasySave.GUI.ViewModels
                 }
                 await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk, true);
             }
+        }
+
+        private async Task StopSelectedJobs()
+        {
+            IsThereError = false;
+            IsMessageToDisplay = true;
+            Message = Texts.MessageBoxJobStopped;
         }
     }
 }
