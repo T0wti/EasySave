@@ -7,7 +7,6 @@ using EasySave.EasyLog.Interfaces;
 
 namespace EasySave.Domain.Services
 {
-    // Service responsible for executing backup jobs
     public class BackupService : IBackupService
     {
         private readonly IFileService _fileService;
@@ -18,7 +17,6 @@ namespace EasySave.Domain.Services
         private readonly IBusinessSoftwareService _businessSoftwareService;
         private readonly ICryptoSoftService _cryptoSoftService;
 
-        // Constructor injects required services and initializes backup jobs list
         public BackupService(
             IFileService fileService,
             IBackupStrategy fullStrategy,
@@ -35,31 +33,25 @@ namespace EasySave.Domain.Services
             _logService = logService;
             _businessSoftwareService = businessSoftwareService;
             _cryptoSoftService = cryptoSoftService;
-
         }
 
-        // Executes a single backup job
-        public void ExecuteBackup(BackupJob job)
-        {
+        // Executes a single backup job asynchronously
+        public async Task ExecuteBackupAsync(BackupJob job)
+        {    
 
-            // Select backup strategy based on job type
             IBackupStrategy strategy = job.Type == BackupType.Full
-            ? _fullStrategy
-            : _differentialStrategy;
+                ? _fullStrategy
+                : _differentialStrategy;
 
-            var files = strategy.GetFilesToCopy(job.SourcePath, job.TargetPath);
+            var files = await Task.Run(() => strategy.GetFilesToCopy(job.SourcePath, job.TargetPath));
 
             var progress = BackupProgress.From(job);
-
             _stateService.Initialize(progress, files);
-
+            
             if (_businessSoftwareService.IsBusinessSoftwareRunning())
-            {
-                _stateService.Interrupt(job.Id);
                 throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
-            }
 
-            // Copy files one by one
+            // Copy files one by one within this job
             foreach (var file in files)
             {
                 var start = DateTime.Now;
@@ -74,13 +66,13 @@ namespace EasySave.Domain.Services
                     string uncSourcePath = PathHelper.ToUncPath(file.FullPath);
                     string uncTargetPath = PathHelper.ToUncPath(targetPath);
 
-                    _fileService.CopyFile(file.FullPath, targetPath);
+                    await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath));
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
                     long encryptionTime = 0;
                     if (_cryptoSoftService.ShouldEncrypt(targetPath))
-                        encryptionTime = _cryptoSoftService.Encrypt(targetPath);
+                        encryptionTime = await Task.Run(() => _cryptoSoftService.Encrypt(targetPath));
 
                     _logService.Write(new LogEntry
                     {
@@ -90,8 +82,7 @@ namespace EasySave.Domain.Services
                         TargetPath = uncTargetPath,
                         FileSize = file.Size,
                         TransferTimeMs = duration,
-                        EncryptionTimeMs = encryptionTime 
-
+                        EncryptionTimeMs = encryptionTime
                     });
 
                     _stateService.Update(progress, file, targetPath);
@@ -99,7 +90,6 @@ namespace EasySave.Domain.Services
                 catch (Exception ex)
                 {
                     // Handle copy failure: mark job as failed and log
-                    progress.State = BackupJobState.Failed;
                     _stateService.Fail(job.Id);
 
                     _logService.Write(new LogEntry
@@ -119,18 +109,18 @@ namespace EasySave.Domain.Services
             // Mark backup as completed
             progress.State = BackupJobState.Completed;
             progress.LastUpdate = DateTime.Now;
-
             _stateService.Complete(job.Id);
         }
 
-        // Executes multiple backup jobs sequentially
-        public void ExecuteBackups(IEnumerable<BackupJob> jobs)
+        // Executes multiple backup jobs in parallel using Task.WhenAll
+        public async Task ExecuteBackupsAsync(IEnumerable<BackupJob> jobs)
         {
-            foreach (var job in jobs)
-            {
-                ExecuteBackup(job);
-            }
-        }
+            if (_businessSoftwareService.IsBusinessSoftwareRunning())
+                throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
 
+            var tasks = jobs.Select(job => ExecuteBackupAsync(job));
+
+            await Task.WhenAll(tasks);
+        }
     }
 }

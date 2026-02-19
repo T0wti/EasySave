@@ -168,7 +168,7 @@
             <Border Padding="40,30">
                 <TransitioningContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TransitioningContentControl.PageTransition>
-                        <CrossFade Duration="0:0:0.75"/>
+                        <CrossFade Duration="0:0:0.50"/>
                     </TransitioningContentControl.PageTransition>
                 </TransitioningContentControl>
             </Border>

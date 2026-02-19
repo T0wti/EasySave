@@ -21,7 +21,7 @@ namespace EasySave.GUI.ViewModels
         public ICommand ExecuteSelectedCommand { get; }
         public ICommand StopSelectedCommand { get; }
 
-        // Strings 
+        // Strings
         public string Title { get; }
         public string ExeSelected { get; }
         public string Exit { get; }
@@ -32,6 +32,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private bool _isMessageToDisplay;
         [ObservableProperty] private bool _isThereError;
         [ObservableProperty] private string? _message;
+        [ObservableProperty] private bool _isRunning;
 
         public ExecuteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
@@ -44,7 +45,7 @@ namespace EasySave.GUI.ViewModels
 
             var jobs = BackupAppService.GetAll()
                 .Select(dto => new BackupJobSelectionViewModel(dto));
-            
+
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(jobs);
 
             ExitCommand = new RelayCommand(NavigateToBase);
@@ -60,20 +61,33 @@ namespace EasySave.GUI.ViewModels
             Message = Texts.MessageBoxJobPaused;
         }
 
-        private async Task ExecuteSelectedJobs()
+        private async Task ExecuteSelectedJobsAsync()
         {
             try
             {
-                var jobsToExecute = BackupJobs.Where(x => x.IsSelected).ToList();
-
-                foreach (var selection in jobsToExecute)
-                {
-                    BackupAppService.ExecuteBackup(selection.Job.Id);
-                }
+                IsRunning = true;
+                BusinessSoftwareHasError = false;
+                ErrorMessage = null;
                 IsThereError = false;
                 IsMessageToDisplay = true;
-                Message = Texts.MessageBoxJobExecuted;
-                //await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxJobExecuted, Texts.MessageBoxOk, false);
+
+
+                var selectedIds = BackupJobs
+                    .Where(x => x.IsSelected)
+                    .Select(x => x.Job.Id)
+                    .ToList();
+
+                if (!selectedIds.Any())
+                    return;
+
+                // All selected jobs run in parallel
+                await BackupAppService.ExecuteMultipleAsync(selectedIds);
+
+                await ShowMessageAsync(
+                    Texts.MessageBoxInfoTitle,
+                    Texts.MessageBoxJobExecuted,
+                    Texts.MessageBoxOk,
+                    false);
             }
             catch (AppException e)
             {
@@ -84,10 +98,14 @@ namespace EasySave.GUI.ViewModels
                         ErrorMessage = Texts.BusinessSoftwareRunning;
                         break;
                     default:
-                        ErrorMessage = "";
+                        ErrorMessage = e.Message;
                         break;
                 }
                 await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
+
+            finally
+            {
+                IsRunning = false;
             }
         }
 
