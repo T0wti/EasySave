@@ -59,7 +59,7 @@ namespace EasySave.GUI.ViewModels
         {
             IsThereError = false;
             IsMessageToDisplay = true;
-            Message = "Job(s) paused succesfully";
+            Message = Texts.MessageBoxJobPaused;
         }
 
         private async Task ExecuteSelectedJobs()
@@ -100,7 +100,7 @@ namespace EasySave.GUI.ViewModels
         {
             IsThereError = false;
             IsMessageToDisplay = true;
-            Message = "Job(s) stoppped succesfully";
+            Message = Texts.MessageBoxJobStopped;
         }
     }
 }
