@@ -89,10 +89,7 @@ namespace EasySave.GUI.ViewModels
                         ErrorMessage = "";
                         break;
                 }
-                //await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk, true);
-                IsThereError = true;
-                IsMessageToDisplay = true;
-                Message = ErrorMessage;
+                await ShowMessageAsync(Texts.MessageBoxInfoTitle, ErrorMessage, Texts.MessageBoxOk, true);
             }
         }
 
