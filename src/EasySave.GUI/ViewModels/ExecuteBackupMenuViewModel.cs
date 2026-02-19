@@ -26,6 +26,7 @@ namespace EasySave.GUI.ViewModels
         public string Title { get; }
         public string ExeSelected { get; }
         public string GeneralButtons { get; }
+        public string Watermark { get; }
         public string Exit { get; }
 
         // Inputs
@@ -42,6 +43,7 @@ namespace EasySave.GUI.ViewModels
             Title = Texts.ExeBackupMenuTitle;
             ExeSelected = Texts.ExeSelected;
             GeneralButtons = Texts.ExeBackupGeneralButtons;
+            Watermark = Texts.ExeBackupSearchBarWatermark;
             Exit = Texts.Exit;
 
             IsMessageToDisplay = false;

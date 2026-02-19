@@ -40,7 +40,7 @@
         </Border>
 
         <!-- Searchbar -->
-        <TextBox Text="{Binding SearchText}" Watermark="Search job by name" HorizontalAlignment="Stretch" CornerRadius="8"/>
+        <TextBox Text="{Binding SearchText}" Watermark="{Binding Watermark}" HorizontalAlignment="Stretch" CornerRadius="8"/>
         
         <ScrollViewer MaxHeight="350">
           <ItemsControl ItemsSource="{Binding BackupJobs}">

@@ -44,7 +44,9 @@ namespace EasySave.Application.Resources
         string WaterMarkBackupSourcePath { get; }
         string WaterMarkBackupTargetPath { get; }
         string Full { get; }
+        string FullInfo { get; }
         string Differential { get; }
+        string DifferentialInfo { get; }
         string ExtensionToEncryptTitle { get; }
         string Encrypt { get; }
 

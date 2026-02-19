@@ -41,7 +41,9 @@ namespace EasySave.Application.Resources
         public override string WaterMarkBackupSourcePath => "Source folder";
         public override string WaterMarkBackupTargetPath => "Destination folder";
         public override string Full => "Full";
+        public override string FullInfo => "Copy every single file and directory from the source to the destination";
         public override string Differential => "Differential";
+        public override string DifferentialInfo => "Copy only new or updated files that have changed since the last full backup";
         public override string ExtensionToEncryptTitle => "Extension to encrypt";
         public override string Encrypt => "Encrypt";
             // errors
