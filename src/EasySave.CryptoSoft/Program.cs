@@ -1,31 +1,50 @@
-﻿
+﻿using System.Threading;
+
 namespace EasySave.CryptoSoft
 {
+    // Program.cs — args[0] = file to encrypt, args[1] = path of the key
     public class Program
     {
-        // Program.cs — args[0] = file to encrypt, args[1] = path of the key
+        private static Mutex? _mutex;
+
         static int Main(string[] args)
         {
-            if (args.Length != 2)
+            bool createdNew;
+            _mutex = new Mutex(true, "EasySave_CryptoSoft_Mutex", out createdNew);
+            
+            if (!createdNew)
             {
-                Console.Error.WriteLine("Usage: CryptoSoft <filePath> <keyPath>");
-                return -1;
+                Console.Error.WriteLine("CryptoSoft is already running.");
+                return -10;
             }
 
-            if (!File.Exists(args[0]))
+            try
             {
-                Console.Error.WriteLine($"File not found: {args[0]}");
-                return -1;
-            }
+                if (args.Length != 2)
+                {
+                    Console.Error.WriteLine("Usage: CryptoSoft <filePath> <keyPath>");
+                    return -1;
+                }
 
-            if (!File.Exists(args[1]))
+                if (!File.Exists(args[0]))
+                {
+                    Console.Error.WriteLine($"File not found: {args[0]}");
+                    return -1;
+                }
+
+                if (!File.Exists(args[1]))
+                {
+                    Console.Error.WriteLine($"Key file not found: {args[1]}");
+                    return -1;
+                }
+
+                var fileManager = new FileManager(args[0], args[1]);
+                return fileManager.TransformFile();
+            }
+            finally // Release the mutex
             {
-                Console.Error.WriteLine($"Key file not found: {args[1]}");
-                return -1;
+                _mutex.ReleaseMutex(); 
             }
-
-            var fileManager = new FileManager(args[0], args[1]);
-            return fileManager.TransformFile();
         }
     }
 }

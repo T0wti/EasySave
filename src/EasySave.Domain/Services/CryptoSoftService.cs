@@ -55,6 +55,11 @@ namespace EasySave.Domain.Services
                 process.Start();
                 process.WaitForExit();
 
+                if (process.ExitCode == -10)
+                {
+                    return -10;
+                }
+
                 // CryptoSoft returns duration in ms as exit code, or negative on error
                 return process.ExitCode;
             }
