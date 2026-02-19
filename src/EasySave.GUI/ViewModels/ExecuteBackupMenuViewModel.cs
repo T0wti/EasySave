@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Exceptions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace EasySave.GUI.ViewModels
     {
         // Use the wrapper collection
         public ObservableCollection<BackupJobSelectionViewModel> BackupJobs { get; }
+        private readonly List<BackupJobSelectionViewModel> _jobs; // For searchbar
 
         // Commands
         public ICommand ExitCommand { get; }
@@ -33,6 +35,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private bool _isThereError;
         [ObservableProperty] private string? _message;
         [ObservableProperty] private bool _isRunning;
+        [ObservableProperty] private string _searchText; // For searchbar
 
         public ExecuteBackupMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
@@ -44,10 +47,13 @@ namespace EasySave.GUI.ViewModels
             IsMessageToDisplay = false;
             IsThereError = false;
 
-            var jobs = BackupAppService.GetAll()
-                .Select(dto => new BackupJobSelectionViewModel(dto));
+            _jobs = BackupAppService.GetAll()
+                    .Select(dto => new BackupJobSelectionViewModel(dto))
+                    .ToList();
 
-            BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(jobs);
+            BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(_jobs);
+
+            SearchText = string.Empty;
 
             ExitCommand = new RelayCommand(NavigateToBase);
             PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
@@ -145,6 +151,41 @@ namespace EasySave.GUI.ViewModels
             IsThereError = false;
             IsMessageToDisplay = true;
             Message = Texts.MessageBoxJobStopped;
+        }
+
+        // On searchbar text changed
+        partial void OnSearchTextChanged(string value)
+        {
+            FilterJobs();
+        }
+
+        private void FilterJobs()
+        {
+            BackupJobs.Clear();
+
+            // If searchbar empty, display all jobs
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                foreach (var job in _jobs)
+                {
+                    BackupJobs.Add(job);
+                }
+                return;
+            }
+
+            var filteredJobs = _jobs.Where(j =>
+                // Filter by name
+                j.Job.Name.ToLower().Contains(SearchText.ToLower()) ||
+                // Filter by source
+                j.Job.SourcePath.ToLower().Contains(SearchText.ToLower()) ||
+                // Filter by target
+                j.Job.TargetPath.ToLower().Contains(SearchText.ToLower())
+            ).ToList();
+
+            foreach (var job in filteredJobs)
+            {
+                BackupJobs.Add(job);
+            }
         }
     }
 }

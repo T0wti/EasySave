@@ -91,6 +91,7 @@ namespace EasySave.Application.Resources
         // Execute Backup Menu
         public override string ExeBackupMenuTitle => "Exécuter une sauvegarde de fichiers";
         public override string ExeBackupGeneralButtons => "Actions pour tous les travaux de sauvegarde";
+        public override string ExeBackupSearchBarWatermark => "Rechercher un travail par nom, source ou destination...";
         //public override string BackupNames => Format("nom save"); // not used for the moment
         public override string ExeSelected => "Exécuter la sélection";
         public override string ExeBackupInstruction => "Tapez id_Sauvegarde";
