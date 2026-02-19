@@ -1,12 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using EasySave.Application.DTOs;
 using EasySave.Application.Exceptions;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Tmds.DBus.Protocol;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -52,7 +50,7 @@ namespace EasySave.GUI.ViewModels
 
             ExitCommand = new RelayCommand(NavigateToBase);
             PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
-            ExecuteSelectedCommand = new AsyncRelayCommand(ExecuteSelectedJobsAsync);
+            ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
         }
 
@@ -63,7 +61,8 @@ namespace EasySave.GUI.ViewModels
             Message = Texts.MessageBoxJobPaused;
         }
 
-        private async Task ExecuteSelectedJobsAsync()
+        //TODO: Correct front button interaction
+        private async Task ExecuteJobAsync(int jobId)
         {
             try
             {
@@ -71,23 +70,9 @@ namespace EasySave.GUI.ViewModels
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
                 IsThereError = false;
-
-
-                var selectedIds = BackupJobs
-                    .Where(x => x.IsSelected)
-                    .Select(x => x.Job.Id)
-                    .ToList();
-
-                if (!selectedIds.Any())
-                    return;
-
-                // All selected jobs run in parallel
-                await BackupAppService.ExecuteMultiple(selectedIds);
+                await BackupAppService.ExecuteBackup(jobId);
                 IsMessageToDisplay = true;
                 Message = Texts.MessageBoxJobExecuted;
-
-
-
             }
             catch (AppException e)
             {
@@ -101,9 +86,52 @@ namespace EasySave.GUI.ViewModels
                         ErrorMessage = e.Message;
                         break;
                 }
+
                 await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
             }
+            finally
+            {
+                IsRunning = false;
+            }
 
+        }
+
+        private async Task ExecuteAllJobsAsync()
+        {
+            try
+            {
+                IsRunning = true;
+                BusinessSoftwareHasError = false;
+                ErrorMessage = null;
+                IsThereError = false;
+
+                var selectedIds = BackupJobs
+                    .Select(x => x.Job.Id)
+                    .ToList();
+
+                if (!selectedIds.Any())
+                    return;
+
+                // All selected jobs run in parallel
+                await BackupAppService.ExecuteMultiple(selectedIds);
+                IsMessageToDisplay = true;
+                Message = Texts.MessageBoxJobExecuted;
+            }
+            catch (AppException e)
+            {
+                switch (e.ErrorCode)
+                {
+                    case AppErrorCode.BusinessSoftwareRunning:
+                        BusinessSoftwareHasError = true;
+                        ErrorMessage = Texts.BusinessSoftwareRunning;
+                        break;
+                    default:
+                        ErrorMessage = e.Message;
+                        break;
+                }
+
+                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
+            }
             finally
             {
                 IsRunning = false;
