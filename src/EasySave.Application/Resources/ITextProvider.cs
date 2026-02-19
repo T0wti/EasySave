@@ -96,6 +96,7 @@ namespace EasySave.Application.Resources
         string BackupNames { get; }
         string ExeSelected { get; }
         string ExeBackupInstruction { get; }
+        string ExeBackupGeneralButtons { get; }
 
         // Execute Backup Menu Details
         string ExeBackupMenuDetailTitle { get; }
