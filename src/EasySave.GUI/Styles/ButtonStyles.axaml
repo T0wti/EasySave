@@ -70,4 +70,12 @@
         <Setter Property="Foreground" Value="{Binding $parent[Button].Foreground}"/>
     </Style>
 
+    <Style Selector="ProgressBar.ProgressBar">
+        <Setter Property="Minimum" Value="0"/>
+        <Setter Property="Maximum" Value="100"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentColor}"/>
+        <Setter Property="ShowProgressText" Value="True"/>
+    </Style>
+
 </Styles>
