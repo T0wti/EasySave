@@ -89,7 +89,7 @@ namespace EasySave.Application.Resources
         public override string BackupTypeTitle => "Type :";
 
         // Execute Backup Menu
-        public override string ExeBackupMenuTitle => "Choix de la sauvegarde à exécuter";
+        public override string ExeBackupMenuTitle => "Exécuter une sauvegarde de fichiers";
         //public override string BackupNames => Format("nom save"); // not used for the moment
         public override string ExeSelected => "Exécuter la sélection";
         public override string ExeBackupInstruction => "Tapez id_Sauvegarde";
@@ -122,6 +122,10 @@ namespace EasySave.Application.Resources
         public override string MessageBoxJobDeleted => "Travail supprimé avec succès";
         public override string MessageBoxJobEdited => "Travail modifié avec succès";
         public override string MessageBoxSettingsSaved => "Paramètres enregistrés";
+        public override string MessageBoxYes => "Oui";
+        public override string MessageBoxNo => "Non";
         public override string MessageBoxOk => "Ok";
+        public override string MessageBoxDelete => "Supprimer";
+        public override string MessageBoxDeleteConfirmation => "Voulez-vous vraiment supprimer le travail ?";
     }
 }

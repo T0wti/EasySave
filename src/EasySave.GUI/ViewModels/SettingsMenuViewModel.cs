@@ -100,7 +100,7 @@ namespace EasySave.GUI.ViewModels
         {
             ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
             ConfigAppService.SaveEncryptedExtensionText(ExtensionsToEncrypt);
-            await ShowMessageAsync(Texts.MessageBoxInfoTitle, Texts.MessageBoxSettingsSaved, Texts.MessageBoxOk, false);
+            await ShowMessageAsync(Texts.MessageBoxSettingsSaved,"", "", Texts.MessageBoxOk, false, false);
         }
     }
 }
