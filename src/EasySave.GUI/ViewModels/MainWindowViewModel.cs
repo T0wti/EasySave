@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -20,7 +21,6 @@ public partial class MainWindowViewModel : ObservableObject
     public ITextProvider Texts { get; private set; }
 
     [ObservableProperty] private ViewModelBase _currentView;
-
     [ObservableProperty] private bool _isBaseActive;
     [ObservableProperty] private bool _isCreateActive;
     [ObservableProperty] private bool _isEditActive;
@@ -29,6 +29,9 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private bool _isExecuteActive;
     [ObservableProperty] private bool _isSettingsActive;
     [ObservableProperty] private bool _isPaneOpen = true;
+    // For burger menu display mode
+    [ObservableProperty] private SplitViewDisplayMode _paneMode = SplitViewDisplayMode.CompactOverlay;
+    [ObservableProperty] private bool _pinOn = true;
 
     public ICommand NavigateToBaseMenuCommand { get; }
     public ICommand NavigateToCreateBackupCommand { get; }
@@ -39,6 +42,7 @@ public partial class MainWindowViewModel : ObservableObject
     public ICommand NavigateToSettingsCommand { get; }
     public ICommand ExitCommand { get; }
     public ICommand TogglePaneCommand { get; }
+    public ICommand TogglePaneMode { get; }
 
     [ObservableProperty] private string _home;
     [ObservableProperty] private string _createBackup;
@@ -101,6 +105,7 @@ public partial class MainWindowViewModel : ObservableObject
 
         ExitCommand = new RelayCommand(OnExit);
         TogglePaneCommand = new RelayCommand(() => IsPaneOpen = !IsPaneOpen);
+        TogglePaneMode = new RelayCommand(SwitchPaneMode);
     }
 
     private void ResetActiveStates()
@@ -181,6 +186,20 @@ public partial class MainWindowViewModel : ObservableObject
             case ListBackupMenuViewModel: IsListActive = true; break;
             case ExecuteBackupMenuViewModel: IsExecuteActive = true; break;
             case SettingsMenuViewModel: IsSettingsActive = true; break;
+        }
+    }
+
+    private void SwitchPaneMode()
+    {
+        if (PaneMode == SplitViewDisplayMode.CompactOverlay)
+        {
+            PaneMode = SplitViewDisplayMode.CompactInline;
+            PinOn = false;
+        }
+        else if (PaneMode == SplitViewDisplayMode.CompactInline)
+        {
+            PaneMode = SplitViewDisplayMode.CompactOverlay;
+            PinOn = true;
         }
     }
 }
