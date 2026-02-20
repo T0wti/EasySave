@@ -66,7 +66,7 @@ namespace EasySave.GUI.ViewModels
             // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand not to freeze the interface
             // Needed to avoid clicking on all buttons at the same time
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
-            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobsAsync);
+            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
         }
 
@@ -77,7 +77,7 @@ namespace EasySave.GUI.ViewModels
             Message = Texts.MessageBoxJobPaused;
         }
 
-        //TODO: Correct front button interaction
+
         private async Task ExecuteJobAsync(int jobId)
         {
             // Get job for progressbar
@@ -137,47 +137,21 @@ namespace EasySave.GUI.ViewModels
             }
 
         }
-        private async Task ExecuteAllJobsAsync()
+
+        private async Task ExecuteAllJobs()
         {
-            try
-            {
-                IsRunning = true;
-                BusinessSoftwareHasError = false;
-                ErrorMessage = null;
-                IsThereError = false;
+            var selectedIds = BackupJobs
+                .Select(x => x.Job.Id)
+                .ToList();
 
-                var selectedIds = BackupJobs
-                    .Select(x => x.Job.Id)
-                    .ToList();
+            if (!selectedIds.Any())
+                return;
 
-                if (!selectedIds.Any())
-                    return;
-
-                // All selected jobs run in parallel
-                await BackupAppService.ExecuteMultiple(selectedIds);
-                IsMessageToDisplay = true;
-                Message = Texts.MessageBoxJobExecuted;
-            }
-            catch (AppException e)
-            {
-                switch (e.ErrorCode)
-                {
-                    case AppErrorCode.BusinessSoftwareRunning:
-                        BusinessSoftwareHasError = true;
-                        ErrorMessage = Texts.BusinessSoftwareRunning;
-                        break;
-                    default:
-                        ErrorMessage = e.Message;
-                        break;
-                }
-
-                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
-            }
-            finally
-            {
-                IsRunning = false;
-            }
+            var tasks = selectedIds.Select(id => ExecuteJobAsync(id));
+            
+            await Task.WhenAll(tasks);
         }
+        
 
         private async Task StopSelectedJobs()
         {
