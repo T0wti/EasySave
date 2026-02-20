@@ -46,8 +46,10 @@ namespace EasySave.Application.Resources
         public override string DifferentialInfo => "Ne copier que les fichiers qui ont été créés ou modifiés depuis la dernière sauvegarde complète";
         public override string ExtensionToEncryptTitle => "Extension à chiffrer";
         public override string Encrypt => "Chiffrer";
-            // errors
-            public override string NameEmpty => "Le nom de la sauvegarde ne peut pas être vide";
+        public override string ExtensionToPrioritizeTitle => "Extension à prioriser";
+        public override string ExtensionWatermark => ".txt, .docx, .pdf...";
+        // errors
+        public override string NameEmpty => "Le nom de la sauvegarde ne peut pas être vide";
             public override string NameTooLong => "Le nom de la sauvegarde est trop long";
             public override string SourcePathEmpty => "Le dossier source ne peut pas être vide";
             public override string SourcePathNotAbsolute  => "Le chemin source doit être un chemin absolu";

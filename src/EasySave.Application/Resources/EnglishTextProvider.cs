@@ -46,8 +46,10 @@ namespace EasySave.Application.Resources
         public override string DifferentialInfo => "Copy only new or updated files that have changed since the last full backup";
         public override string ExtensionToEncryptTitle => "Extension to encrypt";
         public override string Encrypt => "Encrypt";
-            // errors
-            public override string NameEmpty => "Backup name can't be empty";
+        public override string ExtensionToPrioritizeTitle => "Extension to prioritize";
+        public override string ExtensionWatermark => ".txt, .docx, .pdf...";
+        // errors
+        public override string NameEmpty => "Backup name can't be empty";
             public override string NameTooLong => "Backup name is too long";
             public override string SourcePathEmpty => "Source folder can't be empty";
             public override string SourcePathNotAbsolute  => "Source folder must be absolute";

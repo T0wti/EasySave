@@ -49,6 +49,8 @@ namespace EasySave.Application.Resources
         string DifferentialInfo { get; }
         string ExtensionToEncryptTitle { get; }
         string Encrypt { get; }
+        string ExtensionToPrioritizeTitle { get; }
+        string ExtensionWatermark { get; }
 
         //
 
