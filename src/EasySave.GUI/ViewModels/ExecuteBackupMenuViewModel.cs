@@ -100,7 +100,7 @@ namespace EasySave.GUI.ViewModels
                         break;
                 }
                 await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
-
+            }
             finally
             {
                 IsRunning = false;
