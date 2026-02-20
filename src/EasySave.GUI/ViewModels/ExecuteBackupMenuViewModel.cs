@@ -1,3 +1,4 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Exceptions;
@@ -62,7 +63,7 @@ namespace EasySave.GUI.ViewModels
             SearchText = string.Empty;
 
             ExitCommand = new RelayCommand(NavigateToBase);
-            PauseSelectedCommand = new AsyncRelayCommand(PauseSelectedJobs);
+            PauseSelectedCommand = new AsyncRelayCommand(PauseAllJobs);
             // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand not to freeze the interface
             // Needed to avoid clicking on all buttons at the same time
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
@@ -70,11 +71,30 @@ namespace EasySave.GUI.ViewModels
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
         }
 
-        private async Task PauseSelectedJobs()
+        private async Task PauseAllJobs()
         {
             IsThereError = false;
-            IsMessageToDisplay = true;
-            Message = Texts.MessageBoxJobPaused;
+            try
+            {
+                await Task.Run(() => BackupAppService.PauseAll());
+                IsMessageToDisplay = true;
+                Message = Texts.MessageBoxJobPaused;
+            }
+            catch (AppException e)
+            {
+                switch (e.ErrorCode)
+                {
+                    case AppErrorCode.BusinessSoftwareRunning:
+                        BusinessSoftwareHasError = true;
+                        ErrorMessage = Texts.BusinessSoftwareRunning;
+                        break;
+                    default:
+                        ErrorMessage = e.Message;
+                        break;
+                }
+
+                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);            }
+            
         }
 
 
