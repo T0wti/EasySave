@@ -79,15 +79,17 @@ namespace EasySave.Application
         {
             try
             {
-                var job = _manager.GetBackupJobs()
-                                  .FirstOrDefault(j => j.Id == id);
+                var job = _manager.GetBackupJobs().FirstOrDefault(j => j.Id == id)
+                                 ?? throw new BackupJobNotFoundException(id);
 
                 var handle = new BackupJobHandle();
                 _registry.Register(job.Id, handle);
 
                 try
                 {
-                    await _executor.ExecuteBackup(job, handle);
+                    await Task.Run(async () =>
+                        await _executor.ExecuteBackup(job, handle).ConfigureAwait(false)
+                    ).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -106,7 +108,7 @@ namespace EasySave.Application
                 var jobs = _manager.GetBackupJobs()
                                    .Where(j => ids.Contains(j.Id));
 
-                await _executor.ExecuteBackups(jobs, _registry);
+                await _executor.ExecuteBackups(jobs, _registry).ConfigureAwait(false);
             }
             catch (AggregateException aex)
             {
@@ -125,6 +127,8 @@ namespace EasySave.Application
 
 
         // Pause/Stop : one job
+        public bool IsJobPaused(int jobId) => _registry.Get(jobId)?.IsPaused ?? false;
+        public bool IsJobRunning(int jobId) => _registry.Get(jobId) != null;
         public void PauseBackup(int jobId) => _registry.Get(jobId)?.Pause();
         public void ResumeBackup(int jobId) => _registry.Get(jobId)?.Resume();
         public void StopBackup(int jobId) => _registry.Get(jobId)?.Stop();
