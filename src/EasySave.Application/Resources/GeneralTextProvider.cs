@@ -67,6 +67,8 @@ namespace EasySave.Application.Resources
         public virtual string DifferentialInfo => _defaultString;
         public virtual string ExtensionToEncryptTitle => _defaultString;
         public virtual string Encrypt => _defaultString;
+        public virtual string ExtensionToPrioritizeTitle => _defaultString;
+        public virtual string ExtensionWatermark => _defaultString;
 
         //
         public virtual string BackupCreated => _defaultString;
