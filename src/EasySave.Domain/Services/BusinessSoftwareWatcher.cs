@@ -11,16 +11,13 @@ namespace EasySave.Domain.Services
     {
         private readonly IBusinessSoftwareService _businessSoftwareService;
         private readonly IBackupHandleRegistry _registry;
-        private readonly TimeSpan _pollInterval;
 
         public BusinessSoftwareWatcher(
             IBusinessSoftwareService businessSoftwareService,
-            IBackupHandleRegistry registry,
-            TimeSpan? pollInterval = null)
+            IBackupHandleRegistry registry)
         {
             _businessSoftwareService = businessSoftwareService;
             _registry = registry;
-            _pollInterval = pollInterval ?? TimeSpan.FromMilliseconds(500);
         }
 
         public async Task WatchAsync(CancellationToken stopWhen)

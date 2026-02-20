@@ -14,7 +14,7 @@ namespace EasySave.Domain.Services
         private readonly IStateService _stateService;
         private readonly IBackupStrategy _fullStrategy;
         private readonly IBackupStrategy _differentialStrategy;
-        private readonly IBusinessSoftwareService _businessSoftwareService;
+        private readonly IBusinessSoftwareWatcher _watcher;
         private readonly ICryptoSoftService _cryptoSoftService;
 
         public BackupService(
@@ -23,7 +23,7 @@ namespace EasySave.Domain.Services
             IBackupStrategy differentialStrategy,
             IStateService stateService,
             ILogService logService,
-            IBusinessSoftwareService businessSoftwareService,
+            IBusinessSoftwareWatcher watcher,
             ICryptoSoftService cryptoSoftService)
         {
             _fileService = fileService;
@@ -31,13 +31,13 @@ namespace EasySave.Domain.Services
             _differentialStrategy = differentialStrategy;
             _stateService = stateService;
             _logService = logService;
-            _businessSoftwareService = businessSoftwareService;
+            _watcher = watcher;
             _cryptoSoftService = cryptoSoftService;
         }
 
         // Executes a single backup job asynchronously
         public async Task ExecuteBackup(BackupJob job, IBackupJobHandle handle)
-        {    
+        {
 
             IBackupStrategy strategy = job.Type == BackupType.Full
                 ? _fullStrategy
@@ -49,9 +49,6 @@ namespace EasySave.Domain.Services
 
             var progress = BackupProgress.From(job);
             _stateService.Initialize(progress, files);
-            
-            if (_businessSoftwareService.IsBusinessSoftwareRunning())
-                throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
 
             // Copy files one by one within this job
             foreach (var file in files)
@@ -124,24 +121,32 @@ namespace EasySave.Domain.Services
         // Executes multiple backup jobs in parallel using Task.WhenAll
         public async Task ExecuteBackups(IEnumerable<BackupJob> jobs, IBackupHandleRegistry registry)
         {
-            if (_businessSoftwareService.IsBusinessSoftwareRunning())
-                throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
+            using var watcherCts = new CancellationTokenSource();
 
-            var tasks = jobs.Select(async job =>
+            var watchTask = _watcher.WatchAsync(watcherCts.Token);
+
+            try
             {
-                var handle = new BackupJobHandle();
-                registry.Register(job.Id, handle);
-                try
+                var tasks = jobs.Select(async job =>
                 {
-                    await ExecuteBackup(job, handle);
-                }
-                finally
-                {
-                    registry.Unregister(job.Id);
-                }
-            });
-
-            await Task.WhenAll(tasks);
+                    var handle = new BackupJobHandle();
+                    registry.Register(job.Id, handle);
+                    try
+                    {
+                        await ExecuteBackup(job, handle).ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        registry.Unregister(job.Id);
+                    }
+                });
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+            }
+            finally
+            {
+                watcherCts.Cancel();
+                await watchTask.ConfigureAwait(false);
+            }
         }
     }
 }

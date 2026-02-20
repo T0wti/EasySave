@@ -33,7 +33,9 @@ namespace EasySave.Application
             IBackupStrategy fullStrategy = new FullBackupStrategy(fileService);
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
             IStateService stateService = new StateService(fileStateService);
+            IBackupHandleRegistry registry = new BackupHandleRegistry();
             IBusinessSoftwareService businessSoftwareService = new BusinessSoftwareService(settings);
+            IBusinessSoftwareWatcher watcher = new BusinessSoftwareWatcher(businessSoftwareService, registry);
             ICryptoSoftService cryptoSoftService = new CryptoSoftService(settings);
 
 
@@ -43,7 +45,7 @@ namespace EasySave.Application
                 diffStrategy,
                 stateService,
                 logService,
-                businessSoftwareService,
+                watcher,
                 cryptoSoftService);
 
             IBackupManagerService manager = new BackupManagerService(
@@ -51,8 +53,6 @@ namespace EasySave.Application
                 executor,
                 settings
             );
-
-            IBackupHandleRegistry registry = new BackupHandleRegistry();
 
             return new BackupAppService(manager, executor, fileStateService, registry);
         }
