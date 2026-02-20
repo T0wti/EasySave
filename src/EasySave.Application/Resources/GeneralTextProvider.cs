@@ -62,7 +62,9 @@ namespace EasySave.Application.Resources
         public virtual string WaterMarkBackupSourcePath => _defaultString;
         public virtual string WaterMarkBackupTargetPath => _defaultString;
         public virtual string Full => _defaultString;
+        public virtual string FullInfo => _defaultString;
         public virtual string Differential => _defaultString;
+        public virtual string DifferentialInfo => _defaultString;
         public virtual string ExtensionToEncryptTitle => _defaultString;
         public virtual string Encrypt => _defaultString;
 
@@ -113,6 +115,7 @@ namespace EasySave.Application.Resources
         public virtual string ExeSelected => _defaultString;
         public virtual string ExeBackupInstruction => _defaultString;
         public virtual string ExeBackupGeneralButtons => _defaultString;
+        public virtual string ExeBackupSearchBarWatermark => _defaultString;
 
         // Execute Backup Menu Details
         public virtual string ExeBackupMenuDetailTitle => _defaultString;

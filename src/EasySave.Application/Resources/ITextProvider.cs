@@ -44,7 +44,9 @@ namespace EasySave.Application.Resources
         string WaterMarkBackupSourcePath { get; }
         string WaterMarkBackupTargetPath { get; }
         string Full { get; }
+        string FullInfo { get; }
         string Differential { get; }
+        string DifferentialInfo { get; }
         string ExtensionToEncryptTitle { get; }
         string Encrypt { get; }
 
@@ -97,6 +99,7 @@ namespace EasySave.Application.Resources
         string ExeSelected { get; }
         string ExeBackupInstruction { get; }
         string ExeBackupGeneralButtons { get; }
+        string ExeBackupSearchBarWatermark { get; }
 
         // Execute Backup Menu Details
         string ExeBackupMenuDetailTitle { get; }

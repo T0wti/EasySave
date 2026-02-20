@@ -8,7 +8,7 @@
              x:Class="EasySave.GUI.Views.ExecuteBackupMenu"
              x:DataType="viewModels:ExecuteBackupMenuViewModel">
     
-    <StackPanel Spacing="10" Margin="15">
+    <StackPanel Spacing="10" Margin="10">
         
         <controls:PageTitleControl/>
 
@@ -27,7 +27,7 @@
                         </Button>
 
                     <!-- Play button -->
-                    <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteAllJobsCommand}">
+                    <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteSelectedCommand}">
                         <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                     </Button>
 
@@ -38,6 +38,9 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
+        <!-- Searchbar -->
+        <TextBox Text="{Binding SearchText}" Watermark="{Binding Watermark}" HorizontalAlignment="Stretch" CornerRadius="8"/>
         
         <ScrollViewer MaxHeight="350">
           <ItemsControl ItemsSource="{Binding BackupJobs}">
@@ -74,7 +77,8 @@
 
                                         <!-- Play button -->
                                         <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteSelectedCommand}"
-                                                CommandParameter="{Binding Job.Id}">
+                                                CommandParameter="{Binding Job.Id}"
+                                                IsEnabled="{Binding !IsProcessing}">
                                             <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                                         </Button>
 
@@ -87,8 +91,12 @@
                                 </Border>
                             </Grid>
 
-                            <!-- Progress bar | TEMP VALUE -->
-                            <ProgressBar Classes="ProgressBar" Value="50"/>
+                            <!-- Progress bar  -->
+                            <ProgressBar Classes="ProgressBar"
+                                         Value="{Binding ProgressValue}"/>
+                                        <!-- TODO: make the progressbar turn green when job done
+                                         Classes.success="{Binding IsCompleted}"
+                                         -->
             
                         </StackPanel>
                     </Border>
