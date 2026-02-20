@@ -36,14 +36,16 @@ namespace EasySave.Domain.Services
         }
 
         // Executes a single backup job asynchronously
-        public async Task ExecuteBackup(BackupJob job)
+        public async Task ExecuteBackup(BackupJob job, IBackupJobHandle handle)
         {    
 
             IBackupStrategy strategy = job.Type == BackupType.Full
                 ? _fullStrategy
                 : _differentialStrategy;
 
-            var files = await Task.Run(() => strategy.GetFilesToCopy(job.SourcePath, job.TargetPath));
+            var files = await Task.Run(
+                () => strategy.GetFilesToCopy(job.SourcePath, job.TargetPath),
+                handle.CancellationToken); // If the stop is engaged stop the getfile 
 
             var progress = BackupProgress.From(job);
             _stateService.Initialize(progress, files);
@@ -54,6 +56,13 @@ namespace EasySave.Domain.Services
             // Copy files one by one within this job
             foreach (var file in files)
             {
+
+                // Pause: waits here between files 
+                handle.WaitIfPaused();
+
+                // Stop: exits the loop
+                handle.CancellationToken.ThrowIfCancellationRequested();
+
                 var start = DateTime.Now;
 
                 try
@@ -113,12 +122,24 @@ namespace EasySave.Domain.Services
         }
 
         // Executes multiple backup jobs in parallel using Task.WhenAll
-        public async Task ExecuteBackups(IEnumerable<BackupJob> jobs)
+        public async Task ExecuteBackups(IEnumerable<BackupJob> jobs, IBackupHandleRegistry registry)
         {
             if (_businessSoftwareService.IsBusinessSoftwareRunning())
                 throw new BusinessSoftwareRunningException(_businessSoftwareService.GetConfiguredName());
 
-            var tasks = jobs.Select(job => ExecuteBackup(job));
+            var tasks = jobs.Select(async job =>
+            {
+                var handle = new BackupJobHandle();
+                registry.Register(job.Id, handle);
+                try
+                {
+                    await ExecuteBackup(job, handle);
+                }
+                finally
+                {
+                    registry.Unregister(job.Id);
+                }
+            });
 
             await Task.WhenAll(tasks);
         }
