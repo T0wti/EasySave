@@ -212,7 +212,9 @@ namespace EasySave.GUI.ViewModels
                 // Filter by source
                 j.Job.SourcePath.ToLower().Contains(SearchText.ToLower()) ||
                 // Filter by target
-                j.Job.TargetPath.ToLower().Contains(SearchText.ToLower())
+                j.Job.TargetPath.ToLower().Contains(SearchText.ToLower()) ||
+                // Filter by type
+                j.Job.Type.ToLower().Contains(SearchText.ToLower())
             ).ToList();
 
             foreach (var job in filteredJobs)
