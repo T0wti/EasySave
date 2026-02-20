@@ -27,9 +27,17 @@
                         Background="#F0F0F0"
                         CornerRadius="5"
                         Margin="0,2">
-                    <TextBlock Text="{Binding Name}"
-                               FontSize="16"
-                               VerticalAlignment="Center"/>
+                    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" Margin="5">                        
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Name}"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" VerticalAlignment="Center"></TextBlock>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="20,5">
+                            <TextBlock Text="{Binding SourcePath}"></TextBlock>
+                            <TextBlock Text="{Binding TargetPath}"></TextBlock>
+                        </StackPanel>
+                    </DockPanel>
                 </Border>
             </DataTemplate>
         </ListBox.ItemTemplate>
