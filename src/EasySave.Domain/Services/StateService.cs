@@ -48,6 +48,17 @@ namespace EasySave.Domain.Services
             Upsert(progress);
         }
 
+        public void Pause(int backupJobId)
+        {
+            UpdateStateOnly(backupJobId, BackupJobState.Paused);
+        }
+
+        public void Stop(int backupJobId)
+        {
+            UpdateStateOnly(backupJobId, BackupJobState.Stopped);
+        }
+
+
         // Marks a backup job as completed and resets runtime information
         public void Complete(int backupJobId)
         {

@@ -57,8 +57,17 @@ namespace EasySave.Domain.Services
             foreach (var file in files)
             {
 
+                if (handle.IsPaused)
+                    _stateService.Pause(job.Id);
+
                 // Pause: waits here between files 
                 handle.WaitIfPaused();
+
+                if (!handle.CancellationToken.IsCancellationRequested)
+                {
+                    progress.State = BackupJobState.Active;
+                    progress.LastUpdate = DateTime.Now;
+                }
 
                 // Stop: exits the loop
                 handle.CancellationToken.ThrowIfCancellationRequested();
@@ -95,6 +104,11 @@ namespace EasySave.Domain.Services
                     });
 
                     _stateService.Update(progress, file, targetPath);
+                }
+                catch (OperationCanceledException)
+                {
+                    _stateService.Stop(job.Id);
+                    throw;
                 }
                 catch (Exception ex)
                 {
