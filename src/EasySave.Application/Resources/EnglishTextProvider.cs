@@ -41,11 +41,15 @@ namespace EasySave.Application.Resources
         public override string WaterMarkBackupSourcePath => "Source folder";
         public override string WaterMarkBackupTargetPath => "Destination folder";
         public override string Full => "Full";
+        public override string FullInfo => "Copy every single file and directory from the source to the destination";
         public override string Differential => "Differential";
+        public override string DifferentialInfo => "Copy only new or updated files that have changed since the last full backup";
         public override string ExtensionToEncryptTitle => "Extension to encrypt";
         public override string Encrypt => "Encrypt";
-            // errors
-            public override string NameEmpty => "Backup name can't be empty";
+        public override string ExtensionToPrioritizeTitle => "Extension to prioritize";
+        public override string ExtensionWatermark => ".txt, .docx, .pdf...";
+        // errors
+        public override string NameEmpty => "Backup name can't be empty";
             public override string NameTooLong => "Backup name is too long";
             public override string SourcePathEmpty => "Source folder can't be empty";
             public override string SourcePathNotAbsolute  => "Source folder must be absolute";
@@ -90,6 +94,8 @@ namespace EasySave.Application.Resources
 
         // Execute Backup Menu
         public override string ExeBackupMenuTitle => "Execute a file backup";
+        public override string ExeBackupGeneralButtons => "Actions for all backup jobs";
+        public override string ExeBackupSearchBarWatermark => "Search a job by name, source, target or type...";
         //public override string BackupNames => Format("nom save"); // not used for the moment
         public override string ExeSelected => "Execute selection";
         public override string ExeBackupInstruction => "Command exemple : id_Backup";

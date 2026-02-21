@@ -20,6 +20,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private string? sourcePath;
         [ObservableProperty] private string? targetPath;
         [ObservableProperty] private int selectedType;
+        [ObservableProperty] private string _typeInfo;
 
         [ObservableProperty] private bool _isEncryptionEnabled;
         [ObservableProperty] private bool _isThereError;
@@ -51,7 +52,9 @@ namespace EasySave.GUI.ViewModels
         public string WaterMarkBackupSourcePath { get; }
         public string WaterMarkBackupTargetPath { get; }
         public string FullType { get; }
+        public string FullTypeInfo { get; }
         public string DifferentialType { get; }
+        public string DifferentialTypeInfo { get; }
         public string Encrypt { get; }
 
         public CreateBackupMenuViewModel(MainWindowViewModel mainWindow, DialogService dialogService) : base(mainWindow)
@@ -69,10 +72,13 @@ namespace EasySave.GUI.ViewModels
             WaterMarkBackupSourcePath = Texts.WaterMarkBackupSourcePath;
             WaterMarkBackupTargetPath = Texts.WaterMarkBackupTargetPath;
             FullType = Texts.Full;
+            FullTypeInfo = Texts.FullInfo;
             DifferentialType = Texts.Differential;
+            DifferentialTypeInfo = Texts.DifferentialInfo;
             Encrypt = Texts.Encrypt;
             IsThereError = false;
             selectedType = 1;
+            TypeInfo = Texts.FullInfo;
 
             SetFullTypeCommand = new RelayCommand(() => SelectedType = 1);
             SetDifferentialTypeCommand = new RelayCommand(() => SelectedType = 0);
@@ -173,6 +179,12 @@ namespace EasySave.GUI.ViewModels
         partial void OnTargetPathChanged(string value) {
             TargetHasError = false;
             ResetErrorStates();
+        }
+
+        partial void OnSelectedTypeChanged(int value)
+        {
+            if (SelectedType == 1) TypeInfo = FullTypeInfo;
+            else if (SelectedType == 0) TypeInfo = DifferentialTypeInfo;
         }
 
         private void ResetErrorStates()

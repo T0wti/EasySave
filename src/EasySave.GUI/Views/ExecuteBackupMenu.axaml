@@ -8,11 +8,41 @@
              x:Class="EasySave.GUI.Views.ExecuteBackupMenu"
              x:DataType="viewModels:ExecuteBackupMenuViewModel">
     
-    <StackPanel Spacing="20" Margin="30">
+    <StackPanel Spacing="10" Margin="10">
         
         <controls:PageTitleControl/>
+
+        <!-- All Play buttons -->
+        <Border Grid.Column="2" Background="{StaticResource SidebarBackground}" CornerRadius="25" Padding="10">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="10">
+
+                <TextBlock Text="{Binding GeneralButtons}" Classes="PrimaryText"
+                            HorizontalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center">
+                                        
+                    <!-- Pause button -->
+                        <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.PauseSelectedCommand}">
+                            <PathIcon Classes="MenuIcon" Data="M14,19H18V5H14M6,19H10V5H6V19Z"/>
+                        </Button>
+
+                    <!-- Play button -->
+                    <Button Classes="MenuBtn PlayBtn" Command="{Binding ExecuteAllJobsCommand}">
+                        <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+                    </Button>
+
+                    <!-- Stop button -->
+                    <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.StopSelectedCommand}">
+                        <PathIcon Classes="MenuIcon" Data="M18,18H6V6H18V18Z"/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Searchbar -->
+        <TextBox Text="{Binding SearchText}" Watermark="{Binding Watermark}" HorizontalAlignment="Stretch" CornerRadius="8"/>
         
-        <ScrollViewer MaxHeight="700">
+        <ScrollViewer MaxHeight="350">
           <ItemsControl ItemsSource="{Binding BackupJobs}">
              <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -23,7 +53,7 @@
                                 
                                 <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Job.Name}" 
-                                               FontSize="16" FontWeight="SemiBold"/>
+                                               Classes="PrimaryText"/>
 
                                     <TextBlock Text="{Binding Job.SourcePath}" 
                                                Foreground="{StaticResource TextSecondary}"/>
@@ -47,7 +77,8 @@
 
                                         <!-- Play button -->
                                         <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteSelectedCommand}"
-                                                CommandParameter="{Binding Job.Id}">
+                                                CommandParameter="{Binding Job.Id}"
+                                                IsEnabled="{Binding !IsProcessing}">
                                             <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                                         </Button>
 
@@ -60,8 +91,12 @@
                                 </Border>
                             </Grid>
 
-                            <!-- Progress bar | TEMP VALUE -->
-                            <ProgressBar Classes="ProgressBar" Value="50"/>
+                            <!-- Progress bar  -->
+                            <ProgressBar Classes="ProgressBar"
+                                         Value="{Binding ProgressValue}"/>
+                                        <!-- TODO: make the progressbar turn green when job done
+                                         Classes.success="{Binding IsCompleted}"
+                                         -->
             
                         </StackPanel>
                     </Border>
@@ -71,6 +106,7 @@
         </ScrollViewer>
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="20">
+            
             <!-- Button -->
 		    <TextBlock Text="{Binding Message}" Classes.ErrorMessage="{Binding IsThereError}" IsVisible="{Binding IsMessageToDisplay}"/>
                     

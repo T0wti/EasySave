@@ -41,11 +41,15 @@ namespace EasySave.Application.Resources
         public override string WaterMarkBackupSourcePath => "Dossier source";
         public override string WaterMarkBackupTargetPath => "Dossier destination";
         public override string Full => "Complète";
+        public override string FullInfo => "Copier l'intégralité des dossiers et des fichiers sources vers l'emplacement cible";
         public override string Differential => "Différentielle";
+        public override string DifferentialInfo => "Ne copier que les fichiers qui ont été créés ou modifiés depuis la dernière sauvegarde complète";
         public override string ExtensionToEncryptTitle => "Extension à chiffrer";
         public override string Encrypt => "Chiffrer";
-            // errors
-            public override string NameEmpty => "Le nom de la sauvegarde ne peut pas être vide";
+        public override string ExtensionToPrioritizeTitle => "Extension à prioriser";
+        public override string ExtensionWatermark => ".txt, .docx, .pdf...";
+        // errors
+        public override string NameEmpty => "Le nom de la sauvegarde ne peut pas être vide";
             public override string NameTooLong => "Le nom de la sauvegarde est trop long";
             public override string SourcePathEmpty => "Le dossier source ne peut pas être vide";
             public override string SourcePathNotAbsolute  => "Le chemin source doit être un chemin absolu";
@@ -90,6 +94,8 @@ namespace EasySave.Application.Resources
 
         // Execute Backup Menu
         public override string ExeBackupMenuTitle => "Exécuter une sauvegarde de fichiers";
+        public override string ExeBackupGeneralButtons => "Actions pour tous les travaux de sauvegarde";
+        public override string ExeBackupSearchBarWatermark => "Rechercher un travail par nom, source, destination ou type...";
         //public override string BackupNames => Format("nom save"); // not used for the moment
         public override string ExeSelected => "Exécuter la sélection";
         public override string ExeBackupInstruction => "Tapez id_Sauvegarde";

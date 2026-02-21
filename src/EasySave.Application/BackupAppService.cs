@@ -12,15 +12,18 @@ namespace EasySave.Application
         private readonly IBackupManagerService _manager;
         private readonly IBackupService _executor;
         private readonly IFileStateService _fileStateService;
+        private readonly IBackupHandleRegistry _registry;
 
         public BackupAppService(
             IBackupManagerService manager,
             IBackupService executor,
-            IFileStateService fileStateService)
+            IFileStateService fileStateService,
+            IBackupHandleRegistry registry)
         {
             _manager = manager;
             _executor = executor;
             _fileStateService = fileStateService;
+            _registry = registry;
         }
 
         // Get all backup jobs as DTOs
@@ -76,10 +79,24 @@ namespace EasySave.Application
         {
             try
             {
-                var job = _manager.GetBackupJobs()
-                                  .FirstOrDefault(j => j.Id == id);
-                await _executor.ExecuteBackup(job);
+                var job = _manager.GetBackupJobs().FirstOrDefault(j => j.Id == id)
+                                 ?? throw new BackupJobNotFoundException(id);
+
+                var handle = new BackupJobHandle();
+                _registry.Register(job.Id, handle);
+
+                try
+                {
+                    await Task.Run(async () =>
+                        await _executor.ExecuteBackup(job, handle).ConfigureAwait(false)
+                    ).ConfigureAwait(false);
+                }
+                finally
+                {
+                    _registry.Unregister(job.Id);
+                }
             }
+            catch (OperationCanceledException) { } //A verif
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
@@ -91,10 +108,11 @@ namespace EasySave.Application
                 var jobs = _manager.GetBackupJobs()
                                    .Where(j => ids.Contains(j.Id));
 
-                await _executor.ExecuteBackups(jobs);
+                await _executor.ExecuteBackups(jobs, _registry).ConfigureAwait(false);
             }
             catch (AggregateException aex)
             {
+
                 // Unwrap and rethrow the first domain exception found
                 var first = aex.InnerExceptions
                     .OfType<EasySaveException>()
@@ -104,6 +122,38 @@ namespace EasySave.Application
                 throw;
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
+        }
+
+
+
+        // Pause/Stop : one job
+        public bool IsJobPaused(int jobId) => _registry.Get(jobId)?.IsPaused ?? false;
+        public bool IsJobRunning(int jobId) => _registry.Get(jobId) != null;
+        public void PauseBackup(int jobId) => _registry.Get(jobId)?.Pause();
+        public void ResumeBackup(int jobId) => _registry.Get(jobId)?.Resume();
+        public void StopBackup(int jobId) => _registry.Get(jobId)?.Stop();
+
+        // Pause/Stop : all jobs
+        public void PauseAll()
+        {
+            foreach (var (_, handle) in _registry.GetAll())
+            {
+                handle.Pause();
+            }
+        }
+        public void ResumeAll()
+        {
+            foreach (var (_, handle) in _registry.GetAll())
+            {
+                handle.Resume();
+            }
+        }
+        public void StopAll()
+        {
+            foreach (var (_, handle) in _registry.GetAll())
+            {
+                handle.Stop();
+            }
         }
 
         // Get all jobs progression (dont know if its util)
