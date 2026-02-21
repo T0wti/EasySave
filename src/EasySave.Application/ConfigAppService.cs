@@ -148,6 +148,43 @@ namespace EasySave.Application
             }
         }
 
+        private void SavePriorityExtensions(List<string>? extensions)
+        {
+            var settings = _configService.LoadSettings();
+            if (extensions.Count == 1 && extensions[0] == "")
+            {
+                settings.PriorityFileExtensions = new List<string>();
+            }
+            else
+            {
+                settings.PriorityFileExtensions = extensions
+                    .Select(e => e.StartsWith(".") ? e.ToLower() : $".{e.ToLower()}")
+                    .Distinct()
+                    .ToList();
+
+            }
+            _configService.SaveSettings(settings);
+        }
+
+        public void SavePriorityExtensionText(string? text)
+        {
+            if (text != null)
+            {
+                text = text.Replace(" ", "")
+                    .Replace(";", ",")
+                    .Replace("/", ",")
+                    .Replace(".", "") // .exe become exe
+                    .Replace("|", ",");
+
+                var extensions = text.Split(',').ToList();
+                SavePriorityExtensions(extensions);
+            }
+            else
+            {
+                SavePriorityExtensions(null);
+            }
+        }
+
         // Return business software business
         public string? GetBusinessSoftwareName()
         {

@@ -14,6 +14,7 @@ namespace EasySave.Domain.Models
             public int LogFormat { get; set; }
             public string? BusinessSoftwareName { get; set; }
             public List<string>? EncryptedFileExtensions { get; set; }
+            public List<string>? PriorityFileExtensions { get; set; } 
             public string? CryptoSoftPath { get; set; }
             public string? CryptoSoftKeyPath { get; set; }
 
