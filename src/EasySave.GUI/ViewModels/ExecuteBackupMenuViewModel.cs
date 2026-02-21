@@ -67,7 +67,6 @@ namespace EasySave.GUI.ViewModels
             PauseSelectedCommand = new AsyncRelayCommand(PauseAllJobs);
             // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand (or other) not to freeze the interface
             // Needed to avoid clicking on all buttons at the same time
-            PauseSelectedCommand = new AsyncRelayCommand<int>(PauseSelectedJobs, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
@@ -75,11 +74,6 @@ namespace EasySave.GUI.ViewModels
 
         private async Task PauseAllJobs()
         {
-            var job = GetJobViewModel(jobId);
-
-            BackupAppService.PauseBackup(jobId);
-
-            job.IsProcessing = false;
             IsThereError = false;
             try
             {
@@ -195,21 +189,11 @@ namespace EasySave.GUI.ViewModels
         
 
         //TODO: Correct when stopping, progress bar jumps to 100%
-        private async Task StopSelectedJobs(int jobId)
+        private async Task StopSelectedJobs()
         {
-            var job = GetJobViewModel(jobId);
-            BackupAppService.StopBackup(jobId);
-
-            if (job != null) {
-                job.IsProcessing = false;
-                job.ProgressValue = 0;
-            }
-            
             IsThereError = false;
-            IsRunning = false;
             IsMessageToDisplay = true;
-            Progress = 0;
-            Message = job.Job.Name + "\n" + Texts.MessageBoxJobStopped;
+            Message = Texts.MessageBoxJobStopped;
         }
 
         // On searchbar text changed
