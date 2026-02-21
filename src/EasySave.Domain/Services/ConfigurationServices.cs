@@ -33,6 +33,7 @@ namespace EasySave.Domain.Services
             return new ApplicationSettings
             {
                 Language = Language.English,
+                Theme = ThemeMode.System,
                 LogDirectoryPath = Path.Combine(_baseAppPath, "Logs"),
                 StateFileDirectoryPath = Path.Combine(_baseAppPath, "State"),
                 LogFormat = 0,

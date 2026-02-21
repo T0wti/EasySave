@@ -25,7 +25,8 @@ namespace EasySave.Application
 
                 return new ApplicationSettingsDto
                 {
-                    LanguageCode = ConvertLanguageToCode(settings.Language)
+                    LanguageCode = ConvertLanguageToCode(settings.Language),
+                    ThemeCode = ConvertThemeToCode(settings.Theme)
                 };
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
@@ -42,6 +43,16 @@ namespace EasySave.Application
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
 
+        }
+
+        public void ChangeTheme(int code)
+        {
+            try{
+                var settings = _configService.LoadSettings();
+                settings.Theme = ConvertCodeToTheme(code);
+                _configService.SaveSettings(settings);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
 
         // Change logformat based on int code
@@ -178,6 +189,36 @@ namespace EasySave.Application
         private static LogFormat ConvertCodeToLogFormat(int code)
         {
             return code == 0 ? LogFormat.Json : LogFormat.Xml;
+        }
+
+        private static int ConvertThemeToCode(ThemeMode theme)
+        {
+            switch (theme)
+            {
+                case ThemeMode.Light:
+                    return 0;
+
+                case ThemeMode.Dark:
+                    return 1;
+
+                case ThemeMode.System:
+                default:
+                    return 0;
+            }
+        }
+
+        private static ThemeMode ConvertCodeToTheme(int code)
+        {
+            switch (code)
+            {
+                case 1:
+                    return ThemeMode.Light;
+                case 2:
+                    return ThemeMode.Dark;
+                case 0:
+                default:
+                    return ThemeMode.System;
+            }
         }
     }
 }

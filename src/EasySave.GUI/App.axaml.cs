@@ -6,6 +6,7 @@ using EasySave.Application.Resources;
 using EasySave.GUI.Views;
 using EasySave.GUI.ViewModels;
 using System.Linq;
+using Avalonia.Styling;
 
 namespace EasySave.GUI;
 
@@ -31,6 +32,21 @@ public partial class App : Avalonia.Application
             ITextProvider texts = settings.LanguageCode == 0
                 ? new FrenchTextProvider()
                 : new EnglishTextProvider();
+
+            // Theme mode
+            switch (settings.ThemeCode)
+            {
+                case 1:
+                    this.RequestedThemeVariant = ThemeVariant.Light;
+                    break;
+                case 2:
+                    this.RequestedThemeVariant = ThemeVariant.Dark;
+                    break;
+                case 0:
+                default:
+                    this.RequestedThemeVariant = ThemeVariant.Default;
+                    break;
+            }
 
             // Create the MainViewModel with the services
             var mainViewModel = new MainWindowViewModel(backupAppService, configAppService, texts);

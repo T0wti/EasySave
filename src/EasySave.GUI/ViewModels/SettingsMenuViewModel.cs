@@ -111,5 +111,27 @@ namespace EasySave.GUI.ViewModels
             //ConfigAppService.SavePrioritizedExtensionText(ExtensionsToPrioritize);
             await ShowMessageAsync(Texts.MessageBoxSettingsSaved,"", "", Texts.MessageBoxOk, false, false);
         }
+
+        private void ApplyTheme(int themeCode)
+        {
+            // Saves theme in config file
+            ConfigAppService.ChangeTheme(themeCode);
+
+            // Applies theme
+            switch (themeCode)
+            {
+                case 1:
+                    Avalonia.Application.Current.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Light;
+                    break;
+                case 2:
+                    Avalonia.Application.Current.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Dark;
+                    break;
+                case 0:
+                default:
+                    Avalonia.Application.Current.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Default;
+                    break;
+
+            }
+        }
     }
 }
