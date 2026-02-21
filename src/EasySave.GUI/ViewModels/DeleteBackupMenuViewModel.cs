@@ -17,7 +17,9 @@ namespace EasySave.GUI.ViewModels
         public ICommand DeleteBackupCommand { get; }
 
         public ObservableCollection<BackupJobDTO> BackupJobs { get; }
+        private readonly List<BackupJobDTO> _allJobs; // For searchbar
 
+        [ObservableProperty] private string _searchText = string.Empty; // For searchbar
         [ObservableProperty] private BackupJobDTO _selectedJob;
 
         public string Title {  get; }
@@ -44,6 +46,8 @@ namespace EasySave.GUI.ViewModels
             Watermark = Texts.ExeBackupSearchBarWatermark;
             DeleteConfirmation = Texts.MessageBoxDeleteConfirmation;
 
+            _allJobs = BackupAppService.GetAll().ToList();
+
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 
             DeleteBackupCommand = new AsyncRelayCommand(DeleteBackup);
@@ -58,9 +62,20 @@ namespace EasySave.GUI.ViewModels
                 bool userConfirmed = await ShowMessageAsync(DeleteConfirmation, Yes, No, Ok, true, true);
                 if (userConfirmed) {
                     BackupAppService.DeleteBackup(SelectedJob.Id);
+                    _allJobs.Remove(SelectedJob); // For searchbar
                     BackupJobs.Remove(SelectedJob);
                     await ShowMessageAsync(JobDeleted, "", "", Ok, false, false);
                 }
+            }
+        }
+
+        partial void OnSearchTextChanged(string value)
+        {
+            BackupJobs.Clear();
+            var filtered = _allJobs.Where(j => j.MatchesSearch(value)).ToList();
+            foreach (var job in filtered)
+            {
+                BackupJobs.Add(job);
             }
         }
     }

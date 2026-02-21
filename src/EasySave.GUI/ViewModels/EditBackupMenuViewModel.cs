@@ -1,7 +1,11 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using EasySave.Application.Utils;
 using EasySave.GUI.Services;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels
@@ -11,6 +15,9 @@ namespace EasySave.GUI.ViewModels
         // Jobs
         public ObservableCollection<BackupJobDTO> BackupJobs { get; }
         private BackupJobDTO _selectedJob;
+        private readonly List<BackupJobDTO> _allJobs; // For searchbar
+
+        [ObservableProperty] private string _searchText = string.Empty; // For searchbar
 
         public BackupJobDTO SelectedJob
         {
@@ -27,6 +34,7 @@ namespace EasySave.GUI.ViewModels
 
         public string Title { get; }
         public string Exit {  get; }
+        public string Watermark {  get; }
 
         public ICommand ExitCommand { get; }
 
@@ -34,10 +42,23 @@ namespace EasySave.GUI.ViewModels
         {
             Title = Texts.EditBackupTitle;
             Exit = Texts.Exit;
+            Watermark = Texts.ExeBackupSearchBarWatermark;
 
+            _allJobs = BackupAppService.GetAll().ToList(); // For searchbar
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 
             ExitCommand = new RelayCommand(NavigateToBase);
+        }
+
+        partial void OnSearchTextChanged(string value)
+        {
+            BackupJobs.Clear();
+            var filtered = _allJobs.Where(j => j.MatchesSearch(value)).ToList();
+
+            foreach (var job in filtered)
+            {
+                BackupJobs.Add(job);
+            }
         }
     }
 }
