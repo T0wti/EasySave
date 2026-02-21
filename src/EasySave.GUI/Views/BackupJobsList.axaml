@@ -5,33 +5,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.BackupJobsList"
-             x:Name="This">
+             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
+             x:Name="This"
+             x:DataType="viewModels:BackupJobsListViewModel">
+
+    <StackPanel Spacing="10">
     
-    <ListBox ItemsSource="{Binding #This.Jobs}"
-             SelectedItem="{Binding #This.SelectedJob, Mode=TwoWay}"
-             Background="Transparent"
-             Name="JobsListBox">
-        <ListBox.Styles>
-            <Style Selector="ListBoxItem">
-                <Setter Property="CornerRadius" Value="10"/>
-                <Setter Property="Margin" Value="0,2"/>
-                <Setter Property="Padding" Value="5"/>
-            </Style>
-            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-                <Setter Property="Background" Value="#16416c"/>
-            </Style>
-        </ListBox.Styles>
-        <ListBox.ItemTemplate>
-            <DataTemplate x:DataType="dto:BackupJobDTO">
-                <Border Padding="10"
-                        Background="#F0F0F0"
-                        CornerRadius="5"
-                        Margin="0,2">
-                    <TextBlock Text="{Binding Name}"
-                               FontSize="16"
-                               VerticalAlignment="Center"/>
-                </Border>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+        <ListBox ItemsSource="{Binding #This.Jobs}"
+                 SelectedItem="{Binding #This.SelectedJob, Mode=TwoWay}"
+                 Background="Transparent"
+                 Name="JobsListBox">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="Margin" Value="0,2"/>
+                    <Setter Property="Padding" Value="5"/>
+                </Style>
+                <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#16416c"/>
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="dto:BackupJobDTO">
+                    <Border Padding="10"
+                            Background="#F0F0F0"
+                            CornerRadius="5"
+                            Margin="0,2">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <!-- Name -->
+                            <TextBlock Text="{Binding Name}" Classes="PrimaryText"/>
+
+                            <!-- Source -->
+                            <TextBlock Text="{Binding SourcePath}" Foreground="{StaticResource TextSecondary}"/>
+
+                            <!-- Target -->
+                            <TextBlock Text="{Binding TargetPath}" Foreground="{StaticResource TextSecondary}"/>
+
+                            <!-- Type -->
+                            <TextBlock Text="{Binding Type}" Foreground="{StaticResource TextSecondary}"/>
+
+                        </StackPanel>
+
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
 </UserControl>
