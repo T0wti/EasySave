@@ -1,11 +1,23 @@
-﻿
+﻿using System.Threading;
+
 namespace EasySave.CryptoSoft
 {
+    // Program.cs — args[0] = file to encrypt, args[1] = path of the key
     public class Program
     {
-        // Program.cs — args[0] = file to encrypt, args[1] = path of the key
+        private const string MutexName = "EasySave_CryptoSoft_Mutex";
+
         static int Main(string[] args)
         {
+
+            using var mutex = new Mutex(true, MutexName, out bool createdNew);// mutex disposed here by using : OS releases it at process exit
+
+            if (!createdNew)
+            {
+                Console.Error.WriteLine("CryptoSoft is already running.");
+                return -10;
+            }
+
             if (args.Length != 2)
             {
                 Console.Error.WriteLine("Usage: CryptoSoft <filePath> <keyPath>");
@@ -27,5 +39,6 @@ namespace EasySave.CryptoSoft
             var fileManager = new FileManager(args[0], args[1]);
             return fileManager.TransformFile();
         }
+
     }
 }

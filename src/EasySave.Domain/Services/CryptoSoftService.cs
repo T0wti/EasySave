@@ -9,6 +9,9 @@ namespace EasySave.Domain.Services
     {
         private readonly ApplicationSettings _settings;
 
+        private const int MaxRetries = 50;
+        private const int RetryDelayMs = 500;
+
         public CryptoSoftService(ApplicationSettings settings)
         {
             _settings = settings;
@@ -18,7 +21,7 @@ namespace EasySave.Domain.Services
         {
 
             var ext = Path.GetExtension(filePath);
-            
+
             if (_settings.EncryptedFileExtensions == null
                 || _settings.EncryptedFileExtensions.Count == 0)
                 return false;
@@ -38,6 +41,29 @@ namespace EasySave.Domain.Services
                 || !File.Exists(_settings.CryptoSoftKeyPath))
                 return -1;
 
+            // Retry loop : CryptoSoft is mono-instance and returns -10 when busy
+            // We wait and retry instead of failing the whole backup
+            for (int attempt = 1; attempt <= MaxRetries; attempt++)
+            {
+                long result = RunCryptoSoft(filePath);
+
+                if (result == -10)
+                {
+                    // CryptoSoft busy : wait and retry
+                    Thread.Sleep(RetryDelayMs);
+                    continue;
+                }
+
+                // Any other result (success or real error) → return immediately
+                return result;
+            }
+
+            // All retries exhausted : CryptoSoft was busy too long
+            return -10;
+        }
+
+        private long RunCryptoSoft(string filePath)
+        {
             try
             {
                 var process = new Process
@@ -45,7 +71,11 @@ namespace EasySave.Domain.Services
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = _settings.CryptoSoftPath,
-                        ArgumentList = { filePath, _settings.CryptoSoftKeyPath },
+                        ArgumentList =
+                        {
+                            filePath,
+                            _settings.CryptoSoftKeyPath
+                        },
                         UseShellExecute = false,
                         RedirectStandardOutput = false,
                         CreateNoWindow = true
@@ -55,7 +85,6 @@ namespace EasySave.Domain.Services
                 process.Start();
                 process.WaitForExit();
 
-                // CryptoSoft returns duration in ms as exit code, or negative on error
                 return process.ExitCode;
             }
             catch
