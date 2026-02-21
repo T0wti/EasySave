@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Exceptions;
+using EasySave.Application.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -196,26 +197,7 @@ namespace EasySave.GUI.ViewModels
         {
             BackupJobs.Clear();
 
-            // If searchbar empty, display all jobs
-            if (string.IsNullOrEmpty(SearchText))
-            {
-                foreach (var job in _jobs)
-                {
-                    BackupJobs.Add(job);
-                }
-                return;
-            }
-
-            var filteredJobs = _jobs.Where(j =>
-                // Filter by name
-                j.Job.Name.ToLower().Contains(SearchText.ToLower()) ||
-                // Filter by source
-                j.Job.SourcePath.ToLower().Contains(SearchText.ToLower()) ||
-                // Filter by target
-                j.Job.TargetPath.ToLower().Contains(SearchText.ToLower()) ||
-                // Filter by type
-                j.Job.Type.ToLower().Contains(SearchText.ToLower())
-            ).ToList();
+            var filteredJobs = _jobs.Where(j => j.Job.MatchesSearch(SearchText)).ToList();
 
             foreach (var job in filteredJobs)
             {

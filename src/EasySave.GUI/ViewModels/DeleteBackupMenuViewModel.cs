@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using EasySave.Application.Utils;
 using EasySave.GUI.Views;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Linq;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -14,8 +18,7 @@ namespace EasySave.GUI.ViewModels
 
         public ObservableCollection<BackupJobDTO> BackupJobs { get; }
 
-        [ObservableProperty]
-        private BackupJobDTO _selectedJob;
+        [ObservableProperty] private BackupJobDTO _selectedJob;
 
         public string Title {  get; }
         public string Exit {  get; }
@@ -24,6 +27,7 @@ namespace EasySave.GUI.ViewModels
         public string Yes {  get; }
         public string No {  get; }
         public string Ok {  get; }
+        public string Watermark { get; }
         public string DeleteConfirmation {  get; }
 
         public ICommand ExitCommand { get; }
@@ -34,9 +38,10 @@ namespace EasySave.GUI.ViewModels
             Exit = Texts.Exit;
             Delete = Texts.MessageBoxDelete;
             JobDeleted = Texts.MessageBoxJobDeleted;
-            Ok = Texts.MessageBoxOk;
             Yes = Texts.MessageBoxYes;
             No = Texts.MessageBoxNo;
+            Ok = Texts.MessageBoxOk;
+            Watermark = Texts.ExeBackupSearchBarWatermark;
             DeleteConfirmation = Texts.MessageBoxDeleteConfirmation;
 
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());

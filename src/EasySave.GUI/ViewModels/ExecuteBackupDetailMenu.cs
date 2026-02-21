@@ -14,10 +14,5 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private bool _isCompleted; // To make the progress bar turn green when backup is done
 
         public BackupJobSelectionViewModel(BackupJobDTO job) => Job = job;
-        // Replaces :
-        //public BackupJobSelectionViewModel(BackupJobDTO job)
-        //{
-        //    Job = job;
-        //}
     }
 }
