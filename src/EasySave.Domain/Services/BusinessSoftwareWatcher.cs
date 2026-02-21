@@ -3,9 +3,8 @@ using System.Management;
 
 namespace EasySave.Domain.Services
 {
-    // Test with observer 
-    // Polls the business software process at a fixed interval
-    // Pauses all active backup jobs when detected, resumes them when it stops
+    // Watches a configured business software process
+    // When the process starts all backup jobs are paused
 
     public class BusinessSoftwareWatcher : IBusinessSoftwareWatcher
     {
@@ -32,21 +31,25 @@ namespace EasySave.Domain.Services
 
             var exe = $"{processName}.exe";
 
+            // Watcher that triggers when the process starts
             using var startWatcher = CreateWatcher(
                 $@"SELECT * FROM __InstanceCreationEvent WITHIN 1
            WHERE TargetInstance ISA 'Win32_Process'
            AND TargetInstance.Name = '{exe}'",
                 PauseAll);
 
+            // Watcher that triggers when the process stops
             using var stopWatcher = CreateWatcher(
                 $@"SELECT * FROM __InstanceDeletionEvent WITHIN 1
            WHERE TargetInstance ISA 'Win32_Process'
            AND TargetInstance.Name = '{exe}'",
                 ResumeAll);
 
+            // If the business software is already running at startup : pause all
             if (_businessSoftwareService.IsBusinessSoftwareRunning())
                 PauseAll();
 
+            // Start listening to process start/stop events
             startWatcher.Start();
             stopWatcher.Start();
 
@@ -65,8 +68,9 @@ namespace EasySave.Domain.Services
 
         private static ManagementEventWatcher CreateWatcher(string query, Action callback)
         {
-            var watcher = new ManagementEventWatcher(new WqlEventQuery(query));
-            watcher.EventArrived += (_, _) => callback();
+            var watcher = new ManagementEventWatcher(new WqlEventQuery(query)); // Create a WMI watcher using the provided query
+            watcher.EventArrived += (_, _) => callback(); // Attach the callback to be executed when the event is detected
+
             return watcher;
         }
 
