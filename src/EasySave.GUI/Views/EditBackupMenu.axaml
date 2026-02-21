@@ -10,6 +10,9 @@
 
 <StackPanel Spacing="20" Margin="30">
         <controls:PageTitleControl/>
+
+        <!-- Searchbar -->
+        <TextBox Text="{Binding SearchText}" Watermark="{Binding Watermark}" HorizontalAlignment="Stretch" CornerRadius="8"/>
         
         <controls:BackupJobsList Jobs="{Binding BackupJobs}" SelectedJob="{Binding SelectedJob}"/>
         

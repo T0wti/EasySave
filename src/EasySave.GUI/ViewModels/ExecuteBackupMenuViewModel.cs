@@ -2,6 +2,7 @@ using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Exceptions;
+using EasySave.Application.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -64,8 +65,9 @@ namespace EasySave.GUI.ViewModels
 
             ExitCommand = new RelayCommand(NavigateToBase);
             PauseSelectedCommand = new AsyncRelayCommand(PauseAllJobs);
-            // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand not to freeze the interface
+            // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand (or other) not to freeze the interface
             // Needed to avoid clicking on all buttons at the same time
+            PauseSelectedCommand = new AsyncRelayCommand<int>(PauseSelectedJobs, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs);
             StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
@@ -73,6 +75,11 @@ namespace EasySave.GUI.ViewModels
 
         private async Task PauseAllJobs()
         {
+            var job = GetJobViewModel(jobId);
+
+            BackupAppService.PauseBackup(jobId);
+
+            job.IsProcessing = false;
             IsThereError = false;
             try
             {
@@ -101,13 +108,15 @@ namespace EasySave.GUI.ViewModels
         private async Task ExecuteJobAsync(int jobId)
         {
             // Get job for progressbar
-            var job = BackupJobs.FirstOrDefault(x => x.Job.Id == jobId);
+            var job = GetJobViewModel(jobId);
             if (job == null) return;
+
+            bool isSuccess = false; // To check if stopped by button or stopped by failure
 
             try
             {
                 IsRunning = true;
-                job.IsProcessing = true; // TO avoid clicking on multiple buttons at the same time
+                job.IsProcessing = true; // To avoid clicking on multiple buttons at the same time
                 job.IsCompleted = false; // To get a green progress bar once done
 
                 // _ is a trash variable when a function needs to
@@ -126,12 +135,12 @@ namespace EasySave.GUI.ViewModels
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
                 IsThereError = false;
-                await BackupAppService.ExecuteBackup(jobId);
-                job.ProgressValue = 100; // When job is done
-                job.IsCompleted = true;
 
-                IsMessageToDisplay = true;
-                Message = job.Job.Name + "\n" + Texts.MessageBoxJobExecuted;
+                //await BackupAppService.ExecuteBackup(jobId);
+                // Replaced by bellow to avoid freezing when pausing or stopping:
+                await Task.Run(() => BackupAppService.ExecuteBackup(jobId));
+
+                isSuccess = true;
             }
             catch (AppException e)
             {
@@ -150,12 +159,24 @@ namespace EasySave.GUI.ViewModels
             }
             finally
             {
-                IsExecutionDone = true;
-                Progress = 100;
                 job.IsProcessing = false;
                 IsRunning = false;
-            }
+                IsExecutionDone = true;
 
+                if (isSuccess)
+                {
+                    job.ProgressValue = 100; // When job is done
+                    Progress = 100;
+                    job.IsCompleted = true;
+                    IsMessageToDisplay = true;
+                    Message = job.Job.Name + "\n" + Texts.MessageBoxJobExecuted;
+                }
+                else
+                {
+                    Progress = 0;
+                    job.ProgressValue = 0;
+                }
+            }
         }
 
         private async Task ExecuteAllJobs()
@@ -173,11 +194,22 @@ namespace EasySave.GUI.ViewModels
         }
         
 
-        private async Task StopSelectedJobs()
+        //TODO: Correct when stopping, progress bar jumps to 100%
+        private async Task StopSelectedJobs(int jobId)
         {
+            var job = GetJobViewModel(jobId);
+            BackupAppService.StopBackup(jobId);
+
+            if (job != null) {
+                job.IsProcessing = false;
+                job.ProgressValue = 0;
+            }
+            
             IsThereError = false;
+            IsRunning = false;
             IsMessageToDisplay = true;
-            Message = Texts.MessageBoxJobStopped;
+            Progress = 0;
+            Message = job.Job.Name + "\n" + Texts.MessageBoxJobStopped;
         }
 
         // On searchbar text changed
@@ -190,31 +222,17 @@ namespace EasySave.GUI.ViewModels
         {
             BackupJobs.Clear();
 
-            // If searchbar empty, display all jobs
-            if (string.IsNullOrEmpty(SearchText))
-            {
-                foreach (var job in _jobs)
-                {
-                    BackupJobs.Add(job);
-                }
-                return;
-            }
-
-            var filteredJobs = _jobs.Where(j =>
-                // Filter by name
-                j.Job.Name.ToLower().Contains(SearchText.ToLower()) ||
-                // Filter by source
-                j.Job.SourcePath.ToLower().Contains(SearchText.ToLower()) ||
-                // Filter by target
-                j.Job.TargetPath.ToLower().Contains(SearchText.ToLower()) ||
-                // Filter by type
-                j.Job.Type.ToLower().Contains(SearchText.ToLower())
-            ).ToList();
+            var filteredJobs = _jobs.Where(j => j.Job.MatchesSearch(SearchText)).ToList();
 
             foreach (var job in filteredJobs)
             {
                 BackupJobs.Add(job);
             }
+        }
+
+        private BackupJobSelectionViewModel? GetJobViewModel(int jobId)
+        {
+            return BackupJobs.FirstOrDefault(x => x.Job.Id == jobId);
         }
     }
 }

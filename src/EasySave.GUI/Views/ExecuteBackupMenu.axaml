@@ -71,7 +71,8 @@
                                         
                                         <!-- Pause button -->
                                         <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.PauseSelectedCommand}"
-                                                CommandParameter="{Binding Job.Id}">
+                                                CommandParameter="{Binding Job.Id}"
+                                                IsEnabled="{Binding IsProcessing}">
                                             <PathIcon Classes="MenuIcon" Data="M14,19H18V5H14M6,19H10V5H6V19Z"/>
                                         </Button>
 

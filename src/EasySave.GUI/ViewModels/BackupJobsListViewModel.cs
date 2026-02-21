@@ -1,12 +1,16 @@
-using System.Collections.Generic;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using EasySave.Application.DTOs;
+using EasySave.Application.Resources;
+using EasySave.Application.Utils;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels
 {
 
-    public class BackupJobsListViewModel : ObservableObject
+    public partial class BackupJobsListViewModel : ObservableObject
     {
         private IEnumerable<BackupJobDTO> _jobs;
         private BackupJobDTO _selectedJob;
@@ -29,6 +33,5 @@ namespace EasySave.GUI.ViewModels
         {
             _jobs = new List<BackupJobDTO>();
         }
-
     }
 }
