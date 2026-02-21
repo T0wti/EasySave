@@ -5,8 +5,10 @@
     {
         Inactive,
         Active,
+        Paused,
         Completed,
         Failed,
+        Stopped,
         Interrupted
     }
 }
