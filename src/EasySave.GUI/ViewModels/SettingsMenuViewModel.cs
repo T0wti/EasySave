@@ -61,8 +61,7 @@ namespace EasySave.GUI.ViewModels
             BusinessSoftware = ConfigAppService.GetBusinessSoftwareName();
             ExtensionsToEncrypt = ConfigAppService.GetEncryptedExtensionText();
             ExtensionsToEncryptTitle = Texts.ExtensionToEncryptTitle;
-            //TODO:
-            //ExtensionsToPrioritize = ConfigAppService.GetPrioritizedExtensionText();
+            ExtensionsToPrioritize = ConfigAppService.GetPriorityExtensionText();
             ExtensionsToPrioritizeTitle = Texts.ExtensionToPrioritizeTitle;
             ExtensionWatermark = Texts.ExtensionWatermark;
 
@@ -107,8 +106,7 @@ namespace EasySave.GUI.ViewModels
         {
             ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
             ConfigAppService.SaveEncryptedExtensionText(ExtensionsToEncrypt);
-            // TODO: Priorize extensions
-            //ConfigAppService.SavePrioritizedExtensionText(ExtensionsToPrioritize);
+            ConfigAppService.SavePriorityExtensionText(ExtensionsToPrioritize);
             await ShowMessageAsync(Texts.MessageBoxSettingsSaved,"", "", Texts.MessageBoxOk, false, false);
         }
     }
