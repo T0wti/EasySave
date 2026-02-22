@@ -69,9 +69,9 @@ namespace EasySave.GUI.ViewModels
             // object as parameter means that if empty, it pauses all jobs. If jobId, pauses specific job
             PauseSelectedCommand = new AsyncRelayCommand<object>(PauseJobAsync);
             // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand (or other) not to freeze the interface
-            // Needed to avoid clicking on all buttons at the same time
+            // Needed to allow clicking on the same button again without it being disabled
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
-            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs);
+            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             StopSelectedCommand = new AsyncRelayCommand<object>(StopJobAsync);
         }
 
