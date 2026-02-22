@@ -72,7 +72,7 @@ namespace EasySave.GUI.ViewModels
             // Needed to avoid clicking on all buttons at the same time
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs);
-            StopSelectedCommand = new AsyncRelayCommand<object>(StopJobs);
+            StopSelectedCommand = new AsyncRelayCommand<object>(StopJobAsync);
         }
 
         private async Task PauseJobAsync(object? parameter)
@@ -121,6 +121,17 @@ namespace EasySave.GUI.ViewModels
             var job = GetJobViewModel(jobId);
             if (job == null) return;
 
+            //Check if job had been paused and resumes it if true
+            if (BackupAppService.IsJobPaused(jobId))
+            {
+                job.IsProcessing = true;
+                BackupAppService.ResumeBackup(jobId);
+
+                StartProgressMonitoring(job);
+
+                return; // To avoid continuing execution from 0
+            }
+
             bool isSuccess = false; // To check if stopped by button or stopped by failure
 
             try
@@ -129,18 +140,7 @@ namespace EasySave.GUI.ViewModels
                 job.IsProcessing = true; // To avoid clicking on multiple buttons at the same time
                 job.IsCompleted = false; // To get a green progress bar once done
 
-                // _ is a trash variable when a function needs to...
-                // ...return to a variable but you don't need it
-                _ = Task.Run(async () =>
-                {
-                    while (job.IsProcessing)
-                    {
-                        var progressDto = BackupAppService.GetProgress(jobId);
-
-                        if(progressDto != null) job.ProgressValue = progressDto.Progression;
-                        await Task.Delay(250);
-                    }
-                });
+                StartProgressMonitoring(job);
 
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
@@ -225,7 +225,7 @@ namespace EasySave.GUI.ViewModels
                 // If parameter empty, then stop all jobs
                 else
                 {
-                    await Task.Run(() => BackupAppService.PauseAll());
+                    await Task.Run(() => BackupAppService.StopAll());
                     foreach (var job in BackupJobs)
                     {
                         job.IsProcessing = false; // To turn the play button clickable for each job
@@ -274,6 +274,22 @@ namespace EasySave.GUI.ViewModels
         private BackupJobSelectionViewModel? GetJobViewModel(int jobId)
         {
             return BackupJobs.FirstOrDefault(x => x.Job.Id == jobId);
+        }
+
+        private void StartProgressMonitoring(BackupJobSelectionViewModel job)
+        {
+            // _ is a trash variable when a function needs to...
+            // ...return to a variable but you don't need it
+            _ = Task.Run(async () =>
+            {
+                while (job.IsProcessing)
+                {
+                    var progressDto = BackupAppService.GetProgress(job.Job.Id);
+
+                    if (progressDto != null) job.ProgressValue = progressDto.Progression;
+                    await Task.Delay(250);
+                }
+            });
         }
     }
 }
