@@ -150,7 +150,10 @@ namespace EasySave.GUI.ViewModels
                 // Replaced by bellow to avoid freezing when pausing or stopping:
                 await Task.Run(() => BackupAppService.ExecuteBackup(jobId));
 
-                isSuccess = true;
+                // Checks if execution succeeded to avoid showing 100% when job stopped
+                //isSuccess = true;
+                var finalState = BackupAppService.GetProgress(jobId);
+                isSuccess = (finalState != null && finalState.State == "Completed");
             }
             catch (AppException e)
             {
@@ -204,7 +207,6 @@ namespace EasySave.GUI.ViewModels
         }
         
 
-        //TODO: Correct when stopping, progress bar jumps to 100%
         private async Task StopJobAsync(object? parameter)
         {
             IsThereError = false;
