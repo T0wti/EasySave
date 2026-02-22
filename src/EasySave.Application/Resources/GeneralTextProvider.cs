@@ -142,8 +142,11 @@ namespace EasySave.Application.Resources
         public virtual string MessageBoxInfoTitle => _defaultString;
         public virtual string MessageBoxJobCreated => _defaultString;
         public virtual string MessageBoxJobPaused => _defaultString;
+        public virtual string MessageBoxAllJobsPaused => _defaultString;
         public virtual string MessageBoxJobExecuted => _defaultString;
+        public virtual string MessageBoxAllJobsExecuted => _defaultString;
         public virtual string MessageBoxJobStopped => _defaultString;
+        public virtual string MessageBoxAllJobsStopped => _defaultString;
         public virtual string MessageBoxJobDeleted => _defaultString;
         public virtual string MessageBoxJobEdited => _defaultString;
         public virtual string MessageBoxSettingsSaved => _defaultString;

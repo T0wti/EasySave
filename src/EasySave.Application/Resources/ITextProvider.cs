@@ -126,8 +126,11 @@ namespace EasySave.Application.Resources
         string MessageBoxInfoTitle { get; }
         string MessageBoxJobCreated { get; }
         string MessageBoxJobPaused { get; }
+        string MessageBoxAllJobsPaused { get; }
         string MessageBoxJobExecuted { get; }
+        string MessageBoxAllJobsExecuted { get; }
         string MessageBoxJobStopped { get; }
+        string MessageBoxAllJobsStopped { get; }
         string MessageBoxJobDeleted { get; }
         string MessageBoxJobEdited { get; }
         string MessageBoxSettingsSaved { get; }

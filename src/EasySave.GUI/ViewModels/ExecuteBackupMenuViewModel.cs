@@ -1,11 +1,12 @@
-using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Exceptions;
 using EasySave.Application.Utils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -55,31 +56,99 @@ namespace EasySave.GUI.ViewModels
             IsThereError = false;
             IsExecutionDone = false;
 
-            _jobs = BackupAppService.GetAll()
-                    .Select(dto => new BackupJobSelectionViewModel(dto))
-                    .ToList();
+            //_jobs = BackupAppService.GetAll()
+            //        .Select(dto => new BackupJobSelectionViewModel(dto))
+            //        .ToList();
+
+            // Gets the jobs and the infos (to not restart from 0 when refreshing the page
+            var allProgress = BackupAppService.GetAllProgress().ToList();
+            var allJobs = BackupAppService.GetAll();
+            var jobsForInterface = new List<BackupJobSelectionViewModel>(); // To be displayed on interface
+
+            foreach (var job in allJobs)
+            {
+                var jobVm = new BackupJobSelectionViewModel(job);
+
+                // Checks if current job already has a state saved
+                var savedState = allProgress.FirstOrDefault(progress => progress.BackupJobId == job.Id);
+
+                if (savedState != null)
+                {
+                    jobVm.ProgressValue = savedState.Progression;
+
+                    switch (savedState.State)
+                    {
+                        case "Active":
+                            jobVm.ProgressValue = savedState.Progression;
+                            jobVm.IsProcessing = true;
+                            StartProgressMonitoring(jobVm); // Recheck progress
+                            break;
+
+                        case "Paused":
+                            jobVm.ProgressValue = savedState.Progression;
+                            jobVm.IsProcessing = false; // Play button enabled
+                            break;
+
+                        case "Completed":
+                            jobVm.ProgressValue = 100;
+                            jobVm.IsCompleted = true; // Green progressbar
+                            jobVm.IsProcessing = false;
+                            break;
+
+                        case "Stopped":
+                        case "Failed":
+                        case "Inactive":
+                        default:
+                            jobVm.ProgressValue = 0;
+                            jobVm.IsProcessing = false;
+                            jobVm.IsCompleted = false;
+                            break;
+                    }
+                }
+                jobsForInterface.Add(jobVm);
+            }
+            _jobs = jobsForInterface;
+
+
+
+
 
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(_jobs);
 
             SearchText = string.Empty;
 
             ExitCommand = new RelayCommand(NavigateToBase);
-            PauseSelectedCommand = new AsyncRelayCommand(PauseAllJobs);
+
+            // object as parameter means that if empty, it pauses all jobs. If jobId, pauses specific job
+            PauseSelectedCommand = new AsyncRelayCommand<object>(PauseJobAsync);
             // AsyncRelayCommandOptions.AllowConcurrentExecutions => tells ExecuteSelectedCommand (or other) not to freeze the interface
-            // Needed to avoid clicking on all buttons at the same time
+            // Needed to allow clicking on the same button again without it being disabled
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
-            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs);
-            StopSelectedCommand = new AsyncRelayCommand(StopSelectedJobs);
+            ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs, AsyncRelayCommandOptions.AllowConcurrentExecutions);
+            StopSelectedCommand = new AsyncRelayCommand<object>(StopJobAsync);
         }
 
-        private async Task PauseAllJobs()
+        private async Task PauseJobAsync(object? parameter)
         {
             IsThereError = false;
             try
             {
-                await Task.Run(() => BackupAppService.PauseAll());
+                // If parameter has a jobId, pause specific job
+                if (parameter is int jobId) {
+                    await Task.Run(() => BackupAppService.PauseBackup(jobId));
+                    var job = GetJobViewModel(jobId);
+                    if (job != null) job.IsProcessing = false; // To turn the play button clickable
+                    Message = job.Job.Name + "\n" + Texts.MessageBoxJobPaused; // Message for single job
+                }
+                // If parameter empty, then pause all jobs
+                else
+                {
+                    await Task.Run(() => BackupAppService.PauseAll());
+                    foreach (var job in BackupJobs) job.IsProcessing = false; // To turn the play button clickable for each job
+                    Message = Texts.MessageBoxAllJobsPaused; // Message for all jobs
+                }
+
                 IsMessageToDisplay = true;
-                Message = Texts.MessageBoxJobPaused;
             }
             catch (AppException e)
             {
@@ -94,8 +163,8 @@ namespace EasySave.GUI.ViewModels
                         break;
                 }
 
-                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);            }
-            
+                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);            
+            }
         }
 
 
@@ -105,6 +174,17 @@ namespace EasySave.GUI.ViewModels
             var job = GetJobViewModel(jobId);
             if (job == null) return;
 
+            //Check if job had been paused and resumes it if true
+            if (BackupAppService.IsJobPaused(jobId))
+            {
+                job.IsProcessing = true;
+                BackupAppService.ResumeBackup(jobId);
+
+                StartProgressMonitoring(job);
+
+                return; // To avoid continuing execution from 0
+            }
+
             bool isSuccess = false; // To check if stopped by button or stopped by failure
 
             try
@@ -113,18 +193,7 @@ namespace EasySave.GUI.ViewModels
                 job.IsProcessing = true; // To avoid clicking on multiple buttons at the same time
                 job.IsCompleted = false; // To get a green progress bar once done
 
-                // _ is a trash variable when a function needs to
-                // return to a variable but you don't need it
-                _ = Task.Run(async () =>
-                {
-                    while (job.IsProcessing)
-                    {
-                        var progressDto = BackupAppService.GetProgress(jobId);
-
-                        if(progressDto != null) job.ProgressValue = progressDto.Progression;
-                        await Task.Delay(250);
-                    }
-                });
+                StartProgressMonitoring(job);
 
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
@@ -134,7 +203,10 @@ namespace EasySave.GUI.ViewModels
                 // Replaced by bellow to avoid freezing when pausing or stopping:
                 await Task.Run(() => BackupAppService.ExecuteBackup(jobId));
 
-                isSuccess = true;
+                // Checks if execution succeeded to avoid showing 100% when job stopped
+                //isSuccess = true;
+                var finalState = BackupAppService.GetProgress(jobId);
+                isSuccess = (finalState != null && finalState.State == "Completed");
             }
             catch (AppException e)
             {
@@ -188,12 +260,54 @@ namespace EasySave.GUI.ViewModels
         }
         
 
-        //TODO: Correct when stopping, progress bar jumps to 100%
-        private async Task StopSelectedJobs()
+        private async Task StopJobAsync(object? parameter)
         {
             IsThereError = false;
-            IsMessageToDisplay = true;
-            Message = Texts.MessageBoxJobStopped;
+            try
+            {
+                // If parameter has a jobId, stop specific job
+                if (parameter is int jobId)
+                {
+                    await Task.Run(() => BackupAppService.StopBackup(jobId));
+                    var job = GetJobViewModel(jobId);
+                    if (job != null)
+                    {
+                        job.IsProcessing = false; // To turn the play button clickable
+                        job.ProgressValue = 0; // Turns back progress bar to 0
+                        job.IsCompleted = false;
+                        Message = job.Job.Name + "\n" + Texts.MessageBoxJobStopped; // Message for single job
+                    }
+                }
+                // If parameter empty, then stop all jobs
+                else
+                {
+                    await Task.Run(() => BackupAppService.StopAll());
+                    foreach (var job in BackupJobs)
+                    {
+                        job.IsProcessing = false; // To turn the play button clickable for each job
+                        job.ProgressValue = 0; // Turns back progress bar to 0 for each job
+                        job.IsCompleted = false;
+                    }
+                    Message = Texts.MessageBoxAllJobsStopped; // Message for all jobs
+                }
+
+                IsMessageToDisplay = true;
+            }
+            catch (AppException e)
+            {
+                switch (e.ErrorCode)
+                {
+                    case AppErrorCode.BusinessSoftwareRunning:
+                        BusinessSoftwareHasError = true;
+                        ErrorMessage = Texts.BusinessSoftwareRunning;
+                        break;
+                    default:
+                        ErrorMessage = e.Message;
+                        break;
+                }
+
+                await ShowMessageAsync(ErrorMessage, "", "", Texts.MessageBoxOk, true, false);
+            }
         }
 
         // On searchbar text changed
@@ -217,6 +331,22 @@ namespace EasySave.GUI.ViewModels
         private BackupJobSelectionViewModel? GetJobViewModel(int jobId)
         {
             return BackupJobs.FirstOrDefault(x => x.Job.Id == jobId);
+        }
+
+        private void StartProgressMonitoring(BackupJobSelectionViewModel job)
+        {
+            // _ is a trash variable when a function needs to...
+            // ...return to a variable but you don't need it
+            _ = Task.Run(async () =>
+            {
+                while (job.IsProcessing)
+                {
+                    var progressDto = BackupAppService.GetProgress(job.Job.Id);
+
+                    if (progressDto != null) job.ProgressValue = progressDto.Progression;
+                    await Task.Delay(250);
+                }
+            });
         }
     }
 }

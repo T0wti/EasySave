@@ -78,7 +78,7 @@
         <Setter Property="ShowProgressText" Value="True"/>
     </Style>
 
-    <Style Selector="ProgressBar.ProgressBar.sucess">
+    <Style Selector="ProgressBar.ProgressBar.success">
 		<Setter Property="Foreground" Value="#28A745"/>
     </Style>
 
