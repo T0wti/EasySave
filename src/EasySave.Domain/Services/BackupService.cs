@@ -104,8 +104,12 @@ namespace EasySave.Domain.Services
             int priorityCount = files.Count(f => _priorityGate.IsPriority(f.FullPath));
             _priorityGate.RegisterPriorityFiles(priorityCount);
 
+            var orderedFiles = files
+            .OrderByDescending(f => _priorityGate.IsPriority(f.FullPath))
+            .ToList();
+
             // Copy files one by one within this job
-            foreach (var file in files)
+            foreach (var file in orderedFiles)
             {
                 if (handle.IsPaused)
                     _stateService.Pause(job.Id);
