@@ -137,6 +137,8 @@ namespace EasySave.Application.Resources
         public virtual string SettingsMenuLanguage => _defaultString;
         public virtual string SettingsMenuLogFormat => _defaultString;
         public virtual string SettingsMenuExemple => _defaultString;
+        public virtual string MaxLargeFileSizeTitle => _defaultString;
+        public virtual string MaxLargeFileSizeInfo => _defaultString;
 
         // Message Box
         public virtual string MessageBoxInfoTitle => _defaultString;
