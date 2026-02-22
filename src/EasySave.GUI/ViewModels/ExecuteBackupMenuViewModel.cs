@@ -56,9 +56,62 @@ namespace EasySave.GUI.ViewModels
             IsThereError = false;
             IsExecutionDone = false;
 
-            _jobs = BackupAppService.GetAll()
-                    .Select(dto => new BackupJobSelectionViewModel(dto))
-                    .ToList();
+            //_jobs = BackupAppService.GetAll()
+            //        .Select(dto => new BackupJobSelectionViewModel(dto))
+            //        .ToList();
+
+            // Gets the jobs and the infos (to not restart from 0 when refreshing the page
+            var allProgress = BackupAppService.GetAllProgress().ToList();
+            var allJobs = BackupAppService.GetAll();
+            var jobsForInterface = new List<BackupJobSelectionViewModel>(); // To be displayed on interface
+
+            foreach (var job in allJobs)
+            {
+                var jobVm = new BackupJobSelectionViewModel(job);
+
+                // Checks if current job already has a state saved
+                var savedState = allProgress.FirstOrDefault(progress => progress.BackupJobId == job.Id);
+
+                if (savedState != null)
+                {
+                    jobVm.ProgressValue = savedState.Progression;
+
+                    switch (savedState.State)
+                    {
+                        case "Active":
+                            jobVm.ProgressValue = savedState.Progression;
+                            jobVm.IsProcessing = true;
+                            StartProgressMonitoring(jobVm); // Recheck progress
+                            break;
+
+                        case "Paused":
+                            jobVm.ProgressValue = savedState.Progression;
+                            jobVm.IsProcessing = false; // Play button enabled
+                            break;
+
+                        case "Completed":
+                            jobVm.ProgressValue = 100;
+                            jobVm.IsCompleted = true; // Green progressbar
+                            jobVm.IsProcessing = false;
+                            break;
+
+                        case "Stopped":
+                        case "Failed":
+                        case "Inactive":
+                        default:
+                            jobVm.ProgressValue = 0;
+                            jobVm.IsProcessing = false;
+                            jobVm.IsCompleted = false;
+                            break;
+                    }
+                }
+                jobsForInterface.Add(jobVm);
+            }
+            _jobs = jobsForInterface;
+
+
+
+
 
             BackupJobs = new ObservableCollection<BackupJobSelectionViewModel>(_jobs);
 
