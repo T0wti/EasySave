@@ -219,6 +219,7 @@ namespace EasySave.GUI.ViewModels
                     {
                         job.IsProcessing = false; // To turn the play button clickable
                         job.ProgressValue = 0; // Turns back progress bar to 0
+                        job.IsCompleted = false;
                         Message = job.Job.Name + "\n" + Texts.MessageBoxJobStopped; // Message for single job
                     }
                 }
@@ -230,6 +231,7 @@ namespace EasySave.GUI.ViewModels
                     {
                         job.IsProcessing = false; // To turn the play button clickable for each job
                         job.ProgressValue = 0; // Turns back progress bar to 0 for each job
+                        job.IsCompleted = false;
                     }
                     Message = Texts.MessageBoxAllJobsStopped; // Message for all jobs
                 }
