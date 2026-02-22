@@ -121,6 +121,8 @@ namespace EasySave.Application.Resources
         string SettingsMenuLanguage { get; }
         string SettingsMenuLogFormat { get; }
         string SettingsMenuExemple { get; }
+        string MaxLargeFileSizeTitle { get; }
+        string MaxLargeFileSizeInfo { get; }
 
         // Message Box
         string MessageBoxInfoTitle { get; }

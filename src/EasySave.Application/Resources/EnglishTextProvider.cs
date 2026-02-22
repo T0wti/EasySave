@@ -118,6 +118,8 @@ namespace EasySave.Application.Resources
         public override string SettingsMenuLanguage => "Language";
         public override string SettingsMenuLogFormat => "Log files format";
         public override string SettingsMenuExemple => "Example: Calculator.exe";
+        public override string MaxLargeFileSizeTitle => "Maximum file size for parallel transfer (KB)";
+        public override string MaxLargeFileSizeInfo => "Prevents multiple large files (above this limit) from being transferred simultaneously to avoid network congestion.";
 
         // Message Box
         public override string MessageBoxInfoTitle => "Information";

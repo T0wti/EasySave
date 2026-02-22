@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.Resources;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -19,6 +20,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private string? _businessSoftware;
         [ObservableProperty] private string? _extensionsToEncrypt;
         [ObservableProperty] private string? _extensionsToPrioritize;
+        [ObservableProperty] private decimal _maxLargeFileSizeThreshold; // decimal type because NumericUpDown wants decimal
 
         // Commands 
         public ICommand ExitCommand { get; }
@@ -43,6 +45,8 @@ namespace EasySave.GUI.ViewModels
         public string ExtensionsToEncryptTitle { get; }
         public string ExtensionsToPrioritizeTitle { get; }
         public string ExtensionWatermark { get; }
+        public string MaxLargeFileSizeTitle { get; }
+        public string MaxLargeFileSizeInfo { get; }
 
 
         public SettingsMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
@@ -64,6 +68,9 @@ namespace EasySave.GUI.ViewModels
             ExtensionsToPrioritize = ConfigAppService.GetPriorityExtensionText();
             ExtensionsToPrioritizeTitle = Texts.ExtensionToPrioritizeTitle;
             ExtensionWatermark = Texts.ExtensionWatermark;
+            MaxLargeFileSizeTitle = Texts.MaxLargeFileSizeTitle;
+            MaxLargeFileSizeInfo = Texts.MaxLargeFileSizeInfo;
+            MaxLargeFileSizeThreshold = Convert.ToDecimal(ConfigAppService.GetMaxLargeFileSize());
 
             var currentSettings = ConfigAppService.Load();
             var currentFormat = ConfigAppService.GetLogFormat();
@@ -107,6 +114,7 @@ namespace EasySave.GUI.ViewModels
             ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
             ConfigAppService.SaveEncryptedExtensionText(ExtensionsToEncrypt);
             ConfigAppService.SavePriorityExtensionText(ExtensionsToPrioritize);
+            ConfigAppService.SaveMaxLargeFileSize((long)MaxLargeFileSizeThreshold);
             await ShowMessageAsync(Texts.MessageBoxSettingsSaved,"", "", Texts.MessageBoxOk, false, false);
         }
     }
