@@ -16,6 +16,8 @@ namespace EasySave.Domain.Services
         private readonly IBackupStrategy _differentialStrategy;
         private readonly IBusinessSoftwareWatcher _watcher;
         private readonly ICryptoSoftService _cryptoSoftService;
+        private readonly IPriorityGate _priorityGate;
+        private readonly IEnumerable<string> _priorityExtensions;
 
         public BackupService(
             IFileService fileService,
@@ -24,7 +26,8 @@ namespace EasySave.Domain.Services
             IStateService stateService,
             ILogService logService,
             IBusinessSoftwareWatcher watcher,
-            ICryptoSoftService cryptoSoftService)
+            ICryptoSoftService cryptoSoftService,
+            IPriorityGate priorityGate)
         {
             _fileService = fileService;
             _fullStrategy = fullStrategy;
@@ -33,6 +36,7 @@ namespace EasySave.Domain.Services
             _logService = logService;
             _watcher = watcher;
             _cryptoSoftService = cryptoSoftService;
+            _priorityGate = priorityGate;   
         }
 
         // Executes a single backup job asynchronously
@@ -97,8 +101,15 @@ namespace EasySave.Domain.Services
             var progress = BackupProgress.From(job);
             _stateService.Initialize(progress, files);
 
+            int priorityCount = files.Count(f => _priorityGate.IsPriority(f.FullPath));
+            _priorityGate.RegisterPriorityFiles(priorityCount);
+
+            var orderedFiles = files
+            .OrderByDescending(f => _priorityGate.IsPriority(f.FullPath))
+            .ToList();
+
             // Copy files one by one within this job
-            foreach (var file in files)
+            foreach (var file in orderedFiles)
             {
                 if (handle.IsPaused)
                     _stateService.Pause(job.Id);
@@ -114,6 +125,10 @@ namespace EasySave.Domain.Services
 
                 // Stop: exits the loop
                 handle.CancellationToken.ThrowIfCancellationRequested();
+
+                bool isPriority = _priorityGate.IsPriority(file.FullPath);
+                await _priorityGate.WaitIfNeededAsync(isPriority, handle.CancellationToken)
+                                   .ConfigureAwait(false);
 
                 var start = DateTime.Now;
                 try
@@ -146,14 +161,20 @@ namespace EasySave.Domain.Services
 
                     _stateService.Update(progress, file, targetPath);
 
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
                 }
                 catch (OperationCanceledException)
                 {
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
                     _stateService.Stop(job.Id);
                     throw;
                 }
                 catch (Exception ex)
                 {
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
                     // Handle copy failure: mark job as failed and log
                     _stateService.Fail(job.Id);
                     _logService.Write(new LogEntry

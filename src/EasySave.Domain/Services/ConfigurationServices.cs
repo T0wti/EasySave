@@ -39,7 +39,8 @@ namespace EasySave.Domain.Services
                 BusinessSoftwareName = "CalculatorApp",
                 CryptoSoftPath = Path.Combine(AppContext.BaseDirectory, "EasySave.CryptoSoft.exe"),
                 CryptoSoftKeyPath = Path.Combine(_baseAppPath, "key.txt"),
-                EncryptedFileExtensions = new List<string>()
+                EncryptedFileExtensions = new List<string>(),
+                PriorityFileExtensions = new List<string>()
             };
         }
 

@@ -36,7 +36,11 @@ namespace EasySave.Application
             IBackupHandleRegistry registry = new BackupHandleRegistry();
             IBusinessSoftwareService businessSoftwareService = new BusinessSoftwareService(settings);
             IBusinessSoftwareWatcher watcher = new BusinessSoftwareWatcher(businessSoftwareService, registry);
-            ICryptoSoftService cryptoSoftService = new CryptoSoftService(settings);
+            ICryptoSoftService cryptoSoftService = new CryptoSoftService(
+                settings.CryptoSoftPath,
+                settings.CryptoSoftKeyPath,
+                settings.EncryptedFileExtensions ?? new List<string>());
+            IPriorityGate priorityGate = new PriorityGate(settings.PriorityFileExtensions ?? new List<string>());
 
 
             IBackupService executor = new BackupService(
@@ -46,7 +50,8 @@ namespace EasySave.Application
                 stateService,
                 logService,
                 watcher,
-                cryptoSoftService);
+                cryptoSoftService,
+                priorityGate);
 
             IBackupManagerService manager = new BackupManagerService(
                 fileBackupService,
