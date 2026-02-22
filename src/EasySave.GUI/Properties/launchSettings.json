@@ -1,8 +1,7 @@
 {
   "profiles": {
     "EasySave.GUI": {
-      "commandName": "Project",
-      "workingDirectory": "C:\\Users\\argan\\source\\repos\\EasySave\\src\\EasySave.GUI"
+      "commandName": "Project"
     }
   }
 }

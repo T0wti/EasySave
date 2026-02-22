@@ -30,8 +30,8 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private bool _isSettingsActive;
     [ObservableProperty] private bool _isPaneOpen = true;
     // For burger menu display mode
-    [ObservableProperty] private SplitViewDisplayMode _paneMode = SplitViewDisplayMode.CompactOverlay;
-    [ObservableProperty] private bool _pinOn = true;
+    [ObservableProperty] private SplitViewDisplayMode _paneMode = SplitViewDisplayMode.CompactInline;
+    [ObservableProperty] private bool _pinOn = false;
 
     public ICommand NavigateToBaseMenuCommand { get; }
     public ICommand NavigateToCreateBackupCommand { get; }
@@ -170,7 +170,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
 
         double totalWidth = 45 + 20 + maxTextWidth + 40;
-        return Math.Clamp(totalWidth, 200, 1000);
+        return Math.Clamp(totalWidth, 300, 1000);
     }
     partial void OnCurrentViewChanged(ViewModelBase value)
     {
