@@ -148,6 +148,28 @@ namespace EasySave.Application
             }
         }
 
+        // Return the current extensions
+        private List<string> GetPriorityExtensions()
+        {
+            var settings = _configService.LoadSettings();
+            return settings.PriorityFileExtensions ?? new List<string>();
+        }
+
+        public string GetPriorityExtensionText()
+        {
+            var extensions = GetPriorityExtensions();
+            var str = string.Join(", ", extensions);
+            str = str.Replace(".", "");
+            if (str == ".")
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return str;
+            }
+        }
+
         private void SavePriorityExtensions(List<string>? extensions)
         {
             var settings = _configService.LoadSettings();
@@ -183,6 +205,21 @@ namespace EasySave.Application
             {
                 SavePriorityExtensions(null);
             }
+        }
+
+        // Return business software business
+        public long GetMaxLargeFileSize() 
+        {
+            var settings = _configService.LoadSettings();
+            return settings.MaxLargeFileSizeKb;
+        }
+
+        // Update the business software
+        public void SaveMaxLargeFileSize(long size)
+        {
+            var settings = _configService.LoadSettings();
+            settings.MaxLargeFileSizeKb = size;
+            _configService.SaveSettings(settings);
         }
 
         // Return business software business

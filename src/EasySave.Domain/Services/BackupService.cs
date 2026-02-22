@@ -17,7 +17,7 @@ namespace EasySave.Domain.Services
         private readonly IBusinessSoftwareWatcher _watcher;
         private readonly ICryptoSoftService _cryptoSoftService;
         private readonly IPriorityGate _priorityGate;
-        private readonly IEnumerable<string> _priorityExtensions;
+        private readonly ILargeSizeGate _largeSizeGate;
 
         public BackupService(
             IFileService fileService,
@@ -27,7 +27,8 @@ namespace EasySave.Domain.Services
             ILogService logService,
             IBusinessSoftwareWatcher watcher,
             ICryptoSoftService cryptoSoftService,
-            IPriorityGate priorityGate)
+            IPriorityGate priorityGate,
+            ILargeSizeGate largeSizeGate)
         {
             _fileService = fileService;
             _fullStrategy = fullStrategy;
@@ -36,7 +37,8 @@ namespace EasySave.Domain.Services
             _logService = logService;
             _watcher = watcher;
             _cryptoSoftService = cryptoSoftService;
-            _priorityGate = priorityGate;   
+            _priorityGate = priorityGate;
+            _largeSizeGate = largeSizeGate;
         }
 
         // Executes a single backup job asynchronously
@@ -101,6 +103,7 @@ namespace EasySave.Domain.Services
             var progress = BackupProgress.From(job);
             _stateService.Initialize(progress, files);
 
+            // Priority files first so no priority files never block the gate
             int priorityCount = files.Count(f => _priorityGate.IsPriority(f.FullPath));
             _priorityGate.RegisterPriorityFiles(priorityCount);
 
@@ -127,8 +130,13 @@ namespace EasySave.Domain.Services
                 handle.CancellationToken.ThrowIfCancellationRequested();
 
                 bool isPriority = _priorityGate.IsPriority(file.FullPath);
+                bool isLarge = _largeSizeGate.IsLargeFile(file.Size);
+
+
                 await _priorityGate.WaitIfNeededAsync(isPriority, handle.CancellationToken)
                                    .ConfigureAwait(false);
+                await _largeSizeGate.AcquireIfLargeAsync(file.Size, handle.CancellationToken)
+                                         .ConfigureAwait(false);
 
                 var start = DateTime.Now;
                 try
@@ -187,6 +195,11 @@ namespace EasySave.Domain.Services
                         TransferTimeMs = -1
                     });
                     throw new BackupExecutionException(job.Name, file.FullPath, ex);
+                }
+                finally
+                {
+                    // Always release the large file slot — success or failure
+                    _largeSizeGate.ReleaseIfLarge(file.Size);
                 }
             }
 

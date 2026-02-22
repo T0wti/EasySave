@@ -1,8 +1,6 @@
 ﻿using EasySave.Domain.Exceptions;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
-using System;
-using System.IO;
 using System.Text.Json;
 using EasySave.Domain.Enums;
 
@@ -40,7 +38,8 @@ namespace EasySave.Domain.Services
                 CryptoSoftPath = Path.Combine(AppContext.BaseDirectory, "EasySave.CryptoSoft.exe"),
                 CryptoSoftKeyPath = Path.Combine(_baseAppPath, "key.txt"),
                 EncryptedFileExtensions = new List<string>(),
-                PriorityFileExtensions = new List<string>()
+                PriorityFileExtensions = new List<string>(),
+                MaxLargeFileSizeKb = 0
             };
         }
 
