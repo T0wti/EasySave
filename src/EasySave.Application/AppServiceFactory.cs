@@ -41,7 +41,7 @@ namespace EasySave.Application
                 settings.CryptoSoftKeyPath,
                 settings.EncryptedFileExtensions ?? new List<string>());
             IPriorityGate priorityGate = new PriorityGate(settings.PriorityFileExtensions ?? new List<string>());
-
+            ILargeSizeGate largeFileGate = new LargeSizeGate(settings.MaxLargeFileSizeKb);
 
             IBackupService executor = new BackupService(
                 fileService,
@@ -51,7 +51,8 @@ namespace EasySave.Application
                 logService,
                 watcher,
                 cryptoSoftService,
-                priorityGate);
+                priorityGate,
+                largeFileGate);
 
             IBackupManagerService manager = new BackupManagerService(
                 fileBackupService,
