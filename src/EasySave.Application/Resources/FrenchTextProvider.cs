@@ -123,8 +123,11 @@ namespace EasySave.Application.Resources
         public override string MessageBoxInfoTitle => "Information";
         public override string MessageBoxJobCreated => "Travail créé avec succès";
         public override string MessageBoxJobPaused => "Travail mis en pause avec succès";
+        public override string MessageBoxAllJobsPaused => "Tous les travaux mis en pause avec succès";
         public override string MessageBoxJobExecuted => "Travail exécuté avec succès";
+        public override string MessageBoxAllJobsExecuted => "Tous les travaux exécutés avec succès";
         public override string MessageBoxJobStopped => "Travail arrêté avec succès";
+        public override string MessageBoxAllJobsStopped => "Tous les travaux arrêtés avec succès";
         public override string MessageBoxJobDeleted => "Travail supprimé avec succès";
         public override string MessageBoxJobEdited => "Travail modifié avec succès";
         public override string MessageBoxSettingsSaved => "Paramètres enregistrés";
