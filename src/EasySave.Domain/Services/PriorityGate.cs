@@ -6,25 +6,25 @@ namespace EasySave.Domain.Services
     public class PriorityGate : IPriorityGate
     {
 
-        private readonly IEnumerable<string> _priorityExtensions;
+        private readonly IConfigurationService _configService;
 
         // Counts how many priority files are still waiting to be copied across all active jobs combined
         private int _pendingPriorityCount = 0;
 
         // Released (set) when _pendingPriorityCount reaches 0
         private readonly SemaphoreSlim _gate = new(1, 1);
-        private readonly object _lock = new();  
+        private readonly object _lock = new();
 
-        public PriorityGate(IEnumerable<string> priorityExtensions)
+        public PriorityGate(IConfigurationService configService)
         {
-            _priorityExtensions = priorityExtensions;
+            _configService = configService;
         }
 
         public bool IsPriority(string filePath)
         {
+            var extensions = _configService.LoadSettings().PriorityFileExtensions ?? new List<string>();
             var ext = Path.GetExtension(filePath);
-            return _priorityExtensions.Any(p =>
-                string.Equals(p, ext, StringComparison.OrdinalIgnoreCase));
+            return extensions.Any(p => string.Equals(p, ext, StringComparison.OrdinalIgnoreCase));
         }
 
         // Count the number of priority file

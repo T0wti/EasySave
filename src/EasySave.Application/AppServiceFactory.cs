@@ -40,14 +40,11 @@ namespace EasySave.Application
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
             IStateService stateService = new StateService(fileStateService);
             IBackupHandleRegistry registry = new BackupHandleRegistry();
-            IBusinessSoftwareService businessSoftwareService = new BusinessSoftwareService(settings);
+            IBusinessSoftwareService businessSoftwareService = new BusinessSoftwareService(configService);
             IBusinessSoftwareWatcher watcher = new BusinessSoftwareWatcher(businessSoftwareService, registry);
-            ICryptoSoftService cryptoSoftService = new CryptoSoftService(
-                settings.CryptoSoftPath,
-                settings.CryptoSoftKeyPath,
-                settings.EncryptedFileExtensions ?? new List<string>());
-            IPriorityGate priorityGate = new PriorityGate(settings.PriorityFileExtensions ?? new List<string>());
-            ILargeSizeGate largeSizeGate = new LargeSizeGate(settings.MaxLargeFileSizeKb);
+            ICryptoSoftService cryptoSoftService = new CryptoSoftService(configService);
+            IPriorityGate priorityGate = new PriorityGate(configService);
+            ILargeSizeGate largeSizeGate = new LargeSizeGate(configService);
 
             IBackupService executor = new BackupService(
                 fileService, 

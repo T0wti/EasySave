@@ -7,66 +7,53 @@ namespace EasySave.Domain.Services
     // Launches CryptoSoft.exe as an external process to encrypt a file
     public class CryptoSoftService : ICryptoSoftService
     {
-        private readonly string? _cryptoSoftPath;
-        private readonly string? _cryptoSoftKeyPath;
-        private readonly IEnumerable<string> _encryptedExtensions;
+        private readonly IConfigurationService _configService;
 
         private const int MaxRetries = 10;
         private const int RetryDelayMs = 500;
 
-        public CryptoSoftService(
-            string? cryptoSoftPath,
-            string? cryptoSoftKeyPath,
-            IEnumerable<string> encryptedExtensions)
+        public CryptoSoftService(IConfigurationService configService)
         {
-            _cryptoSoftPath = cryptoSoftPath;
-            _cryptoSoftKeyPath = cryptoSoftKeyPath;
-            _encryptedExtensions = encryptedExtensions;
+            _configService = configService;
         }
 
+
+        // Reads extensions fresh from config on every call
         public bool ShouldEncrypt(string filePath)
         {
-
+            if (string.IsNullOrWhiteSpace(filePath)) return false;
+            var extensions = _configService.LoadSettings().EncryptedFileExtensions ?? new List<string>();
             var ext = Path.GetExtension(filePath);
-
-            if (string.IsNullOrWhiteSpace(filePath))
-                return false;
-
-            return _encryptedExtensions.Any(e =>
-                 string.Equals(e, ext, StringComparison.OrdinalIgnoreCase));
+            return extensions.Any(e => string.Equals(e, ext, StringComparison.OrdinalIgnoreCase));
         }
 
         public long Encrypt(string filePath)
         {
+            var settings = _configService.LoadSettings();
 
-            if (string.IsNullOrWhiteSpace(_cryptoSoftPath) || !File.Exists(_cryptoSoftPath))
+            if (string.IsNullOrWhiteSpace(settings.CryptoSoftPath) || !File.Exists(settings.CryptoSoftPath))
                 return -1;
 
-            if (string.IsNullOrWhiteSpace(_cryptoSoftKeyPath) || !File.Exists(_cryptoSoftKeyPath))
+            if (string.IsNullOrWhiteSpace(settings.CryptoSoftKeyPath) || !File.Exists(settings.CryptoSoftKeyPath))
                 return -1;
 
-            // Retry loop : CryptoSoft is mono-instance and returns -10 when busy
-            // We wait and retry instead of failing the whole backup
             for (int attempt = 1; attempt <= MaxRetries; attempt++)
             {
-                long result = RunCryptoSoft(filePath);
+                long result = RunCryptoSoft(filePath, settings.CryptoSoftPath, settings.CryptoSoftKeyPath);
 
                 if (result == -10)
                 {
-                    // CryptoSoft busy : wait and retry
                     Thread.Sleep(RetryDelayMs);
                     continue;
                 }
 
-                // Any other result (success or real error) → return immediately
                 return result;
             }
 
-            // All retries exhausted : CryptoSoft was busy too long
             return -10;
         }
 
-        private long RunCryptoSoft(string filePath)
+        private static long RunCryptoSoft(string filePath, string cryptoSoftPath, string keyPath)
         {
             try
             {
@@ -74,8 +61,8 @@ namespace EasySave.Domain.Services
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = _cryptoSoftPath,
-                        ArgumentList = { filePath, _cryptoSoftKeyPath! },
+                        FileName = cryptoSoftPath,
+                        ArgumentList = { filePath, keyPath! },
                         UseShellExecute = false,
                         RedirectStandardOutput = false,
                         CreateNoWindow = true
