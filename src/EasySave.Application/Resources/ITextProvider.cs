@@ -123,6 +123,12 @@ namespace EasySave.Application.Resources
         string LogFormatChanged { get; }
         string CurrentLogFormat { get; }
 
+        // Change Log Destination Menu
+        string LogDestinationMenuTitle { get; }
+        string LogDestination1 { get; }
+        string LogDestination2 { get; }
+        string LogDestination3 { get; }
+
         // Settings menu
         string SettingsMenuTitle { get; }
         string SettingsMenuBusiness { get; }

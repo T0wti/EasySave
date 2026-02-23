@@ -12,66 +12,86 @@
         <viewModels:SettingsMenuViewModel/>
     </Design.DataContext>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <Grid RowDefinitions="*, Auto" Margin="8">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="0">
         
-        <StackPanel Spacing="8" Margin="8">
-            <controls:PageTitleControl/>
+            <StackPanel Spacing="8" Margin="8">
+                <controls:PageTitleControl/>
 
-                <!-- Language -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="{Binding LanguageTitle}" Classes="PrimaryText"/>
-                    <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="10" BoxShadow="0 2 8 0 #08000000">
-				        <StackPanel Spacing="8">
+                    <!-- Language -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding LanguageTitle}" Classes="PrimaryText"/>
+                        <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="10" BoxShadow="0 2 8 0 #08000000">
+				            <StackPanel Spacing="8">
 
-                            <RadioButton Content="{Binding Language1}" IsChecked="{Binding IsLanguage1Selected}" Command="{Binding Language1Command}" GroupName="Language"/>
-                            <RadioButton Content="{Binding Language2}" IsChecked="{Binding IsLanguage2Selected}" Command="{Binding Language2Command}" GroupName="Language"/>
+                                <RadioButton Content="{Binding Language1}" IsChecked="{Binding IsLanguage1Selected}" Command="{Binding Language1Command}" GroupName="Language"/>
+                                <RadioButton Content="{Binding Language2}" IsChecked="{Binding IsLanguage2Selected}" Command="{Binding Language2Command}" GroupName="Language"/>
 
-                        </StackPanel>	
-                    </Border>
-                </StackPanel>
+                            </StackPanel>	
+                        </Border>
+                    </StackPanel>
 
-                <!-- Log format -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="{Binding LogFormatTitle}" Classes="PrimaryText"/>
-                    <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="10" BoxShadow="0 2 8 0 #08000000">
-					    <StackPanel Spacing="8">
+                    <!-- Log format -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding LogFormatTitle}" Classes="PrimaryText"/>
+                        <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="10" BoxShadow="0 2 8 0 #08000000">
+					        <StackPanel Spacing="8">
 
-                            <RadioButton Content="{Binding LogFormat1}" IsChecked="{Binding IsLogFormat1Selected}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
-                            <RadioButton Content="{Binding LogFormat2}" IsChecked="{Binding IsLogFormat2Selected}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
+                                <RadioButton Content="{Binding LogFormat1}" IsChecked="{Binding IsLogFormat1Selected}" Command="{Binding LogFormat1Command}" GroupName="LogFormat"/>
+                                <RadioButton Content="{Binding LogFormat2}" IsChecked="{Binding IsLogFormat2Selected}" Command="{Binding LogFormat2Command}" GroupName="LogFormat"/>
 
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Log destination -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding LogDestinationTitle}" Classes="PrimaryText"/>
+                        <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="10" BoxShadow="0 2 8 0 #08000000">
+					        <StackPanel Spacing="8">
+
+                                <RadioButton Content="{Binding LogDestination1}" IsChecked="{Binding IsLogDestination1Selected}" Command="{Binding LogDestination1Command}" GroupName="LogDestination"/>
+                                <RadioButton Content="{Binding LogDestination2}" IsChecked="{Binding IsLogDestination2Selected}" Command="{Binding LogDestination2Command}" GroupName="LogDestination"/>
+                                <RadioButton Content="{Binding LogDestination3}" IsChecked="{Binding IsLogDestination3Selected}" Command="{Binding LogDestination3Command}" GroupName="LogDestination"/>
+
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
             
-            <!-- App that pauses backup jobs -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="{Binding Business}" Classes="PrimaryText"/>
-                <TextBox Text="{Binding BusinessSoftware}" Watermark="{Binding MarkdownExe}"/>
-            </StackPanel>
-            <!-- Extensions to encrypt -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="{Binding ExtensionsToEncryptTitle}" Classes="PrimaryText"/>
-                <TextBox Text="{Binding ExtensionsToEncrypt}" Watermark="{Binding ExtensionWatermark}"/>
-            </StackPanel>
-            <!-- Extensions to Prioritize -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="{Binding ExtensionsToPrioritizeTitle}" Classes="PrimaryText"/>
-                <TextBox Text="{Binding ExtensionsToPrioritize}" Watermark="{Binding ExtensionWatermark}"/>
-            </StackPanel>
-            <!-- Max large file size -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="{Binding MaxLargeFileSizeTitle}" Classes="PrimaryText"/>
-                <NumericUpDown Value="{Binding MaxLargeFileSizeThreshold}" Minimum="0" Increment="32" HorizontalAlignment="Left" Width="150"/>
-                <TextBlock Text="{Binding MaxLargeFileSizeInfo}" FontStyle="Italic" TextWrapping="WrapWithOverflow"/>
-            </StackPanel>
+                <!-- App that pauses backup jobs -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding Business}" Classes="PrimaryText"/>
+                    <TextBox Text="{Binding BusinessSoftware}" Watermark="{Binding MarkdownExe}"/>
+                </StackPanel>
+                <!-- Extensions to encrypt -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding ExtensionsToEncryptTitle}" Classes="PrimaryText"/>
+                    <TextBox Text="{Binding ExtensionsToEncrypt}" Watermark="{Binding ExtensionWatermark}"/>
+                </StackPanel>
+                <!-- Extensions to Prioritize -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding ExtensionsToPrioritizeTitle}" Classes="PrimaryText"/>
+                    <TextBox Text="{Binding ExtensionsToPrioritize}" Watermark="{Binding ExtensionWatermark}"/>
+                </StackPanel>
+                <!-- Max large file size -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding MaxLargeFileSizeTitle}" Classes="PrimaryText"/>
+                    <NumericUpDown Value="{Binding MaxLargeFileSizeThreshold}" Minimum="0" Increment="32" HorizontalAlignment="Left" Width="150"/>
+                    <TextBlock Text="{Binding MaxLargeFileSizeInfo}" FontStyle="Italic" TextWrapping="WrapWithOverflow"/>
+                </StackPanel>
                 
+                
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1" Background="{StaticResource MainBackground}" BorderBrush="#9CA3AF" BorderThickness="0,2,0,0" Padding="0,15,0,5">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
                 <!-- Save -->
                 <Button Grid.Column="1" Content="{Binding Save}" Classes="ActionBtn" Width="150" Height="40" Command="{Binding SaveCommand}"/>
                 <!-- Exit -->
                 <controls:ReturnButton/>
             </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+        </Border>
+    </Grid>
 
 </UserControl>

@@ -50,6 +50,11 @@ public abstract class ViewModelBase : ObservableObject
         ConfigAppService.ChangeLogFormat(formatCode);
     }
 
+    internal void ChangeLogDestination(int formatCode)
+    {
+        ConfigAppService.ChangeLogMode(formatCode);
+    }
+
     protected async Task<bool> ShowMessageAsync(string message, string yes, string no, string ok, bool isError, bool isConfirmation)
     {
         //Prepares message to display
