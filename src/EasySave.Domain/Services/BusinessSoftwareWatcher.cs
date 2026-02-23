@@ -1,5 +1,7 @@
 ﻿using EasySave.Domain.Interfaces;
 using System.Management;
+using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 
 namespace EasySave.Domain.Services
 {
@@ -47,7 +49,10 @@ namespace EasySave.Domain.Services
 
             // If the business software is already running at startup : pause all
             if (_businessSoftwareService.IsBusinessSoftwareRunning())
+            {
                 PauseAll();
+                throw new BusinessSoftwareRunningException(processName);
+            }
 
             // Start listening to process start/stop events
             startWatcher.Start();
