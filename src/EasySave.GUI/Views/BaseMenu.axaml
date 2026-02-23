@@ -45,7 +45,7 @@
                 BoxShadow="0 4 15 0 #05000000"
                 MinWidth="200">
             <Grid ColumnDefinitions="Auto, *">
-                <TextBlock Grid.Column="0" Text="💡" FontSize="32" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                <TextBlock Grid.Column="0" Text="💡" Foreground="{StaticResource AccentColor}" FontSize="32" VerticalAlignment="Center" Margin="0,0,15,0"/>
                     
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
                     <TextBlock Text="{Binding HomeTipTitle}" FontWeight="Bold" Foreground="{StaticResource AccentColor}"/>

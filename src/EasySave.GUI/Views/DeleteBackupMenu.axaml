@@ -8,6 +8,7 @@
              x:Class="EasySave.GUI.Views.DeleteBackupMenu"
              x:DataType="viewModels:DeleteBackupMenuViewModel">
 
+    <Grid RowDefinitions="Auto, *, Auto" Margin="30">
 
         <StackPanel Spacing="20" Margin="30">
             <controls:PageTitleControl/>
@@ -28,5 +29,6 @@
             </StackPanel>
 			
         </StackPanel>
+    </Grid>
 
 </UserControl>
