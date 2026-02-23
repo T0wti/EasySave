@@ -1,25 +1,21 @@
 ﻿using EasySave.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EasySave.Domain.Models
 {
-    // Represents configurable application settings for EasySave
     public class ApplicationSettings
     {
-            public Language Language { get; set; }
-            public string LogDirectoryPath { get; set; }
-            public string StateFileDirectoryPath { get; set; }
-            public int LogFormat { get; set; }
-            public string? BusinessSoftwareName { get; set; }
-            public List<string>? EncryptedFileExtensions { get; set; }
-            public List<string>? PriorityFileExtensions { get; set; }
-            public long MaxLargeFileSizeKb { get; set; }
-            public string? CryptoSoftPath { get; set; }
-            public string? CryptoSoftKeyPath { get; set; }
-
-        // Default constructor
-        public ApplicationSettings() { }
+        public Language Language { get; set; }
+        public string LogDirectoryPath { get; set; } = string.Empty;
+        public string StateFileDirectoryPath { get; set; } = string.Empty;
+        public int LogFormat { get; set; }    
+        public int LogMode { get; set; }
+        public string? LogServerHost { get; set; }
+        public int LogServerPort { get; set; }
+        public string? BusinessSoftwareName { get; set; }
+        public List<string>? EncryptedFileExtensions { get; set; }
+        public List<string>? PriorityFileExtensions { get; set; }
+        public long MaxLargeFileSizeKb { get; set; } = 0;
+        public string? CryptoSoftPath { get; set; }
+        public string? CryptoSoftKeyPath { get; set; }
     }
 }

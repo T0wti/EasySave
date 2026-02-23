@@ -9,26 +9,32 @@ namespace EasySave.Application
     {
         public static BackupAppService CreateBackupController()
         {
-            // ConfigurationService 
             IConfigurationService configService = new ConfigurationService();
             var settings = configService.LoadSettings();
 
-            // FileStateService
             IFileStateService fileStateService = new FileStateService(settings.StateFileDirectoryPath);
 
-            // EasyLogService (singleton)
+            // Local writer
+            EasyLogService.Instance.Reset();
             EasyLogService.Instance.Initialize(settings.LogDirectoryPath, settings.LogFormat);
-            ILogService logService = EasyLogService.Instance;
 
-            // FileBackupService
-            string jobsDirectory = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "EasySave"
-            );
+            // Optional remote TCP client
+            Func<object, Task>? remote = null;
+            if (settings.LogMode is 1 or 2 && !string.IsNullOrWhiteSpace(settings.LogServerHost))
+            {
+                var logClient = new TcpLogClient(
+                    settings.LogServerHost,
+                    settings.LogServerPort,
+                    isXml: settings.LogFormat == 1,
+                    fallbackDirectory: settings.LogDirectoryPath);
+
+                remote = entry => logClient.SendAsync(entry);
+            }
+
+            ILogService logService = new CompositeLogService(
+               EasyLogService.Instance, remote, settings.LogMode);
 
             IFileBackupService fileBackupService = new FileBackupService();
-
-            // Businesses Services 
             IFileService fileService = new FileService();
             IBackupStrategy fullStrategy = new FullBackupStrategy(fileService);
             IBackupStrategy diffStrategy = new DifferentialBackupStrategy(fileService);
@@ -41,24 +47,20 @@ namespace EasySave.Application
                 settings.CryptoSoftKeyPath,
                 settings.EncryptedFileExtensions ?? new List<string>());
             IPriorityGate priorityGate = new PriorityGate(settings.PriorityFileExtensions ?? new List<string>());
-            ILargeSizeGate largeFileGate = new LargeSizeGate(settings.MaxLargeFileSizeKb);
+            ILargeSizeGate largeSizeGate = new LargeSizeGate(settings.MaxLargeFileSizeKb);
 
             IBackupService executor = new BackupService(
-                fileService,
-                fullStrategy,
-                diffStrategy,
+                fileService, 
+                fullStrategy, 
+                diffStrategy, 
                 stateService,
-                logService,
-                watcher,
-                cryptoSoftService,
-                priorityGate,
-                largeFileGate);
+                logService, 
+                watcher, 
+                cryptoSoftService, 
+                priorityGate, 
+                largeSizeGate);
 
-            IBackupManagerService manager = new BackupManagerService(
-                fileBackupService,
-                executor,
-                settings
-            );
+            IBackupManagerService manager = new BackupManagerService(fileBackupService, executor, settings);
 
             return new BackupAppService(manager, executor, fileStateService, registry);
         }
