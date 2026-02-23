@@ -38,10 +38,10 @@
                             <TextBlock Text="{Binding Name}" Classes="PrimaryText"/>
 
                             <!-- Source -->
-                            <TextBlock Text="{Binding SourcePath}" Foreground="{StaticResource TextSecondary}"/>
+                            <TextBlock Text="{Binding SourcePath}" Foreground="{StaticResource TextSecondary}" TextWrapping="WrapWithOverflow"/>
 
                             <!-- Target -->
-                            <TextBlock Text="{Binding TargetPath}" Foreground="{StaticResource TextSecondary}"/>
+                            <TextBlock Text="{Binding TargetPath}" Foreground="{StaticResource TextSecondary}" TextWrapping="WrapWithOverflow"/>
 
                             <!-- Type -->
                             <TextBlock Text="{Binding Type}" Foreground="{StaticResource TextSecondary}"/>

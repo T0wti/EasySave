@@ -6,6 +6,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
         <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
     <Style Selector="TextBlock.DetailLabel">

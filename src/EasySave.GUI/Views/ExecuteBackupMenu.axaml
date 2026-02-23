@@ -49,19 +49,21 @@
                     <Border Background="#F0F0F0" CornerRadius="8" Padding="15" Margin="0,5">
                         <StackPanel Orientation="Vertical" Spacing="15">
             
-                            <Grid ColumnDefinitions="Auto, *, Auto">
+                            <Grid ColumnDefinitions="*, *, Auto">
                                 
                                 <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Job.Name}" 
+                                    <TextBlock Text="{Binding Job.Name}" TextWrapping="WrapWithOverflow"
                                                Classes="PrimaryText"/>
 
-                                    <TextBlock Text="{Binding Job.SourcePath}" 
+                                    <TextBlock Text="{Binding Job.SourcePath}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
 
-                                    <TextBlock Text="{Binding Job.TargetPath}" 
+                                    <Separator Margin="1" Height="0.3"/>
+
+                                    <TextBlock Text="{Binding Job.TargetPath}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
                     
-                                    <TextBlock Text="{Binding Job.Type}" 
+                                    <TextBlock Text="{Binding Job.Type}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
                                 </StackPanel>
 

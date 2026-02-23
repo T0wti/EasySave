@@ -134,6 +134,8 @@
                         </Button>
                         
                         <!-- List Backup button -->
+                        <!-- Removed because is redundant -->
+                        <!--
                         <Button Classes="MenuBtn" Classes.active="{Binding IsListActive}" Command="{Binding NavigateToListBackupCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <PathIcon Grid.Column="0" Classes="MenuIcon"
@@ -141,6 +143,7 @@
                                 <TextBlock Grid.Column="1" Text="{Binding ListBackup}" IsVisible="{Binding IsPaneOpen}"/>
                             </StackPanel>
                         </Button>
+                        -->
                         
                         <!-- Execute Backup button -->
                         <Button Classes="MenuBtn" Classes.active="{Binding IsExecuteActive}" Command="{Binding NavigateToExecuteBackupCommand}">
