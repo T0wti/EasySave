@@ -140,6 +140,12 @@ namespace EasySave.Application.Resources
         public virtual string LogFormatChanged => _defaultString;
         public virtual string CurrentLogFormat => _defaultString;
 
+        // Change Log Destination Menu
+        public virtual string LogDestinationMenuTitle => _defaultString;
+        public virtual string LogDestination1 => _defaultString;
+        public virtual string LogDestination2 => _defaultString;
+        public virtual string LogDestination3 => _defaultString;
+
         // Settings menu
         public virtual string SettingsMenuTitle => _defaultString;
         public virtual string SettingsMenuBusiness => _defaultString;

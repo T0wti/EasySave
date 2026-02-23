@@ -120,6 +120,12 @@ namespace EasySave.Application.Resources
         public override string LogFormatChanged => "Log format changed successfully!";
         public override string CurrentLogFormat => "Current format: ";
 
+        // Change Log Destination Menu
+        public override string LogDestinationMenuTitle => "Change Log Destination";
+        public override string LogDestination1 => "1. Local only";
+        public override string LogDestination2 => "2. Remote only";
+        public override string LogDestination3 => "3. Local and remote";
+
         // Settings menu
         public override string SettingsMenuTitle => "Easy Save's settings";
         public override string SettingsMenuBusiness => "Software suspending execution";
