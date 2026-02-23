@@ -71,6 +71,23 @@ namespace EasySave.Application
             return ConvertCodeToLogFormat(Convert.ToInt32(settings.LogFormat.ToString()));
         }
 
+        public void ChangeLogMode(int code)
+        {
+            try
+            {
+                var settings = _configService.LoadSettings();
+                settings.LogMode = code;
+                _configService.SaveSettings(settings);
+            }
+            catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
+        }
+
+        public int GetLogMode()
+        {
+            var settings = _configService.LoadSettings();
+            return settings.LogMode;
+        }
+
         // Check if configuration file exists
         public bool FileExists()
         {
@@ -80,7 +97,7 @@ namespace EasySave.Application
         // Ensure configuration file exists
         public void EnsureConfigExists()
         {
-            _configService. EnsureConfigExists();
+            _configService.EnsureConfigExists();
         }
 
         public void EnsureKeyExists() //Temporaire
@@ -100,7 +117,7 @@ namespace EasySave.Application
             var extensions = GetEncryptedExtensions();
             var str = string.Join(", ", extensions);
             str = str.Replace(".", "");
-            if (str==".")
+            if (str == ".")
             {
                 return string.Empty;
             }
@@ -109,7 +126,7 @@ namespace EasySave.Application
                 return str;
             }
         }
-        
+
         // Update the extensions list
         private void SaveEncryptedExtensions(List<string>? extensions)
         {
@@ -138,7 +155,7 @@ namespace EasySave.Application
                     .Replace("/", ",")
                     .Replace(".", "") // .exe become exe
                     .Replace("|", ",");
-                
+
                 var extensions = text.Split(',').ToList();
                 SaveEncryptedExtensions(extensions);
             }
@@ -208,7 +225,7 @@ namespace EasySave.Application
         }
 
         // Return business software business
-        public long GetMaxLargeFileSize() 
+        public long GetMaxLargeFileSize()
         {
             var settings = _configService.LoadSettings();
             return settings.MaxLargeFileSizeKb;

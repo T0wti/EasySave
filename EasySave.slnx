@@ -11,6 +11,7 @@
     <Project Path="src/EasySave.Domain/EasySave.Domain.csproj" />
     <Project Path="src/EasySave.EasyLog/EasySave.EasyLog.csproj" />
     <Project Path="src/EasySave.GUI\EasySave.GUI.csproj" />
+    <Project Path="src/EasySave.LogServer/EasySave.LogServer.csproj" Id="f8d7f94f-7490-4fae-ad0a-ce3c16b1556d" />
     <Project Path="src\EasySave.Application\EasySave.Application.csproj" />
   </Folder>
   <Folder Name="/tests/">

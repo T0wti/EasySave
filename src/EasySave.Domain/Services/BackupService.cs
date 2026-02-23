@@ -158,6 +158,7 @@ namespace EasySave.Domain.Services
                     _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
+                        MachineName = Environment.MachineName,
                         BackupName = job.Name,
                         // Convert paths to UNC format for logging/network paths
                         SourcePath = PathHelper.ToUncPath(file.FullPath),
@@ -188,6 +189,7 @@ namespace EasySave.Domain.Services
                     _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
+                        MachineName = Environment.MachineName,
                         BackupName = job.Name,
                         SourcePath = file.FullPath,
                         TargetPath = string.Empty,

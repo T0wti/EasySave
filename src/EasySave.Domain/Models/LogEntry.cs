@@ -8,6 +8,7 @@ namespace EasySave.Domain.Models
     public class LogEntry
     {
         public DateTime Timestamp { get; init; }
+        public string MachineName { get; init; }
         public string BackupName { get; init; }
         public string SourcePath { get; init; }
         public string TargetPath { get; init; }
