@@ -61,7 +61,7 @@
                                     <TextBlock Text="{Binding Job.TargetPath}" 
                                                Foreground="{StaticResource TextSecondary}"/>
                     
-                                    <TextBlock Text="{Binding Job.Type}" 
+                                    <TextBlock Text="{Binding TypeLabel}" 
                                                Foreground="{StaticResource TextSecondary}"/>
                                 </StackPanel>
 

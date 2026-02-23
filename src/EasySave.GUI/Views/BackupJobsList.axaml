@@ -8,9 +8,8 @@
              x:Class="EasySave.GUI.Views.BackupJobsList"
              x:Name="This">
         <UserControl.Resources>
-        <converters:BackupTypeConverter x:Key="BackupTypeConverter"
-                                        Texts="{Binding Path=Texts, ElementName=This}"/>
-    </UserControl.Resources>
+            <converters:BackupTypeConverter x:Key="BackupTypeConverter" Texts="{Binding Path=Texts, ElementName=This}"/>
+        </UserControl.Resources>
 
     <StackPanel Spacing="10">
     

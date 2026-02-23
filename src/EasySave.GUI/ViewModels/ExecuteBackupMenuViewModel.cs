@@ -67,7 +67,7 @@ namespace EasySave.GUI.ViewModels
 
             foreach (var job in allJobs)
             {
-                var jobVm = new BackupJobSelectionViewModel(job);
+                var jobVm = new BackupJobSelectionViewModel(job, Texts);
 
                 // Checks if current job already has a state saved
                 var savedState = allProgress.FirstOrDefault(progress => progress.BackupJobId == job.Id);
