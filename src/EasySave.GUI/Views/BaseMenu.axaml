@@ -4,39 +4,58 @@
         x:Class="EasySave.GUI.Views.BaseMenu"
         x:DataType="viewModels:BaseMenuViewModel">
 
-<StackPanel Spacing="20" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel Spacing="20" Margin="40" HorizontalAlignment="Center" VerticalAlignment="Center">
         
-        <Image Source="/Assets/easysave-logo.png" Height="350"/>
+        <Image Source="/Assets/easysave-logo.png" Height="250"/>
 
         <TextBlock Text="{Binding Welcome}" 
-                   FontSize="24" FontWeight="Bold"
-                   Foreground="{StaticResource TextSecondary}"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap"
-                   TextAlignment="Center"
-                   MaxWidth="450"/>
+                    FontSize="24" FontWeight="Bold"
+                    Foreground="{StaticResource TextSecondary}"
+                    HorizontalAlignment="Center"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center"
+                    MaxWidth="250"/>
 
         <Border Background="{StaticResource CardBackground}" 
                 CornerRadius="8" 
-                Padding="30" 
-                Margin="0,30,0,0"
+                Padding="10" 
+                Margin="10"
                 BoxShadow="0 4 15 0 #10000000"
                 MinWidth="200">
             <StackPanel Spacing="10" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding ConfiguredBackupStr}" 
-                           FontSize="16" 
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextSecondary}" 
-                           HorizontalAlignment="Center"/>
+                            FontSize="16" 
+                            FontWeight="SemiBold"
+                            Foreground="{StaticResource TextSecondary}" 
+                            HorizontalAlignment="Center"/>
                 
                 <TextBlock Text="{Binding BackupNumber}" 
-                           FontSize="48" 
-                           FontWeight="Bold" 
-                           Foreground="{StaticResource TextPrimary}" 
-                           HorizontalAlignment="Center"/>
+                            FontSize="48" 
+                            FontWeight="Bold" 
+                            Foreground="{StaticResource TextPrimary}" 
+                            HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
-        
+        <Border Background="#EBF4FF" 
+                BorderBrush="{StaticResource AccentColor}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="10" 
+                Margin="10"
+                BoxShadow="0 4 15 0 #05000000"
+                MinWidth="200">
+            <Grid ColumnDefinitions="Auto, *">
+                <TextBlock Grid.Column="0" Text="💡" FontSize="32" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                    
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
+                    <TextBlock Text="{Binding HomeTipTitle}" FontWeight="Bold" Foreground="{StaticResource AccentColor}"/>
+                    <TextBlock Text="{Binding HomeRandomTip}"
+                                FontStyle="Italic" 
+                                TextWrapping="WrapWithOverflow" 
+                                Foreground="{StaticResource TextSecondary}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </StackPanel>
 
 </UserControl>

@@ -49,6 +49,15 @@ namespace EasySave.Application.Resources
         //Home Page
         public virtual string HomeWelcome => _defaultString;
         public virtual string HomeConfiguredBackup => _defaultString;
+        public virtual string HomeTipTitle => _defaultString;
+        public virtual string HomeTip1 => _defaultString;
+        public virtual string HomeTip2 => _defaultString;
+        public virtual string HomeTip3 => _defaultString;
+        public virtual string HomeTip4 => _defaultString;
+        public virtual string HomeTip5 => _defaultString;
+        public virtual string HomeTip6 => _defaultString;
+        public virtual string HomeTip7 => _defaultString;
+
 
         //Creation menu
 

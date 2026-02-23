@@ -29,6 +29,14 @@ namespace EasySave.Application.Resources
         // Home Page
         public override string HomeWelcome => "Welcome";
         public override string HomeConfiguredBackup => "Configured backup";
+        public override string HomeTipTitle => "Did you know?";
+        public override string HomeTip1 => "You can limit the size of files transferred in parallel in the settings to preserve your bandwidth.";
+        public override string HomeTip2 => "Files with priority extensions will always be backed up before others.";
+        public override string HomeTip3 => "If your configured business software is running, EasySave will automatically pause your backups. They will resume automatically once it's not running anymore.";
+        public override string HomeTip4 => "Differential backup is faster because it only copies files modified since the last full backup.";
+        public override string HomeTip5 => "You can configure specific extensions to be automatically encrypted during transfer.";
+        public override string HomeTip6 => "Use the search bar to quickly find a backup job among dozens.";
+        public override string HomeTip7 => "You can collapse the sidebar to save space on your screen.";
 
         // Creation BackupMenu 
         public override string CreateBackupMenuTitle => "Create a new backup";
