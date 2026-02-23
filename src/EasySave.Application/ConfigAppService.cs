@@ -54,10 +54,23 @@ namespace EasySave.Application
                 var settings = _configService.LoadSettings();
 
                 EasyLogService.Instance.Reset();
-                EasyLogService.Instance.Initialize(
-                    settings.LogDirectoryPath,
-                    format
-                );
+                EasyLogService.Instance.Initialize(settings.LogDirectoryPath,format);
+
+                Func<object, Task>? remote = null;
+                if (settings.LogMode is 1 or 2 && !string.IsNullOrWhiteSpace(settings.LogServerHost))
+                {
+                    var logClient = new TcpLogClient(
+                        settings.LogServerHost,
+                        settings.LogServerPort,
+                        isXml: format == LogFormat.Xml,  // nouveau format
+                        fallbackDirectory: settings.LogDirectoryPath);
+
+                    remote = entry => logClient.SendAsync(entry);
+                }
+
+                // Reinitialize dispatcher with new remote
+                LogDispatcher.Instance.Reset();
+                LogDispatcher.Instance.Initialize(EasyLogService.Instance, remote, settings.LogMode);
 
                 settings.LogFormat = (int)format;
                 _configService.SaveSettings(settings);
