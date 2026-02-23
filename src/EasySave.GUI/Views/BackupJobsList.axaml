@@ -16,6 +16,7 @@
         <ListBox ItemsSource="{Binding #This.Jobs}"
                  SelectedItem="{Binding #This.SelectedJob, Mode=TwoWay}"
                  Background="Transparent"
+                 MaxHeight="400"
                  Name="JobsListBox">
             <ListBox.Styles>
                 <Style Selector="ListBoxItem">
@@ -41,20 +42,21 @@
 
                             <!-- Source -->
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding  #This.Texts.BackupSourcePathTitle, ElementName=This}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                <TextBlock Text="{Binding  #This.Texts.BackupSourcePathTitle, ElementName=This}" TextWrapping="WrapWithOverflow"/>
                                 <TextBlock Text="{Binding SourcePath}" Foreground="{StaticResource TextSecondary}"/>
                             </StackPanel>
                             <!-- Target -->
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding #This.Texts.BackupTargetPathTitle, ElementName=This}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                <TextBlock Text="{Binding #This.Texts.BackupTargetPathTitle, ElementName=This}" TextWrapping="WrapWithOverflow"/>
                                 <TextBlock Text="{Binding TargetPath}" Foreground="{StaticResource TextSecondary}"/>
                             </StackPanel>
 
                             <!-- Type -->
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding  #This.Texts.BackupTypeTitle, ElementName=This}"></TextBlock>
+                                <TextBlock Text="{Binding  #This.Texts.BackupTypeTitle, ElementName=This}"/>
                                 <TextBlock Text="{Binding Type, Converter={StaticResource BackupTypeConverter}}"
-                                           Foreground="{StaticResource TextSecondary}"/>                            </StackPanel>
+                                           Foreground="{StaticResource TextSecondary}"/>
+                            </StackPanel>
 
                         </StackPanel>
 
