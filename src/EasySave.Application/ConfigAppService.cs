@@ -2,6 +2,7 @@
 using EasySave.Application.Exceptions;
 using EasySave.Domain.Enums;
 using EasySave.Domain.Interfaces;
+using EasySave.Domain.Services;
 using EasySave.EasyLog;
 using EasySave.EasyLog.Enums;
 
@@ -76,11 +77,30 @@ namespace EasySave.Application
             try
             {
                 var settings = _configService.LoadSettings();
+
+                // Rebuild the remote client if needed
+                Func<object, Task>? remote = null;
+                if (code is 1 or 2 && !string.IsNullOrWhiteSpace(settings.LogServerHost))
+                {
+                    var logClient = new TcpLogClient(
+                        settings.LogServerHost,
+                        settings.LogServerPort,
+                        isXml: settings.LogFormat == 1,
+                        fallbackDirectory: settings.LogDirectoryPath);
+
+                    remote = entry => logClient.SendAsync(entry);
+                }
+
+                // Reconfigure CompositeLogService with the new mode
+                LogDispatcher.Instance.Reset();
+                LogDispatcher.Instance.Initialize(EasyLogService.Instance, remote, code);
+
                 settings.LogMode = code;
                 _configService.SaveSettings(settings);
             }
             catch (EasySaveException ex) { throw DomainExceptionMapper.Map(ex); }
         }
+
 
         public int GetLogMode()
         {

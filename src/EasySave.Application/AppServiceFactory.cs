@@ -31,8 +31,10 @@ namespace EasySave.Application
                 remote = entry => logClient.SendAsync(entry);
             }
 
-            ILogService logService = new CompositeLogService(
-               EasyLogService.Instance, remote, settings.LogMode);
+            LogDispatcher.Instance.Reset();
+            LogDispatcher.Instance.Initialize(EasyLogService.Instance, remote, settings.LogMode);
+
+            ILogService logService = LogDispatcher.Instance;
 
             IFileBackupService fileBackupService = new FileBackupService();
             IFileService fileService = new FileService();
