@@ -13,8 +13,8 @@
         <controls:PageTitleControl/>
         
         <controls:BackupJobsList Jobs="{Binding BackupJobs}"
-                                 SelectedJob="{Binding SelectedJob}"/>
-        
+                                 SelectedJob="{Binding SelectedJob}"
+                                 Texts="{Binding TextProvider}"/>
         <controls:ReturnButton HorizontalAlignment="Right"/>
         
     </StackPanel>

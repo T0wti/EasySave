@@ -14,7 +14,10 @@
         <!-- Searchbar -->
         <TextBox Text="{Binding SearchText}" Watermark="{Binding Watermark}" HorizontalAlignment="Stretch" CornerRadius="8"/>
         
-        <controls:BackupJobsList Jobs="{Binding BackupJobs}" SelectedJob="{Binding SelectedJob}"/>
+        <controls:BackupJobsList 
+            Texts="{Binding TextProvider}"
+            Jobs="{Binding BackupJobs}" 
+            SelectedJob="{Binding SelectedJob}"/>
         
         <controls:ReturnButton HorizontalAlignment="Right"/>
     </StackPanel>

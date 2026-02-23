@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using EasySave.Application.Resources;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -15,6 +16,7 @@ namespace EasySave.GUI.ViewModels
         // Jobs
         public ObservableCollection<BackupJobDTO> BackupJobs { get; }
         private BackupJobDTO _selectedJob;
+        public ITextProvider TextProvider { get; }
         private readonly List<BackupJobDTO> _allJobs; // For searchbar
 
         [ObservableProperty] private string _searchText = string.Empty; // For searchbar
@@ -48,6 +50,7 @@ namespace EasySave.GUI.ViewModels
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 
             ExitCommand = new RelayCommand(NavigateToBase);
+            TextProvider = Texts;
         }
 
         partial void OnSearchTextChanged(string value)

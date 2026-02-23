@@ -86,11 +86,11 @@ namespace EasySave.Application.Resources
         public override string BackupName => "id-a-" + ". " + "nom-job"; // mettre la fonction pour sortir le nom d'une backup
         public override string BackupNameTitle => "Name:";
         public override string BackupSourcePath => "";
-        public override string BackupSourcePathTitle => "Source:";
+        public override string BackupSourcePathTitle => "Source: ";
         public override string BackupTargetPath => "";
-        public override string BackupTargetPathTitle => "Target:";
+        public override string BackupTargetPathTitle => "Target: ";
         public override string BackupType => "";
-        public override string BackupTypeTitle => "Type:";
+        public override string BackupTypeTitle => "Type: ";
 
         // Execute Backup Menu
         public override string ExeBackupMenuTitle => "Execute a file backup";
