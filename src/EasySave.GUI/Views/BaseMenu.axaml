@@ -22,19 +22,30 @@
                 Margin="10"
                 BoxShadow="0 4 15 0 #10000000"
                 MinWidth="200">
-            <StackPanel Spacing="10" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding ConfiguredBackupStr}" 
-                            FontSize="16" 
-                            FontWeight="SemiBold"
-                            Foreground="{StaticResource TextSecondary}" 
-                            HorizontalAlignment="Center"/>
+            <Panel>
+                <StackPanel Spacing="10" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding ConfiguredBackupStr}" 
+                                FontSize="16" 
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource TextSecondary}" 
+                                HorizontalAlignment="Center" IsVisible="{Binding !NoBackups}"/>
                 
-                <TextBlock Text="{Binding BackupNumber}" 
-                            FontSize="48" 
-                            FontWeight="Bold" 
-                            Foreground="{StaticResource TextPrimary}" 
-                            HorizontalAlignment="Center"/>
-            </StackPanel>
+                    <TextBlock Text="{Binding BackupNumber}" 
+                                FontSize="48" 
+                                FontWeight="Bold" 
+                                Foreground="{StaticResource TextPrimary}" 
+                                HorizontalAlignment="Center" IsVisible="{Binding !NoBackups}"/>
+                </StackPanel>
+
+                <!-- Create save button -->
+                <Button Classes="MenuBtn" Command="{Binding NavigateToCreateBackupCommand}" IsVisible="{Binding NoBackups}">
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Grid.Column="0" Classes="MenuIcon"
+                                    Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                        <TextBlock Grid.Column="1" Text="{Binding CreateBackup}"/>
+                    </StackPanel>
+                </Button>
+            </Panel>
         </Border>
         <Border Background="#EBF4FF" 
                 BorderBrush="{StaticResource AccentColor}" 

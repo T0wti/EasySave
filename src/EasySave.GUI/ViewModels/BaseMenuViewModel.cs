@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.GUI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,9 @@ namespace EasySave.GUI.ViewModels
         public string ConfiguredBackupStr { get; }
         public int BackupNumber { get; }
         public string HomeTipTitle { get; }
-        //[ObservableProperty] private string _homeRandomTip;
         public string HomeRandomTip { get; set; }
+
+        [ObservableProperty] private bool _noBackups;
 
         public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
@@ -49,6 +51,7 @@ namespace EasySave.GUI.ViewModels
 
             var jobs = BackupAppService.GetAll();
             BackupNumber = jobs.Count();
+            NoBackups = IsNoBackupConfigured(BackupNumber); // To display or not to display backup number
 
             NavigateToSettingsCommand = new RelayCommand(() =>
             {
@@ -58,10 +61,10 @@ namespace EasySave.GUI.ViewModels
             {
                 NavigateTo(new ListBackupMenuViewModel(mainWindow));
             });
-            //NavigateToCreateBackupCommand = new RelayCommand(() =>
-            //{
-            //    NavigateTo(new CreateBackupMenuViewModel(mainWindow, new DialogService()));
-            //});
+            NavigateToCreateBackupCommand = new RelayCommand(() =>
+            {
+                NavigateTo(new CreateBackupMenuViewModel(mainWindow, new DialogService()));
+            });
             NavigateToExecuteBackupCommand = new RelayCommand(() =>
             {
                 NavigateTo(new ExecuteBackupMenuViewModel(mainWindow));
@@ -94,6 +97,12 @@ namespace EasySave.GUI.ViewModels
             // Randomly chooses a tip
             string randomTip = tips[random.Next(tips.Count)];
             return randomTip;
+        }
+
+        private bool IsNoBackupConfigured(int backupNumber)
+        {
+            if (backupNumber > 0) return false;
+            else return true;
         }
     }
 }
