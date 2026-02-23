@@ -33,7 +33,7 @@ namespace EasySave.Domain.Services
                 StateFileDirectoryPath = Path.Combine(_baseAppPath, "State"),
                 LogFormat = 0,
                 LogMode = 0,
-                LogServerHost = null,
+                LogServerHost = "127.0.0.1",
                 LogServerPort = 11000,
                 BusinessSoftwareName = "CalculatorApp",
                 CryptoSoftPath = Path.Combine(AppContext.BaseDirectory, "EasySave.CryptoSoft.exe"),
