@@ -1,7 +1,10 @@
-﻿using System.Linq;
-using System.Windows.Input;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia.Controls.ApplicationLifetimes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -25,6 +28,9 @@ namespace EasySave.GUI.ViewModels
         public string Welcome { get; }
         public string ConfiguredBackupStr { get; }
         public int BackupNumber { get; }
+        public string HomeTipTitle { get; }
+        //[ObservableProperty] private string _homeRandomTip;
+        public string HomeRandomTip { get; set; }
 
         public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
         {
@@ -38,6 +44,8 @@ namespace EasySave.GUI.ViewModels
             Exit = Texts.Exit;
             Welcome = Texts.HomeWelcome;
             ConfiguredBackupStr = Texts.HomeConfiguredBackup;
+            HomeTipTitle = Texts.HomeTipTitle;
+            HomeRandomTip = LoadRandomTip();
 
             var jobs = BackupAppService.GetAll();
             BackupNumber = jobs.Count();
@@ -67,6 +75,25 @@ namespace EasySave.GUI.ViewModels
             {
                 desktop.Shutdown();
             }
+        }
+
+        private string LoadRandomTip()
+        {
+            var tips = new List<string>
+            {
+                Texts.HomeTip1,
+                Texts.HomeTip2,
+                Texts.HomeTip3,
+                Texts.HomeTip4,
+                Texts.HomeTip5,
+                Texts.HomeTip6,
+                Texts.HomeTip7
+            };
+
+            var random = new Random();
+            // Randomly chooses a tip
+            string randomTip = tips[random.Next(tips.Count)];
+            return randomTip;
         }
     }
 }

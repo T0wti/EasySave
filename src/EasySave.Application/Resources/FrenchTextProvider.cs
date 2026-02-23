@@ -29,6 +29,14 @@ namespace EasySave.Application.Resources
         // Home Page
         public override string HomeWelcome => "Bienvenue";
         public override string HomeConfiguredBackup => "Sauvegardes configurées";
+        public override string HomeTipTitle => "Le saviez-vous ?";
+        public override string HomeTip1 => "Vous pouvez limiter la taille des fichiers transférés en parallèle dans les réglages pour préserver votre connexion.";
+        public override string HomeTip2 => "Les fichiers avec des extensions prioritaires seront toujours sauvegardés avant les autres.";
+        public override string HomeTip3 => "Si votre logiciel métier configuré s'exécute, EasySave mettra automatiquement vos sauvegardes en pause. La sauvegarde reprendra automatiquement à de la fermeture du logiciel.";
+        public override string HomeTip4 => "La sauvegarde différentielle est plus rapide car elle ne copie que les fichiers modifiés depuis la dernière sauvegarde complète.";
+        public override string HomeTip5 => "Vous pouvez configurer des extensions spécifiques pour qu'elles soient automatiquement chiffrées lors du transfert.";
+        public override string HomeTip6 => "Utilisez la barre de recherche pour retrouver rapidement un travail de sauvegarde parmi des dizaines.";
+        public override string HomeTip7 => "Vous pouvez réduire le menu latéral pour gagner de l'espace sur votre écran.";
 
         // Creation BackupMenu 
         public override string CreateBackupMenuTitle => "Créer une sauvegarde de fichiers";

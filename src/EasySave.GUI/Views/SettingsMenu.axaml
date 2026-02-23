@@ -62,7 +62,7 @@
             <StackPanel Spacing="8">
                 <TextBlock Text="{Binding MaxLargeFileSizeTitle}" Classes="PrimaryText"/>
                 <NumericUpDown Value="{Binding MaxLargeFileSizeThreshold}" Minimum="0" Increment="32" HorizontalAlignment="Left" Width="150"/>
-                <TextBlock  Text="{Binding MaxLargeFileSizeInfo}" FontStyle="Italic" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Text="{Binding MaxLargeFileSizeInfo}" FontStyle="Italic" TextWrapping="WrapWithOverflow"/>
             </StackPanel>
                 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">

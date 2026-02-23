@@ -18,6 +18,14 @@ namespace EasySave.Application.Resources
         // Home Page
         string HomeWelcome { get; }
         string HomeConfiguredBackup { get; }
+        string HomeTipTitle { get; }
+        string HomeTip1 { get; }
+        string HomeTip2 { get; }
+        string HomeTip3 { get; }
+        string HomeTip4 { get; }
+        string HomeTip5 { get; }
+        string HomeTip6 { get; }
+        string HomeTip7 { get; }
 
         // Options in the base menu | Argan
         string DeleteBackup { get; }
