@@ -1,0 +1,66 @@
+﻿using EasySave.EasyLog.Interfaces;
+
+namespace EasySave.EasyLog
+{
+    // Singleton that routes log entries to local EasyLog, remote TCP server, or both
+    // depending on the configured LogMode.
+    // Same pattern as EasyLogService: call Reset() then Initialize() to reconfigure at runtime.
+    // LogMode: 0 = Local only, 1 = Centralized only, 2 = Both
+    public class LogDispatcher : ILogService
+    {
+        private static readonly Lazy<LogDispatcher> _instance = new(() => new LogDispatcher());
+        public static LogDispatcher Instance => _instance.Value;
+
+        private EasyLogService? _local;
+        private Func<object, Task>? _remote;
+        private int _logMode;
+        private bool _isInitialized;
+
+        private LogDispatcher() { }
+
+        public void Initialize(EasyLogService local, Func<object, Task>? remote, int logMode)
+        {
+            if (_isInitialized) return;
+
+            _local = local;
+            _remote = remote;
+            _logMode = logMode;
+            _isInitialized = true;
+        }
+
+        public void Reset()
+        {
+            _local = null;
+            _remote = null;
+            _isInitialized = false;
+        }
+
+        public void Write<T>(T entry)
+        {
+            if (!_isInitialized || _local == null)
+                throw new InvalidOperationException("CompositeLogService must be initialized via Initialize() before use.");
+
+            switch (_logMode)
+            {
+                case 0: // Local only
+                    _local.Write(entry);
+                    break;
+
+                case 1: // Centralized only
+                    if (_remote is not null)
+                        _ = _remote(entry!);
+                    break;
+
+                case 2: // Both
+                    _local.Write(entry);
+                    if (_remote is not null)
+                        _ = _remote(entry!);
+                    break;
+
+                default:
+                    _local.Write(entry);
+                    break;
+            }
+        }
+    }
+}
