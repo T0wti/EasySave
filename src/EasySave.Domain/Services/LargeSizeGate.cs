@@ -9,16 +9,22 @@ namespace EasySave.Domain.Services
     // Small files are never blocked
     public class LargeSizeGate : ILargeSizeGate
     {
-        private readonly long _thresholdBytes;
+        private readonly IConfigurationService _configService;
         private readonly SemaphoreSlim _semaphore = new(1, 1);
 
-        public LargeSizeGate(long maxLargeFileSizeKb)
+        public LargeSizeGate(IConfigurationService configService)
         {
-            _thresholdBytes = maxLargeFileSizeKb * 1024;
+            _configService = configService;
         }
 
+        private long ThresholdBytes
+           => _configService.LoadSettings().MaxLargeFileSizeKb * 1024;
+
         public bool IsLargeFile(long fileSizeBytes)
-        => _thresholdBytes > 0 && fileSizeBytes > _thresholdBytes;
+        {
+            var threshold = ThresholdBytes;
+            return threshold > 0 && fileSizeBytes > threshold;
+        }
 
         public async Task AcquireIfLargeAsync(long fileSizeBytes, CancellationToken ct)
         {
