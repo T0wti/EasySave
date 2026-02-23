@@ -6,11 +6,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using EasySave.Application.DTOs;
+using EasySave.Application.Resources;
 
 namespace EasySave.GUI.Views;
 
 public partial class BackupJobsList : UserControl
 {
+    public static readonly StyledProperty<ITextProvider> TextsProperty =
+        AvaloniaProperty.Register<BackupJobsList, ITextProvider>(nameof(Texts));
+
     public static readonly StyledProperty<IEnumerable<BackupJobDTO>> JobsProperty =
         AvaloniaProperty.Register<BackupJobsList, IEnumerable<BackupJobDTO>>(
             nameof(Jobs));
@@ -24,6 +28,11 @@ public partial class BackupJobsList : UserControl
         AvaloniaProperty.Register<BackupJobsList, ICommand>(
             nameof(JobSelectedCommand));
 
+    public ITextProvider Texts
+    {
+        get => GetValue(TextsProperty);
+        set => SetValue(TextsProperty, value);
+    }
     public IEnumerable<BackupJobDTO> Jobs
     {
         get => GetValue(JobsProperty);

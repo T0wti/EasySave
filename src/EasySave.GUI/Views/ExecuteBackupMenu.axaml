@@ -63,7 +63,7 @@
                                     <TextBlock Text="{Binding Job.TargetPath}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
                     
-                                    <TextBlock Text="{Binding Job.Type}" TextWrapping="WrapWithOverflow"
+                                    <TextBlock Text="{Binding TypeLabel}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
                                 </StackPanel>
 

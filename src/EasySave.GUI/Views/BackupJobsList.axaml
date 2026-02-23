@@ -3,11 +3,13 @@
              xmlns:dto="using:EasySave.Application.DTOs"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:EasySave.GUI.Views"
              mc:Ignorable="d"
              x:Class="EasySave.GUI.Views.BackupJobsList"
-             xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
-             x:Name="This"
-             x:DataType="viewModels:BackupJobsListViewModel">
+             x:Name="This">
+        <UserControl.Resources>
+            <converters:BackupTypeConverter x:Key="BackupTypeConverter" Texts="{Binding Path=Texts, ElementName=This}"/>
+        </UserControl.Resources>
 
     <StackPanel Spacing="10">
     
@@ -38,13 +40,21 @@
                             <TextBlock Text="{Binding Name}" Classes="PrimaryText"/>
 
                             <!-- Source -->
-                            <TextBlock Text="{Binding SourcePath}" Foreground="{StaticResource TextSecondary}" TextWrapping="WrapWithOverflow"/>
-
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding  #This.Texts.BackupSourcePathTitle, ElementName=This}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                <TextBlock Text="{Binding SourcePath}" Foreground="{StaticResource TextSecondary}"/>
+                            </StackPanel>
                             <!-- Target -->
-                            <TextBlock Text="{Binding TargetPath}" Foreground="{StaticResource TextSecondary}" TextWrapping="WrapWithOverflow"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding #This.Texts.BackupTargetPathTitle, ElementName=This}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                <TextBlock Text="{Binding TargetPath}" Foreground="{StaticResource TextSecondary}"/>
+                            </StackPanel>
 
                             <!-- Type -->
-                            <TextBlock Text="{Binding Type}" Foreground="{StaticResource TextSecondary}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding  #This.Texts.BackupTypeTitle, ElementName=This}"></TextBlock>
+                                <TextBlock Text="{Binding Type, Converter={StaticResource BackupTypeConverter}}"
+                                           Foreground="{StaticResource TextSecondary}"/>                            </StackPanel>
 
                         </StackPanel>
 

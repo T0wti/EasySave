@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
+using EasySave.Application.Resources;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace EasySave.GUI.ViewModels
@@ -15,6 +16,7 @@ namespace EasySave.GUI.ViewModels
     public partial class DeleteBackupMenuViewModel : ViewModelBase
     {
         public ICommand DeleteBackupCommand { get; }
+        public ITextProvider TextProvider { get; }
 
         public ObservableCollection<BackupJobDTO> BackupJobs { get; }
         private readonly List<BackupJobDTO> _allJobs; // For searchbar
@@ -47,6 +49,7 @@ namespace EasySave.GUI.ViewModels
             DeleteConfirmation = Texts.MessageBoxDeleteConfirmation;
 
             _allJobs = BackupAppService.GetAll().ToList();
+            TextProvider = Texts;
 
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 

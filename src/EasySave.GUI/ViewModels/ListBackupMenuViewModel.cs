@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using EasySave.Application.DTOs;
+using EasySave.Application.Resources;
 
 namespace EasySave.GUI.ViewModels
 {
@@ -11,6 +12,7 @@ namespace EasySave.GUI.ViewModels
         // Jobs
         public ObservableCollection<BackupJobDTO> BackupJobs { get; }
         private BackupJobDTO _selectedJob;
+        public ITextProvider TextProvider { get; }
 
         public BackupJobDTO SelectedJob
         {
@@ -35,6 +37,7 @@ namespace EasySave.GUI.ViewModels
         {
             Title = Texts.ListBackupMenuTitle;
             Exit = Texts.Exit;
+            TextProvider = Texts;
 
             BackupJobs = new ObservableCollection<BackupJobDTO>(BackupAppService.GetAll());
 

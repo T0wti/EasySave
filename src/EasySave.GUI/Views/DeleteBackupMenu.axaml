@@ -16,7 +16,7 @@
             <TextBox Text="{Binding SearchText}" Watermark="{Binding Watermark}" HorizontalAlignment="Stretch" CornerRadius="8"/>
 
             <!-- Get the BackupJobList -->
-            <controls:BackupJobsList Jobs="{Binding BackupJobs}" SelectedJob="{Binding SelectedJob}"/>
+            <controls:BackupJobsList Texts="{Binding TextProvider}" Jobs="{Binding BackupJobs}" SelectedJob="{Binding SelectedJob}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
 				
