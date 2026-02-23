@@ -19,6 +19,6 @@
             Jobs="{Binding BackupJobs}" 
             SelectedJob="{Binding SelectedJob}"/>
         
-        <controls:ReturnButton HorizontalAlignment="Right"/>
+        <controls:ReturnButton HorizontalAlignment="Center"/>
     </StackPanel>
 </UserControl>

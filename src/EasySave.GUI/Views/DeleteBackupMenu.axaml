@@ -21,7 +21,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
 				
                 <!-- Add to the BackupJobList: Delete button and Exit button -->
-                <Button Content="{Binding Delete}" Command="{Binding DeleteBackupCommand}" Classes="ActionBtn"/>
+                <Button Content="{Binding Delete}" Command="{Binding DeleteBackupCommand}" Classes="ActionBtn DangerBtn"/>
 
                 <controls:ReturnButton/>
 
