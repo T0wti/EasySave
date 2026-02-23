@@ -1,47 +1,36 @@
-﻿using EasySave.EasyLog.Writers;
-using EasySave.EasyLog.Interfaces;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
 await LogServer.RunAsync();
 
-// TCP log server that receives log entries from EasySave client and writes them to daily log files using EasyLog writers
-
+// TCP log server — receives already-serialized log entries from EasySave clients
+// and appends them directly to daily log files (JSON or XML).
+// Runs inside a Docker container, log files persisted via mounted volume.
 internal static class LogServer
 {
-    // Port on which the server listens for incoming TCP connections
     private const int Port = 11000;
-
-    // Directory inside the container where log files are stored (mapped via Docker volume)
     private const string LogDir = "/app/logs";
 
-    // Starts the TCP listener and accepts incoming client connections indefinitely
-  
+    // One semaphore per file path allows JSON and XML files to be written concurrently
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, SemaphoreSlim>
+        _fileLocks = new();
+
     public static async Task RunAsync()
     {
-        // Ensure the log directory exists before any write attempt
         Directory.CreateDirectory(LogDir);
-
         Console.WriteLine($"[EasySave LogServer] Listening on TCP port {Port}...");
 
         var listener = new TcpListener(IPAddress.Any, Port);
         listener.Start();
 
-        // Main accept loop runs indefinitely until the process is stopped
         while (true)
         {
             var client = await listener.AcceptTcpClientAsync();
-
             _ = Task.Run(() => HandleClientAsync(client));
         }
     }
 
-    /// <summary>
-    /// Handles a single connected client:
-    /// reads the full payload, detects the format (JSON or XML),
-    /// then delegates writing to the appropriate EasyLog writer.
-    /// </summary>
     private static async Task HandleClientAsync(TcpClient client)
     {
         try
@@ -49,17 +38,16 @@ internal static class LogServer
             await using var stream = client.GetStream();
             using var reader = new StreamReader(stream, Encoding.UTF8);
 
-            // Timeout to avoid blocking indefinitely on slow or malformed clients
+            // Disconnect clients that are too slow or malformed
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
             var raw = await reader.ReadToEndAsync(cts.Token);
 
-            // Ignore empty payloads
             if (string.IsNullOrWhiteSpace(raw)) return;
 
             bool isXml;
             string payload;
 
-            // Detect format based on the prefix sent by TcpLogClient
+            // Detect format from prefix set by TcpLogClient
             if (raw.StartsWith("XML|"))
             {
                 isXml = true;
@@ -72,25 +60,24 @@ internal static class LogServer
             }
             else
             {
-                // No recognized prefix : default to JSON
                 isXml = false;
                 payload = raw.TrimEnd('\n');
             }
 
-            // Instantiate the correct EasyLog writer directly (thread-safe, no singleton issues)
-            // JsonLogWriter and XmlLogWriter both have internal locking
-            ILogWriter writer = isXml
-                ? new XmlLogWriter(LogDir)
-                : new JsonLogWriter(LogDir);
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+            var filePath = Path.Combine(LogDir, $"{today}.{(isXml ? "xml" : "json")}");
 
-            // Write the raw payload string into the daily log file
-            writer.Write(payload);
+            var fileLock = _fileLocks.GetOrAdd(filePath, _ => new SemaphoreSlim(1, 1));
 
-            Console.WriteLine($"[OK] Entry written ({(isXml ? "XML" : "JSON")})");
+            if (isXml)
+                await AppendXmlAsync(filePath, payload, fileLock);
+            else
+                await AppendJsonAsync(filePath, payload, fileLock);
+
+            Console.WriteLine($"[OK] Entry written ({(isXml ? "XML" : "JSON")}) → {Path.GetFileName(filePath)}");
         }
         catch (OperationCanceledException)
         {
-            // Client took too long to send data
             Console.WriteLine("[WARN] Client connection timed out.");
         }
         catch (Exception ex)
@@ -99,8 +86,66 @@ internal static class LogServer
         }
         finally
         {
-            // Always close the connection, even on error
             client.Close();
+        }
+    }
+
+    // Inserts a JSON object into the daily JSON array file
+    private static async Task AppendJsonAsync(string filePath, string entry, SemaphoreSlim fileLock)
+    {
+        await fileLock.WaitAsync();
+        try
+        {
+            if (!File.Exists(filePath))
+            {
+                await File.WriteAllTextAsync(filePath, "[\n" + entry + "\n]");
+                return;
+            }
+
+            var content = await File.ReadAllTextAsync(filePath);
+            content = content.TrimEnd();
+            if (content.EndsWith("]"))
+                content = content[..^1].TrimEnd();
+
+            await File.WriteAllTextAsync(filePath, content + ",\n" + entry + "\n]");
+        }
+        finally
+        {
+            fileLock.Release();
+        }
+    }
+
+    // Inserts an XML element into the daily XML file inside <LogEntries>
+    private static async Task AppendXmlAsync(string filePath, string entry, SemaphoreSlim fileLock)
+    {
+        await fileLock.WaitAsync();
+        try
+        {
+            // Strip XML declaration if present (<?xml version="1.0"?>)
+            var clean = entry.Trim();
+            if (clean.StartsWith("<?xml"))
+                clean = clean[(clean.IndexOf("?>") + 2)..].TrimStart();
+
+            if (!File.Exists(filePath))
+            {
+                await File.WriteAllTextAsync(filePath, "<LogEntries>\n" + clean + "\n</LogEntries>");
+                return;
+            }
+
+            var content = await File.ReadAllTextAsync(filePath);
+            var insertPos = content.LastIndexOf("</LogEntries>");
+            if (insertPos < 0)
+            {
+                await File.AppendAllTextAsync(filePath, clean + "\n");
+                return;
+            }
+
+            await File.WriteAllTextAsync(filePath,
+                content[..insertPos] + clean + "\n</LogEntries>");
+        }
+        finally
+        {
+            fileLock.Release();
         }
     }
 }

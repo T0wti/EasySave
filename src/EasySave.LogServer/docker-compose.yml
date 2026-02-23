@@ -1,6 +1,8 @@
 ﻿services:
   easysave-logserver:
-    build: .
+    build:
+      context: ..          # src/ (remonte d'un niveau depuis LogServer/)
+      dockerfile: EasySave.LogServer/Dockerfile
     container_name: easysave-logserver
     ports:
       - "11000:11000"
