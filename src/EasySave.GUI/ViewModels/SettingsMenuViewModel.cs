@@ -23,7 +23,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private string? _businessSoftware;
         [ObservableProperty] private string? _extensionsToEncrypt;
         [ObservableProperty] private string? _extensionsToPrioritize;
-        [ObservableProperty] private decimal _maxLargeFileSizeThreshold; // decimal type because NumericUpDown wants decimal
+        [ObservableProperty] private decimal? _maxLargeFileSizeThreshold; // decimal type because NumericUpDown wants decimal
 
         // Commands 
         public ICommand ExitCommand { get; }
@@ -147,8 +147,17 @@ namespace EasySave.GUI.ViewModels
             ConfigAppService.SaveBusinessSoftwareName(BusinessSoftware);
             ConfigAppService.SaveEncryptedExtensionText(ExtensionsToEncrypt);
             ConfigAppService.SavePriorityExtensionText(ExtensionsToPrioritize);
-            ConfigAppService.SaveMaxLargeFileSize((long)MaxLargeFileSizeThreshold);
+
+            // To prevent crash if null
+            if(MaxLargeFileSizeThreshold != null) ConfigAppService.SaveMaxLargeFileSize((long)MaxLargeFileSizeThreshold);
+
             await ShowMessageAsync(Texts.MessageBoxSettingsSaved,"", "", Texts.MessageBoxOk, false, false);
+        }
+
+        // To prevent error
+        private void OnMaxLargeFileSizeThresholdChanged(decimal value)
+        {
+            if (value == null) value = 0;
         }
     }
 }
