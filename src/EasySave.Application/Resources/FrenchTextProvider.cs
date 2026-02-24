@@ -37,6 +37,7 @@ namespace EasySave.Application.Resources
         public override string HomeTip5 => "Vous pouvez configurer des extensions spécifiques pour qu'elles soient automatiquement chiffrées lors du transfert.";
         public override string HomeTip6 => "Utilisez la barre de recherche pour retrouver rapidement un travail de sauvegarde parmi des dizaines.";
         public override string HomeTip7 => "Vous pouvez réduire le menu latéral pour gagner de l'espace sur votre écran.";
+        public override string HomeTip8 => "Cette application a été développée par une équipe de professionnels de chez ProSoft.";
         public override string AlertProApp => "L'application professionnelle est ouverte : ";
 
         // Creation BackupMenu 

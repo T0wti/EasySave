@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Avalonia.Threading; // Needed for timer
 
 namespace EasySave.GUI.ViewModels
 {
@@ -30,8 +31,8 @@ namespace EasySave.GUI.ViewModels
         public string ConfiguredBackupStr { get; }
         public int BackupNumber { get; }
         public string HomeTipTitle { get; }
-        public string HomeRandomTip { get; set; }
 
+        [ObservableProperty] private string _homeRandomTip;
         [ObservableProperty] private bool _noBackups;
 
         public BaseMenuViewModel(MainWindowViewModel mainWindow) : base(mainWindow)
@@ -47,7 +48,7 @@ namespace EasySave.GUI.ViewModels
             Welcome = Texts.HomeWelcome;
             ConfiguredBackupStr = Texts.HomeConfiguredBackup;
             HomeTipTitle = Texts.HomeTipTitle;
-            HomeRandomTip = LoadRandomTip();
+            HomeRandomTip = LoadRandomTip(); // Initialization before the timer
 
             var jobs = BackupAppService.GetAll();
             BackupNumber = jobs.Count();
@@ -70,6 +71,16 @@ namespace EasySave.GUI.ViewModels
                 NavigateTo(new ExecuteBackupMenuViewModel(mainWindow));
             });
             ExitCommand = new RelayCommand(OnExit);
+
+            // For timer UpdateAllProgress()
+            // DispatcherTimer is synchronised with the main UI thread
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            // Tick is every time the interval is done
+            // s = sender and e = eventArgs
+            // => lambda means every tick you do LoadRandomTip()
+            timer.Tick += (s, e) => HomeRandomTip = LoadRandomTip();
+            // Begin timer
+            timer.Start();
         }
 
         private void OnExit()
@@ -90,7 +101,8 @@ namespace EasySave.GUI.ViewModels
                 Texts.HomeTip4,
                 Texts.HomeTip5,
                 Texts.HomeTip6,
-                Texts.HomeTip7
+                Texts.HomeTip7,
+                Texts.HomeTip8
             };
 
             var random = new Random();

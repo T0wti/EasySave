@@ -60,10 +60,22 @@
                     
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
                     <TextBlock Text="{Binding HomeTipTitle}" FontWeight="Bold" Foreground="{StaticResource AccentColor}"/>
-                    <TextBlock Text="{Binding HomeRandomTip}"
-                                FontStyle="Italic" 
-                                TextWrapping="WrapWithOverflow" 
-                                Foreground="{StaticResource TextSecondary}"/>
+                    <TransitioningContentControl Content="{Binding HomeRandomTip}">
+                        <!-- For a transitionning effect -->
+                        <TransitioningContentControl.PageTransition>
+                            <CrossFade Duration="0:0:1" />
+                        </TransitioningContentControl.PageTransition>
+    
+                        <TransitioningContentControl.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" 
+                                           FontStyle="Italic" 
+                                           TextWrapping="WrapWithOverflow" 
+                                           Foreground="{StaticResource TextSecondary}"/>
+                            </DataTemplate>
+                        </TransitioningContentControl.ContentTemplate>
+    
+                    </TransitioningContentControl>
                 </StackPanel>
             </Grid>
         </Border>
