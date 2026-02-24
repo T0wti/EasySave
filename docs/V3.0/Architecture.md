@@ -24,11 +24,13 @@ The project's architecture is built upon the principle of **Clean Architecture**
 
 ## 2. Core Principles (SOLID) Respected
 
-### 1. Separation of Concerns (SoC)
-Each project has a single, well-defined responsibility. If a display or animation bug occurs, the team knows to look in the `GUI` layer. If a calculation rule for maximum parallel file size fails, the search goes directly to the `Domain` layer.
+Our architecture strictly adheres to the SOLID principles, ensuring long-term maintainability:
 
-### 2. Dependency Inversion Principle (DIP)
-Higher-level layers depend on abstractions (Interfaces) rather than concrete implementations. This is achieved through the **Dependency Injection** design pattern (via `AppServiceFactory`) which ties everything together. This makes it easy to swap out application behavior (e.g., changing how files are copied to the disk) without having to modify the core code.
+* **S - Single Responsibility Principle (SRP):** Each project layer and class has one specific job. For example, the `GUI` only handles user display while the `Application` orchestrates workflows.
+* **O - Open/Closed Principle (OCP):** The system is open for extension but closed for modification. For instance, adding a new backup type (e.g., Incremental) or a new log format (e.g., CSV) simply requires creating a new class.
+* **L - Liskov Substitution Principle (LSP):** Concrete implementations can seamlessly replace their abstractions. At runtime, the application can switch between `JsonLogWriter` and `XmlLogWriter` without causing any unexpected behavior or crashes.
+* **I - Interface Segregation Principle (ISP):** We use small, focused interfaces rather than large, monolithic ones. Interfaces like `IFileService`, `ILogClient`, and `IBackupService` are decoupled, meaning classes only implement the exact methods they need.
+* **D - Dependency Inversion Principle (DIP):** High-level modules (Application/Domain) do not depend on low-level modules (GUI). Instead, both depend on abstractions (Interfaces).
 
 # Why Avalonia ? Technology Comparison: Avalonia UI vs. .NET MAUI
 
