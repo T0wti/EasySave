@@ -14,7 +14,11 @@ namespace EasySave.Application.Utils
 
             var lowerSearch = searchText.ToLower();
 
-                   // Search by name
+            // To search by type in French
+            if (lowerSearch == "complete" || lowerSearch == "complète") lowerSearch = "full";
+            else if (lowerSearch == "differentielle" || lowerSearch == "différentielle" ) lowerSearch = "differential";
+
+            // Search by name
             return (job.Name != null && job.Name.ToLower().Contains(lowerSearch)) ||
                    // Search by source
                    (job.SourcePath != null && job.SourcePath.ToLower().Contains(lowerSearch)) ||
