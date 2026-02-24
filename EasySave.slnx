@@ -3,6 +3,9 @@
     <File Path="easylog-dll.md" />
     <File Path="manual-user.md" />
   </Folder>
+  <Folder Name="/docs/V3.0/">
+    <File Path="Architecture.md" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/EasySave.Console/EasySave.Console.csproj">
       <BuildDependency Project="src/EasySave.CryptoSoft/EasySave.CryptoSoft.csproj" />
