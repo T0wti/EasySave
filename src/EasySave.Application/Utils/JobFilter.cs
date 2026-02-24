@@ -15,8 +15,9 @@ namespace EasySave.Application.Utils
             var lowerSearch = searchText.ToLower();
 
             // To search by type in French
-            if (lowerSearch == "complete" || lowerSearch == "complète") lowerSearch = "full";
-            else if (lowerSearch == "differentielle" || lowerSearch == "différentielle" ) lowerSearch = "differential";
+            lowerSearch = lowerSearch.Replace("é", "e").Replace("è", "e"); // Remove accents
+            string fullInFrench = "complete";
+            string diffInFrench = "differentielle";
 
             // Search by name
             return (job.Name != null && job.Name.ToLower().Contains(lowerSearch)) ||
@@ -25,7 +26,10 @@ namespace EasySave.Application.Utils
                    // Search by target
                    (job.TargetPath != null && job.TargetPath.ToLower().Contains(lowerSearch)) ||
                    // Search by type
-                   (job.Type != null && job.Type.ToLower().Contains(lowerSearch));
+                   (job.Type != null && job.Type.ToLower().Contains(lowerSearch)) ||
+                   // Search by type in French
+                   (job.Type != null && (job.Type.ToLower().Contains("full") && fullInFrench.Contains(lowerSearch))) ||
+                   (job.Type != null && (job.Type.ToLower().Contains("differential") && diffInFrench.Contains(lowerSearch)));
         }
     }
 }
