@@ -37,6 +37,7 @@ namespace EasySave.Application.Resources
         public override string HomeTip5 => "You can configure specific extensions to be automatically encrypted during transfer.";
         public override string HomeTip6 => "Use the search bar to quickly find a backup job among dozens.";
         public override string HomeTip7 => "You can collapse the sidebar to save space on your screen.";
+        public override string AlertProApp => "The professional app is open: ";
 
         // Creation BackupMenu 
         public override string CreateBackupMenuTitle => "Create a new backup";
