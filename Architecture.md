@@ -34,6 +34,8 @@ Higher-level layers depend on abstractions (Interfaces) rather than concrete imp
 
 For the development of **EasySave**, choosing the right cross-platform framework was critical. While both **Avalonia UI** and **.NET MAUI** allow developers to share code across different systems, they rely on fundamentally different architectures.
 
+
+
 ## 1. Architectural Differences
 
 ### .NET MAUI (Native Wrapper)
