@@ -17,17 +17,15 @@ namespace EasySave.Domain.Services
             _configService = configService;
         }
 
-        private long ThresholdBytes
-           => _configService.LoadSettings().MaxLargeFileSizeKb * 1024;
-
         public bool IsLargeFile(long fileSizeBytes)
         {
-            var threshold = ThresholdBytes;
-            return threshold > 0 && fileSizeBytes > threshold;
+        var threshold = _configService.LoadSettings().MaxLargeFileSizeKb * 1024;
+        return threshold > 0 && fileSizeBytes > threshold;
         }
 
         public async Task AcquireIfLargeAsync(long fileSizeBytes, CancellationToken ct)
         {
+
             if (!IsLargeFile(fileSizeBytes)) return;
             await _semaphore.WaitAsync(ct).ConfigureAwait(false);
         }

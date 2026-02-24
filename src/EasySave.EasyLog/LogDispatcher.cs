@@ -10,7 +10,7 @@ namespace EasySave.EasyLog
     {
         private static readonly Lazy<LogDispatcher> _instance = new(() => new LogDispatcher());
         public static LogDispatcher Instance => _instance.Value;
-        private readonly object _initLock = new(
+        private readonly object _initLock = new();
 
         private EasyLogService? _local;
         private Func<object, Task>? _remote;
