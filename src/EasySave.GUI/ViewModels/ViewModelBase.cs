@@ -14,7 +14,7 @@ public abstract class ViewModelBase : ObservableObject
     protected ITextProvider Texts;
     protected readonly BackupAppService BackupAppService;
     protected readonly ConfigAppService ConfigAppService;
-    protected MainWindowViewModel MainWindow { get; }
+    public MainWindowViewModel MainWindow { get; } // Pubilc to be able to use MainWindow.IsBlockingAppOpen in execution menu
 
     public ViewModelBase(MainWindowViewModel mainWindow)
     {

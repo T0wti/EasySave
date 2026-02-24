@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EasySave.Application;
 using EasySave.Application.Exceptions;
 using EasySave.Application.Utils;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Threading; // Needed for timer
 
 namespace EasySave.GUI.ViewModels
 {
@@ -81,7 +83,7 @@ namespace EasySave.GUI.ViewModels
                         case "Active":
                             jobVm.ProgressValue = savedState.Progression;
                             jobVm.IsProcessing = true;
-                            StartProgressMonitoring(jobVm); // Recheck progress
+                            //StartProgressMonitoring(jobVm); // Recheck progress
                             break;
 
                         case "Paused":
@@ -126,6 +128,16 @@ namespace EasySave.GUI.ViewModels
             ExecuteSelectedCommand = new AsyncRelayCommand<int>(ExecuteJobAsync, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             ExecuteAllJobsCommand = new AsyncRelayCommand(ExecuteAllJobs, AsyncRelayCommandOptions.AllowConcurrentExecutions);
             StopSelectedCommand = new AsyncRelayCommand<object>(StopJobAsync);
+
+            // For timer UpdateAllProgress()
+            // DispatcherTimer is synchronised with the main UI thread
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+            // Tick is every time the interval is done
+            // s = sender and e = eventArgs
+            // => lambda means every tick you do UpdateAllProgress()
+            timer.Tick += (s, e) => UpdateAllProgress();
+            // Begin timer
+            timer.Start();
         }
 
         private async Task PauseJobAsync(object? parameter)
@@ -180,8 +192,6 @@ namespace EasySave.GUI.ViewModels
                 job.IsProcessing = true;
                 BackupAppService.ResumeBackup(jobId);
 
-                StartProgressMonitoring(job);
-
                 return; // To avoid continuing execution from 0
             }
 
@@ -192,8 +202,6 @@ namespace EasySave.GUI.ViewModels
                 IsRunning = true;
                 job.IsProcessing = true; // To avoid clicking on multiple buttons at the same time
                 job.IsCompleted = false; // To get a green progress bar once done
-
-                StartProgressMonitoring(job);
 
                 BusinessSoftwareHasError = false;
                 ErrorMessage = null;
@@ -333,20 +341,50 @@ namespace EasySave.GUI.ViewModels
             return BackupJobs.FirstOrDefault(x => x.Job.Id == jobId);
         }
 
-        private void StartProgressMonitoring(BackupJobSelectionViewModel job)
+        private void UpdateAllProgress()
         {
-            // _ is a trash variable when a function needs to...
-            // ...return to a variable but you don't need it
-            _ = Task.Run(async () =>
-            {
-                while (job.IsProcessing)
-                {
-                    var progressDto = BackupAppService.GetProgress(job.Job.Id);
+            var allProgress = BackupAppService.GetAllProgress().ToList();
 
-                    if (progressDto != null) job.ProgressValue = progressDto.Progression;
-                    await Task.Delay(250);
+            foreach (var job in BackupJobs)
+            {
+                var progressDto = allProgress.FirstOrDefault(p => p.BackupJobId == job.Job.Id);
+
+                // Get the real state
+                bool isPaused = BackupAppService.IsJobPaused(job.Job.Id);
+                bool isRunning = BackupAppService.IsJobRunning(job.Job.Id);
+
+                // If job is running or paused
+                if (isRunning || isPaused)
+                {
+                    job.IsCompleted = false; // Turn back to blue from green !
+                    job.IsProcessing = !isPaused; // Disables play if running or disables pause if paused
+
+                    if (progressDto != null)
+                    {
+                        job.ProgressValue = progressDto.Progression;
+                    }
                 }
-            });
+                // Job is stopped or failed
+                else
+                {
+                    job.IsProcessing = false; // Enable play button
+
+                    if (progressDto != null)
+                    {
+                        // Job completed
+                        if (progressDto.State == "Completed")
+                        {
+                            job.IsCompleted = true; // Turn the progress bar green
+                            job.ProgressValue = 100;
+                        }
+                        else // "Stopped", "Failed", "Inactive"
+                        {
+                            job.IsCompleted = false;
+                            job.ProgressValue = 0; // Make the progress bar go to 0
+                        }
+                    }
+                }
+            }
         }
     }
 }

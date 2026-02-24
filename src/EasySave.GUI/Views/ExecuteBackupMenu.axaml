@@ -5,8 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:EasySave.GUI.ViewModels"
              mc:Ignorable="d"
+             xmlns:conv="using:Avalonia.Data.Converters"
              x:Class="EasySave.GUI.Views.ExecuteBackupMenu"
              x:DataType="viewModels:ExecuteBackupMenuViewModel">
+             <!-- xmlns:conv="using:Avalonia.Data.Converters" to be able to have 2 conditions for play button -->
     
     <StackPanel Spacing="10" Margin="10">
         
@@ -27,7 +29,8 @@
                         </Button>
 
                     <!-- Play button -->
-                    <Button Classes="MenuBtn PlayBtn" Command="{Binding ExecuteAllJobsCommand}">
+                    <Button Classes="MenuBtn PlayBtn" Command="{Binding ExecuteAllJobsCommand}"
+                            IsEnabled="{Binding !MainWindow.IsBlockingAppOpen}">
                         <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                     </Button>
 
@@ -80,8 +83,14 @@
 
                                         <!-- Play button -->
                                         <Button Classes="MenuBtn PlayBtn" Command="{Binding $parent[UserControl].DataContext.ExecuteSelectedCommand}"
-                                                CommandParameter="{Binding Job.Id}"
-                                                IsEnabled="{Binding !IsProcessing}">
+                                                CommandParameter="{Binding Job.Id}">
+                                                <!-- Disabled if 2 conditions : business app running and process running -->
+                                                <Button.IsEnabled>
+                                                    <MultiBinding Converter="{x:Static conv:BoolConverters.And}">
+                                                        <Binding Path="!IsProcessing" />
+                                                        <Binding Path="!$parent[UserControl].DataContext.MainWindow.IsBlockingAppOpen" />
+                                                    </MultiBinding>
+                                                </Button.IsEnabled>
                                             <PathIcon Classes="MenuIcon" Data="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                                         </Button>
 
