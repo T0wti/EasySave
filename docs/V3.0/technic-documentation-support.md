@@ -44,7 +44,7 @@ This document provides the information required by support teams to configure an
 | `EncryptedFileExtensions` | List of extensions to encrypt | `[]` |
 | `PriorityFileExtensions` | Extensions treated as priority | `[]` |
 | `MaxLargeFileSizeKb`| Max size (KB) preventing parallel large transfers | `0` |
-| `CryptoSoftPath` | CryptoSoft output directory | ``Desktop\EasySave\CryptoSoft.exe`` |
+| `CryptoSoftPath` | CryptoSoft output directory | `Desktop\EasySave\CryptoSoft.exe` |
 | `CryptoSoftKeyPath` | Absolute path to key.txt | `%AppData%\EasySave\key.txt` |
 
 To reset the configuration, delete `config.json`, it will be recreated with default values on next launch.
