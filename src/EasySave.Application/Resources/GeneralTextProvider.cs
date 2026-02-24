@@ -57,6 +57,7 @@ namespace EasySave.Application.Resources
         public virtual string HomeTip5 => _defaultString;
         public virtual string HomeTip6 => _defaultString;
         public virtual string HomeTip7 => _defaultString;
+        public virtual string AlertProApp => _defaultString;
 
 
         //Creation menu

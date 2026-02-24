@@ -8,8 +8,10 @@ using EasySave.Application.Resources;
 using EasySave.GUI.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Input;
+using Avalonia.Threading;
 
 namespace EasySave.GUI.ViewModels;
 
@@ -29,6 +31,10 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private bool _isExecuteActive;
     [ObservableProperty] private bool _isSettingsActive;
     [ObservableProperty] private bool _isPaneOpen = true;
+    [ObservableProperty] private bool _isBlockingAppOpen = false;
+    [ObservableProperty] private string _blockingAppName = string.Empty;
+
+    private DispatcherTimer _processWatcher;
     // For burger menu display mode
     [ObservableProperty] private SplitViewDisplayMode _paneMode = SplitViewDisplayMode.CompactInline;
     [ObservableProperty] private bool _pinOn = false;
@@ -62,6 +68,7 @@ public partial class MainWindowViewModel : ObservableObject
         BackupAppService = backupAppService;
         ConfigAppService = configAppService;
         Texts = texts;
+        StartProcessWatcher();
 
         RefreshTexts(texts);
 
@@ -201,5 +208,30 @@ public partial class MainWindowViewModel : ObservableObject
             PaneMode = SplitViewDisplayMode.CompactOverlay;
             PinOn = true;
         }
+    }
+    private void StartProcessWatcher()
+    {
+        _processWatcher = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(2)
+        };
+
+        _processWatcher.Tick += (_, _) =>
+        {
+            var watchedApp = ConfigAppService?.GetBusinessSoftwareName();
+        
+            if (string.IsNullOrWhiteSpace(watchedApp))
+            {
+                IsBlockingAppOpen = false;
+                BlockingAppName = string.Empty;
+                return;
+            }
+
+            var processes = Process.GetProcessesByName(watchedApp);
+            IsBlockingAppOpen = processes.Length > 0;
+            BlockingAppName = IsBlockingAppOpen ? watchedApp.ToUpper() : string.Empty;
+        };
+
+        _processWatcher.Start();
     }
 }

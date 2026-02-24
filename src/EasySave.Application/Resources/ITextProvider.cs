@@ -26,6 +26,7 @@ namespace EasySave.Application.Resources
         string HomeTip5 { get; }
         string HomeTip6 { get; }
         string HomeTip7 { get; }
+        string AlertProApp { get; }
 
         // Options in the base menu | Argan
         string DeleteBackup { get; }

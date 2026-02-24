@@ -173,6 +173,32 @@
                                 <TextBlock Grid.Column="1" Text="{Binding Exit}" IsVisible="{Binding IsPaneOpen}"/>
                             </StackPanel>
                         </Button>
+                        
+                        <!-- Dans Grid.Row="2", après le StackPanel des boutons -->
+                        <Border Grid.Row="2"
+                                IsVisible="{Binding IsBlockingAppOpen}"
+                                Background="#EF4444"
+                                CornerRadius="6"
+                                Padding="8,6"
+                                Margin="0,5,0,20"
+                                HorizontalAlignment="Stretch">
+                            <Grid ColumnDefinitions="Auto, *">
+                                <PathIcon Grid.Column="0"
+                                          Classes="MenuIcon"
+                                          Foreground="White"
+                                          Data="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/>
+                                <TextBlock Grid.Column="1"
+                                           Foreground="White"
+                                           FontSize="12"
+                                           IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           HorizontalAlignment="Center">
+                                    <Run Text="{Binding Texts.AlertProApp}"/>
+                                    <Run Text="{Binding BlockingAppName}" FontWeight="Bold"/>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
 
                     </StackPanel>
                 </Grid>
