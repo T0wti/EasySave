@@ -96,11 +96,15 @@ namespace EasySave.Domain.Services
                 ? _fullStrategy
                 : _differentialStrategy;
 
+            var progress = BackupProgress.From(job);
+
+            if (job.Type == BackupType.Differential)
+                _stateService.Compare(job.Id);
+
             var files = await Task.Run(
                 () => strategy.GetFilesToCopy(job.SourcePath, job.TargetPath),
                 handle.CancellationToken).ConfigureAwait(false); // If the stop is engaged stop the getfile 
 
-            var progress = BackupProgress.From(job);
             _stateService.Initialize(progress, files);
 
             // Priority files first so no priority files never block the gate

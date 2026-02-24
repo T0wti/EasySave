@@ -82,6 +82,10 @@ namespace EasySave.Domain.Services
         {
             lock (_lock) { FinalizeAndClean(backupJobId, BackupJobState.Interrupted); }
         }
+        public void Compare(int backupJobId)
+        {
+            lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Comparing); }
+        }
 
         // Private helper to finalize a job and clean runtime-specific fields
         private void FinalizeAndClean(int backupJobId, BackupJobState finalState)

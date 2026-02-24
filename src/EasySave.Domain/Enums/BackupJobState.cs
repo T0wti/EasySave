@@ -9,6 +9,7 @@
         Completed,
         Failed,
         Stopped,
-        Interrupted
+        Interrupted,
+        Comparing
     }
 }

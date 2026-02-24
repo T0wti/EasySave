@@ -12,6 +12,8 @@ namespace EasySave.Domain.Interfaces
         void Complete(int backupJobId);
         void Fail(int backupJobId);
         void Interrupt(int backupJobId);
+        void Compare(int backupJobId);
+
     }
 
 }
