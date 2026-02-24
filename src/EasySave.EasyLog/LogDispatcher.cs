@@ -10,6 +10,7 @@ namespace EasySave.EasyLog
     {
         private static readonly Lazy<LogDispatcher> _instance = new(() => new LogDispatcher());
         public static LogDispatcher Instance => _instance.Value;
+        private readonly object _initLock = new(
 
         private EasyLogService? _local;
         private Func<object, Task>? _remote;
@@ -20,19 +21,25 @@ namespace EasySave.EasyLog
 
         public void Initialize(EasyLogService local, Func<object, Task>? remote, int logMode)
         {
-            if (_isInitialized) return;
+            lock (_initLock)
+            {
+                if (_isInitialized) return;
 
-            _local = local;
-            _remote = remote;
-            _logMode = logMode;
-            _isInitialized = true;
+                _local = local;
+                _remote = remote;
+                _logMode = logMode;
+                _isInitialized = true;
+            }
         }
 
         public void Reset()
         {
-            _local = null;
-            _remote = null;
-            _isInitialized = false;
+            lock (_initLock)
+            {
+                _local = null;
+                _remote = null;
+                _isInitialized = false;
+            }
         }
 
         public void Write<T>(T entry)
