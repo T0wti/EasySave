@@ -70,7 +70,7 @@
                                                Foreground="{StaticResource TextSecondary}"/>
 
                                     <!-- Backup state -->
-                                    <TextBlock Text="{Binding State}" TextWrapping="WrapWithOverflow"
+                                    <TextBlock Text="{Binding State}" TextWrapping="WrapWithOverflow" FontWeight="Bold"
                                                Foreground="{StaticResource TextSecondary}"/>
 
                                     <!-- File being copied -->
