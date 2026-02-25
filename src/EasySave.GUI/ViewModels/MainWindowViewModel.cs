@@ -58,6 +58,7 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private string _exeBackup;
     [ObservableProperty] private string _settings;
     [ObservableProperty] private string _exit;
+    [ObservableProperty] private string _alertProApp;
     [ObservableProperty] private double _panelWidth;
 
     public MainWindowViewModel(
@@ -138,6 +139,7 @@ public partial class MainWindowViewModel : ObservableObject
         ExeBackup = Texts.ExeBackupTitle;
         Settings = Texts.SettingsMenuTitle;
         Exit = Texts.Exit;
+        AlertProApp = Texts.AlertProApp;
         PanelWidth = CalculateOptimalPaneWidth();
     }
 
