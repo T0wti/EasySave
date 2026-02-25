@@ -94,7 +94,7 @@ Multiple jobs can run simultaneously, subject to the rules below:
 
 ## Encryption
 
-After each file is copied, EasySave checks whether its extension matches `EncryptedFileExtensions`. If so, it calls `CryptoSoft.exe` as an external process with the file path and key path as arguments.
+After each file is copied, EasySave checks whether its extension matches `EncryptedFileExtensions`. If so, it calls `CryptoSoft.exe` as an external process with the key path as arguments and the source bytes in stdin.
 
 CryptoSoft returns its exit code as the encryption duration in milliseconds. A negative exit code indicates an error.
 
