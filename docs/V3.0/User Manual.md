@@ -73,8 +73,8 @@ The sidebar contains the following options:
 
 
 > **Note:** If the configured business software is currently running, the backup will not start and an error message will be displayed. Close the business software before retrying.
-
-If backup are in progress :
+>
+> If backup are in progress :
 > - All running backup jobs are automatically paused
 > - No new job can start
 > - Jobs automatically resume once the business software is closed
