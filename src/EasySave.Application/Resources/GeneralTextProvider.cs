@@ -174,5 +174,6 @@ namespace EasySave.Application.Resources
         public virtual string MessageBoxOk => _defaultString;
         public virtual string MessageBoxDelete => _defaultString;
         public virtual string MessageBoxDeleteConfirmation => _defaultString;
+        public virtual string MessageBoxLogServerError => _defaultString;
     }
 }
