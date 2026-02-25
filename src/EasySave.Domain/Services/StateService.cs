@@ -62,7 +62,7 @@ namespace EasySave.Domain.Services
 
         public void Stop(int backupJobId)
         {
-            lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Stopped); }
+            lock (_lock) { FinalizeAndClean(backupJobId, BackupJobState.Stopped); }
         }
 
 

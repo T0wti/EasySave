@@ -116,132 +116,142 @@ namespace EasySave.Domain.Services
             .OrderByDescending(f => _priorityGate.IsPriority(f.FullPath))
             .ToList();
 
-            // Copy files one by one within this job
-            foreach (var file in orderedFiles)
+            try
             {
-                if (handle.IsPaused)
-                    _stateService.Pause(job.Id);
-
-                // Pause : waits here between files 
-                handle.WaitIfPaused();
-
-                if (!handle.CancellationToken.IsCancellationRequested)
+                // Copy files one by one within this job
+                foreach (var file in orderedFiles)
                 {
-                    progress.State = BackupJobState.Active;
-                    progress.LastUpdate = DateTime.Now;
-                }
+                    if (handle.IsPaused)
+                        _stateService.Pause(job.Id);
 
-                // Stop: exits the loop
-                handle.CancellationToken.ThrowIfCancellationRequested();
+                    // Pause : waits here between files 
+                    handle.WaitIfPaused();
 
-                bool isPriority = _priorityGate.IsPriority(file.FullPath);
-                bool isLarge = _largeSizeGate.IsLargeFile(file.Size);
-
-
-                await _priorityGate.WaitIfNeededAsync(isPriority, handle.CancellationToken)
-                                   .ConfigureAwait(false);
-                await _largeSizeGate.AcquireIfLargeAsync(file.Size, handle.CancellationToken)
-                                         .ConfigureAwait(false);
-
-                var start = DateTime.Now;
-                try
-                {
-                    // Preserve relative paths inside the target folder
-                    var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
-                    var targetPath = Path.Combine(job.TargetPath, relativePath);
-
-                    long encryptionTime = 0;
-                    if (_cryptoSoftService.ShouldEncrypt(file.FullPath))
+                    if (!handle.CancellationToken.IsCancellationRequested)
                     {
-                        // CryptoSoft read the source, encrypt, and BackupService write in the target
-                        encryptionTime = await Task.Run(
-                            () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
-                            .ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        // No encrypt : normal copy
-                        await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
-                                  .ConfigureAwait(false);
+                        progress.State = BackupJobState.Active;
+                        progress.LastUpdate = DateTime.Now;
                     }
 
-                    var duration = (long)(DateTime.Now - start).TotalMilliseconds;
+                    // Stop: exits the loop
+                    handle.CancellationToken.ThrowIfCancellationRequested();
 
-                    _logService.Write(new LogEntry
-                    {
-                        Timestamp = DateTime.Now,
-                        MachineName = Environment.MachineName,
-                        BackupName = job.Name,
-                        // Convert paths to UNC format for logging/network paths
-                        SourcePath = PathHelper.ToUncPath(file.FullPath),
-                        TargetPath = PathHelper.ToUncPath(targetPath),
-                        FileSize = file.Size,
-                        TransferTimeMs = duration,
-                        EncryptionTimeMs = encryptionTime
-                    });
+                    bool isPriority = _priorityGate.IsPriority(file.FullPath);
+                    bool isLarge = _largeSizeGate.IsLargeFile(file.Size);
 
-                    _stateService.Update(progress, file, targetPath);
 
-                    if (isPriority)
-                        _priorityGate.NotifyPriorityFileCopied();
-                }
-                catch (CryptoSoftException ex)
-                {
-                    if (isPriority)
-                        _priorityGate.NotifyPriorityFileCopied();
-                    _stateService.Fail(job.Id);
-                    _logService.Write(new LogEntry
+                    await _priorityGate.WaitIfNeededAsync(isPriority, handle.CancellationToken)
+                                       .ConfigureAwait(false);
+                    await _largeSizeGate.AcquireIfLargeAsync(file.Size, handle.CancellationToken)
+                                             .ConfigureAwait(false);
+
+                    var start = DateTime.Now;
+                    try
                     {
-                        Timestamp = DateTime.Now,
-                        MachineName = Environment.MachineName,
-                        BackupName = job.Name,
-                        SourcePath = file.FullPath,
-                        TargetPath = string.Empty,
-                        FileSize = file.Size,
-                        TransferTimeMs = -1,
-                        EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
-                    });
-                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
-                }
-                catch (LogServerUnavailableException)
-                { 
-                }
-                catch (OperationCanceledException)
-                {
-                    if (isPriority)
-                        _priorityGate.NotifyPriorityFileCopied();
-                    _stateService.Stop(job.Id);
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    if (isPriority)
-                        _priorityGate.NotifyPriorityFileCopied();
-                    // Handle copy failure: mark job as failed and log
-                    _stateService.Fail(job.Id);
-                    _logService.Write(new LogEntry
+                        // Preserve relative paths inside the target folder
+                        var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
+                        var targetPath = Path.Combine(job.TargetPath, relativePath);
+
+                        long encryptionTime = 0;
+                        if (_cryptoSoftService.ShouldEncrypt(file.FullPath))
+                        {
+                            // CryptoSoft read the source, encrypt, and BackupService write in the target
+                            encryptionTime = await Task.Run(
+                                () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
+                                .ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            // No encrypt : normal copy
+                            await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
+                                      .ConfigureAwait(false);
+                        }
+
+                        var duration = (long)(DateTime.Now - start).TotalMilliseconds;
+
+                        _logService.Write(new LogEntry
+                        {
+                            Timestamp = DateTime.Now,
+                            MachineName = Environment.MachineName,
+                            BackupName = job.Name,
+                            // Convert paths to UNC format for logging/network paths
+                            SourcePath = PathHelper.ToUncPath(file.FullPath),
+                            TargetPath = PathHelper.ToUncPath(targetPath),
+                            FileSize = file.Size,
+                            TransferTimeMs = duration,
+                            EncryptionTimeMs = encryptionTime
+                        });
+
+                        _stateService.Update(progress, file, targetPath);
+
+                        if (isPriority)
+                            _priorityGate.NotifyPriorityFileCopied();
+                    }
+                    catch (CryptoSoftException ex)
                     {
-                        Timestamp = DateTime.Now,
-                        MachineName = Environment.MachineName,
-                        BackupName = job.Name,
-                        SourcePath = file.FullPath,
-                        TargetPath = string.Empty,
-                        FileSize = file.Size,
-                        TransferTimeMs = -1
-                    });
-                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
+                        if (isPriority)
+                            _priorityGate.NotifyPriorityFileCopied();
+                        _stateService.Fail(job.Id);
+                        _logService.Write(new LogEntry
+                        {
+                            Timestamp = DateTime.Now,
+                            MachineName = Environment.MachineName,
+                            BackupName = job.Name,
+                            SourcePath = file.FullPath,
+                            TargetPath = string.Empty,
+                            FileSize = file.Size,
+                            TransferTimeMs = -1,
+                            EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
+                        });
+                        throw new BackupExecutionException(job.Name, file.FullPath, ex);
+                    }
+                    catch (LogServerUnavailableException)
+                    {
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        if (isPriority)
+                            _priorityGate.NotifyPriorityFileCopied();
+                        _stateService.Stop(job.Id);
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (isPriority)
+                            _priorityGate.NotifyPriorityFileCopied();
+                        // Handle copy failure: mark job as failed and log
+                        _stateService.Fail(job.Id);
+                        _logService.Write(new LogEntry
+                        {
+                            Timestamp = DateTime.Now,
+                            MachineName = Environment.MachineName,
+                            BackupName = job.Name,
+                            SourcePath = file.FullPath,
+                            TargetPath = string.Empty,
+                            FileSize = file.Size,
+                            TransferTimeMs = -1
+                        });
+                        throw new BackupExecutionException(job.Name, file.FullPath, ex);
+                    }
+                    finally
+                    {
+                        // Always release the large file slot — success or failure
+                        _largeSizeGate.ReleaseIfLarge(file.Size);
+                    }
                 }
-                finally
-                {
-                    // Always release the large file slot — success or failure
-                    _largeSizeGate.ReleaseIfLarge(file.Size);
-                }
+
+                // Mark backup as completed
+                progress.State = BackupJobState.Completed;
+                progress.LastUpdate = DateTime.Now;
+                _stateService.Complete(job.Id);
             }
 
-            // Mark backup as completed
-            progress.State = BackupJobState.Completed;
-            progress.LastUpdate = DateTime.Now;
-            _stateService.Complete(job.Id);
+            catch (OperationCanceledException)
+            {
+                _stateService.Stop(job.Id);
+                throw;
+            }
+
         }
     }
 }
