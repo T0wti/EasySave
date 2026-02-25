@@ -194,7 +194,7 @@
                                            VerticalAlignment="Center"
                                            TextWrapping="Wrap"
                                            HorizontalAlignment="Center">
-                                    <Run Text="{Binding Texts.AlertProApp}"/>
+                                    <Run Text="{Binding AlertProApp}"/>
                                     <Run Text="{Binding BlockingAppName}" FontWeight="Bold"/>
                                 </TextBlock>
                             </Grid>
