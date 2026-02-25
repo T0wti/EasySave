@@ -348,7 +348,12 @@ namespace EasySave.GUI.ViewModels
             foreach (var job in BackupJobs)
             {
                 var progressDto = allProgress.FirstOrDefault(p => p.BackupJobId == job.Job.Id);
-                job.State = progressDto.State; // Update job state
+                // To avoid null and potential crash
+                if(progressDto != null)
+                {
+                    job.State = progressDto.State; // Update job state
+                    job.CurrentFile = progressDto.CurrentSourceFile;
+                }
 
                 // Get the real state
                 bool isPaused = BackupAppService.IsJobPaused(job.Job.Id);
@@ -372,6 +377,7 @@ namespace EasySave.GUI.ViewModels
 
                     if (progressDto != null)
                     {
+                        job.CurrentFile = string.Empty; // To remove the file if not running
                         // Job completed
                         if (progressDto.State == "Completed")
                         {

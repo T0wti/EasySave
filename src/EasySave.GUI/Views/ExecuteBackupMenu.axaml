@@ -69,8 +69,13 @@
                                     <TextBlock Text="{Binding TypeLabel}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
 
+                                    <!-- Backup state -->
                                     <TextBlock Text="{Binding State}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
+
+                                    <!-- File being copied -->
+                                    <TextBlock Text="{Binding CurrentFile}" TextWrapping="WrapWithOverflow"
+                                               Foreground="{StaticResource TextSecondary}" FontStyle="Italic"/>
                                 </StackPanel>
 
                                 <!-- Play buttons -->
