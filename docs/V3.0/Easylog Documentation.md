@@ -112,6 +112,7 @@ services.AddSingleton(LogDispatcher.Instance);
 
 **Filename:** `YYYY-MM-DD.json` one file per day, auto-rotated at midnight.
 
+Log format example :
 ```json
 [
   {
@@ -137,9 +138,6 @@ services.AddSingleton(LogDispatcher.Instance);
   }
 ]
 ```
-
-A `TransferTimeMs` of **`-1`** and an empty `TargetPath` indicate a failed transfer.
-
 ---
 
 ## Dependency Injection
@@ -162,6 +160,6 @@ Always inject `ILogService` never the concrete `EasyLogService` to keep consumer
 
 | Version | Changes |
 |---|---|
-| **2.0** | Implementation of LogDispatcher|
+| **3.0** | Implementation of LogDispatcher|
 | **1.1** | Method renamed from `WriteJson` to `Write`. And implementation of the XmlWriter|
 | **1.0** | Initial release. |
