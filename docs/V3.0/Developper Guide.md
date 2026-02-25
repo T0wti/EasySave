@@ -7,12 +7,19 @@
 
 ## 2. Project Structure
 EasySave/
+
 ├── EasySave.Domain/          # Business logic, models, interfaces, exceptions
+
 ├── EasySave.Application/     # Use cases, DTOs, exception mapping, CLI utils
+
 ├── EasySave.GUI/             # Avalonia MVVM interface
+
 ├── EasySave.EasyLog/         # Logging DLL (JSON/XML/TCP)
+
 ├── EasySave.CryptoSoft/      # Encryption external process
+
 ├── EasySave.LogServer/       # Docker TCP log server
+
 └── EasySave.Tests/           # Unit tests
 
 ## 3. Getting Started
