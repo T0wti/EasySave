@@ -1,11 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using EasySave.Domain.Exceptions;
+using EasySave.Domain.Interfaces;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
-using EasySave.Domain.Interfaces;
 
 namespace EasySave.Domain.Services
 {
@@ -53,18 +54,7 @@ namespace EasySave.Domain.Services
             }
             catch (Exception ex)
             {
-                // If the remote server is unreachable, write the error locally
-                // so no log entry is silently lost
-                var fallbackFile = Path.Combine(
-                    _fallbackDirectory,
-                    $"remote_errors_{DateTime.Now:yyyy-MM-dd}.log");
-
-                Directory.CreateDirectory(_fallbackDirectory);
-
-                await File.AppendAllTextAsync(
-                    fallbackFile,
-                    $"[{DateTime.Now:HH:mm:ss}] FAILED to send to {_host}:{_port}: {ex.Message}\n")
-                    .ConfigureAwait(false);
+                throw new LogServerUnavailableException(_host, _port, ex);
             }
         }
 

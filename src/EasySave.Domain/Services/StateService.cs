@@ -8,6 +8,7 @@ namespace EasySave.Domain.Services
     public class StateService : IStateService
     {
         private readonly IFileStateService _fileStateService;
+        private readonly object _lock = new(); 
 
         // Constructor injection of a service that handles file state persistence
         public StateService(IFileStateService fileStateService)
@@ -18,62 +19,72 @@ namespace EasySave.Domain.Services
         // Initializes a BackupProgress object with total files, size, and default runtime values
         public void Initialize(BackupProgress progress, List<FileDescriptor> files)
         {
-            progress.State = BackupJobState.Active;
-            progress.TotalFiles = files.Count;
-            progress.TotalSize = files.Sum(f => f.Size);
-            progress.RemainingFiles = progress.TotalFiles;
-            progress.RemainingSize = progress.TotalSize;
-            progress.Progression = 0;
-            progress.LastUpdate = DateTime.Now;
+            lock (_lock)
+            {
+                progress.State = BackupJobState.Active;
+                progress.TotalFiles = files.Count;
+                progress.TotalSize = files.Sum(f => f.Size);
+                progress.RemainingFiles = progress.TotalFiles;
+                progress.RemainingSize = progress.TotalSize;
+                progress.Progression = 0;
+                progress.LastUpdate = DateTime.Now;
 
-            Upsert(progress);
+                Upsert(progress);
+            }
         }
 
         // Updates the progress after processing a single file
         public void Update(BackupProgress progress, FileDescriptor file, string targetPath)
         {
-            progress.RemainingFiles--;
-            progress.RemainingSize -= file.Size;
+            lock (_lock)
+            {
+                progress.RemainingFiles--;
+                progress.RemainingSize -= file.Size;
 
-            long copiedSize = progress.TotalSize - progress.RemainingSize;
+                long copiedSize = progress.TotalSize - progress.RemainingSize;
 
-            progress.Progression = progress.TotalSize == 0
-                ? 100
-                : Math.Round((double)copiedSize / progress.TotalSize * 100, 2);
+                progress.Progression = progress.TotalSize == 0
+                    ? 100
+                    : Math.Round((double)copiedSize / progress.TotalSize * 100, 2);
 
-            progress.CurrentSourceFile = file.FullPath;
-            progress.CurrentTargetFile = targetPath;
-            progress.LastUpdate = DateTime.Now;
+                progress.CurrentSourceFile = file.FullPath;
+                progress.CurrentTargetFile = targetPath;
+                progress.LastUpdate = DateTime.Now;
 
-            Upsert(progress);
+                Upsert(progress);
+            }
         }
 
         public void Pause(int backupJobId)
         {
-            UpdateStateOnly(backupJobId, BackupJobState.Paused);
+            lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Paused); }
         }
 
         public void Stop(int backupJobId)
         {
-            UpdateStateOnly(backupJobId, BackupJobState.Stopped);
+            lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Stopped); }
         }
 
 
         // Marks a backup job as completed and resets runtime information
         public void Complete(int backupJobId)
         {
-            FinalizeAndClean(backupJobId, BackupJobState.Completed);
+            lock (_lock) { FinalizeAndClean(backupJobId, BackupJobState.Completed); }
         }
 
         // Marks a backup job as failed
         public void Fail(int backupJobId)
         {
-            UpdateStateOnly(backupJobId, BackupJobState.Failed);
+            lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Failed); }
         }
 
         public void Interrupt(int backupJobId)
         {
-            FinalizeAndClean(backupJobId, BackupJobState.Interrupted);
+            lock (_lock) { FinalizeAndClean(backupJobId, BackupJobState.Interrupted); }
+        }
+        public void Compare(int backupJobId)
+        {
+            lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Comparing); }
         }
 
         // Private helper to finalize a job and clean runtime-specific fields
