@@ -27,15 +27,16 @@ dotnet build
 ### Run the GUI
 
 Run Cryptosoft before GUI and move cryptosoft in the same directory as the GUI :
-
+```
 dotnet run --project EasySave.CryptoSoft
-
 dotnet run --project EasySave.GUI
+```
 
 ### Run via CLI
+```
 dotnet run --project EasySave.GUI -- 1-3   # jobs 1 to 3
-
 dotnet run --project EasySave.GUI -- 1;3   # jobs 1 and 3
+```
 
 ## 4. Configuration
 On first launch, config is auto-generated at:
