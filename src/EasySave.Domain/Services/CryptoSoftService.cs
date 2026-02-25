@@ -88,6 +88,9 @@ namespace EasySave.Domain.Services
 
                 process.WaitForExit();
 
+                if (process.ExitCode < 0)
+                    throw new CryptoSoftException(sourceFilePath, process.ExitCode);
+
                 var targetDir = Path.GetDirectoryName(targetFilePath);
                 if (!Directory.Exists(targetDir))
                     Directory.CreateDirectory(targetDir!);

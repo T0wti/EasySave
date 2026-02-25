@@ -153,14 +153,14 @@ namespace EasySave.Domain.Services
                     long encryptionTime = 0;
                     if (_cryptoSoftService.ShouldEncrypt(file.FullPath))
                     {
-                        // CryptoSoft lit la source, chiffre, et BackupService écrit dans le target
+                        // CryptoSoft read the source, encrypt, and BackupService write in the target
                         encryptionTime = await Task.Run(
                             () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
                             .ConfigureAwait(false);
                     }
                     else
                     {
-                        // Pas de chiffrement : copie normale
+                        // No encrypt : normal copy
                         await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
                                   .ConfigureAwait(false);
                     }
@@ -184,6 +184,24 @@ namespace EasySave.Domain.Services
 
                     if (isPriority)
                         _priorityGate.NotifyPriorityFileCopied();
+                }
+                catch (CryptoSoftException ex)
+                {
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
+                    _stateService.Fail(job.Id);
+                    _logService.Write(new LogEntry
+                    {
+                        Timestamp = DateTime.Now,
+                        MachineName = Environment.MachineName,
+                        BackupName = job.Name,
+                        SourcePath = file.FullPath,
+                        TargetPath = string.Empty,
+                        FileSize = file.Size,
+                        TransferTimeMs = -1,
+                        EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
+                    });
+                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
                 }
                 catch (LogServerUnavailableException)
                 { 

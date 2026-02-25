@@ -29,6 +29,7 @@
         JobsFileCorrupted,
         JobsFileUnreadable,
         LogServerUnavailable,
+        CryptoSoftFailed,
 
         // Generic
         Unknown
