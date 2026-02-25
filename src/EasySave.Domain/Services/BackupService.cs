@@ -150,15 +150,22 @@ namespace EasySave.Domain.Services
                     var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
                     var targetPath = Path.Combine(job.TargetPath, relativePath);
 
-                    await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
-                              .ConfigureAwait(false);
+                    long encryptionTime = 0;
+                    if (_cryptoSoftService.ShouldEncrypt(file.FullPath))
+                    {
+                        // CryptoSoft lit la source, chiffre, et BackupService écrit dans le target
+                        encryptionTime = await Task.Run(
+                            () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
+                            .ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        // Pas de chiffrement : copie normale
+                        await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
+                                  .ConfigureAwait(false);
+                    }
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
-
-                    long encryptionTime = 0;
-                    if (_cryptoSoftService.ShouldEncrypt(targetPath))
-                        encryptionTime = await Task.Run(() => _cryptoSoftService.Encrypt(targetPath))
-                                                   .ConfigureAwait(false);
 
                     _logService.Write(new LogEntry
                     {

@@ -2,6 +2,6 @@
 {
     public interface IFileManager
     {
-        int TransformFile();
+        byte[] AesEncrypt(byte[] fileBytes, byte[] keyBytes);
     }
 }

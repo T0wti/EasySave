@@ -27,7 +27,7 @@ namespace EasySave.Domain.Services
             return extensions.Any(e => string.Equals(e, ext, StringComparison.OrdinalIgnoreCase));
         }
 
-        public long Encrypt(string filePath)
+        public long Encrypt(string sourceFilePath, string targetFilePath)
         {
             var settings = _configService.LoadSettings();
 
@@ -39,7 +39,7 @@ namespace EasySave.Domain.Services
 
             for (int attempt = 1; attempt <= MaxRetries; attempt++)
             {
-                long result = RunCryptoSoft(filePath, settings.CryptoSoftPath, settings.CryptoSoftKeyPath);
+                long result = RunCryptoSoft(sourceFilePath, targetFilePath, settings.CryptoSoftPath, settings.CryptoSoftKeyPath);
 
                 if (result == -10)
                 {
@@ -53,7 +53,7 @@ namespace EasySave.Domain.Services
             return -10;
         }
 
-        private static long RunCryptoSoft(string filePath, string cryptoSoftPath, string keyPath)
+        private static long RunCryptoSoft(string sourceFilePath,string targetFilePath, string cryptoSoftPath, string keyPath)
         {
             try
             {
@@ -62,15 +62,37 @@ namespace EasySave.Domain.Services
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = cryptoSoftPath,
-                        ArgumentList = { filePath, keyPath! },
+                        ArgumentList = {keyPath},
                         UseShellExecute = false,
-                        RedirectStandardOutput = false,
+                        RedirectStandardInput = true,
+                        RedirectStandardOutput = true,
                         CreateNoWindow = true
                     }
                 };
 
                 process.Start();
+
+                // Send the bytes of the source files on stdin
+                var fileBytes = File.ReadAllBytes(sourceFilePath);
+                process.StandardInput.BaseStream.Write(fileBytes, 0, fileBytes.Length);
+                process.StandardInput.BaseStream.Close();
+
+                // Recover the crypted bytes on stdout
+                byte[] encryptedBytes;
+                using (var ms = new MemoryStream())
+                {
+                    process.StandardOutput.BaseStream.CopyTo(ms);
+                    encryptedBytes = ms.ToArray();
+                }
+
+
                 process.WaitForExit();
+
+                var targetDir = Path.GetDirectoryName(targetFilePath);
+                if (!Directory.Exists(targetDir))
+                    Directory.CreateDirectory(targetDir!);
+
+                File.WriteAllBytes(targetFilePath, encryptedBytes);
 
                 return process.ExitCode;
             }
