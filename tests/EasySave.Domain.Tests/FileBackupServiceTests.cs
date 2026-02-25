@@ -1,89 +1,96 @@
-﻿using EasySave.Domain.Enums;
-using EasySave.Domain.Models;
-using EasySave.Domain.Services;
+﻿using Xunit;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using Xunit;
+using System.Collections.Generic;
+using EasySave.Domain.Services;
+using EasySave.Domain.Models;
+using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 
-namespace EasySave.Domain.Tests
+public class FileBackupServiceTests : IDisposable
 {
-    public class FileBackupServiceTests : IDisposable
+    private readonly string _testDirectory;
+    private readonly FileBackupService _service;
+
+    public FileBackupServiceTests()
     {
-        private readonly string _tempDir;
-        private readonly FileBackupService _service;
+        _testDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(_testDirectory);
 
-        public FileBackupServiceTests()
+        _service = new FileBackupService();
+        _service.SetFilePath(_testDirectory);
+    }
+
+    // Cleanup after each test
+    public void Dispose()
+    {
+        if (Directory.Exists(_testDirectory))
+            Directory.Delete(_testDirectory, true);
+    }
+
+    // This test verifies that LoadJobs returns an empty list when the file does not exist.
+    [Fact]
+    public void LoadJobs_Should_Return_Empty_List_When_File_Not_Exists()
+    {
+        var jobs = _service.LoadJobs();
+
+        Assert.NotNull(jobs);
+        Assert.Empty(jobs);
+    }
+
+    // This test verifies that SaveJobs correctly creates and writes the jobs file.
+    [Fact]
+    public void SaveJobs_Should_Create_And_Write_File()
+    {
+        var jobs = new List<BackupJob>
         {
-            //Create temp directory
-            _tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            Directory.CreateDirectory(_tempDir);
+            new BackupJob(1, "Job1", @"C:\Source", @"D:\Target", BackupType.Full)
+        };
 
-            _service = FileBackupService.Instance;
+        _service.SaveJobs(jobs);
 
-            //To write in temp directory
-            _service.SetFilePath(_tempDir);
-        }
+        var filePath = Path.Combine(_testDirectory, "jobs.json");
 
-        public void Dispose()
+        Assert.True(File.Exists(filePath));
+        Assert.False(string.IsNullOrWhiteSpace(File.ReadAllText(filePath)));
+    }
+
+    // This test verifies that LoadJobs correctly deserializes saved jobs.
+    [Fact]
+    public void LoadJobs_Should_Return_Saved_Jobs()
+    {
+        var jobs = new List<BackupJob>
         {
-            //Cleanup after test
-            if (Directory.Exists(_tempDir)) { Directory.Delete(_tempDir, recursive: true); }
-        }
+            new BackupJob(1, "Job1", @"C:\Source", @"D:\Target", BackupType.Full)
+        };
 
-        [Fact]
-        public void LoadJobs_WhenFileDoesNotExist_ReturnsEmptyList()
-        {
-            var filePath = Path.Combine(_tempDir, "jobs.json");
-            //Make sure file does not already exists
-            if (File.Exists(filePath)) { File.Delete(filePath); }
+        _service.SaveJobs(jobs);
 
-            var result = _service.LoadJobs();
+        var loadedJobs = _service.LoadJobs();
 
-            Assert.NotNull(result);
-            Assert.Empty(result);
-        }
+        Assert.Single(loadedJobs);
+        Assert.Equal("Job1", loadedJobs[0].Name);
+    }
 
-        [Fact]
-        public void SaveJobs_ShouldCreateFileWithCorrectJson()
-        {
-            var jobs = new List<BackupJob>
-            {
-                new BackupJob(0, "JobTest1", "C:/Source", "D:/Source", BackupType.Full)
-            };
+    // This test verifies that LoadJobs returns an empty list when the file is empty.
+    [Fact]
+    public void LoadJobs_Should_Return_Empty_List_When_File_Is_Empty()
+    {
+        var filePath = Path.Combine(_testDirectory, "jobs.json");
+        File.WriteAllText(filePath, "");
 
-            _service.SaveJobs(jobs);
+        var jobs = _service.LoadJobs();
 
-            var filePath = Path.Combine(_tempDir, "jobs.json");
-            Assert.True(File.Exists(filePath));
+        Assert.Empty(jobs);
+    }
 
-            string jsonContent = File.ReadAllText(filePath);
-            //Checks job name
-            Assert.Contains("JobTest1", jsonContent);
-        }
+    // This test verifies that corrupted JSON throws a PersistenceException.
+    [Fact]
+    public void LoadJobs_Should_Throw_When_Json_Is_Corrupted()
+    {
+        var filePath = Path.Combine(_testDirectory, "jobs.json");
+        File.WriteAllText(filePath, "{ invalid json }");
 
-        [Fact]
-        public void LoadJobs_ShouldReturn_SavedJobs()
-        {
-            //Writing a JSON file
-            var filePath = Path.Combine(_tempDir, "jobs.json");
-            var json = @"
-            [
-                {
-                    """"Name"""": """"JobFromJson"""",
-                    """"SourcePath"""": """"Source"""",
-                    """"TargetPath"""": """"Target"""",
-                    """"Type"""": 1
-                }
-            ]";
-            File.WriteAllText(filePath, json);
-
-            var result = _service.LoadJobs();
-
-            //Checks if list has 1 and only element
-            Assert.Single(result);
-            Assert.Equal("JobFromJson", result[0].Name);
-        }
+        Assert.Throws<PersistenceException>(() => _service.LoadJobs());
     }
 }
