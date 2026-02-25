@@ -106,7 +106,7 @@ CryptoSoft returns its exit code as the encryption duration in milliseconds. A n
 
 ### Format
 
-One entry per copied file. Fields: `Timestamp`, `BackupName`, `SourcePath`, `TargetPath`, `FileSize`, `TransferTimeMs`, `EncryptionTimeMs`.
+One entry per copied file. Fields: `Timestamp`,`MachineName`, `BackupName`, `SourcePath`, `TargetPath`, `FileSize`, `TransferTimeMs`, `EncryptionTimeMs`.
 
 `TransferTimeMs` values: `> 0` = duration in ms, `< 0` = error code.
 `EncryptionTimeMs` values: `0` = not encrypted, `> 0` = duration in ms, `< 0` = error code.
@@ -116,7 +116,7 @@ One entry per copied file. Fields: `Timestamp`, `BackupName`, `SourcePath`, `Tar
 **Daily log files centralization:** a Docker-based real-time log centralization service is available.
 
 1. Local Only : logs written to
-2. Centrilized Only : logs sent via TCP (port 11 000) to LogServer
+2. Centrilized Only : logs sent via TCP (port 11000) to LogServer
 3. Both : logs written locally and sent to server
 
 ---
