@@ -12,6 +12,7 @@ namespace EasySave.GUI.ViewModels
         [ObservableProperty] private double _progressValue;
         [ObservableProperty] private bool _isProcessing;
         [ObservableProperty] private bool _isCompleted;
+        [ObservableProperty] private string _state;
 
         public string TypeLabel => Job.Type?.ToLower() switch
         {
@@ -24,6 +25,7 @@ namespace EasySave.GUI.ViewModels
         {
             Job = job;
             _texts = texts;
+            _state = "Inactive";
         }
     }
 }

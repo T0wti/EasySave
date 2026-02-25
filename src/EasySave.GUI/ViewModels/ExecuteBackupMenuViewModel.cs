@@ -77,6 +77,7 @@ namespace EasySave.GUI.ViewModels
                 if (savedState != null)
                 {
                     jobVm.ProgressValue = savedState.Progression;
+                    jobVm.State = savedState.State; // To display state
 
                     switch (savedState.State)
                     {
@@ -298,7 +299,6 @@ namespace EasySave.GUI.ViewModels
                     }
                     Message = Texts.MessageBoxAllJobsStopped; // Message for all jobs
                 }
-
                 IsMessageToDisplay = true;
             }
             catch (AppException e)
@@ -348,6 +348,7 @@ namespace EasySave.GUI.ViewModels
             foreach (var job in BackupJobs)
             {
                 var progressDto = allProgress.FirstOrDefault(p => p.BackupJobId == job.Job.Id);
+                job.State = progressDto.State; // Update job state
 
                 // Get the real state
                 bool isPaused = BackupAppService.IsJobPaused(job.Job.Id);

@@ -68,6 +68,9 @@
                     
                                     <TextBlock Text="{Binding TypeLabel}" TextWrapping="WrapWithOverflow"
                                                Foreground="{StaticResource TextSecondary}"/>
+
+                                    <TextBlock Text="{Binding State}" TextWrapping="WrapWithOverflow"
+                                               Foreground="{StaticResource TextSecondary}"/>
                                 </StackPanel>
 
                                 <!-- Play buttons -->
