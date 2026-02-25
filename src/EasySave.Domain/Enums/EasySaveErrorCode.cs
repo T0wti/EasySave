@@ -28,6 +28,7 @@
         ConfigFileUnreadable,
         JobsFileCorrupted,
         JobsFileUnreadable,
+        LogServerUnavailable,
 
         // Generic
         Unknown

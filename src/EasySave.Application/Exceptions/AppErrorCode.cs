@@ -26,7 +26,9 @@
         ConfigFileUnreadable,
         JobsFileCorrupted,
         JobsFileUnreadable,
-        
+        LogServerUnavailable,
+
+
         Unknown
     }
 }

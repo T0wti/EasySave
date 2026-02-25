@@ -3,6 +3,7 @@ using EasySave.Domain.Exceptions;
 using EasySave.Domain.Helpers;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
+using EasySave.EasyLog;
 using EasySave.EasyLog.Interfaces;
 
 namespace EasySave.Domain.Services
@@ -176,6 +177,9 @@ namespace EasySave.Domain.Services
 
                     if (isPriority)
                         _priorityGate.NotifyPriorityFileCopied();
+                }
+                catch (LogServerUnavailableException)
+                { 
                 }
                 catch (OperationCanceledException)
                 {
