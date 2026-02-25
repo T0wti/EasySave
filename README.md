@@ -63,9 +63,11 @@ EasySave/
 
 | Document | Description |
 |---|---|
-| `docs/architecture.md` | Architecture and SOLID justification |
-| `docs/developer-guide.md` | Setup, flows, and contribution guide |
-| `docs/easylog.md` | EasyLog.dll technical reference |
+| `docs/Architecture Explanation.md` | Architecture and SOLID justification |
+| `docs/Developer Guide.md` | Setup, flows, and contribution guide |
+| `docs/EasyLog Documentation.md` | EasyLog.dll technical reference |
+| `docs/Technic Documentation Support.md` | Configuration, file locations, and maintenance guide for support teams |
+| `docs/User Manual.md` | End-user guide for the GUI (backup jobs, settings, encryption, logs) |
 
 ---
 
