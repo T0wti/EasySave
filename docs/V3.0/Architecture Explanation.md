@@ -30,7 +30,7 @@ from the GUI, the CLI, or a future API.
 
 ---
 
-### B. The `Application` Layer (The Orchestrator)
+### B. The `Application` Layer
 
 **Role:** Contains the application's Use Cases (`BackupAppService`, `ConfigAppService`, 
 `AppServiceFactory`). It acts as a bridge between the user interface and the domain 
