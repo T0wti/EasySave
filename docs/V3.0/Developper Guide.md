@@ -6,21 +6,16 @@
 - An IDE : Visual Studio 2022 / Rider / VS Code
 
 ## 2. Project Structure
+```
 EasySave/
-
 ├── EasySave.Domain/          # Business logic, models, interfaces, exceptions
-
 ├── EasySave.Application/     # Use cases, DTOs, exception mapping, CLI utils
-
 ├── EasySave.GUI/             # Avalonia MVVM interface
-
 ├── EasySave.EasyLog/         # Logging DLL (JSON/XML/TCP)
-
 ├── EasySave.CryptoSoft/      # Encryption external process
-
 ├── EasySave.LogServer/       # Docker TCP log server
-
 └── EasySave.Tests/           # Unit tests
+```
 
 ## 3. Getting Started
 
@@ -109,9 +104,11 @@ No other files need to change.
 
 ## 8. Error Handling Flow
 Domain throws EasySaveException (with EasySaveErrorCode)
+```
   -> Application catches and maps via DomainExceptionMapper
     -> AppException (with AppErrorCode) bubbles up to ViewModel
       -> ViewModel displays localized error message to user
+```
 
 To add a new error:
 1. Add code to EasySaveErrorCode (Domain)
@@ -123,6 +120,7 @@ To add a new error:
 
 ### Backup Execution (parallel)
 BackupAppService.ExecuteMultiple(ids)
+```
   -> BackupService.ExecuteBackups(jobs, registry)
     -> Task.WhenAll : one task per job
       -> BackupService.ExecuteBackupCore(job, handle)
@@ -131,23 +129,29 @@ BackupAppService.ExecuteMultiple(ids)
           -> CryptoSoftService.Encrypt() or FileService.CopyFile()
           -> StateService.Update() : updates state.json
           -> LogDispatcher.Write() : writes log entry
-
+```
 ### Business Software Detection
 This is not multi-platform : only function with a Windows system
 BusinessSoftwareWatcher.WatchAsync()
+```
   -> WMI event: process started -> handle.Pause() on all jobs
   -> WMI event: process stopped -> handle.Resume() on all jobs
+```
 
 ### Pause / Stop (from UI)
 BackupAppService.PauseBackup(jobId)
+```
   -> BackupHandleRegistry.Get(jobId).Pause()
     -> ManualResetEventSlim.Reset()
       -> BackupService loop blocks on handle.WaitIfPaused()
+```
 
 BackupAppService.StopBackup(jobId)
+```
   -> BackupHandleRegistry.Get(jobId).Stop()
     -> CancellationTokenSource.Cancel()
       -> BackupService loop throws OperationCanceledException
+```
 
 ## 10. Running Tests
 dotnet test
