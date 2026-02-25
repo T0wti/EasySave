@@ -26,6 +26,7 @@ namespace EasySave.Application.Exceptions
                 EasySaveErrorCode.JobsFileCorrupted => AppErrorCode.JobsFileCorrupted,
                 EasySaveErrorCode.JobsFileUnreadable => AppErrorCode.JobsFileUnreadable,
                 EasySaveErrorCode.LogServerUnavailable => AppErrorCode.LogServerUnavailable,
+                EasySaveErrorCode.CryptoSoftFailed => AppErrorCode.CryptoSoftFailed,
                 _ => AppErrorCode.Unknown
             };
 
