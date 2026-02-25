@@ -154,5 +154,6 @@ namespace EasySave.Application.Resources
         public override string MessageBoxOk => "Ok";
         public override string MessageBoxDelete => "Delete";
         public override string MessageBoxDeleteConfirmation => "Do you really want to delete the job?";
+        public override string MessageBoxLogServerError => "Unreachable remote log server";
     }
 }

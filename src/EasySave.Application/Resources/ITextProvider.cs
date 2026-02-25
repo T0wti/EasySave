@@ -157,5 +157,6 @@ namespace EasySave.Application.Resources
         string MessageBoxOk { get; }
         string MessageBoxDelete { get; }
         string MessageBoxDeleteConfirmation { get; }
+        string MessageBoxLogServerError { get; }
     }
 }
