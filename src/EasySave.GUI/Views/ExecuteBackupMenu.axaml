@@ -126,8 +126,6 @@
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="20">
             
             <!-- Button -->
-		    <TextBlock Text="{Binding Message}" Classes.ErrorMessage="{Binding IsThereError}" IsVisible="{Binding IsMessageToDisplay}"/>
-                    
             <controls:ReturnButton HorizontalAlignment="Center"/>
 
         </StackPanel>
