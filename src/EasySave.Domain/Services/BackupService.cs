@@ -159,6 +159,10 @@ namespace EasySave.Domain.Services
                             encryptionTime = await Task.Run(
                                 () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
                                 .ConfigureAwait(false);
+                            if (encryptionTime < 0)
+                            {
+                                throw new CryptoSoftException(file.FullPath, encryptionTime);
+                            }
                         }
                         else
                         {
@@ -203,8 +207,8 @@ namespace EasySave.Domain.Services
                         TransferTimeMs = -1,
                         EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
                     }).ConfigureAwait(false);
-                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
-                }
+                        throw;
+                    }
                 catch (LogServerUnavailableException)
                 { 
                     if (isPriority)

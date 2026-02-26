@@ -222,6 +222,10 @@ namespace EasySave.GUI.ViewModels
                         BusinessSoftwareHasError = true;
                         ErrorMessage = Texts.MessageBoxLogServerError;
                         break;
+                    case AppErrorCode.CryptoSoftFailed:
+                        BusinessSoftwareHasError = true;
+                        ErrorMessage = Texts.MessageBoxCryptoNotFound;
+                        break;
                     default:
                         ErrorMessage = e.Message;
                         break;

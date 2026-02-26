@@ -155,5 +155,6 @@ namespace EasySave.Application.Resources
         public override string MessageBoxDelete => "Supprimer";
         public override string MessageBoxDeleteConfirmation => "Voulez-vous vraiment supprimer le travail ?";
         public override string MessageBoxLogServerError => "Serveur de log distant inaccessible";
+        public override string MessageBoxCryptoNotFound => "Le logiciel CryptoSoft n'est pas trouvé";
     }
 }
