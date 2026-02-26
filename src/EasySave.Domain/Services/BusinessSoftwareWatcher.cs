@@ -62,7 +62,6 @@
                 {
                     startWatcher.Stop();
                     stopWatcher.Stop();
-                    ResumeAll();
                 }
             }
 
