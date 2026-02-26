@@ -116,56 +116,58 @@ namespace EasySave.Domain.Services
             .OrderByDescending(f => _priorityGate.IsPriority(f.FullPath))
             .ToList();
 
-            // Copy files one by one within this job
-            foreach (var file in orderedFiles)
+            try
             {
-                if (handle.IsPaused)
-                    _stateService.Pause(job.Id);
-
-                // Pause : waits here between files 
-                handle.WaitIfPaused();
-
-                if (!handle.CancellationToken.IsCancellationRequested)
+                // Copy files one by one within this job
+                foreach (var file in orderedFiles)
                 {
-                    progress.State = BackupJobState.Active;
-                    progress.LastUpdate = DateTime.Now;
-                }
+                    if (handle.IsPaused)
+                        _stateService.Pause(job.Id);
 
-                // Stop: exits the loop
-                handle.CancellationToken.ThrowIfCancellationRequested();
+                    // Pause : waits here between files 
+                    handle.WaitIfPaused();
 
-                bool isPriority = _priorityGate.IsPriority(file.FullPath);
-                bool isLarge = _largeSizeGate.IsLargeFile(file.Size);
-
-
-                await _priorityGate.WaitIfNeededAsync(isPriority, handle.CancellationToken)
-                                   .ConfigureAwait(false);
-                await _largeSizeGate.AcquireIfLargeAsync(file.Size, handle.CancellationToken)
-                                         .ConfigureAwait(false);
-
-                var start = DateTime.Now;
-                try
-                {
-                    // Preserve relative paths inside the target folder
-                    var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
-                    var targetPath = Path.Combine(job.TargetPath, relativePath);
-
-                    long encryptionTime = 0;
-                    if (_cryptoSoftService.ShouldEncrypt(file.FullPath))
+                    if (!handle.CancellationToken.IsCancellationRequested)
                     {
-                        // CryptoSoft read the source, encrypt, and BackupService write in the target
-                        encryptionTime = await Task.Run(
-                            () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
-                            .ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        // No encrypt : normal copy
-                        await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
-                                  .ConfigureAwait(false);
+                        progress.State = BackupJobState.Active;
+                        progress.LastUpdate = DateTime.Now;
                     }
 
-                    var duration = (long)(DateTime.Now - start).TotalMilliseconds;
+                    // Stop: exits the loop
+                    handle.CancellationToken.ThrowIfCancellationRequested();
+
+                    bool isPriority = _priorityGate.IsPriority(file.FullPath);
+                    bool isLarge = _largeSizeGate.IsLargeFile(file.Size);
+
+
+                    await _priorityGate.WaitIfNeededAsync(isPriority, handle.CancellationToken)
+                                       .ConfigureAwait(false);
+                    await _largeSizeGate.AcquireIfLargeAsync(file.Size, handle.CancellationToken)
+                                             .ConfigureAwait(false);
+
+                    var start = DateTime.Now;
+                    try
+                    {
+                        // Preserve relative paths inside the target folder
+                        var relativePath = Path.GetRelativePath(job.SourcePath, file.FullPath);
+                        var targetPath = Path.Combine(job.TargetPath, relativePath);
+
+                        long encryptionTime = 0;
+                        if (_cryptoSoftService.ShouldEncrypt(file.FullPath))
+                        {
+                            // CryptoSoft read the source, encrypt, and BackupService write in the target
+                            encryptionTime = await Task.Run(
+                                () => _cryptoSoftService.Encrypt(file.FullPath, targetPath))
+                                .ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            // No encrypt : normal copy
+                            await Task.Run(() => _fileService.CopyFile(file.FullPath, targetPath))
+                                      .ConfigureAwait(false);
+                        }
+
+                        var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
                     await _logService.Write(new LogEntry
                     {
@@ -180,7 +182,7 @@ namespace EasySave.Domain.Services
                         EncryptionTimeMs = encryptionTime
                     }).ConfigureAwait(false);
 
-                    _stateService.Update(progress, file, targetPath);
+                        _stateService.Update(progress, file, targetPath);
 
                     if (isPriority)
                         _priorityGate.NotifyPriorityFileCopied();
@@ -242,10 +244,18 @@ namespace EasySave.Domain.Services
                 }
             }
 
-            // Mark backup as completed
-            progress.State = BackupJobState.Completed;
-            progress.LastUpdate = DateTime.Now;
-            _stateService.Complete(job.Id);
+                // Mark backup as completed
+                progress.State = BackupJobState.Completed;
+                progress.LastUpdate = DateTime.Now;
+                _stateService.Complete(job.Id);
+            }
+
+            catch (OperationCanceledException)
+            {
+                _stateService.Stop(job.Id);
+                throw;
+            }
+
         }
     }
 }
