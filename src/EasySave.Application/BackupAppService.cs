@@ -11,6 +11,7 @@ namespace EasySave.Application
     {
         private readonly IBackupManagerService _manager;
         private readonly IBackupService _executor;
+        private readonly IStateService _stateService;
         private readonly IFileStateService _fileStateService;
         private readonly IBackupHandleRegistry _registry;
 
@@ -18,11 +19,13 @@ namespace EasySave.Application
             IBackupManagerService manager,
             IBackupService executor,
             IFileStateService fileStateService,
+            IStateService stateService,
             IBackupHandleRegistry registry)
         {
             _manager = manager;
             _executor = executor;
             _fileStateService = fileStateService;
+            _stateService = stateService;
             _registry = registry;
         }
 
@@ -129,16 +132,20 @@ namespace EasySave.Application
         // Pause/Stop : one job
         public bool IsJobPaused(int jobId) => _registry.Get(jobId)?.IsPaused ?? false;
         public bool IsJobRunning(int jobId) => _registry.Get(jobId) != null;
-        public void PauseBackup(int jobId) => _registry.Get(jobId)?.Pause();
+        public void PauseBackup(int jobId) { 
+            _registry.Get(jobId)?.Pause();
+            _stateService.Pause(jobId);
+        }
         public void ResumeBackup(int jobId) => _registry.Get(jobId)?.Resume();
         public void StopBackup(int jobId) => _registry.Get(jobId)?.Stop();
 
         // Pause/Stop : all jobs
         public void PauseAll()
         {
-            foreach (var (_, handle) in _registry.GetAll())
+            foreach (var (jobId, handle) in _registry.GetAll())
             {
                 handle.Pause();
+                _stateService.Pause(jobId);
             }
         }
         public void ResumeAll()
