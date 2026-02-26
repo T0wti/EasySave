@@ -83,7 +83,7 @@ namespace EasySave.Application
             // High-level manager: handles CRUD on backup job definitions
             IBackupManagerService manager = new BackupManagerService(fileBackupService, executor, settings);
 
-            return new BackupAppService(manager, executor, fileStateService, registry);
+            return new BackupAppService(manager, executor, fileStateService, stateService,registry);
         }
 
         public static ConfigAppService CreateConfigurationController()
