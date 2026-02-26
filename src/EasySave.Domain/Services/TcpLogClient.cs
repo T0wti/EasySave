@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace EasySave.Domain.Services
 {
-    // Sends log entries to a remote TCP log server (e.g. the Docker LogServer)
+    // Sends log entries to a remote TCP log server (ex : the Docker LogServer)
     public class TcpLogClient : ILogClient
     {
         private readonly string _host;
@@ -18,7 +18,6 @@ namespace EasySave.Domain.Services
         private readonly bool _isXml;
         private readonly string _fallbackDirectory;
 
-        // Cache XmlSerializers by type to avoid the cost of recreating them on every call
         private static readonly ConcurrentDictionary<Type, XmlSerializer> _xmlSerializers = new();
 
         public TcpLogClient(string host, int port, bool isXml, string fallbackDirectory)
@@ -30,9 +29,7 @@ namespace EasySave.Domain.Services
         }
 
         // Serializes the log entry and sends it to the remote TCP server
-        // The payload is prefixed with "XML|" or "JSON|" so the server
-        // knows which format to use when writing to the log file
-        // Opens a new TCP connection per entry (stateless, simple)
+        // The payload is prefixed with "XML|" or "JSON|" so the server knows which format to use when writing to the log file
         public async Task SendAsync<T>(T entry)
         {
             try
@@ -71,8 +68,7 @@ namespace EasySave.Domain.Services
         }
 
         // Serializes a log entry to an indented XML string
-        // Uses the runtime type (not the generic T) so XmlSerializer
-        // can resolve the concrete class and its properties correctly
+        // Uses the runtime type so XmlSerializer can resolve the concrete class and its properties correctly
         private static string SerializeXml(object entry, Type type)
         {
             var serializer = _xmlSerializers.GetOrAdd(type, t => new XmlSerializer(t));
