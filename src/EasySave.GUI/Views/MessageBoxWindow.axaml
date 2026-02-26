@@ -27,11 +27,11 @@
                     Command="{Binding OkButton_Click}" CommandParameter="{Binding $parent[Window]}"
                     IsVisible="{Binding !IsConfirmation}"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="20">
-				<Button Content="Yes" Classes="ActionBtn DangerBtn"
+				<Button Content="{Binding Yes}" Classes="ActionBtn DangerBtn"
                     HorizontalAlignment="Center" Width="100"
                     Command="{Binding YesButton_Click}" CommandParameter="{Binding $parent[Window]}"
                     IsVisible="{Binding IsConfirmation}"/>
-                <Button Grid.Row="2" Content="No" Classes="ActionBtn" 
+                <Button Grid.Row="2" Content="{Binding No}" Classes="ActionBtn" 
                     HorizontalAlignment="Center" Width="100"
                     Command="{Binding NoButton_Click}" CommandParameter="{Binding $parent[Window]}"
                     IsVisible="{Binding IsConfirmation}"/>
