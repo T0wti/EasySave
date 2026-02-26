@@ -169,76 +169,80 @@ namespace EasySave.Domain.Services
 
                         var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
-                        _logService.Write(new LogEntry
-                        {
-                            Timestamp = DateTime.Now,
-                            MachineName = Environment.MachineName,
-                            BackupName = job.Name,
-                            // Convert paths to UNC format for logging/network paths
-                            SourcePath = PathHelper.ToUncPath(file.FullPath),
-                            TargetPath = PathHelper.ToUncPath(targetPath),
-                            FileSize = file.Size,
-                            TransferTimeMs = duration,
-                            EncryptionTimeMs = encryptionTime
-                        });
+                    await _logService.Write(new LogEntry
+                    {
+                        Timestamp = DateTime.Now,
+                        MachineName = Environment.MachineName,
+                        BackupName = job.Name,
+                        // Convert paths to UNC format for logging/network paths
+                        SourcePath = PathHelper.ToUncPath(file.FullPath),
+                        TargetPath = PathHelper.ToUncPath(targetPath),
+                        FileSize = file.Size,
+                        TransferTimeMs = duration,
+                        EncryptionTimeMs = encryptionTime
+                    }).ConfigureAwait(false);
 
                         _stateService.Update(progress, file, targetPath);
 
-                        if (isPriority)
-                            _priorityGate.NotifyPriorityFileCopied();
-                    }
-                    catch (CryptoSoftException ex)
-                    {
-                        if (isPriority)
-                            _priorityGate.NotifyPriorityFileCopied();
-                        _stateService.Fail(job.Id);
-                        _logService.Write(new LogEntry
-                        {
-                            Timestamp = DateTime.Now,
-                            MachineName = Environment.MachineName,
-                            BackupName = job.Name,
-                            SourcePath = file.FullPath,
-                            TargetPath = string.Empty,
-                            FileSize = file.Size,
-                            TransferTimeMs = -1,
-                            EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
-                        });
-                        throw new BackupExecutionException(job.Name, file.FullPath, ex);
-                    }
-                    catch (LogServerUnavailableException)
-                    {
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        if (isPriority)
-                            _priorityGate.NotifyPriorityFileCopied();
-                        _stateService.Stop(job.Id);
-                        throw;
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isPriority)
-                            _priorityGate.NotifyPriorityFileCopied();
-                        // Handle copy failure: mark job as failed and log
-                        _stateService.Fail(job.Id);
-                        _logService.Write(new LogEntry
-                        {
-                            Timestamp = DateTime.Now,
-                            MachineName = Environment.MachineName,
-                            BackupName = job.Name,
-                            SourcePath = file.FullPath,
-                            TargetPath = string.Empty,
-                            FileSize = file.Size,
-                            TransferTimeMs = -1
-                        });
-                        throw new BackupExecutionException(job.Name, file.FullPath, ex);
-                    }
-                    finally
-                    {
-                        // Always release the large file slot — success or failure
-                        _largeSizeGate.ReleaseIfLarge(file.Size);
-                    }
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
                 }
+                catch (CryptoSoftException ex)
+                {
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
+                    _stateService.Fail(job.Id);
+                    await _logService.Write(new LogEntry
+                    {
+                        Timestamp = DateTime.Now,
+                        MachineName = Environment.MachineName,
+                        BackupName = job.Name,
+                        SourcePath = file.FullPath,
+                        TargetPath = string.Empty,
+                        FileSize = file.Size,
+                        TransferTimeMs = -1,
+                        EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
+                    }).ConfigureAwait(false);
+                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
+                }
+                catch (LogServerUnavailableException)
+                { 
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
+                    _stateService.Fail(job.Id);
+                    throw; 
+                }
+                catch (OperationCanceledException)
+                {
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
+                    _stateService.Stop(job.Id);
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
+                    // Handle copy failure: mark job as failed and log
+                    _stateService.Fail(job.Id);
+                    await _logService.Write(new LogEntry
+                    {
+                        Timestamp = DateTime.Now,
+                        MachineName = Environment.MachineName,
+                        BackupName = job.Name,
+                        SourcePath = file.FullPath,
+                        TargetPath = string.Empty,
+                        FileSize = file.Size,
+                        TransferTimeMs = -1
+                    }).ConfigureAwait(false);
+                    throw new BackupExecutionException(job.Name, file.FullPath, ex);
+                }
+                finally
+                {
+                    // Always release the large file slot — success or failure
+                    _largeSizeGate.ReleaseIfLarge(file.Size);
+                }
+            }
 
                 // Mark backup as completed
                 progress.State = BackupJobState.Completed;

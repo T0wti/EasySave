@@ -10,7 +10,7 @@
         /// Writes a log entry using the configured writer.
         /// </summary>
         /// <param name="entry">Log object to persist.</param>
-        void Write<T>(T entry);
+        Task Write<T>(T entry);
     }
 
 }

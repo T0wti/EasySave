@@ -1,35 +1,76 @@
 # EasySave
 
----
-
-**.Net** application enabling **automatic file backup**.
+**.NET** application enabling **automatic file backup**.
 
 ---
-## Objectives
 
-- Provide a console application capable of managing up to 5 backup jobs
-- Enable the definition of a backup job by:
-  - a name 
-  - a source directory 
-  - a target directory 
-  - a backup type (full or differential)
-- Allow execution:
-  - individual backup work 
-  - or several tasks executed sequentially via a command line
-- Ensure compatibility with directories located on:
-  - local disks 
-  - external drives
-  - network drives
-- Save the entire contents of the source directories (files and subdirectories)
-- Make the application usable in French and English
+## Overview
+
+EasySave is a professional backup management application developed by ProSoft.
+It allows users to create, configure, and execute backup jobs with real-time
+progress tracking, file encryption, and centralized log management.
+
+<img width="1004" height="695" alt="image" src="https://github.com/user-attachments/assets/f0d35cd7-9ad5-4f87-946c-8edf3e1d1874" />
+
+---
+
+## Features
+
+- Full and differential backup jobs
+- Parallel execution with priority file handling
+- File encryption via CryptoSoft
+- Real-time state tracking (`state.json`)
+- Daily logs in JSON or XML format
+- Centralized log server via Docker (optional)
+- Business software detection (auto-pause)
+- English and French support
 
 ---
 
 ## Requirements
 
-#### The developers in this project uses:
-
-- Visual Studio (or Rider for Mac users),
-- .Net 10.
+- Windows 10/11 or Linux
+- .NET SDK 10.0
+- Docker (optional, for centralized logging)
+- Visual Studio 2022, JetBrains Rider, or VS Code
 
 ---
+
+## Getting Started
+```bash
+git clone https://...
+cd EasySave
+dotnet build
+dotnet run --project EasySave.GUI
+```
+
+---
+
+## Project Structure
+```
+EasySave/
+├── EasySave.Domain/       # Business logic and interfaces
+├── EasySave.Application/  # Use cases and DTOs
+├── EasySave.GUI/          # Avalonia UI (MVVM)
+├── EasySave.EasyLog/      # Logging DLL
+├── EasySave.CryptoSoft/   # Encryption process
+└── EasySave.LogServer/    # Docker TCP log server
+```
+
+---
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| `docs/Architecture Explanation.md` | Architecture and SOLID justification |
+| `docs/Developer Guide.md` | Setup, flows, and contribution guide |
+| `docs/EasyLog Documentation.md` | EasyLog.dll technical reference |
+| `docs/Technic Documentation Support.md` | Configuration, file locations, and maintenance guide for support teams |
+| `docs/User Manual.md` | End-user guide for the GUI (backup jobs, settings, encryption, logs) |
+
+---
+
+## Authors
+
+ProSoft — CESI 2025/2026

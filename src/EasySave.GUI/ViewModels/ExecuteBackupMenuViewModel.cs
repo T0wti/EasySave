@@ -225,6 +225,10 @@ namespace EasySave.GUI.ViewModels
                         BusinessSoftwareHasError = true;
                         ErrorMessage = Texts.BusinessSoftwareRunning;
                         break;
+                    case AppErrorCode.LogServerUnavailable:
+                        BusinessSoftwareHasError = true;
+                        ErrorMessage = Texts.MessageBoxLogServerError;
+                        break;
                     default:
                         ErrorMessage = e.Message;
                         break;

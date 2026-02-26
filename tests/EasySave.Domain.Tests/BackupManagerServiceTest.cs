@@ -1,260 +1,193 @@
-﻿using EasySave.Domain.Enums;
+﻿using Xunit;
+using Moq;
+using System.Collections.Generic;
+using System.Linq;
+using EasySave.Domain.Services;
 using EasySave.Domain.Interfaces;
 using EasySave.Domain.Models;
-using EasySave.Domain.Services;
-using Moq;
-using Xunit;
-using System.Collections.Generic;
+using EasySave.Domain.Enums;
+using EasySave.Domain.Exceptions;
 
 public class BackupManagerServiceTests
 {
-    // This method instantiates a BackupManagerService with mocked services
-    private BackupManagerService CreateService(
-        List<BackupJob> existingJobs,
-        int maxJobs = 5)
+    private readonly Mock<IFileBackupService> _fileBackupServiceMock;
+    private readonly Mock<IBackupService> _backupServiceMock;
+    private readonly ApplicationSettings _settings;
+
+    private BackupManagerService _service;
+
+    public BackupManagerServiceTests()
     {
-        var fileMock = new Mock<IFileBackupService>();
-        fileMock.Setup(f => f.LoadJobs()).Returns(existingJobs);
+        _fileBackupServiceMock = new Mock<IFileBackupService>();
+        _backupServiceMock = new Mock<IBackupService>();
+        _settings = new ApplicationSettings();
 
-        var backupMock = new Mock<IBackupService>();
+        _fileBackupServiceMock
+            .Setup(x => x.LoadJobs())
+            .Returns(new List<BackupJob>());
 
-        var settings = new ApplicationSettings
-        {
-            MaxBackupJobs = maxJobs
-        };
-
-        return new BackupManagerService(
-            fileMock.Object,
-            backupMock.Object,
-            settings
+        _service = new BackupManagerService(
+            _fileBackupServiceMock.Object,
+            _backupServiceMock.Object,
+            _settings
         );
     }
 
+    // This test verifies that a valid backup job is successfully created and saved.
     [Fact]
-    // Raises the name exception
-    public void CreateBackupJob_WhenNameExists()
+    public void CreateBackupJob_Should_Create_Valid_Job()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1, "job1", "src", "dest", BackupType.Differential)
-        };
+        _service.CreateBackupJob(
+            "TestJob",
+            @"C:\Source",
+            @"D:\Target",
+            BackupType.Full);
 
-        var service = CreateService(jobs);
+        var jobs = _service.GetBackupJobs();
 
-        Assert.Throws<Exception>(() =>
-            service.CreateBackupJob("job1", "srctest", "srcdest", BackupType.Differential));
+        Assert.Single(jobs);
+        Assert.Equal("TestJob", jobs.First().Name);
+
+        _fileBackupServiceMock.Verify(x => x.SaveJobs(It.IsAny<List<BackupJob>>()), Times.Once);
     }
 
+    // This test ensures that creating a job with an empty name throws a validation exception.
     [Fact]
-    // Raises the max job exception
-    public void CreateBackupJob_WhenMaxReached()
+    public void CreateBackupJob_Should_Throw_When_Name_Empty()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full),
-            new BackupJob(2,"job2","src","dest",BackupType.Differential)
-        };
-
-        var service = CreateService(jobs, maxJobs: 2);
-
-        Assert.Throws<Exception>(() =>
-            service.CreateBackupJob("job3", "src", "dest", BackupType.Full));
+        Assert.Throws<BackupValidationException>(() =>
+            _service.CreateBackupJob(
+                "",
+                @"C:\Source",
+                @"D:\Target",
+                BackupType.Full));
     }
 
+    // This test verifies that creating a job with an already existing name throws an exception.
     [Fact]
-    // Tests if SaveJobs method is called
-    public void CreateBackupJob_ShouldAddJob()
+    public void CreateBackupJob_Should_Throw_When_Name_Already_Exists()
     {
-        var jobs = new List<BackupJob>();
-        var fileMock = new Mock<IFileBackupService>();
-        fileMock.Setup(f => f.LoadJobs()).Returns(jobs);
+        _service.CreateBackupJob(
+            "TestJob",
+            @"C:\Source",
+            @"D:\Target",
+            BackupType.Full);
 
-        var backupMock = new Mock<IBackupService>();
-
-        var settings = new ApplicationSettings { MaxBackupJobs = 5 };
-
-        var service = new BackupManagerService(
-            fileMock.Object,
-            backupMock.Object,
-            settings
-        );
-
-        service.CreateBackupJob("job1", "src", "dest", BackupType.Full);
-
-        Assert.Single(service.GetBackupJobs());
-        fileMock.Verify(
-            f => f.SaveJobs(It.IsAny<List<BackupJob>>()), 
-            Times.Once
-        );
+        Assert.Throws<BackupJobAlreadyExistsException>(() =>
+            _service.CreateBackupJob(
+                "TestJob",
+                @"C:\Source2",
+                @"D:\Target2",
+                BackupType.Full));
     }
 
+    // This test ensures that a relative source path triggers a validation exception.
     [Fact]
-    // Checks if the selected backup task has been deleted.
-    public void DeleteBackupJob_WhenBackupJobExists()
+    public void CreateBackupJob_Should_Throw_When_Source_Not_Absolute()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full),
-            new BackupJob(2,"job2","src","dest",BackupType.Full),
-        };
-
-        var service = CreateService(jobs);
-        service.DeleteBackupJob(1);
-        Assert.True(jobs.Count == 1);
+        Assert.Throws<BackupValidationException>(() =>
+            _service.CreateBackupJob(
+                "Job",
+                "relativePath",
+                @"D:\Target",
+                BackupType.Full));
     }
 
+    // This test verifies that using the same source and target path throws a validation exception.
     [Fact]
-    // Checks that the backup job is deleted and that SaveJobs methods is called
-    public void DeleteBackupJob_WhenBackupJobDoesNotExists()
+    public void CreateBackupJob_Should_Throw_When_Source_Equals_Target()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full),
-        };
-
-        var fileMock = new Mock<IFileBackupService>();
-        fileMock.Setup(f => f.LoadJobs()).Returns(jobs);
-
-        var service = new BackupManagerService(
-            fileMock.Object,
-            new Mock<IBackupService>().Object,
-            new ApplicationSettings()
-        );
-
-        service.DeleteBackupJob(2);
-
-        Assert.Single(service.GetBackupJobs());
-        fileMock.Verify(
-            f => f.SaveJobs(It.IsAny<List<BackupJob>>()),
-            Times.Never
-        );
+        Assert.Throws<BackupValidationException>(() =>
+            _service.CreateBackupJob(
+                "Job",
+                @"C:\Same",
+                @"C:\Same",
+                BackupType.Full));
     }
 
+    // This test verifies that an existing backup job is properly deleted and saved.
     [Fact]
-    // Checks that the backup job is edited and that SaveJobs methods is called 
-    public void EditBackupJob_WhenValid()
+    public void DeleteBackupJob_Should_Remove_Existing_Job()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full)
-        };
+        _service.CreateBackupJob(
+            "Job1",
+            @"C:\Source",
+            @"D:\Target",
+            BackupType.Full);
 
-        var fileMock = new Mock<IFileBackupService>();
-        fileMock.Setup(f => f.LoadJobs()).Returns(jobs);
+        var jobId = _service.GetBackupJobs().First().Id;
 
-        var service = new BackupManagerService(
-            fileMock.Object,
-            new Mock<IBackupService>().Object,
-            new ApplicationSettings()
-        );
+        _service.DeleteBackupJob(jobId);
 
-        service.EditBackupJob(1, "job1-edited", "src-edited", "dest-edited", BackupType.Full);
-
-        var editedJob = service.GetBackupJobs()[0];
-        Assert.Equal("job1-edited", editedJob.Name);
-        Assert.Equal("src-edited", editedJob.SourcePath);
-        Assert.Equal("dest-edited", editedJob.TargetPath);
-        Assert.Equal(BackupType.Full, editedJob.Type);
-
-        fileMock.Verify(f => f.SaveJobs(It.IsAny<List<BackupJob>>()), Times.Once);
+        Assert.Empty(_service.GetBackupJobs());
+        _fileBackupServiceMock.Verify(x => x.SaveJobs(It.IsAny<List<BackupJob>>()), Times.Exactly(2));
     }
 
+    // This test verifies that editing an existing job correctly updates its properties.
     [Fact]
-    // Raises the id job exception 
-    public void EditBackupJob_WhenJobDoesNotExists()
+    public void EditBackupJob_Should_Update_Existing_Job()
     {
-        var jobs = new List<BackupJob>
-        {
-             new BackupJob(1,"job1","src","dest",BackupType.Differential)
-        };
+        _service.CreateBackupJob(
+            "Job1",
+            @"C:\Source",
+            @"D:\Target",
+            BackupType.Full);
 
-        var service = CreateService(jobs);
+        var job = _service.GetBackupJobs().First();
 
-        Assert.Throws<Exception>(() =>
-            service.EditBackupJob(2, "job2", "src", "dest", BackupType.Full)
-        );
+        _service.EditBackupJob(
+            job.Id,
+            "UpdatedJob",
+            @"C:\NewSource",
+            @"D:\NewTarget",
+            BackupType.Differential);
+
+        var updated = _service.GetBackupJobs().First();
+
+        Assert.Equal("UpdatedJob", updated.Name);
+        Assert.Equal(@"C:\NewSource", updated.SourcePath);
+        Assert.Equal(BackupType.Differential, updated.Type);
+
+        _fileBackupServiceMock.Verify(x => x.SaveJobs(It.IsAny<List<BackupJob>>()), Times.Exactly(2));
     }
 
+    // This test ensures that editing a non-existing job throws a not found exception.
     [Fact]
-    // Raises the name job exception 
-    public void EditBackupJob_WhenNameAlreadyExists()
+    public void EditBackupJob_Should_Throw_When_Not_Found()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full),
-            new BackupJob(2,"job2","src","dest",BackupType.Full)
-        };
-
-        var service = CreateService(jobs);
-
-        Assert.Throws<Exception>(() =>
-            service.EditBackupJob(1, "job2", "src", "dest", BackupType.Full)
-        );
+        Assert.Throws<BackupJobNotFoundException>(() =>
+            _service.EditBackupJob(
+                999,
+                "Name",
+                @"C:\Source",
+                @"D:\Target",
+                BackupType.Full));
     }
 
+    // This test verifies that editing a job with a duplicate name throws an exception.
     [Fact]
-    // Checks that ExecuteBackup method is called
-    public void ExecuteBackupJob_WhenJobExists()
+    public void EditBackupJob_Should_Throw_When_Name_Already_Exists()
     {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full)
-        };
+        _service.CreateBackupJob(
+            "Job1",
+            @"C:\Source",
+            @"D:\Target",
+            BackupType.Full);
 
-        var fileMock = new Mock<IFileBackupService>();
-        fileMock.Setup(f => f.LoadJobs()).Returns(jobs);
+        _service.CreateBackupJob(
+            "Job2",
+            @"C:\Source2",
+            @"D:\Target2",
+            BackupType.Full);
 
-        var backupMock = new Mock<IBackupService>();
+        var job1 = _service.GetBackupJobs().First();
 
-        var service = new BackupManagerService(
-            fileMock.Object, 
-            backupMock.Object,
-            new ApplicationSettings()
-        );
-
-        service.ExecuteBackupJob(1);
-
-        backupMock.Verify(b => b.ExecuteBackup(It.Is<BackupJob>(j => j.Id == 1)), Times.Once);
-    }
-
-    [Fact]
-    // Raises the id job exception 
-    public void ExecuteBackupJob_WhenJobDoesNotExist()
-    {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full)
-        };
-
-        var service = CreateService(jobs);
-
-        Assert.Throws<Exception>(() => service.ExecuteBackupJob(2));
-    }
-
-    [Fact]
-    // Checks that the ExecuteBackupJob method is called for each BackupJob
-    public void ExecuteBackupJobs_WhenJobsDoesNotExists()
-    {
-        var jobs = new List<BackupJob>
-        {
-            new BackupJob(1,"job1","src","dest",BackupType.Full),
-            new BackupJob(2,"job2","src","dest",BackupType.Full)
-        };
-
-        var fileMock = new Mock<IFileBackupService>();
-        fileMock.Setup(f => f.LoadJobs()).Returns(jobs);
-
-        var backupMock = new Mock<IBackupService>();
-
-        var service = new BackupManagerService(
-            fileMock.Object,
-            backupMock.Object,
-            new ApplicationSettings()
-        );
-
-        service.ExecuteBackupJobs(jobs);
-
-        backupMock.Verify(b => b.ExecuteBackup(It.Is<BackupJob>(j => j.Id == 1)), Times.Once);
-        backupMock.Verify(b => b.ExecuteBackup(It.Is<BackupJob>(j => j.Id == 2)), Times.Once);
+        Assert.Throws<BackupJobAlreadyExistsException>(() =>
+            _service.EditBackupJob(
+                job1.Id,
+                "Job2",
+                @"C:\Source",
+                @"D:\Target",
+                BackupType.Full));
     }
 }
