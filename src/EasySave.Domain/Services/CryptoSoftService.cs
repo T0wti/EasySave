@@ -32,10 +32,10 @@ namespace EasySave.Domain.Services
             var settings = _configService.LoadSettings();
 
             if (string.IsNullOrWhiteSpace(settings.CryptoSoftPath) || !File.Exists(settings.CryptoSoftPath))
-                return -1;
+                return -6;
 
             if (string.IsNullOrWhiteSpace(settings.CryptoSoftKeyPath) || !File.Exists(settings.CryptoSoftKeyPath))
-                return -1;
+                return -7;
 
             for (int attempt = 1; attempt <= MaxRetries; attempt++)
             {
@@ -53,7 +53,7 @@ namespace EasySave.Domain.Services
             return -10;
         }
 
-        private static long RunCryptoSoft(string sourceFilePath,string targetFilePath, string cryptoSoftPath, string keyPath)
+        private static long RunCryptoSoft(string sourceFilePath, string targetFilePath, string cryptoSoftPath, string keyPath)
         {
             try
             {
@@ -62,22 +62,30 @@ namespace EasySave.Domain.Services
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = cryptoSoftPath,
-                        ArgumentList = {keyPath},
+                        ArgumentList = { keyPath },
                         UseShellExecute = false,
                         RedirectStandardInput = true,
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
                     }
                 };
-
                 process.Start();
 
-                // Send the bytes of the source files on stdin
                 var fileBytes = File.ReadAllBytes(sourceFilePath);
-                process.StandardInput.BaseStream.Write(fileBytes, 0, fileBytes.Length);
-                process.StandardInput.BaseStream.Close();
 
-                // Recover the crypted bytes on stdout
+                var stdinTask = Task.Run(() =>
+                {
+                    try
+                    {
+                        process.StandardInput.BaseStream.Write(fileBytes, 0, fileBytes.Length);
+                        process.StandardInput.BaseStream.Close();
+                    }
+                    catch
+                    {
+                        // CryptoSoft leave before reading stdin (ex: mutex -10) -> ignore
+                    }
+                });
+
                 byte[] encryptedBytes;
                 using (var ms = new MemoryStream())
                 {
@@ -85,23 +93,24 @@ namespace EasySave.Domain.Services
                     encryptedBytes = ms.ToArray();
                 }
 
-
+                stdinTask.Wait();
                 process.WaitForExit();
 
-                if (process.ExitCode < 0)
-                    throw new CryptoSoftException(sourceFilePath, process.ExitCode);
+                int exitCode = process.ExitCode;
+
+                if (exitCode == -10) return -10; // mutex ococcupied -> retry
+                if (exitCode < 0) return exitCode;
 
                 var targetDir = Path.GetDirectoryName(targetFilePath);
                 if (!Directory.Exists(targetDir))
                     Directory.CreateDirectory(targetDir!);
 
                 File.WriteAllBytes(targetFilePath, encryptedBytes);
-
-                return process.ExitCode;
+                return exitCode;
             }
-            catch
+            catch (Exception ex)
             {
-                return -1;
+                return -5;
             }
         }
     }
