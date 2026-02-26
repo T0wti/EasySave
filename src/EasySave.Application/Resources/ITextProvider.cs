@@ -158,5 +158,6 @@ namespace EasySave.Application.Resources
         string MessageBoxDelete { get; }
         string MessageBoxDeleteConfirmation { get; }
         string MessageBoxLogServerError { get; }
+        string MessageBoxCryptoNotFound { get; }
     }
 }
