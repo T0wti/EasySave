@@ -16,6 +16,7 @@ namespace EasySave.Domain.Services
         // Public constructor for DI
         public FileBackupService()
         {
+            // Anchor all persisted data to %APPDATA%\EasySave, consistent with ConfigurationService
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             _baseAppPath = Path.Combine(appDataPath, "EasySave");
 
@@ -24,12 +25,15 @@ namespace EasySave.Domain.Services
 
         public List<BackupJob> LoadJobs()
         {
+            // No file yet (first run) : return an empty list rather than throwing
             if (!File.Exists(_jobsFilePath))
                 return new List<BackupJob>();
 
             try
             {
                 string json = File.ReadAllText(_jobsFilePath);
+
+                // Treat an empty or whitespace only file as "no jobs" rather than a parse error
                 if (string.IsNullOrWhiteSpace(json))
                     return new List<BackupJob>();
 
@@ -53,6 +57,7 @@ namespace EasySave.Domain.Services
 
         public void SaveJobs(List<BackupJob> jobs)
         {
+            // Write the job in the file
             string json = JsonSerializer.Serialize(jobs, _jsonOptions);
             File.WriteAllText(_jobsFilePath, json);
         }

@@ -9,6 +9,7 @@ namespace EasySave.Domain.Services
     {
         private readonly IConfigurationService _configService;
 
+        // How many times to retry when CryptoSoft reports its mutex is occupied (-10)
         private const int MaxRetries = 10;
         private const int RetryDelayMs = 500;
 
@@ -18,7 +19,7 @@ namespace EasySave.Domain.Services
         }
 
 
-        // Reads extensions fresh from config on every call
+        // Reloads settings on every call so extension list changes take effect immediately
         public bool ShouldEncrypt(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath)) return false;
@@ -37,6 +38,7 @@ namespace EasySave.Domain.Services
             if (string.IsNullOrWhiteSpace(settings.CryptoSoftKeyPath) || !File.Exists(settings.CryptoSoftKeyPath))
                 return -7;
 
+            // Retry loop: CryptoSoft uses a global mutex to prevent concurrent instances
             for (int attempt = 1; attempt <= MaxRetries; attempt++)
             {
                 long result = RunCryptoSoft(sourceFilePath, targetFilePath, settings.CryptoSoftPath, settings.CryptoSoftKeyPath);
@@ -53,6 +55,7 @@ namespace EasySave.Domain.Services
             return -10;
         }
 
+        // Launches CryptoSoft.exe, pipes the source file bytes via stdin, reads the encrypted output from stdout, and writes it to the target path
         private static long RunCryptoSoft(string sourceFilePath, string targetFilePath, string cryptoSoftPath, string keyPath)
         {
             try
@@ -64,8 +67,8 @@ namespace EasySave.Domain.Services
                         FileName = cryptoSoftPath,
                         ArgumentList = { keyPath },
                         UseShellExecute = false,
-                        RedirectStandardInput = true,
-                        RedirectStandardOutput = true,
+                        RedirectStandardInput = true, // We write plain bytes to CryptoSoft
+                        RedirectStandardOutput = true, // We read encrypted bytes from CryptoSoft
                         CreateNoWindow = true
                     }
                 };
@@ -73,6 +76,8 @@ namespace EasySave.Domain.Services
 
                 var fileBytes = File.ReadAllBytes(sourceFilePath);
 
+                // Write to stdin on a separate task to avoid deadlocking:
+                // if the stdout buffer fills up while we block on stdin, both sides stall
                 var stdinTask = Task.Run(() =>
                 {
                     try
@@ -86,6 +91,7 @@ namespace EasySave.Domain.Services
                     }
                 });
 
+                // Drain stdout before waiting for exit to prevent the process from blocking
                 byte[] encryptedBytes;
                 using (var ms = new MemoryStream())
                 {
@@ -98,9 +104,10 @@ namespace EasySave.Domain.Services
 
                 int exitCode = process.ExitCode;
 
-                if (exitCode == -10) return -10; // mutex ococcupied -> retry
-                if (exitCode < 0) return exitCode;
+                if (exitCode == -10) return -10; // Mutex ococcupied -> retry
+                if (exitCode < 0) return exitCode; // Any other negative code = CryptoSoft error
 
+                // Only write the output file after confirming a successful exit code
                 var targetDir = Path.GetDirectoryName(targetFilePath);
                 if (!Directory.Exists(targetDir))
                     Directory.CreateDirectory(targetDir!);

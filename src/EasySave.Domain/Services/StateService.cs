@@ -55,11 +55,13 @@ namespace EasySave.Domain.Services
             }
         }
 
+        // Write the pause sate : runtime counters are preserved so it can be resumed after
         public void Pause(int backupJobId)
         {
             lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Paused); }
         }
 
+        // Write the stop state : clears its runtime fields
         public void Stop(int backupJobId)
         {
             lock (_lock) { FinalizeAndClean(backupJobId, BackupJobState.Stopped); }
@@ -78,10 +80,13 @@ namespace EasySave.Domain.Services
             lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Failed); }
         }
 
+        // Marks a backup job as interrupt
         public void Interrupt(int backupJobId)
         {
             lock (_lock) { FinalizeAndClean(backupJobId, BackupJobState.Interrupted); }
         }
+
+        // Marks a backup job as compare for the differential backup
         public void Compare(int backupJobId)
         {
             lock (_lock) { UpdateStateOnly(backupJobId, BackupJobState.Comparing); }
