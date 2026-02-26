@@ -46,12 +46,13 @@ namespace EasySave.EasyLog
         }
 
         // Writes a log entry using the configured writer.
-        public void Write<T>(T entry)
+        public Task Write<T>(T entry)
         {
             if (!_isInitialized || _writer == null)
                 throw new InvalidOperationException("EasyLogService must be initialized via Initialize() before use.");
 
             _writer.Write(entry);
+            return Task.CompletedTask;
         }
 
         // Resets the service state. Useful for changing configuration. (So, to run other format the controller must reset the configuration and initialize another with the good logformat)

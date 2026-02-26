@@ -42,7 +42,7 @@ namespace EasySave.EasyLog
             }
         }
 
-        public void Write<T>(T entry)
+        public async Task Write<T>(T entry)
         {
             if (!_isInitialized || _local == null)
                 throw new InvalidOperationException("CompositeLogService must be initialized via Initialize() before use.");
@@ -50,22 +50,22 @@ namespace EasySave.EasyLog
             switch (_logMode)
             {
                 case 0: // Local only
-                    _local.Write(entry);
+                    await _local.Write(entry).ConfigureAwait(false);
                     break;
 
                 case 1: // Centralized only
                     if (_remote is not null)
-                        _ = _remote(entry!);
+                        await _remote(entry!).ConfigureAwait(false);
                     break;
 
                 case 2: // Both
-                    _local.Write(entry);
+                    await _local.Write(entry).ConfigureAwait(false);
                     if (_remote is not null)
-                        _ = _remote(entry!);
+                        await _remote(entry!).ConfigureAwait(false);
                     break;
 
                 default:
-                    _local.Write(entry);
+                    await _local.Write(entry).ConfigureAwait(false);
                     break;
             }
         }

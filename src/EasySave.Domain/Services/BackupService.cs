@@ -167,7 +167,7 @@ namespace EasySave.Domain.Services
 
                     var duration = (long)(DateTime.Now - start).TotalMilliseconds;
 
-                    _logService.Write(new LogEntry
+                    await _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         MachineName = Environment.MachineName,
@@ -178,7 +178,7 @@ namespace EasySave.Domain.Services
                         FileSize = file.Size,
                         TransferTimeMs = duration,
                         EncryptionTimeMs = encryptionTime
-                    });
+                    }).ConfigureAwait(false);
 
                     _stateService.Update(progress, file, targetPath);
 
@@ -190,7 +190,7 @@ namespace EasySave.Domain.Services
                     if (isPriority)
                         _priorityGate.NotifyPriorityFileCopied();
                     _stateService.Fail(job.Id);
-                    _logService.Write(new LogEntry
+                    await _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         MachineName = Environment.MachineName,
@@ -200,11 +200,15 @@ namespace EasySave.Domain.Services
                         FileSize = file.Size,
                         TransferTimeMs = -1,
                         EncryptionTimeMs = ex.ExitCode  // Code d'erreur CryptoSoft dans le log
-                    });
+                    }).ConfigureAwait(false);
                     throw new BackupExecutionException(job.Name, file.FullPath, ex);
                 }
                 catch (LogServerUnavailableException)
                 { 
+                    if (isPriority)
+                        _priorityGate.NotifyPriorityFileCopied();
+                    _stateService.Fail(job.Id);
+                    throw; 
                 }
                 catch (OperationCanceledException)
                 {
@@ -219,7 +223,7 @@ namespace EasySave.Domain.Services
                         _priorityGate.NotifyPriorityFileCopied();
                     // Handle copy failure: mark job as failed and log
                     _stateService.Fail(job.Id);
-                    _logService.Write(new LogEntry
+                    await _logService.Write(new LogEntry
                     {
                         Timestamp = DateTime.Now,
                         MachineName = Environment.MachineName,
@@ -228,7 +232,7 @@ namespace EasySave.Domain.Services
                         TargetPath = string.Empty,
                         FileSize = file.Size,
                         TransferTimeMs = -1
-                    });
+                    }).ConfigureAwait(false);
                     throw new BackupExecutionException(job.Name, file.FullPath, ex);
                 }
                 finally
