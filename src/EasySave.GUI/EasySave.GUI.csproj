@@ -34,4 +34,15 @@
         <DependentUpon>DeleteBackupMenu.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+
+		<ApplicationIcon>Assets\easysave-icon.ico</ApplicationIcon>
+	</PropertyGroup>
+	
 </Project>
