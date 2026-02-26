@@ -22,13 +22,13 @@ namespace EasySave.CryptoSoft
             if (args.Length != 1)
             {
                 Console.Error.WriteLine("Usage: CryptoSoft <keyPath>");
-                return -1;
+                return -2;
             }
 
             if (!File.Exists(args[0]))
             {
                 Console.Error.WriteLine($"Key file not found: {args[1]}");
-                return -1;
+                return -3;
             }
 
             try
@@ -56,7 +56,7 @@ namespace EasySave.CryptoSoft
             }
             catch
             {
-                return -2;
+                return -4;
             }
         }
 
