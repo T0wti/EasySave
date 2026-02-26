@@ -37,9 +37,7 @@ namespace EasySave.GUI.ViewModels
         // Inputs
         [ObservableProperty] private string? _errorMessage;
         [ObservableProperty] private bool _businessSoftwareHasError;
-        [ObservableProperty] private bool _isMessageToDisplay;
         [ObservableProperty] private bool _isThereError;
-        [ObservableProperty] private string? _message;
         [ObservableProperty] private bool _isRunning;
         [ObservableProperty] private string _searchText; // For searchbar
         [ObservableProperty] private double _progress; // For progressbar
@@ -54,7 +52,6 @@ namespace EasySave.GUI.ViewModels
             Progress = 0;
             Exit = Texts.Exit;
 
-            IsMessageToDisplay = false;
             IsThereError = false;
             IsExecutionDone = false;
 
@@ -151,17 +148,13 @@ namespace EasySave.GUI.ViewModels
                     await Task.Run(() => BackupAppService.PauseBackup(jobId));
                     var job = GetJobViewModel(jobId);
                     if (job != null) job.IsProcessing = false; // To turn the play button clickable
-                    Message = job.Job.Name + "\n" + Texts.MessageBoxJobPaused; // Message for single job
                 }
                 // If parameter empty, then pause all jobs
                 else
                 {
                     await Task.Run(() => BackupAppService.PauseAll());
                     foreach (var job in BackupJobs) job.IsProcessing = false; // To turn the play button clickable for each job
-                    Message = Texts.MessageBoxAllJobsPaused; // Message for all jobs
                 }
-
-                IsMessageToDisplay = true;
             }
             catch (AppException e)
             {
@@ -247,8 +240,6 @@ namespace EasySave.GUI.ViewModels
                     job.ProgressValue = 100; // When job is done
                     Progress = 100;
                     job.IsCompleted = true;
-                    IsMessageToDisplay = true;
-                    Message = job.Job.Name + "\n" + Texts.MessageBoxJobExecuted;
                 }
                 else
                 {
@@ -288,7 +279,6 @@ namespace EasySave.GUI.ViewModels
                         job.IsProcessing = false; // To turn the play button clickable
                         job.ProgressValue = 0; // Turns back progress bar to 0
                         job.IsCompleted = false;
-                        Message = job.Job.Name + "\n" + Texts.MessageBoxJobStopped; // Message for single job
                     }
                 }
                 // If parameter empty, then stop all jobs
@@ -301,9 +291,7 @@ namespace EasySave.GUI.ViewModels
                         job.ProgressValue = 0; // Turns back progress bar to 0 for each job
                         job.IsCompleted = false;
                     }
-                    Message = Texts.MessageBoxAllJobsStopped; // Message for all jobs
                 }
-                IsMessageToDisplay = true;
             }
             catch (AppException e)
             {
