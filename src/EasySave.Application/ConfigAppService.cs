@@ -133,7 +133,7 @@ namespace EasySave.Application
             _configService.EnsureConfigExists();
         }
 
-        public void EnsureKeyExists() //Temporaire
+        public void EnsureKeyExists()
         {
             _configService.EnsureKeyExists();
         }
