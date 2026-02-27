@@ -104,6 +104,61 @@ against v1.0 continues to compile and run unchanged.
 
 ---
 
+### E. Current Design Pattern
+Your architecture currently leverages several foundational design patterns to separate concerns and manage complexity:
+
+* **Strategy Pattern:**  Used to encapsulate backup behaviors. The `IBackupStrategy` interface allows the application to seamlessly switch between `FullBackupStrategy` and `DifferentialBackupStrategy` at runtime depending on the job configuration.
+* **Factory Pattern:** Currently implemented via the static `AppServiceFactory`, which handles the instantiation and wiring of your application's services and dependencies.
+* **Singleton Pattern:** Used for `EasyLogService` and `LogDispatcher` (via `Lazy<T>`) to ensure only one instance of the logging engine manages file locks and writes throughout the application lifecycle.
+* **Observer Pattern:** Heavily utilized in two areas:
+    * **UI Binding:** Through Avalonia's MVVM implementation (`ObservableObject`, `[ObservableProperty]`), allowing the GUI to automatically react to state changes in the ViewModels.
+    * **Process Monitoring:** Through `ManagementEventWatcher` (WMI) in `BusinessSoftwareWatcher`, which listens for OS-level process start/stop events to pause or resume backups dynamically.
+  
+---
+
+### F. V4.0
+Version 4 introduces three major evolutions: multi-language support, pluggable log formats, and full cross-platform portability. None of these required structural changes to the Domain or Application layers. This is the clearest proof that the architecture was designed to absorb change, not merely tolerate it.
+
+##### A. Internationalization (i18n) : Adding New Languages
+* **Design decision:** Localization is treated as a pure infrastructure concern, fully isolated from business logic.
+* All user-facing strings are externalized into resource files (ex : `.resx` per culture like `Strings.en.resx`, `Strings.fr.resx`, `Strings.de.resx`).
+* A dedicated `ILocalizationService` abstraction, resolved at startup from the user's saved locale preference, serves as the single source for every display string in the application.
+* ViewModels bind to keys, never to hardcoded text.
+
+**Why this matters architecturally:**
+* The Domain layer throws typed exceptions with machine-readable codes (`BackupValidationException`, `AppErrorCode`), not human-readable sentences.
+* The translation from error code to localized message happens exclusively at the ViewModel boundary.
+* Adding a new language requires only creating a new `.resx` file and registering the culture in `AppServiceFactory`. No ViewModel, no service, and no Domain class needs to change, a direct application of OCP.
+* The current locale is stored in the user's configuration file alongside other settings, meaning it persists across sessions and remains decoupled from any OS-level locale, which is critical for multi-user server deployments.
+
+##### B. Pluggable Log Formats : CSV and Beyond
+* **Design decision:** Log format selection is driven entirely by the `ILogWriter` abstraction, which already existed since v1.0. Version 4 extends the plug-in surface rather than replacing it.
+* EasyLog v1.3 introduces `CsvLogWriter : ILogWriter`, joining the existing `JsonLogWriter` and `XmlLogWriter`.
+* `EasyLogService.Initialize()` gains one additional case in its format-selector switch. No other file in the entire solution was modified.
+* This means upgrading from v1.1 (JSON, XML) to v1.3 (JSON, XML, CSV) required only the addition of 1 class.
+* The user can switch the active log format at runtime from the Settings panel. The preference is persisted via `ConfigAppService` and re-injected into `EasyLogService` on the next application start (or immediately via a hot-reload path).
+* `BackupService` never knows which format is active: it simply calls `ILogService.WriteLog(entry)` and the dispatcher routes accordingly.
+* **Resilience angle:** Because `LogDispatcher` can fan out to multiple writers simultaneously, an administrator can configure the application to write JSON locally (for real-time monitoring tools) and CSV remotely (for spreadsheet-based auditing) at the same time, without any code change.
+
+#### C. Cross-Platform : Windows, Linux, macOS
+* **Design decision:** The architecture was already platform-agnostic at the Domain and Application levels. Version 4 closes the remaining platform-specific gaps at the infrastructure and GUI levels.
+
+**Infrastructure:**
+* `FileService` now uses `Path.DirectorySeparatorChar` and `Environment.GetFolderPath` exclusively, eliminating all hardcoded Windows path assumptions.
+* CryptoSoft is compiled as a self-contained native AOT binary for each target (win-x64, linux-x64, osx-arm64). `ICryptoSoftService` abstracts the process invocation; the concrete `CryptoSoftService` resolves the correct binary path at runtime based on `RuntimeInformation.IsOSPlatform(...)`.
+* The Domain and Application layers see none of this. LogServer runs as a Docker container and is therefore platform-neutral by definition.
+
+**GUI (Avalonia):**
+* As detailed in the framework comparison below, Avalonia's Skia-based rendering engine delivers a pixel-perfect, identical interface on all three desktop operating systems without platform-specific code paths.
+* The MVVM structure means that no ViewModel ever calls a platform API; platform differences are absorbed entirely within Avalonia's rendering pipeline and within the infrastructure services described above.
+
+**Deployment & Resilience:**
+* A single CI pipeline produces three artifacts from the same source tree: a Windows installer (`.msi`), a Linux `.deb` package, and a macOS `.dmg`.
+* Configuration files, log files, and state files use the same JSON schema across all platforms; a job configured on Windows can be transferred to a Linux server and executed without conversion.
+* **Resilience angle:** The clean separation between `IFileService` (abstraction in Domain) and `FileService` (implementation in Infrastructure) means that a future platform-specific optimization, for example, using Linux's `sendfile` syscall for zero-copy transfers, can be introduced by creating a `LinuxFileService : IFileService` and registering it conditionally in `AppServiceFactory`. The rest of the application is entirely unaffected.
+
+---
+
 ## 2. Core Principles (SOLID) Respected
 
 Our architecture strictly adheres to the SOLID principles at every layer:
