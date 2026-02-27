@@ -116,8 +116,8 @@ Your architecture currently leverages several foundational design patterns to se
   
 ---
 
-### F. V4.0
-Version 4 introduces three major evolutions: multi-language support, pluggable log formats, and full cross-platform portability. None of these required structural changes to the Domain or Application layers. This is the clearest proof that the architecture was designed to absorb change, not merely tolerate it.
+### F. Technical improvement for V4.0
+Version 4 introduces four major evolutions: multi-language support, optimisation of EasyLog, update `AppServiceFactory` and full cross-platform portability. None of these required structural changes to the Domain or Application layers. This is the clearest proof that the architecture was designed to absorb change, not merely tolerate it.
 
 ##### A. Internationalization (i18n) : Adding New Languages
 * **Design decision:** Localization is treated as a pure infrastructure concern, fully isolated from business logic.
@@ -126,36 +126,82 @@ Version 4 introduces three major evolutions: multi-language support, pluggable l
 * ViewModels bind to keys, never to hardcoded text.
 
 **Why this matters architecturally:**
-* The Domain layer throws typed exceptions with machine-readable codes (`BackupValidationException`, `AppErrorCode`), not human-readable sentences.
-* The translation from error code to localized message happens exclusively at the ViewModel boundary.
 * Adding a new language requires only creating a new `.resx` file and registering the culture in `AppServiceFactory`. No ViewModel, no service, and no Domain class needs to change, a direct application of OCP.
 * The current locale is stored in the user's configuration file alongside other settings, meaning it persists across sessions and remains decoupled from any OS-level locale, which is critical for multi-user server deployments.
 
-##### B. Pluggable Log Formats : CSV and Beyond
-* **Design decision:** Log format selection is driven entirely by the `ILogWriter` abstraction, which already existed since v1.0. Version 4 extends the plug-in surface rather than replacing it.
-* EasyLog v1.3 introduces `CsvLogWriter : ILogWriter`, joining the existing `JsonLogWriter` and `XmlLogWriter`.
-* `EasyLogService.Initialize()` gains one additional case in its format-selector switch. No other file in the entire solution was modified.
-* This means upgrading from v1.1 (JSON, XML) to v1.3 (JSON, XML, CSV) required only the addition of 1 class.
-* The user can switch the active log format at runtime from the Settings panel. The preference is persisted via `ConfigAppService` and re-injected into `EasyLogService` on the next application start (or immediately via a hot-reload path).
-* `BackupService` never knows which format is active: it simply calls `ILogService.WriteLog(entry)` and the dispatcher routes accordingly.
-* **Resilience angle:** Because `LogDispatcher` can fan out to multiple writers simultaneously, an administrator can configure the application to write JSON locally (for real-time monitoring tools) and CSV remotely (for spreadsheet-based auditing) at the same time, without any code change.
+#### B. Logging Architecture Refinement : Factory & Composite Patterns
+**Design Decision :** Logging infrastructure has been redesigned to eliminate hard-coded instantiation logic and global singleton state, replacing them with factory-driven creation and dependency injection.
+* Log writer selection is now fully delegated to a dedicated ILogWriterFactory, responsible for instantiating the correct implementation (JSON, XML, or future formats for example CSV). This removes conditional logic from EasyLogService and fully respects the Open/Closed Principle.
 
-#### C. Cross-Platform : Windows, Linux, macOS
-* **Design decision:** The architecture was already platform-agnostic at the Domain and Application levels. Version 4 closes the remaining platform-specific gaps at the infrastructure and GUI levels.
+**Architectural Impact :**
+* The logging system becomes fully extensible: adding a new log format requires only introducing a new writer class and registering it in the factory.
+* No existing business or application code is modified when extending logging capabilities.
+* The logging infrastructure becomes unit-test friendly, as factories and services can be mocked or substituted.
+* Hidden global state is eliminated, reducing coupling and increasing predictability.
+
+**Composite Logging Dispatching** :
+
+The LogDispatcher has been strengthened as a pure Composite Pattern implementation, capable of routing log entries to multiple logging endpoints simultaneously (local, TCP, or any future channel). 
+
+Rather than controlling routing logic through runtime conditionals, the active logging configuration is now entirely driven by dependency injection configuration, making the system:
+- More modular
+- Easier to extend
+- Simpler to reason about
+- Fully compliant with DIP
+
+> This architectural refactoring preserves full backward compatibility. Existing projects that already reference the EasyLog library continue to operate without any modification, as the public logging interfaces and entry points remain unchanged. The introduction of the factory pattern and the composite affects only the internal instantiation workflow and does not alter the external usage.
+
+
+#### C. Full Dependency Injection : Replacing the Static Service Factory
+**Design Decision :** The original static AppServiceFactory has been replaced by a full-featured Dependency Injection container based on Microsoft.Extensions.DependencyInjection, making the application architecture fully compliant with modern .NET composition standards.
+
+**Architectural Impact :**
+
+- All service instantiations are now centralized in a single composition root.
+- Service lifetimes (singleton, transient) are explicitly controlled and documented.
+- Hidden singletons are eliminated in favor of controlled object lifecycles.
+- The dependency graph becomes explicit, readable, and maintainable.
+
+**Why This Matters Architecturally :**
+
+This shift reinforces the Dependency Inversion Principle (DIP):
+
+- High-level services depend only on abstractions.
+- Low-level infrastructure implementations are injected, not instantiated.
+
+The entire system becomes highly testable, allowing every infrastructure dependency to be substituted by mocks or stubs.
+This also dramatically improves evolution capability: introducing new infrastructure services becomes a configuration task, not a refactoring operation.
+
+#### D. Cross-Platform : Windows, Linux, macOS
+* **Design decision :** The architecture was already close to be multipatform at the Domain and Application levels. Version 4 closes the remaining platform-specific gaps at the infrastructure and GUI levels.
 
 **Infrastructure:**
 * `FileService` now uses `Path.DirectorySeparatorChar` and `Environment.GetFolderPath` exclusively, eliminating all hardcoded Windows path assumptions.
-* CryptoSoft is compiled as a self-contained native AOT binary for each target (win-x64, linux-x64, osx-arm64). `ICryptoSoftService` abstracts the process invocation; the concrete `CryptoSoftService` resolves the correct binary path at runtime based on `RuntimeInformation.IsOSPlatform(...)`.
+* CryptoSoft is compiled as a self-contained native AOT binary for each target (win-x64, linux-x64, osx-arm64). `ICryptoSoftService` abstracts the process invocation, the concrete `CryptoSoftService` resolves the correct binary path at runtime based on `RuntimeInformation.IsOSPlatform(...)`.
+* In `BusinessSoftwareWatcher`, the Windows-specific WMI-based software detection needs to be replaced with a cross-platform detection layer. The `IBusinessSoftwareWatcherService` interface abstracts OS-specific discovery mechanisms, while the concrete implementations dynamically select the appropriate detection strategy at runtime using `RuntimeInformation.IsOSPlatform(...)`. This approach enables native support for Windows, Linux, and macOS while maintaining a clean and extensible architecture.
 * The Domain and Application layers see none of this. LogServer runs as a Docker container and is therefore platform-neutral by definition.
 
 **GUI (Avalonia):**
 * As detailed in the framework comparison below, Avalonia's Skia-based rendering engine delivers a pixel-perfect, identical interface on all three desktop operating systems without platform-specific code paths.
-* The MVVM structure means that no ViewModel ever calls a platform API; platform differences are absorbed entirely within Avalonia's rendering pipeline and within the infrastructure services described above.
+* The MVVM structure means that no ViewModel ever calls a platform API, platform differences are absorbed entirely within Avalonia's rendering pipeline and within the infrastructure services described above.
 
 **Deployment & Resilience:**
 * A single CI pipeline produces three artifacts from the same source tree: a Windows installer (`.msi`), a Linux `.deb` package, and a macOS `.dmg`.
-* Configuration files, log files, and state files use the same JSON schema across all platforms; a job configured on Windows can be transferred to a Linux server and executed without conversion.
+* Configuration files, log files, and state files use the same JSON schema across all platforms, a job configured on Windows can be transferred to a Linux server and executed without conversion.
 * **Resilience angle:** The clean separation between `IFileService` (abstraction in Domain) and `FileService` (implementation in Infrastructure) means that a future platform-specific optimization, for example, using Linux's `sendfile` syscall for zero-copy transfers, can be introduced by creating a `LinuxFileService : IFileService` and registering it conditionally in `AppServiceFactory`. The rest of the application is entirely unaffected.
+
+### E. Architectural Benefits of V4 Enhancements
+
+These refinements collectively reinforce the architectural goals of EasySave:
+
+| Axis | Architectural Gain |
+| :--- | :--- |
+| **Maintainability** | Reduced coupling, clearer dependencies, simpler evolution |
+| **Extensibility** | Factory-driven creation, DI-based configuration, plug-in design |
+| **Scalability** | Infrastructure growth without domain impact |
+| **Portability** | Complete OS neutrality: native support for Windows, Linux, and macOS. |
+| **Internationalization** | New languages can be added simply by adding resource files |
+
 
 ---
 
