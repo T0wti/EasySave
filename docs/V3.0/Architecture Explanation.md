@@ -215,6 +215,7 @@ The architecture currently leverages several foundational design patterns to sep
 * **Observer Pattern:** Heavily utilized in two areas:
     * **UI Binding:** Through Avalonia's MVVM implementation (`ObservableObject`, `[ObservableProperty]`), allowing the GUI to automatically react to state changes in the ViewModels.
     * **Process Monitoring:** Through `ManagementEventWatcher` (WMI) in `BusinessSoftwareWatcher`, which listens for OS-level process start/stop events to pause or resume backups dynamically.
+* **Facade Pattern:** `BackupAppService` and `ConfigAppService` act as facades, exposing a simplified API to the presentation layer and hiding the complexity of the underlying domain services (manager, executor, state service, etc..). ViewModels never interact directly with domain-level services.
 
 ---
 
@@ -345,7 +346,7 @@ This will also dramatically improve evolution capability: introducing new infras
 
 ## 5. User Experience Enhancements
 
-Version 4 will introduce a series of user-focused features designed to improve the usability, flexibility, and control of EasySave. These additions will ensure that users can manage backups more efficiently, monitor progress, and customize their experience according to their needs.
+Version 4 will introduce a series of user-focused features designed to improve the usability, flexibility, and control of EasySave. These additions will ensure that users can manage backups more efficiently, monitor progress, and customize their experience according to their needs. These features will be implemented as isolated, pluggable services behind dedicated interfaces, ensuring that each addition follows the same DI and abstraction principles established throughout the architecture.
 
 **Key Improvements :**
 
