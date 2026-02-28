@@ -334,7 +334,7 @@ This will also dramatically improve evolution capability: introducing new infras
 * The Domain and Application layers will see none of this. LogServer will run as a Docker container and will therefore be platform-neutral by definition.
 
 **GUI (Avalonia):**
-* As detailed in the framework comparison below, Avalonia's Skia-based rendering engine will deliver a pixel-perfect, identical interface on all three desktop operating systems without platform-specific code paths.
+* As detailed in the framework comparison, Avalonia's Skia-based rendering engine will deliver a pixel-perfect, identical interface on all three desktop operating systems without platform-specific code paths.
 * The MVVM structure will mean that no ViewModel will ever call a platform API; platform differences will be absorbed entirely within Avalonia's rendering pipeline and within the infrastructure services described above.
 
 **Deployment & Resilience:**
@@ -344,7 +344,22 @@ This will also dramatically improve evolution capability: introducing new infras
 
 ---
 
-## 5. User Experience Enhancements
+## 5. Centralized Error Handling in ViewModels
+**Design Decision:** The duplicated switch blocks on `AppErrorCode` currently present in `CreateBackupMenuViewModel`, `EditBackupDetailMenuViewModel`, and `ExecuteBackupMenuViewModel` will be centralized into a shared error handling mechanism in the `ViewModelBase` class.
+
+**Planned Implementation:**
+* A protected method HandleAppException(AppException ex) will be introduced in ViewModelBase, responsible for mapping any AppErrorCode to the correct localized error message and the affected field.
+* An IErrorMappingService may be extracted if the mapping logic grows in complexity, making it injectable and testable independently.
+
+**Why This Matters Architecturally:**
+
+* Eliminates approximately 30 lines of duplicated code per ViewModel that handles validation errors.
+* Adding a new error code will require a single change in one location instead of modifying every ViewModel.
+* Fully aligned with the DRY principle and improves maintainability as the number of ViewModels grows.
+
+---
+
+## 6. User Experience Enhancements
 
 Version 4 will introduce a series of user-focused features designed to improve the usability, flexibility, and control of EasySave. These additions will ensure that users can manage backups more efficiently, monitor progress, and customize their experience according to their needs. These features will be implemented as isolated, pluggable services behind dedicated interfaces, ensuring that each addition follows the same DI and abstraction principles established throughout the architecture.
 
