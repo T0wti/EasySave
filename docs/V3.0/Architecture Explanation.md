@@ -1,4 +1,4 @@
-# Justification of the General Architecture (EasySave)
+# Explanation of the General Architecture (EasySave)
 
 The project's architecture is built upon the principle of **Clean Architecture**. 
 The codebase has been divided into several distinct layers (`Domain`, `Application`, 
