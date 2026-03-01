@@ -1,6 +1,6 @@
 # Improvement for the V4.0
 
-Version 4 will introduce four major evolutions: multi-language support, optimisation of EasyLog, update `AppServiceFactory` and full cross-platform portability. None of these will require structural changes to the Domain or Application layers. This will be the clearest proof that the architecture was designed to absorb change.
+Version 4 will introduce five major architectural evolutions, along with several user experience enhancements: multi-language support, EasyLog optimization, full dependency injection, full cross-platform portability, and centralized ViewModel error handling. None of these changes will require structural modifications to the Domain or Application layers. This will be the clearest proof that the architecture was designed to absorb change.
 
 ## 1. Internationalization (i18n) : Adding New Languages
 * **Design decision:** Localization will be treated as a pure infrastructure concern, fully isolated from business logic.
