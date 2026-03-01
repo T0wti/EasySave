@@ -1,4 +1,4 @@
-# Justification of the General Architecture (EasySave)
+# Explanation of the General Architecture (EasySave)
 
 The project's architecture is built upon the principle of **Clean Architecture**. 
 The codebase has been divided into several distinct layers (`Domain`, `Application`, 
@@ -65,7 +65,7 @@ for the UI), keeping these concerns out of both the Domain and the GUI.
 The project uses the **MVVM** (Model-View-ViewModel) pattern powered by the 
 Avalonia UI framework.
 
-**Justification:** The MVVM pattern enforces a strict contract: **Views are dumb**. 
+**Justification:** The MVVM pattern enforces a strict contract: **Views are passive**. 
 They only bind to properties exposed by ViewModels and fire commands, they contain 
 no business logic, no file system calls, and no backup rules whatsoever.
 
@@ -85,16 +85,14 @@ a window.
 
 **Role:** These modules handle concerns that cut across the entire application:
 - `EasyLog.dll` : log persistence (JSON, XML) and routing (local, remote, both)
-- `CryptoSoft.exe` : file encryption as a standalone, mono-instance external process
-- `LogServer` (Docker) : centralized TCP log collection across multiple machines
+- `CryptoSoft.exe` : file encryption as a standalone, mono-instance external process not managed by EasySave
+- `LogServer` (Docker) : centralized TCP log collection across multiple machines, in the code just for example
 
 **Justification:** Isolating these concerns into separate projects enforces the 
 **Single Responsibility Principle** at the architectural level. Each module has one 
-job and one reason to change:
+job and one reason to change. For example :
 
 - `EasyLog` changes only if the log format or routing strategy changes.
-- `CryptoSoft` changes only if the encryption algorithm or key management changes.
-- `LogServer` changes only if the centralization strategy changes.
 
 Crucially, `EasyLog` was designed as a **reusable DLL** from v1.0. Any future 
 project at ProSoft can reference `EasySave.EasyLog` to gain structured daily logging 
@@ -121,11 +119,6 @@ Every class in EasySave has a single, well-defined job:
 - `DomainExceptionMapper` only translates domain exceptions to application exceptions.
 - `BackupManagerService` only manages the lifecycle of backup job configurations 
   (create, edit, delete, load).
-
-A concrete example: when we needed to add XML log support in v1.1, we created a 
-new `XmlLogWriter` class rather than modifying `JsonLogWriter`. `EasyLogService` 
-gained a format selector, but neither writer changed. This is SRP in action, each 
-class changed for exactly one reason.
 
 ---
 
@@ -203,6 +196,19 @@ backup workflow can be tested in milliseconds without any real files or processe
 `AppServiceFactory` acts as the **composition root**, the single place in the 
 application where all concrete dependencies are wired together. Everything above it 
 depends only on abstractions.
+
+---
+
+## 3. Current Design Pattern
+The architecture currently leverages several foundational design patterns to separate concerns and manage complexity:
+
+* **Strategy Pattern:**  Used to encapsulate backup behaviors. The `IBackupStrategy` interface allows the application to seamlessly switch between `FullBackupStrategy` and `DifferentialBackupStrategy` at runtime depending on the job configuration.
+* **Factory Pattern:** Currently implemented via the static `AppServiceFactory`, which handles the instantiation and wiring of the application services and dependencies.
+* **Singleton Pattern:** Used for `EasyLogService` and `LogDispatcher` (via `Lazy<T>`) to ensure only one instance of the logging engine manages file locks and writes throughout the application lifecycle.
+* **Observer Pattern:** Heavily utilized in two areas:
+    * **UI Binding:** Through Avalonia's MVVM implementation (`ObservableObject`, `[ObservableProperty]`), allowing the GUI to automatically react to state changes in the ViewModels.
+    * **Process Monitoring:** Through `ManagementEventWatcher` (WMI) in `BusinessSoftwareWatcher`, which listens for OS-level process start/stop events to pause or resume backups dynamically.
+* **Facade Pattern:** `BackupAppService` and `ConfigAppService` act as facades, exposing a simplified API to the presentation layer and hiding the complexity of the underlying domain services (manager, executor, state service, etc..). ViewModels never interact directly with domain-level services.
 
 ---
 
