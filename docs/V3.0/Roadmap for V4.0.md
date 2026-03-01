@@ -9,7 +9,7 @@ Version 4 will introduce four major evolutions: multi-language support, optimisa
 * ViewModels will bind to keys, never to hardcoded text.
 
 **Why this matters architecturally:**
-* Adding a new language will require only creating a new `.resx` file and registering the culture in `AppServiceFactory`. No ViewModel, no service, and no Domain class will need to change, a direct application of OCP.
+* Adding a new language will require only creating a new `.resx` file and registering the culture in `AppServiceFactory`. No ViewModel, no service, and no Domain class will need to change, a direct application of Open–Closed Principle (OCP).
 * The current locale will be stored in the user's configuration file alongside other settings, meaning it will persist across sessions and will remain decoupled from any OS-level locale, which will be critical for multi-user server deployments.
 
 ---
@@ -28,7 +28,7 @@ Version 4 will introduce four major evolutions: multi-language support, optimisa
 
 The LogDispatcher will be strengthened as a pure Composite Pattern implementation, capable of routing log entries to multiple logging endpoints simultaneously (local, TCP, or any future channel). 
 
-Rather than controllFing routing logic through runtime conditionals, the active logging configuration will be entirely driven by dependency injection configuration, making the system:
+Rather than controlling routing logic through runtime conditionals, the active logging configuration will be entirely driven by dependency injection configuration, making the system:
 - More modular
 - Easier to extend
 - Simpler to reason about
@@ -71,10 +71,10 @@ This will also dramatically improve evolution capability: introducing new infras
 
 **GUI (Avalonia):**
 * As detailed in the framework comparison, Avalonia's Skia-based rendering engine will deliver a pixel-perfect, identical interface on all three desktop operating systems without platform-specific code paths.
-* The MVVM structure will mean that no ViewModel will ever call a platform API; platform differences will be absorbed entirely within Avalonia's rendering pipeline and within the infrastructure services described above.
+* The MVVM structure will mean that no ViewModel will ever call a platform API, platform differences will be absorbed entirely within Avalonia's rendering pipeline and within the infrastructure services described above.
 
 **Deployment & Resilience:**
-* A single CI pipeline will produce three artifacts from the same source tree: a Windows installer (`.msi`), a Linux `.deb` package, and a macOS `.dmg`.
+* A single CI (Continuous Integration) pipeline will produce three artifacts from the same source tree: a Windows installer (`.msi`), a Linux `.deb` package, and a macOS `.dmg`.
 * Configuration files, log files, and state files will use the same JSON schema across all platforms, and a job configured on Windows will be transferable to a Linux server and executed without conversion.
 * **Resilience angle:** The clean separation between `IFileService` (abstraction in Domain) and `FileService` (implementation in Infrastructure) will mean that a future platform-specific optimization, for example, using Linux's `sendfile` syscall for zero-copy transfers, will be introduced by creating a `LinuxFileService : IFileService` and registering it conditionally in `AppServiceFactory`. The rest of the application will remain entirely unaffected.
 
@@ -91,13 +91,13 @@ This will also dramatically improve evolution capability: introducing new infras
 
 * Eliminates approximately 30 lines of duplicated code per ViewModel that handles validation errors.
 * Adding a new error code will require a single change in one location instead of modifying every ViewModel.
-* Fully aligned with the DRY principle and improves maintainability as the number of ViewModels grows.
+* Fully aligned with the DRY (Don't Repeat Yourself) principle and improves maintainability as the number of ViewModels grows.
 
 ---
 
 ## 6. User Experience Enhancements
 
-Version 4 will introduce a series of user-focused features designed to improve the usability, flexibility, and control of EasySave. These additions will ensure that users can manage backups more efficiently, monitor progress, and customize their experience according to their needs. These features will be implemented as isolated, pluggable services behind dedicated interfaces, ensuring that each addition follows the same DI and abstraction principles established throughout the architecture.
+Version 4 will introduce a series of user-focused features designed to improve the usability, flexibility, and control of EasySave. These additions will ensure that users can manage backups more efficiently, monitor progress, and customize their experience according to their needs. These features will be implemented as isolated, pluggable services behind dedicated interfaces, ensuring that each addition follows the same Dependency Injection (DI) and abstraction principles established throughout the architecture.
 
 **Key Improvements :**
 
@@ -137,7 +137,7 @@ These refinements will collectively reinforce the architectural goals of EasySav
 | Axis | Architectural Gain |
 | :--- | :--- |
 | **Maintainability** | Reduced coupling, clearer dependencies, simpler evolution |
-| **Extensibility** | Factory-driven creation, DI-based configuration, plug-in design |
+| **Extensibility** | Factory-driven creation, Dependency injection based configuration, plug-in design |
 | **Scalability** | Infrastructure growth without domain impact |
 | **Portability** | Complete OS neutrality: native support for Windows, Linux, and macOS. |
 | **Internationalization** | New languages can be added simply by adding resource files |
