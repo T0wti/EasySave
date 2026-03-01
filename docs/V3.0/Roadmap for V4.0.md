@@ -67,7 +67,7 @@ This will also dramatically improve evolution capability: introducing new infras
 * `FileService` will use `Path.DirectorySeparatorChar` and `Environment.GetFolderPath` exclusively, eliminating all hardcoded Windows path assumptions.
 * CryptoSoft will be compiled as a self-contained native AOT binary for each target (win-x64, linux-x64, osx-arm64). `ICryptoSoftService` will abstract the process invocation, the concrete `CryptoSoftService` will resolve the correct binary path at runtime based on `RuntimeInformation.IsOSPlatform(...)`.
 * In `BusinessSoftwareWatcher`, the Windows-specific WMI-based software detection will need to be replaced with a cross-platform detection layer. The `IBusinessSoftwareWatcherService` interface will abstract OS-specific discovery mechanisms, while the concrete implementations will dynamically select the appropriate detection strategy at runtime using `RuntimeInformation.IsOSPlatform(...)`. This approach will enable native support for Windows, Linux, and macOS while maintaining a clean and extensible architecture.
-* The Domain and Application layers will see none of this. LogServer will run as a Docker container and will therefore be platform-neutral by definition.
+* The Domain and Application layers will see none of this.
 
 **GUI (Avalonia):**
 * As detailed in the framework comparison, Avalonia's Skia-based rendering engine will deliver a pixel-perfect, identical interface on all three desktop operating systems without platform-specific code paths.
