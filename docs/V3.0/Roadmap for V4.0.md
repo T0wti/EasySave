@@ -84,8 +84,8 @@ This will also dramatically improve evolution capability: introducing new infras
 **Design Decision:** The duplicated switch blocks on `AppErrorCode` currently present in `CreateBackupMenuViewModel`, `EditBackupDetailMenuViewModel`, and `ExecuteBackupMenuViewModel` will be centralized into a shared error handling mechanism in the `ViewModelBase` class.
 
 **Planned Implementation:**
-* A protected method HandleAppException(AppException ex) will be introduced in ViewModelBase, responsible for mapping any AppErrorCode to the correct localized error message and the affected field.
-* An IErrorMappingService may be extracted if the mapping logic grows in complexity, making it injectable and testable independently.
+* A protected method `HandleAppException(AppException ex)` will be introduced in `ViewModelBase`, responsible for mapping any `AppErrorCode` to the correct localized error message and the affected field.
+* An `IErrorMappingService` may be extracted if the mapping logic grows in complexity, making it injectable and testable independently.
 
 **Why This Matters Architecturally:**
 
