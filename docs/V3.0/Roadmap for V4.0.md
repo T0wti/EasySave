@@ -5,18 +5,18 @@ Version 4 will introduce four major evolutions: multi-language support, optimisa
 ## 1. Internationalization (i18n) : Adding New Languages
 * **Design decision:** Localization will be treated as a pure infrastructure concern, fully isolated from business logic.
 * All user-facing strings will be externalized into resource files (ex : `.resx` per culture like `Strings.en.resx`, `Strings.fr.resx`, `Strings.de.resx`).
-* A dedicated `ILocalizationService` abstraction, resolved at startup from the user's saved locale preference, will serve as the single source for every display string in the application.
+* A dedicated `ILocalizationService` abstraction, resolved at startup from the user's saved locale preference, will serve as the single source for all display strings in the application.
 * ViewModels will bind to keys, never to hardcoded text.
 
 **Why this matters architecturally:**
-* Adding a new language will require only creating a new `.resx` file and registering the culture in `AppServiceFactory`. No ViewModel, no service, and no Domain class will need to change, a direct application of Open–Closed Principle (OCP).
+* Adding a new language will require only creating a new `.resx` file and registering the culture in `AppServiceFactory`. No ViewModel, no service, and no Domain class will need to change, a direct application of the Open–Closed Principle (OCP).
 * The current locale will be stored in the user's configuration file alongside other settings, meaning it will persist across sessions and will remain decoupled from any OS-level locale, which will be critical for multi-user server deployments.
 
 ---
 
 ## 2. EasyLog Architecture Refinement : Factory & Composite Patterns
 **Design Decision :** EasyLog infrastructure will be redesigned to eliminate hard-coded instantiation logic and global singleton state, replacing them with factory-driven creation and dependency injection.
-* Log writer selection will be fully delegated to a dedicated ILogWriterFactory, responsible for instantiating the correct implementation (JSON, XML, or future formats for example CSV). This will remove conditional logic from EasyLogService and will fully respect the Open/Closed Principle.
+* Log writer selection will be fully delegated to a dedicated ILogWriterFactory, responsible for instantiating the correct implementation (JSON, XML, or future formats, for example CSV). This will remove conditional logic from EasyLogService and will fully respect the Open/Closed Principle.
 
 **Architectural Impact :**
 * The logging system will become fully extensible: adding a new log format requires only introducing a new writer class and registering it in the factory.
@@ -32,7 +32,7 @@ Rather than controlling routing logic through runtime conditionals, the active l
 - More modular
 - Easier to extend
 - Simpler to reason about
-- Fully compliant with DIP
+- Fully compliant with the Dependency Inversion Principle (DIP)
 
 > This architectural refactoring will preserve full backward compatibility. Existing projects that already reference the EasyLog library will continue to operate without any modification, as the public logging interfaces and entry points will remain unchanged. The introduction of the factory pattern and the composite will affect only the internal instantiation workflow and will not alter the external usage.
 
@@ -61,7 +61,7 @@ This will also dramatically improve evolution capability: introducing new infras
 ---
 
 ## 4. Cross-Platform : Windows, Linux, macOS
-* **Design decision :** The architecture will already be close to being multiplatform at the Domain and Application levels. Version 4 will close the remaining platform-specific gaps at the infrastructure and GUI levels.
+* **Design decision :** The architecture will already be close to being multi-platform at the Domain and Application levels. Version 4 will close the remaining platform-specific gaps at the infrastructure and GUI levels.
 
 **Infrastructure:**
 * `FileService` will use `Path.DirectorySeparatorChar` and `Environment.GetFolderPath` exclusively, eliminating all hardcoded Windows path assumptions.
@@ -76,7 +76,7 @@ This will also dramatically improve evolution capability: introducing new infras
 **Deployment & Resilience:**
 * A single CI (Continuous Integration) pipeline will produce three artifacts from the same source tree: a Windows installer (`.msi`), a Linux `.deb` package, and a macOS `.dmg`.
 * Configuration files, log files, and state files will use the same JSON schema across all platforms, and a job configured on Windows will be transferable to a Linux server and executed without conversion.
-* **Resilience angle:** The clean separation between `IFileService` (abstraction in Domain) and `FileService` (implementation in Infrastructure) will mean that a future platform-specific optimization, for example, using Linux's `sendfile` syscall for zero-copy transfers, will be introduced by creating a `LinuxFileService : IFileService` and registering it conditionally in `AppServiceFactory`. The rest of the application will remain entirely unaffected.
+* **Resilience angle:** The clean separation between `IFileService` (abstraction in Domain) and `FileService` (implementation in Infrastructure) will mean that a future platform-specific optimization, for example, using Linux's `sendfile` syscall for zero-copy transfers, will be introduced by creating a `LinuxFileService : IFileService` and registering it conditionally in `AppServiceFactory` in the V3.0 architecture (which will be replaced by the dependency injection container in V4.0). The rest of the application will remain entirely unaffected.
 
 ---
 
