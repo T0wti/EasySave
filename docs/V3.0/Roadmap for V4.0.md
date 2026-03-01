@@ -1,6 +1,6 @@
 # Improvement for the V4.0
 
-Version 4 will introduce four major evolutions: multi-language support, optimisation of EasyLog, update `AppServiceFactory` and full cross-platform portability. None of these will require structural changes to the Domain or Application layers. This will be the clearest proof that the architecture was designed to absorb change, not merely tolerate it.
+Version 4 will introduce four major evolutions: multi-language support, optimisation of EasyLog, update `AppServiceFactory` and full cross-platform portability. None of these will require structural changes to the Domain or Application layers. This will be the clearest proof that the architecture was designed to absorb change.
 
 ## 1. Internationalization (i18n) : Adding New Languages
 * **Design decision:** Localization will be treated as a pure infrastructure concern, fully isolated from business logic.
@@ -28,7 +28,7 @@ Version 4 will introduce four major evolutions: multi-language support, optimisa
 
 The LogDispatcher will be strengthened as a pure Composite Pattern implementation, capable of routing log entries to multiple logging endpoints simultaneously (local, TCP, or any future channel). 
 
-Rather than controlling routing logic through runtime conditionals, the active logging configuration will be entirely driven by dependency injection configuration, making the system:
+Rather than controllFing routing logic through runtime conditionals, the active logging configuration will be entirely driven by dependency injection configuration, making the system:
 - More modular
 - Easier to extend
 - Simpler to reason about
@@ -39,12 +39,12 @@ Rather than controlling routing logic through runtime conditionals, the active l
 ---
 
 ## 3. Full Dependency Injection : Replacing the Static Service Factory
-**Design Decision :** The original static AppServiceFactory will be replaced by a full-featured Dependency Injection container based on Microsoft.Extensions.DependencyInjection, making the application architecture fully compliant with modern .NET composition standards.
+**Design Decision :** The original static AppServiceFactory will be replaced by a full-featured Dependency Injection container based on `Microsoft.Extensions.DependencyInjection`, making the application architecture fully compliant with modern .NET composition standards.
 
 **Architectural Impact :**
 
 - All service instantiations will be centralized in a single composition root.
-- Service lifetimes (singleton, transient) will be explicitly controlled and documented.
+- Service lifetimes (singleton, etc...) will be explicitly controlled and documented.
 - Hidden singletons will be eliminated in favor of controlled object lifecycles.
 - The dependency graph will become explicit, readable, and maintainable.
 
